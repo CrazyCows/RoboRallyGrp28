@@ -210,4 +210,8 @@ public class Board extends Subject {
         return result;
     }
 
+    public String getStatusMessage() {
+        return "temp STATUS MESSAGE 0";
+    }
+
 }

@@ -82,6 +82,54 @@ public class GameController {
         player.setSpace(space);
     }
 
+    public void moveCurrentPlayerToSpace(Space space) {
+
+        // TODO Assignment V1: method should be implemented by the students:
+        //   - the current player should be moved to the given space
+        //     (if it is free()
+        //   - and the current player should be set to the player
+        //     following the current player
+        //   - the counter of moves in the game should be increased by one
+        //     if the player is moved
+        if (space.getPlayer() != null) return;
+
+        Player currentPlayer = board.getCurrentPlayer();
+        currentPlayer.setSpace(space);
+
+        Player nextPlayer = getNextPlayer(currentPlayer);
+        board.setCurrentPlayer(nextPlayer);
+
+
+    }
+
+    public Player getNextPlayer(Player currentPlayer){
+        int amountOfPlayers = board.getPlayersNumber()-1;
+        int playerNumber = board.getPlayerNumber(currentPlayer);
+
+        if (playerNumber >= amountOfPlayers){
+            return board.getPlayer(0);
+        }
+        return board.getPlayer(playerNumber+1);
+    }
+
+    public void finishProgrammingPhase() {
+    }
+
+    public void executePrograms() {
+    }
+
+    public void executeStep() {
+    }
+
+    /**
+     * A method called when no corresponding controller operation is implemented yet.
+     * This method should eventually be removed.
+     */
+    public void notImplemented() {
+        // XXX just for now to indicate that the actual method to be used by a handler
+        //     is not yet implemented
+    }
+
     class ImpossibleMoveException extends Exception {
 
         private Player player;
@@ -93,6 +141,19 @@ public class GameController {
             this.player = player;
             this.space = space;
             this.heading = heading;
+        }
+    }
+
+
+    public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
+        CommandCard sourceCard = source.getCard();
+        CommandCard targetCard = target.getCard();
+        if (sourceCard != null & targetCard == null) {
+            target.setCard(sourceCard);
+            source.setCard(null);
+            return true;
+        } else {
+            return false;
         }
     }
 
