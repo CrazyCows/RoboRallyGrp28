@@ -22,6 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -88,6 +90,16 @@ public class Board extends Subject {
             return spaces[x][y];
         } else {
             return null;
+        }
+    }
+
+    public void loadBoard(int boardNumber) {
+        if (boardNumber == 1) {
+            for (int i = 0; i < this.width; i++) {
+                for (int j = 0; j < this.height; j++) {
+                    spaces[i][j].setImage("C:\\Users\\LuucM\\IdeaProjects\\RoboRallyGrp28\\test_field2.jpg");
+                }
+            }
         }
     }
 

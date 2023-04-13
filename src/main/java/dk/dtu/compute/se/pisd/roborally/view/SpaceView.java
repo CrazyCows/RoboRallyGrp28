@@ -25,8 +25,11 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -46,6 +49,9 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     public final Space space;
 
+    String imagePath;
+    private ImageView imageView;
+
 
     public SpaceView(@NotNull Space space) {
         this.space = space;
@@ -59,17 +65,34 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setMinHeight(SPACE_HEIGHT);
         this.setMaxHeight(SPACE_HEIGHT);
 
+
         if ((space.x + space.y) % 2 == 0) {
             this.setStyle("-fx-background-color: white;");
         } else {
             this.setStyle("-fx-background-color: black;");
         }
 
+        this.imageView = new ImageView();
+        //this.imageView.setPreserveRatio(true);
+        //this.imageView.fitHeightProperty().bind(this.heightProperty());
+        //this.imageView.fitWidthProperty().bind(this.widthProperty());
+        this.getChildren().add(this.imageView);
         // updatePlayer();
 
         // This space view should listen to changes of the space
         space.attach(this);
         update(space);
+    }
+
+    public void setImage(String imagePath) {
+        Image image = new Image(imagePath);
+        imageView.setImage(image);
+        this.imagePath = imagePath;
+        this.getChildren().add(this.imageView);
+    }
+
+    public String getImagePath() {
+        return this.imagePath;
     }
 
     private void updatePlayer() {
