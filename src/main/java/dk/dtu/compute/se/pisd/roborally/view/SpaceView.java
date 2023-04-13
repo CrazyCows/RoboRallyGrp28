@@ -73,10 +73,11 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
 
         this.imageView = new ImageView();
+        this.imageView.toBack();
         //this.imageView.setPreserveRatio(true);
         //this.imageView.fitHeightProperty().bind(this.heightProperty());
         //this.imageView.fitWidthProperty().bind(this.widthProperty());
-        this.getChildren().add(this.imageView);
+        //this.getChildren().add(this.imageView);
         // updatePlayer();
 
         // This space view should listen to changes of the space
@@ -96,7 +97,8 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     private void updatePlayer() {
-        this.getChildren().clear();
+        // Remove the player arrow, if it exists
+        this.getChildren().removeIf(node -> node instanceof Polygon);
 
         Player player = space.getPlayer();
         if (player != null) {
@@ -111,7 +113,10 @@ public class SpaceView extends StackPane implements ViewObserver {
 
             arrow.setRotate((90*player.getHeading().ordinal())%360);
             this.getChildren().add(arrow);
+            arrow.toFront();
         }
+        // Add the ImageView back again
+        this.imageView.toBack();
     }
 
     @Override
