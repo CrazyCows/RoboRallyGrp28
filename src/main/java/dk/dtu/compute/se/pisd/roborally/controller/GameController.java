@@ -38,6 +38,9 @@ public class GameController {
         this.board = board;
     }
 
+    //TODO: En metode der tager et commandcardfield og læser commands,
+    // og kalder de metoder med den korrekte spiller (f.eks. moveForward).
+
     // TODO lot of stuff missing here
 
 
