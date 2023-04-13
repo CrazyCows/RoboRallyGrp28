@@ -27,9 +27,12 @@ import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.RoboRallyMenuBar;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 
 /**
  * ...
@@ -61,9 +64,23 @@ public class RoboRally extends Application {
         RoboRallyMenuBar menuBar = new RoboRallyMenuBar(appController);
         boardRoot = new BorderPane();
         VBox vbox = new VBox(menuBar, boardRoot);
+
+
+        ImageView imageView = new ImageView(new Image("file:bruno!.jpeg"));
+        imageView.setFitHeight(420);
+        imageView.setFitWidth(620);
+        imageView.setPreserveRatio(false);
+
+        // create the green box
+        //VBox greenBox = new VBox();
+        //greenBox.setMinHeight(420);
+        //greenBox.setStyle("-fx-background-color: green;");
+
+        // add the green box to the existing vbox
+        vbox.getChildren().add(imageView);
+
         vbox.setMinWidth(MIN_APP_WIDTH);
         Scene primaryScene = new Scene(vbox);
-
         stage.setScene(primaryScene);
         stage.setTitle("RoboRally");
         stage.setOnCloseRequest(
