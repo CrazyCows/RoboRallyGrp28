@@ -78,7 +78,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         //this.imageView.fitHeightProperty().bind(this.heightProperty());
         //this.imageView.fitWidthProperty().bind(this.widthProperty());
         //this.getChildren().add(this.imageView);
-        // updatePlayer();
 
         // This space view should listen to changes of the space
         space.attach(this);
@@ -90,6 +89,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         imageView.setImage(image);
         this.imagePath = imagePath;
         this.getChildren().add(this.imageView);
+        updatePlayer();
     }
 
     public String getImagePath() {
