@@ -97,7 +97,7 @@ public class Board extends Subject {
         if (boardNumber == 1) {
             for (int i = 0; i < this.width; i++) {
                 for (int j = 0; j < this.height; j++) {
-                    spaces[i][j].setImage("C:\\Users\\LuucM\\IdeaProjects\\RoboRallyGrp28\\test_field2.jpg");
+                    spaces[i][j].setImage("test_field2.jpg");
                 }
             }
         }
