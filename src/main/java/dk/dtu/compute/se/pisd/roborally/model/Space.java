@@ -44,12 +44,21 @@ public class Space extends Subject {
 
     public final int x;
     public final int y;
+    public String imagePath;
 
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
         this.y = y;
         player = null;
+    }
+
+    public void setImage(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath() {
+        return this.imagePath;
     }
 
     public Player getPlayer() {
