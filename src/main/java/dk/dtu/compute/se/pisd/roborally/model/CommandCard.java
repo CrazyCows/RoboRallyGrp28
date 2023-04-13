@@ -23,7 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
-
+import java.util.*;
 /**
  * ...
  *
@@ -34,6 +34,7 @@ public class CommandCard extends Subject {
 
     final public Command command;
 
+
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
@@ -41,6 +42,4 @@ public class CommandCard extends Subject {
     public String getName() {
         return command.displayName;
     }
-
-
 }

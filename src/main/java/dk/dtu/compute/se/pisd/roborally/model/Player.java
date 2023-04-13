@@ -47,6 +47,8 @@ public class Player extends Subject {
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
+    private int checkpointsCollected = 0;
+
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -133,4 +135,11 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    public int getCheckpointsCollected() {
+        return checkpointsCollected;
+    }
+
+    public void setCheckpointsCollected(int checkpointsCollected) {
+        this.checkpointsCollected = checkpointsCollected;
+    }
 }
