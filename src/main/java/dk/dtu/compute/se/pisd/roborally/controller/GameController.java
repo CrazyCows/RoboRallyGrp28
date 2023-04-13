@@ -23,6 +23,12 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+//import java.util.*;
 
 /**
  * ...
@@ -31,14 +37,35 @@ import org.jetbrains.annotations.NotNull;
  *
  */
 public class GameController {
+    CommandCard moveForwardOneCard = new CommandCard("Placeholder command");
+    CommandCard moveForwardTwoCard = new CommandCard("Placeholder command");
+    CommandCard moveForwardThreeCard = new CommandCard("Placeholder command");
+
+    //This array holds one of each card. It simply oozes quality.
+    //Once populated, it will absolutely destroy any chances of -3.
+    CommandCard CommandCards[] = new CommandCard[]{
+            moveForwardOneCard,
+            moveForwardTwoCard,
+            moveForwardThreeCard,
+    };
+
+    public CommandCard drawCommandCard(){
+        Random rand = new Random();
+        int int_random = rand.nextInt(9);
+        return CommandCards[int_random];
+    }
+
 
     final public Board board;
+
 
     public GameController(Board board) {
         this.board = board;
     }
 
-    //TODO: En metode der tager et commandcardfield og læser commands,
+
+
+    //TODO: En metode der tager et commandCardField og læser commands,
     // og kalder de metoder med den korrekte spiller (f.eks. moveForward).
 
     // TODO lot of stuff missing here
