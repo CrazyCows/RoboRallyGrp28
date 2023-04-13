@@ -53,7 +53,7 @@ public class GameController {
                     moveToSpace(player, target, heading);
                 } catch (ImpossibleMoveException e) {
                     // we don't do anything here  for now; we just catch the
-                    // exception so that we do no pass it on to the caller
+                    // exception so that we do not pass it on to the caller
                     // (which would be very bad style).
                 }
             }
