@@ -25,12 +25,9 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -70,7 +67,7 @@ public class BoardView extends VBox implements ViewObserver {
 
         spaceEventHandler = new SpaceEventHandler(gameController);
 
-        ImageView imageView2 = new ImageView(new Image("C:\\Users\\LuucM\\IdeaProjects\\RoboRallyGrp28\\test_field2.jpg"));
+        //ImageView imageView2 = new ImageView(new Image("test_field2.jpg")); - not used
 
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
@@ -86,9 +83,9 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
     }
 
-    public void setSpaceImage(int row, int col, String imagePath) {
+    public void setImage(int row, int col, String imagePath) {
         SpaceView spaceView = spaces[row][col];
-        spaceView.setImage(imagePath);
+        spaceView.setImage("test_field2.jpg");
     }
 
     @Override
@@ -103,9 +100,7 @@ public class BoardView extends VBox implements ViewObserver {
                     SpaceView spaceView = spaces[i][j];
                     Space space = board.getSpace(i, j);
                     String imagePath = space.getImagePath();
-                    if (!imagePath.equals(spaceView.getImagePath())) {
-                        setSpaceImage(i, j, imagePath);
-                    }
+                    setImage(i, j, "test_field2.jpg");
                 }
             }
         }
