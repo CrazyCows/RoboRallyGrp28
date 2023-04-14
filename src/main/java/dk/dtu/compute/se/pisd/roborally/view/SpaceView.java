@@ -25,7 +25,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -48,8 +47,8 @@ public class SpaceView extends StackPane implements ViewObserver {
     public final Space space;
 
     String imagePath;
-    private ImageView imageView;
     private ImageLoader imageLoader = new ImageLoader();
+    private ImageView imageBackground;
 
 
     public SpaceView(@NotNull Space space) {
@@ -71,6 +70,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-color: black;");
         }
 
+
         //this.imageView.setPreserveRatio(true);
         //this.imageView.fitHeightProperty().bind(this.heightProperty());
         //this.imageView.fitWidthProperty().bind(this.widthProperty());
@@ -87,30 +87,22 @@ public class SpaceView extends StackPane implements ViewObserver {
         // TODO: cycle through them for animations.
         if (background.size() != 0) {
             imagePath = background.get(0);
-            this.imageView = imageLoader.getImageView(imagePath);
-            this.getChildren().add(this.imageView);
+            this.imageBackground = imageLoader.getImageView(imagePath);
+            this.getChildren().add(this.imageBackground);
             updatePlayer();
         }
         else {
             imagePath = "test_field.jpg";
-            this.imageView = imageLoader.getImageView(imagePath);
-            this.getChildren().add(this.imageView);
+            this.imageBackground = imageLoader.getImageView(imagePath);
+            this.getChildren().add(this.imageBackground);
             updatePlayer();
         }
     }
 
-    private void updateCheckpoint() {
-        if (space.getCheckpointOnField()) {
-
-
-            //this.getChildren().addAll(checkpointCircle, flagLine);
-        }
-    }
 
     private void updatePlayer() {
         // Remove the player arrow, if it exists
         this.getChildren().removeIf(node -> node instanceof Polygon);
-
         Player player = space.getPlayer();
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
@@ -132,7 +124,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == this.space) {
-            //updateCheckpoint();
             updatePlayer();
         }
     }

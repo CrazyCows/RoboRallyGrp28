@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -54,6 +55,8 @@ public class BoardView extends VBox implements ViewObserver {
     private Label statusLabel;
 
     private SpaceEventHandler spaceEventHandler;
+    private ImageLoader imageLoader = new ImageLoader();
+    private ImageView imageCheckpoint = imageLoader.getImageView("checkpoint.png");
 
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
@@ -83,6 +86,27 @@ public class BoardView extends VBox implements ViewObserver {
         board.attach(this);
         update(board);
     }
+
+
+
+    private void addCheckpoint(){
+        this.getChildren().add(imageCheckpoint);
+    }
+    private void removeCheckpoint(){
+        this.getChildren().remove(imageCheckpoint);
+    }
+
+
+    private void updateCheckpoint() {
+        Player player = new Player(spaces);
+        if (player != null){
+            removeCheckpoint();
+
+        }
+
+        //this.getChildren().addAll(checkpointCircle, flagLine);
+    }
+
 
 
     @Override
