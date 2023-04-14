@@ -76,13 +76,14 @@
     {
       "walls": [],
       "background": [
-        "test_field2.jpg"
+        "gear_left.jpg"
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "direction": "right"
           }
         }
       ],
@@ -92,13 +93,14 @@
     {
       "walls": [],
       "background": [
-        "test_field2.jpg"
+        "gear_right.jpg"
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
           "INSTANCE": {
-            "heading": "NORTH"
+            "heading": "NORTH",
+            "direction": "left"
           }
         }
       ],

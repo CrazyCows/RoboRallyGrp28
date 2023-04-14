@@ -21,10 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -47,10 +44,8 @@ public class ConveyorBelt extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        EventController eventController = new EventController();
-        eventController.moveSpaces(gameController.board.getCurrentPlayer(), gameController.board);
+        gameController.moveInDirection(space.getPlayer(), 2, heading);
         System.out.println("CONVEYOR");
-        // TODO needs to be implemented
         return false;
     }
 
