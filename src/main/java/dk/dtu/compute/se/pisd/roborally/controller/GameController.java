@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 //import java.util.*;
 
@@ -169,8 +170,14 @@ public class GameController {
     }
 
     public void executeStep(Space space) {
+        System.out.println(space.getCheckpointOnField() + " is space things ");
+
+
+
         for (FieldAction fieldAction : space.getActions()) {
             fieldAction.doAction(this, space);
+
+
             /*if (FieldAction instanceof ConveyorBelt) {
                 ConveyorBelt conveyorBelt = (ConveyorBelt) space.getActions().get(0);
                 conveyorBelt.doAction(this, space);

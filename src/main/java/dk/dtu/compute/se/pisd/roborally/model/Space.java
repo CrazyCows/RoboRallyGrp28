@@ -53,7 +53,6 @@ public class Space extends Subject {
         this.board = board;
         this.x = x;
         this.y = y;
-        this.checkpoint = true;
         player = null;
     }
 
@@ -79,6 +78,9 @@ public class Space extends Subject {
 
     public void setItem(String item) {
         this.item = item;
+        if (item != null){
+            this.checkpoint = true;
+        }
     }
 
     public String getItem() {
