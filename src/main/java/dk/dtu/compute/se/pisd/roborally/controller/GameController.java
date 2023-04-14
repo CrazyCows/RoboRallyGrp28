@@ -37,24 +37,14 @@ import java.util.Random;
  *
  */
 public class GameController {
-    //rand is defined here because we dont need to make a new one each time
-    //as nextInt gives a new pseudorandom int anyway
 
 
-    //This array holds one of each card. It simply oozes quality.
-    //Once populated, it will absolutely destroy any chances of -3.
-
-    //TODO: Den her funktion skal laves
-
-
-
-
-    public CommandCard drawCommandCard(){
-
-    }
 
 
     final public Board board;
+    public static CardLoader cardLoader;
+
+
 
 
     public GameController(Board board) {
