@@ -1,6 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.model.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class CardController {
 
 
     public void drawCards(Player player){
-        ArrayList<Object> deck = player.getDeck; //TODO: ADD getDeck and deck
+        ArrayList<Object> deck = player.deck; //TODO: ADD getDeck and deck
     }
     private LinkedList<Object> shuffleDeck(LinkedList<Object> deck){
         Collections.shuffle(deck);
