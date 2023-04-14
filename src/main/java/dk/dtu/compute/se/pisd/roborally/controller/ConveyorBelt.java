@@ -34,6 +34,7 @@ public class ConveyorBelt extends FieldAction {
 
     private Heading heading;
 
+    @Override
     public Heading getHeading() {
         return heading;
     }

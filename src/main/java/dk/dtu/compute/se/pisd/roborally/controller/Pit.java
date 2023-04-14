@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class Pit extends FieldAction {
     private Heading heading;
 
+    @Override
     public Heading getHeading() {
         return heading;
     }
