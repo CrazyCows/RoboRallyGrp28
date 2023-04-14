@@ -7,6 +7,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 public class EventController {
 
 
+
+
+
     public void moveSpaces(Player player, Board board) {
         int amount = 2;
         Space space = player.getSpace();
@@ -14,16 +17,16 @@ public class EventController {
         for (int i = 0; i < amount; i++) {
             switch (player.getHeading()) {
                 case NORTH -> {
-                    spacePosition[1] -= 2;
+                    spacePosition[1] -= 1;
                 }
                 case WEST -> {
-                    spacePosition[0] -= 2;
+                    spacePosition[0] -= 1;
                 }
                 case SOUTH -> {
-                    spacePosition[1] += 2;
+                    spacePosition[1] += 1;
                 }
                 case EAST -> {
-                    spacePosition[0] += 2;
+                    spacePosition[0] += 1;
                 }
             }
         }

@@ -21,6 +21,7 @@
       "y": 0
     },
     {
+      "item": "checkpoint",
       "walls": [
         "NORTH"
       ],
