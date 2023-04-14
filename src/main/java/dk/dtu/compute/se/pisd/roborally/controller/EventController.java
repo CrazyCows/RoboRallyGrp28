@@ -7,6 +7,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 public class EventController {
 
 
+
+
+
     public void moveSpaces(Player player, Board board) {
         int amount = 2;
         Space space = player.getSpace();

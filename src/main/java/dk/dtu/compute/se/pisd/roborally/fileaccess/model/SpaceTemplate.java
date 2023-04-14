@@ -36,6 +36,7 @@ import java.util.List;
  */
 public class SpaceTemplate {
 
+    public String item;
     public List<Heading> walls = new ArrayList<>();
     public List<String> background = new ArrayList<>();
     public List<FieldAction> actions = new ArrayList<>();

@@ -80,6 +80,7 @@ public class LoadBoard {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
                     space.getBackground().addAll(spaceTemplate.background);
+                    space.setItem(spaceTemplate.item);
                 }
             }
 			reader.close();

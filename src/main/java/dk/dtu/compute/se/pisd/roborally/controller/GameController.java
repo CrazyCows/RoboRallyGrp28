@@ -110,6 +110,11 @@ public class GameController {
 
         Player nextPlayer = getNextPlayer(currentPlayer);
         board.setCurrentPlayer(nextPlayer);
+        System.out.println(space.getItem());
+    }
+
+    public void turnPlayer(Player player) {
+
     }
 
 

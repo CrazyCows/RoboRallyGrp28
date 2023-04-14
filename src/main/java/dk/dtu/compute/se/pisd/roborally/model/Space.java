@@ -38,6 +38,7 @@ public class Space extends Subject {
 
     private Player player;
 
+    private String item;
     private List<Heading> walls = new ArrayList<>();
     private List<FieldAction> actions = new ArrayList<>();
     private List<String> background = new ArrayList<>();
@@ -74,6 +75,15 @@ public class Space extends Subject {
             }
             notifyChange();
         }
+    }
+
+    public void setItem(String item) {
+        this.item = item;
+    }
+
+    public String getItem() {
+        System.out.println(item);
+        return item;
     }
 
     public void setCheckpoint(boolean checkpointOnSpace){
