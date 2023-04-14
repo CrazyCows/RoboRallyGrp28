@@ -39,30 +39,18 @@ import java.util.Random;
 public class GameController {
     //rand is defined here because we dont need to make a new one each time
     //as nextInt gives a new pseudorandom int anyway
-    Random rand = new Random();
+
 
     //This array holds one of each card. It simply oozes quality.
     //Once populated, it will absolutely destroy any chances of -3.
 
     //TODO: Den her funktion skal laves
-    Command[] commands = commandLoader();
 
-    CommandCard[] CommandCards = new CommandCard[]{
-            new CommandCard(commands[0]),
-            new CommandCard(commands[1]),
-            new CommandCard(commands[2]),
-            new CommandCard(commands[3]),
-            new CommandCard(commands[4]),
-            new CommandCard(commands[5]),
-            new CommandCard(commands[6]),
-            new CommandCard(commands[7]),
-            new CommandCard(commands[8]),
 
-    };
+
 
     public CommandCard drawCommandCard(){
-        int int_random = rand.nextInt(9);
-        return CommandCards[int_random];
+
     }
 
 
