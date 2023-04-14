@@ -9,7 +9,9 @@ public class ImageLoader {
         return image;
     }
     public ImageView getImageView(String imagePath){
+        Image image = new Image(imagePath);
         ImageView imageView = new ImageView();
+        imageView.setImage(image);
         return imageView;
     }
 }

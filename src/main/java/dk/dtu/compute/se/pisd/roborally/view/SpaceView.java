@@ -94,6 +94,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         else {
             imagePath = "test_field.jpg";
             this.imageView = imageLoader.getImageView(imagePath);
+            this.imageView.setImage(imageLoader.getImage(imagePath));
             this.getChildren().add(this.imageView);
             updatePlayer();
         }
