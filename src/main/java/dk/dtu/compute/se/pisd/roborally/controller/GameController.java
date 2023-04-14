@@ -170,16 +170,17 @@ public class GameController {
     }
 
     public void executeStep(Space space) {
-        System.out.println(space.getCheckpointOnField() + " is space things ");
-        if (space.getCheckpointOnField()){
-            space.setCheckpoint(false);
+        System.out.println(space.getItem() + " is space things ");
+        if (space.getItem() != null){
+            space.setItem(null);
             Random rand = new Random();
 
-            int maxHeight = board.height;
-            int maxWidth = board.width;
+            int maxHeight = rand.nextInt(board.height);
+            int maxWidth = rand.nextInt(board.width);
 
-            space = board.getSpace(rand.nextInt(1,maxWidth + 1), rand.nextInt(1, maxHeight + 1));
-            space.setCheckpoint(true);
+            space = board.getSpace(rand.nextInt(0,maxWidth), rand.nextInt(0, maxHeight));
+            System.out.println(space.x);
+            space.setItem("checkpoint");
         }
 
 

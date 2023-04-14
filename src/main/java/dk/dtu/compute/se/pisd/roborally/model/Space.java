@@ -44,7 +44,7 @@ public class Space extends Subject {
     private List<String> background = new ArrayList<>();
 
     public final Board board;
-    boolean checkpoint;
+    //boolean checkpoint;
     public final int x;
     public final int y;
     public String imagePath;
@@ -78,9 +78,6 @@ public class Space extends Subject {
 
     public void setItem(String item) {
         this.item = item;
-        if (item != null){
-            this.checkpoint = true;
-        }
     }
 
     public String getItem() {
@@ -88,13 +85,7 @@ public class Space extends Subject {
         return item;
     }
 
-    public void setCheckpoint(boolean checkpointOnSpace){
-        checkpoint = checkpointOnSpace;
-    }
 
-    public boolean getCheckpointOnField(){
-        return checkpoint;
-    }
 
     public List<Heading> getWalls() {
         return walls;

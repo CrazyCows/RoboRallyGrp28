@@ -91,10 +91,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         Player player = space.getPlayer();
         if (player != null) {
             System.out.println("player is not null");
-            System.out.println("position is: " + space.getCheckpointOnField());
-            if (this.getChildren().contains(imageCheckpoint) && !space.getCheckpointOnField()) {
+            System.out.println("position is: " + space.getItem());
+            if (this.getChildren().contains(imageCheckpoint) && space.getItem() != null) {
                 this.getChildren().remove(imageCheckpoint);
-            } else if (!this.getChildren().contains(imageCheckpoint) && space.getCheckpointOnField()){
+            } else if (!this.getChildren().contains(imageCheckpoint) && space.getItem() == null){
                 this.getChildren().add(imageCheckpoint);
 
             }
