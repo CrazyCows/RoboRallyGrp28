@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -40,8 +41,7 @@ public class GameController {
     final public Board board;
     public static CardLoader cardLoader;
 
-
-
+    private BoardView boardView;
 
     public GameController(Board board) {
         this.board = board;
@@ -178,7 +178,7 @@ public class GameController {
             int maxHeight = rand.nextInt(board.height);
             int maxWidth = rand.nextInt(board.width);
 
-            space = board.getSpace(rand.nextInt(0,maxWidth), rand.nextInt(0, maxHeight));
+            space = board.getSpace(maxWidth, maxHeight);
             System.out.println(space.x);
             space.setItem("checkpoint");
         }
