@@ -97,7 +97,7 @@ public class PlayerView extends Tab implements ViewObserver {
         executeButton.setOnAction( e-> gameController.executePrograms());
 
         stepButton = new Button("Execute Current Register");
-        stepButton.setOnAction( e-> gameController.executeStep());
+        stepButton.setOnAction( e-> gameController.executeStep(player.getSpace()));
 
         buttonPanel = new VBox(finishButton, executeButton, stepButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
@@ -165,29 +165,29 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
                 switch (player.board.getPhase()) {
                     case INITIALISATION:
-                        finishButton.setDisable(true);
+                        finishButton.setDisable(false);
                         // XXX just to make sure that there is a way for the player to get
                         //     from the initialization phase to the programming phase somehow!
                         executeButton.setDisable(false);
-                        stepButton.setDisable(true);
+                        stepButton.setDisable(false);
                         break;
 
                     case PROGRAMMING:
                         finishButton.setDisable(false);
-                        executeButton.setDisable(true);
-                        stepButton.setDisable(true);
+                        executeButton.setDisable(false);
+                        stepButton.setDisable(false);
                         break;
 
                     case ACTIVATION:
-                        finishButton.setDisable(true);
+                        finishButton.setDisable(false);
                         executeButton.setDisable(false);
                         stepButton.setDisable(false);
                         break;
 
                     default:
-                        finishButton.setDisable(true);
-                        executeButton.setDisable(true);
-                        stepButton.setDisable(true);
+                        finishButton.setDisable(false);
+                        executeButton.setDisable(false);
+                        stepButton.setDisable(false);
                 }
 
 

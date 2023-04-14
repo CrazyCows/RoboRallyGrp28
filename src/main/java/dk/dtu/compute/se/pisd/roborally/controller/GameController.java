@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 /**
  * ...
  *
@@ -98,8 +100,6 @@ public class GameController {
 
         Player nextPlayer = getNextPlayer(currentPlayer);
         board.setCurrentPlayer(nextPlayer);
-
-
     }
 
     public Player getNextPlayer(Player currentPlayer){
@@ -118,7 +118,14 @@ public class GameController {
     public void executePrograms() {
     }
 
-    public void executeStep() {
+    public void executeStep(Space space) {
+        for (FieldAction fieldAction : space.getActions()) {
+            fieldAction.doAction(this, space);
+            /*if (FieldAction instanceof ConveyorBelt) {
+                ConveyorBelt conveyorBelt = (ConveyorBelt) space.getActions().get(0);
+                conveyorBelt.doAction(this, space);
+            }*/
+        }
     }
 
     /**
