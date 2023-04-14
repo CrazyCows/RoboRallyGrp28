@@ -1,9 +1,6 @@
-package dk.dtu.compute.se.pisd.roborally.controller;
+package dk.dtu.compute.se.pisd.roborally.model;
 
-import dk.dtu.compute.se.pisd.roborally.model.Command;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCard;
-
-import java.sql.SQLOutput;
+import java.util.LinkedList;
 import java.util.Random;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Command.*;
@@ -14,24 +11,28 @@ public class CardLoader {
     Random rand = new Random();
     CommandCard[] commandCards;
 
-
     public static CardLoader getInstance(){ //Singleton
         if (cardLoader == null){
             cardLoader = new CardLoader();
         }
         return cardLoader;
     }
-    private CardLoader(){ //Constructor
-        System.out.println("Created singleton class");
-        createCommandCards();
-        System.out.println("Commandcards created");
 
-
-    }
-
-    protected CommandCard drawCommandCard(){ //Protected as this should only be accessed in controller
+    protected CommandCard drawRandomCommandCard(){ //Protected as this should only be accessed in controller
         int int_random = rand.nextInt(9);
         return commandCards[int_random];
+    }
+
+    public LinkedList<CommandCard> CreateCardPile(){
+        LinkedList<CommandCard> Pile = new LinkedList<CommandCard>();
+        for (int i = 0; i < 20;i++){
+            Pile.add(commandCards[2]); //TODO: Actually make this the correct cards
+        }
+        return Pile;
+    }
+
+    public LinkedList<CommandCard> CreateEmptyPile(){
+        return new LinkedList<CommandCard>();
     }
 
     private CommandCard[] createCommandCards(){ //Private, only used once, in constructor
@@ -47,5 +48,11 @@ public class CardLoader {
                 new CommandCard(AGAIN)
         };
         return commandCards;
+    }
+
+    private CardLoader(){ //Constructor
+        System.out.println("Created singleton class");
+        createCommandCards();
+        System.out.println("Commandcards created");
     }
 }

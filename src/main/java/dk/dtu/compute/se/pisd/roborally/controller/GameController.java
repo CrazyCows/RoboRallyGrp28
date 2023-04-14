@@ -23,10 +23,6 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
 
 //import java.util.*;
 
@@ -50,7 +46,6 @@ public class GameController {
     public GameController(Board board) {
         this.board = board;
     }
-
 
 
     //TODO: En metode der tager et commandCardField og læser commands,
