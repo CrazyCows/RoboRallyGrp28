@@ -23,16 +23,16 @@ public class CardLoader {
         return commandCards[int_random];
     }
 
-    public LinkedList<CommandCard> CreateCardPile(){
-        LinkedList<CommandCard> Pile = new LinkedList<CommandCard>();
+    public LinkedList<Object> CreateCardPile(){ //TODO: ADD GENERICS
+        LinkedList<Object> Pile = new LinkedList<Object>();
         for (int i = 0; i < 20;i++){
             Pile.add(commandCards[2]); //TODO: Actually make this the correct cards
         }
         return Pile;
     }
 
-    public LinkedList<CommandCard> CreateEmptyPile(){
-        return new LinkedList<CommandCard>();
+    public LinkedList<Object> CreateEmptyPile(){
+        return new LinkedList<Object>();
     }
 
     private CommandCard[] createCommandCards(){ //Private, only used once, in constructor
