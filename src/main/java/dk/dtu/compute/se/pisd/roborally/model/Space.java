@@ -41,6 +41,8 @@ public class Space extends Subject {
     private List<FieldAction> actions = new ArrayList<>();
 
     public final Board board;
+    boolean checkpoint;
+    boolean converbolt;
 
     public final int x;
     public final int y;
@@ -50,8 +52,11 @@ public class Space extends Subject {
         this.board = board;
         this.x = x;
         this.y = y;
+        this.checkpoint = true;
         player = null;
     }
+
+
 
     public void setImage(String imagePath) {
         this.imagePath = imagePath;
@@ -79,6 +84,14 @@ public class Space extends Subject {
             }
             notifyChange();
         }
+    }
+
+    public void setCheckpoint(boolean checkpointOnSpace){
+        checkpoint = checkpointOnSpace;
+    }
+
+    public boolean getCheckpointOnField(){
+        return checkpoint;
     }
 
     public List<Heading> getWalls() {

@@ -92,7 +92,7 @@ public class Board extends Subject {
             return null;
         }
     }
-
+/*
     public void loadBoard(int boardNumber) {
         if (boardNumber == 1) {
             for (int i = 0; i < this.width; i++) {
@@ -102,7 +102,7 @@ public class Board extends Subject {
             }
         }
     }
-
+ */
     public int getPlayersNumber() {
         return players.size();
     }

@@ -112,6 +112,9 @@ public class GameController {
         board.setCurrentPlayer(nextPlayer);
     }
 
+
+
+
     public Player getNextPlayer(Player currentPlayer){
         int amountOfPlayers = board.getPlayersNumber()-1;
         int playerNumber = board.getPlayerNumber(currentPlayer);
@@ -173,5 +176,4 @@ public class GameController {
             return false;
         }
     }
-
 }
