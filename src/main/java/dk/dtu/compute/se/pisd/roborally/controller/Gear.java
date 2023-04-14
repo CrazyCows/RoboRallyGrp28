@@ -10,7 +10,6 @@ public class Gear extends FieldAction {
     private Heading heading;
     private String direction;
 
-    @Override
     public Heading getHeading() {
         return heading;
     }

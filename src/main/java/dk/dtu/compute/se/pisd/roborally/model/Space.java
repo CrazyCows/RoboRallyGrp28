@@ -76,10 +76,7 @@ public class Space extends Subject {
             notifyChange();
         }
     }
-
-    public Heading getHeading() {
-        return actions.get(0).getHeading();
-    }
+    
 
     public void setItem(String item) {
         this.item = item;

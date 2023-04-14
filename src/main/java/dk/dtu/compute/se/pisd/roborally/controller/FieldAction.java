@@ -32,7 +32,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
  */
 public abstract class FieldAction {
 
-    Heading heading;
 
     /**
      * Executes the field action for a given space. In order to be able to do
@@ -42,10 +41,6 @@ public abstract class FieldAction {
      * @param space the space this action should be executed for
      * @return whether the action was successfully executed
      */
-
-    public Heading getHeading() {
-        return this.heading;
-    }
 
     public abstract boolean doAction(GameController gameController, Space space);
 

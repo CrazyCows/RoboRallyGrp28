@@ -34,6 +34,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
+
 /**
  * ...
  *
@@ -88,8 +90,8 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (background.size() != 0) {
             imagePath = background.get(0);
             this.imageView = imageLoader.getImageView(imagePath);
-            if (space.getHeading() != null) {
-                switch (space.getHeading()) {
+            if (space.getWalls().size() != 0) {
+                switch (space.getWalls().get(0)) {
                     case NORTH:
                         this.imageView.setRotate(0);
                         break;
@@ -100,7 +102,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                         this.imageView.setRotate(180);
                         break;
                     case WEST:
-                        this.imageView.setRotate(240);
+                        this.imageView.setRotate(270);
                         break;
                 }
             }
