@@ -184,6 +184,7 @@ public class GameController {
 
 
         for (FieldAction fieldAction : space.getActions()) {
+
             fieldAction.doAction(this, space);
 
 
