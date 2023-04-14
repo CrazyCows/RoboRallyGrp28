@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +40,10 @@ public class Space extends Subject {
 
     private List<Heading> walls = new ArrayList<>();
     private List<FieldAction> actions = new ArrayList<>();
+    private List<String> background = new ArrayList<>();
 
     public final Board board;
     boolean checkpoint;
-    boolean converbolt;
-
     public final int x;
     public final int y;
     public String imagePath;
@@ -54,16 +54,6 @@ public class Space extends Subject {
         this.y = y;
         this.checkpoint = true;
         player = null;
-    }
-
-
-
-    public void setImage(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getImagePath() {
-        return this.imagePath;
     }
 
     public Player getPlayer() {
@@ -100,6 +90,10 @@ public class Space extends Subject {
 
     public List<FieldAction> getActions() {
         return actions;
+    }
+
+    public List<String> getBackground() {
+        return background;
     }
 
     void playerChanged() {

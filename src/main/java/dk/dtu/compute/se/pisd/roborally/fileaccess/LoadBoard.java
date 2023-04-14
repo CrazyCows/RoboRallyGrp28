@@ -79,14 +79,14 @@ public class LoadBoard {
 			    if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
+                    space.getBackground().addAll(spaceTemplate.background);
                 }
             }
 			reader.close();
             System.out.println(result.getSpace(1,1).getActions());
             System.out.println(result.getSpace(1,1).getWalls());
             System.out.println(result.getSpace(1,1).getPlayer());
-            System.out.println(result.getSpace(1,1).getImagePath());
-            System.out.println();
+            System.out.println(result.getSpace(1,1).getBackground());
 			return result;
 		} catch (IOException e1) {
             if (reader != null) {

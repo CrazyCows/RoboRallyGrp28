@@ -74,12 +74,12 @@ public class BoardView extends VBox implements ViewObserver {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
+                spaceView.setBackround(space.getBackground());
                 spaces[x][y] = spaceView;
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
-        board.getSpace(0,0).
         board.attach(this);
         update(board);
     }
@@ -94,17 +94,7 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == board) {
             Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
-
-            // Update the images for all SpaceViews.
-            for (int i = 0; i < board.width; i++) {
-                for (int j = 0; j < board.height; j++) {
-                    SpaceView spaceView = spaces[i][j];
-                    Space space = board.getSpace(i, j);
-                    String imagePath = space.getImagePath();
-                    setImage(i, j, "test_field2.jpg");
-                }
             }
-        }
     }
 
     // XXX this handler and its uses should eventually be deleted! This is just to help test the

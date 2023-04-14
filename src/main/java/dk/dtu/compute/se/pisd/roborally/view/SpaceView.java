@@ -31,6 +31,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * ...
  *
@@ -69,6 +71,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         this.imageView = new ImageView();
         this.imageView.toBack();
+
         //this.imageView.setPreserveRatio(true);
         //this.imageView.fitHeightProperty().bind(this.heightProperty());
         //this.imageView.fitWidthProperty().bind(this.widthProperty());
@@ -87,7 +90,28 @@ public class SpaceView extends StackPane implements ViewObserver {
         updatePlayer();
     }
 
-    public String getImagePathBackGround() {
+    public void setBackround(List<String> background) {
+        // TODO: background is a list of ressource image strings
+        // TODO: cycle through them for animations.
+        if (background.size() != 0) {
+            imagePath = background.get(0);
+            Image image = new Image(imagePath);
+            imageView.setImage(image);
+            this.imagePath = imagePath;
+            this.getChildren().add(this.imageView);
+            updatePlayer();
+        }
+        else {
+            imagePath = "test_field.jpg";
+            Image image = new Image(imagePath);
+            imageView.setImage(image);
+            this.imagePath = imagePath;
+            this.getChildren().add(this.imageView);
+            updatePlayer();
+        }
+    }
+
+    public String getBackGround() {
         return this.imagePath;
     }
 
