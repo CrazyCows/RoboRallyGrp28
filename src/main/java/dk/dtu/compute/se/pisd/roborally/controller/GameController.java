@@ -113,7 +113,40 @@ public class GameController {
         System.out.println(space.getItem());
     }
 
-    public void turnPlayer(Player player) {
+    public void moveInDirection(@NotNull Player player, int amount, @NotNull Heading heading) {
+        Space space = player.getSpace();
+        int[] spacePosition = space.getPosition();
+        for (int i = 0; i < amount; i++) {
+            switch (heading) {
+                case NORTH -> {
+                    spacePosition[1] -= 1;
+                }
+                case WEST -> {
+                    spacePosition[0] -= 1;
+                }
+                case SOUTH -> {
+                    spacePosition[1] += 1;
+                }
+                case EAST -> {
+                    spacePosition[0] += 1;
+                }
+            }
+            try {
+                Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
+                moveToSpace(player, nextSpace, heading);
+            } catch (ImpossibleMoveException e) {
+                break;
+            }
+        }
+        //player.setSpace(board.getSpace(spacePosition[0], spacePosition[1]));
+    }
+
+    public void turnPlayer(Player player, Command direction) {
+        if (direction == Command.LEFT) {
+            player.setHeading(player.getHeading().prev());
+        } else if (direction == Command.RIGHT) {
+            player.setHeading(player.getHeading().next());
+        }
 
     }
 
