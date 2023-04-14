@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
@@ -38,6 +40,7 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
+    public ArrayList<Object> getDeck;
 
     private String name;
     private String color;
@@ -141,9 +144,6 @@ public class Player extends Subject {
 
     public void setCheckpointsCollected(int checkpointsCollected) {
         this.checkpointsCollected = checkpointsCollected;
-    }
-    public void setProgramField(int i, Object card) {
-         program[i] = card;
     }
 
     public void setCardField(int i, Object card){

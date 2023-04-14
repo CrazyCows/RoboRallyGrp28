@@ -20,7 +20,6 @@ public class CardController {
 
     public void drawCards(Player player){
         ArrayList<Object> deck = player.getDeck; //TODO: ADD getDeck and deck
-        player.
     }
     private LinkedList<Object> shuffleDeck(LinkedList<Object> deck){
         Collections.shuffle(deck);

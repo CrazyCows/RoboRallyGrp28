@@ -86,7 +86,7 @@ public class BoardView extends VBox implements ViewObserver {
 
     public void setImage(int row, int col, String imagePath) {
         SpaceView spaceView = spaces[row][col];
-        spaceView.setImage("test_field2.jpg");
+        spaceView.setImage(imagePath);
     }
 
     @Override
