@@ -14,16 +14,16 @@ public class EventController {
         for (int i = 0; i < amount; i++) {
             switch (player.getHeading()) {
                 case NORTH -> {
-                    spacePosition[1] -= 2;
+                    spacePosition[1] -= 1;
                 }
                 case WEST -> {
-                    spacePosition[0] -= 2;
+                    spacePosition[0] -= 1;
                 }
                 case SOUTH -> {
-                    spacePosition[1] += 2;
+                    spacePosition[1] += 1;
                 }
                 case EAST -> {
-                    spacePosition[0] += 2;
+                    spacePosition[0] += 1;
                 }
             }
         }
