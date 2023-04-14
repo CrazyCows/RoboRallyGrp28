@@ -49,6 +49,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     String imagePath;
     private ImageLoader imageLoader = new ImageLoader();
     private ImageView imageBackground;
+    private ImageView imageCheckpoint = imageLoader.getImageView("checkpoint.png");
 
 
     public SpaceView(@NotNull Space space) {
@@ -79,6 +80,14 @@ public class SpaceView extends StackPane implements ViewObserver {
         // This space view should listen to changes of the space
         space.attach(this);
         update(space);
+    }
+
+
+    private void addCheckpoint(){
+        this.getChildren().add(imageCheckpoint);
+    }
+    private void removeCheckpoint(){
+        this.getChildren().remove(imageCheckpoint);
     }
 
 

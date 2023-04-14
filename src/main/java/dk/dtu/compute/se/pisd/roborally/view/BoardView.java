@@ -55,8 +55,6 @@ public class BoardView extends VBox implements ViewObserver {
     private Label statusLabel;
 
     private SpaceEventHandler spaceEventHandler;
-    private ImageLoader imageLoader = new ImageLoader();
-    private ImageView imageCheckpoint = imageLoader.getImageView("checkpoint.png");
 
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
@@ -88,24 +86,6 @@ public class BoardView extends VBox implements ViewObserver {
     }
 
 
-
-    private void addCheckpoint(){
-        this.getChildren().add(imageCheckpoint);
-    }
-    private void removeCheckpoint(){
-        this.getChildren().remove(imageCheckpoint);
-    }
-
-
-    private void updateCheckpoint() {
-        Player player = new Player(spaces);
-        if (player != null){
-            removeCheckpoint();
-
-        }
-
-        //this.getChildren().addAll(checkpointCircle, flagLine);
-    }
 
 
 
