@@ -48,6 +48,7 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
+
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
@@ -133,4 +134,11 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    public void setProgramField(int i, Object card) {
+         program[i] = card;
+    }
+
+    public void setCardField(int i, Object card){
+
+    }
 }

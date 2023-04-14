@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+//import java.util.*;
+
 /**
  * ...
  *
@@ -35,10 +37,18 @@ import java.util.ArrayList;
 public class GameController {
 
     final public Board board;
+    public static CardLoader cardLoader;
+
+
+
 
     public GameController(Board board) {
         this.board = board;
     }
+
+
+    //TODO: En metode der tager et commandCardField og læser commands,
+    // og kalder de metoder med den korrekte spiller (f.eks. moveForward).
 
     // TODO lot of stuff missing here
 
