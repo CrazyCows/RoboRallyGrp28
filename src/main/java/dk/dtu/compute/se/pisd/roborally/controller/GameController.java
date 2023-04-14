@@ -171,7 +171,16 @@ public class GameController {
 
     public void executeStep(Space space) {
         System.out.println(space.getCheckpointOnField() + " is space things ");
+        if (space.getCheckpointOnField()){
+            space.setCheckpoint(false);
+            Random rand = new Random();
 
+            int maxHeight = board.height;
+            int maxWidth = board.width;
+
+            space = board.getSpace(rand.nextInt(1,maxWidth + 1), rand.nextInt(1, maxHeight + 1));
+            space.setCheckpoint(true);
+        }
 
 
         for (FieldAction fieldAction : space.getActions()) {
