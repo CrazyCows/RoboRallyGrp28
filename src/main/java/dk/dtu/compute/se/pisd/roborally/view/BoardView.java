@@ -70,8 +70,6 @@ public class BoardView extends VBox implements ViewObserver {
 
         spaceEventHandler = new SpaceEventHandler(gameController);
 
-        ImageView imageView2 = new ImageView(new Image("C:\\Users\\LuucM\\IdeaProjects\\RoboRallyGrp28\\test_field2.jpg"));
-
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);

@@ -48,6 +48,9 @@ public class LoadBoard {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
         }
+        else if(boardname.equals("empty")) {
+            return new Board(8, 8);
+        }
 
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
