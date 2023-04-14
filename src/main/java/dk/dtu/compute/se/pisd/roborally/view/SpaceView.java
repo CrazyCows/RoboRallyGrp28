@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.image.Image;
@@ -48,6 +49,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     String imagePath;
     private ImageView imageView;
+    private ImageLoader imageLoader = new ImageLoader();
 
 
     public SpaceView(@NotNull Space space) {
@@ -69,9 +71,6 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-color: black;");
         }
 
-        this.imageView = new ImageView();
-        this.imageView.toBack();
-
         //this.imageView.setPreserveRatio(true);
         //this.imageView.fitHeightProperty().bind(this.heightProperty());
         //this.imageView.fitWidthProperty().bind(this.widthProperty());
@@ -82,37 +81,22 @@ public class SpaceView extends StackPane implements ViewObserver {
         update(space);
     }
 
-    public void setImage(String imagePath) {
-        Image image = new Image(imagePath);
-        imageView.setImage(image);
-        this.imagePath = imagePath;
-        this.getChildren().add(this.imageView);
-        updatePlayer();
-    }
 
     public void setBackround(List<String> background) {
         // TODO: background is a list of ressource image strings
         // TODO: cycle through them for animations.
         if (background.size() != 0) {
             imagePath = background.get(0);
-            Image image = new Image(imagePath);
-            imageView.setImage(image);
-            this.imagePath = imagePath;
+            this.imageView = imageLoader.getImageView(imagePath);
             this.getChildren().add(this.imageView);
             updatePlayer();
         }
         else {
             imagePath = "test_field.jpg";
-            Image image = new Image(imagePath);
-            imageView.setImage(image);
-            this.imagePath = imagePath;
+            this.imageView = imageLoader.getImageView(imagePath);
             this.getChildren().add(this.imageView);
             updatePlayer();
         }
-    }
-
-    public String getBackGround() {
-        return this.imagePath;
     }
 
     private void updateCheckpoint() {
@@ -143,7 +127,6 @@ public class SpaceView extends StackPane implements ViewObserver {
             arrow.toFront();
         }
         // Add the ImageView back again
-        this.imageView.toBack();
     }
 
     @Override
