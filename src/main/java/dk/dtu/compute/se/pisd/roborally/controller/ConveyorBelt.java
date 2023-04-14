@@ -47,6 +47,8 @@ public class ConveyorBelt extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+        EventController eventController = new EventController();
+        eventController.moveSpaces(gameController.board.getCurrentPlayer(), gameController.board);
         System.out.println("CONVEYOR");
         // TODO needs to be implemented
         return false;

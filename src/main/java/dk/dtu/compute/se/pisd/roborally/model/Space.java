@@ -103,4 +103,8 @@ public class Space extends Subject {
         notifyChange();
     }
 
+    public int[] getPosition() {
+        return new int[] {this.x, this.y};
+    }
+
 }
