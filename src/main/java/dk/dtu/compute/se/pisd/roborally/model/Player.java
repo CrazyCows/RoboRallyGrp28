@@ -48,9 +48,11 @@ public class Player extends Subject {
     private Space space;
     private Heading heading = SOUTH;
 
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private ArrayList<CommandCardField> program;
+    private ArrayList<CommandCardField> cards;
     private int checkpointsCollected = 0;
+    private static int handSize = 8;
+    private static int programSize = 5;
 
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
@@ -60,14 +62,14 @@ public class Player extends Subject {
 
         this.space = null;
 
-        program = new CommandCardField[NO_REGISTERS];
-        for (int i = 0; i < program.length; i++) {
-            program[i] = new CommandCardField(this);
+        program = new ArrayList<>();
+        for (int i = 0; i < programSize ; i++) {
+            program.add(new CommandCardField(this));
         }
 
-        cards = new CommandCardField[NO_CARDS];
-        for (int i = 0; i < cards.length; i++) {
-            cards[i] = new CommandCardField(this);
+        cards = new ArrayList<>();
+        for (int i = 0; i < handSize; i++) {
+            cards.add(new CommandCardField(this));
         }
     }
 
@@ -163,11 +165,11 @@ public class Player extends Subject {
     }
 
     public CommandCardField getProgramField(int i) {
-        return program[i];
+        return program.get(i);
     }
 
     public CommandCardField getCardField(int i) {
-        return cards[i];
+        return cards.get(i);
     }
 
     public int getCheckpointsCollected() {
@@ -181,4 +183,52 @@ public class Player extends Subject {
     public void setCardField(int i, Object card){
 
     }
+
+    public void drawCard(int position, CommandCard commandCard) {
+        cards.get(position).setCard(commandCard);
+        //System.out.println(cards.get(position - 1).getCard().getName());
+    }
+
+    public ArrayList<CommandCard> getCards() {
+        ArrayList<CommandCard>  commandCards = new ArrayList<>();
+        for (CommandCardField commandCardField : this.cards) {
+            commandCards.add(commandCardField.getCard());
+        }
+        return commandCards;
+    }
+
+    public ArrayList<CommandCard> currentProgram() {
+        ArrayList<CommandCard>  commandCards = new ArrayList<>();
+        for (CommandCardField commandCardField : this.program) {
+            commandCards.add(commandCardField.getCard());
+        }
+        return commandCards;
+    }
+
+    public int getHandSize() {
+        return handSize;
+    }
+
+    public int getProgramSize() {
+        return programSize;
+    }
+
+    public int getNextEmptyCardField() {
+        for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i).getCard() == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int getNextEmptyProgramField() {
+        for (int i = 0; i < program.size(); i++) {
+            if (program.get(i).getCard() == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }

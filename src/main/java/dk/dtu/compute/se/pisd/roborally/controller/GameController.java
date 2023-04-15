@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //import java.util.*;
 
@@ -37,13 +38,19 @@ import java.util.ArrayList;
 public class GameController {
 
     final public Board board;
-    public static CardLoader cardLoader;
-
-
+    protected CardController cardController;
+    private EventController eventController;
 
 
     public GameController(Board board) {
         this.board = board;
+        this.cardController = CardController.getInstance();
+        for (Player player : board.getAllPlayers()) {
+            cardController.drawCards(player);
+        }
+        System.out.println(board.getPlayer(0).getCards());
+        board.setPhase(Phase.PROGRAMMING);
+        this.eventController = new EventController(this);
     }
 
 
@@ -150,9 +157,6 @@ public class GameController {
 
     }
 
-
-
-
     public Player getNextPlayer(Player currentPlayer){
         int amountOfPlayers = board.getPlayersNumber()-1;
         int playerNumber = board.getPlayerNumber(currentPlayer);
@@ -166,7 +170,10 @@ public class GameController {
     public void finishProgrammingPhase() {
     }
 
-    public void executePrograms() {
+    public void executePrograms(ArrayList<CommandCard> commandCards) {
+        for (CommandCard commandCard : commandCards) {
+            eventController.doAction(board.getCurrentPlayer(), commandCard.command);
+        }
     }
 
     public void executeStep(Space space) {
@@ -209,6 +216,7 @@ public class GameController {
         if (sourceCard != null & targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);
+            System.out.println("Current Program status: " + Arrays.toString(board.getCurrentPlayer().currentProgram().toArray()));
             return true;
         } else {
             return false;
