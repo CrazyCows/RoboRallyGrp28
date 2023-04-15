@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
+import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -40,9 +41,14 @@ public class GameController {
 
     final public Board board;
     public static CardLoader cardLoader;
-
     private BoardView boardView;
+    private SpaceView spaceView;
 
+
+
+    public void setBoardView(BoardView boardView){
+        this.boardView = boardView;
+    }
     public GameController(Board board) {
         this.board = board;
     }
@@ -172,15 +178,16 @@ public class GameController {
     public void executeStep(Space space) {
         System.out.println(space.getItem() + " is space things ");
         if (space.getItem() != null){
+
             space.setItem(null);
             Random rand = new Random();
-
             int maxHeight = rand.nextInt(board.height);
             int maxWidth = rand.nextInt(board.width);
-
+            SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
             space = board.getSpace(maxWidth, maxHeight);
-            System.out.println(space.x);
+            System.out.println(space.x + " and " + space.y);
             space.setItem("checkpoint");
+            updatedSpaceView.addCheckpoint();
         }
 
 
