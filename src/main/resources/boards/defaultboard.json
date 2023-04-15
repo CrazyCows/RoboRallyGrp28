@@ -7,6 +7,7 @@
         "SOUTH"
       ],
       "background": [
+        "WEST",
         "pit.jpg"
       ],
       "actions": [
@@ -26,6 +27,7 @@
         "NORTH"
       ],
       "background": [
+        "WEST",
         "test_field2.jpg"
       ],
       "actions": [
@@ -44,6 +46,7 @@
         "WEST"
       ],
       "background": [
+        "NORTH",
         "test_field2.jpg"
       ],
       "actions": [
@@ -60,6 +63,7 @@
     {
       "walls": [],
       "background": [
+        "NORTH",
         "test_field2.jpg"
       ],
       "actions": [
@@ -76,6 +80,7 @@
     {
       "walls": [],
       "background": [
+        "NORTH",
         "gear_left.jpg"
       ],
       "actions": [
@@ -93,6 +98,7 @@
     {
       "walls": [],
       "background": [
+        "NORTH",
         "gear_right.jpg"
       ],
       "actions": [
@@ -110,6 +116,7 @@
     {
       "walls": [],
       "background": [
+        "NORTH",
         "test_field2.jpg"
       ],
       "actions": [
@@ -126,6 +133,7 @@
     {
       "walls": [],
       "background": [
+        "NORTH",
         "test_field2.jpg"
       ],
       "actions": [
@@ -144,6 +152,7 @@
         "NORTH"
       ],
       "background": [
+        "EAST",
         "test_field2.jpg"
       ],
       "actions": [
@@ -162,6 +171,7 @@
         "EAST"
       ],
       "background": [
+        "SOUTH",
         "test_field2.jpg"
       ],
       "actions": [
@@ -180,6 +190,7 @@
         "SOUTH"
       ],
       "background": [
+        "WEST",
         "test_field2.jpg"
       ],
       "actions": [
@@ -198,6 +209,7 @@
         "WEST"
       ],
       "background": [
+        "NORTH",
         "test_field2.jpg"
       ],
       "actions": [
@@ -216,6 +228,7 @@
         "NORTH"
       ],
       "background": [
+        "EAST",
         "test_field2.jpg"
       ],
       "actions": [
@@ -234,6 +247,7 @@
         "EAST"
       ],
       "background": [
+        "SOUTH",
         "test_field2.jpg"
       ],
       "actions": [
