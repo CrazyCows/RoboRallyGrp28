@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class Pit extends FieldAction {
     private Heading heading;
 
+
     public Heading getHeading() {
         return heading;
     }
@@ -22,7 +23,7 @@ public class Pit extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        System.out.println("PIT");
+        System.out.println("PIT - HVOR HAIDAR HØRER TIL");
         // TODO needs to be implemented
         return false;
     }

@@ -75,6 +75,7 @@ public class Space extends Subject {
             notifyChange();
         }
     }
+    
 
     public void setItem(String item) {
         this.item = item;

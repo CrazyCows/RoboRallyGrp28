@@ -27,9 +27,11 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.io.*;
@@ -45,7 +47,7 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
-    public static Board loadBoard(String boardname) {
+    public static Board loadBoard(String boardname, boolean newGame) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
         }
@@ -81,6 +83,20 @@ public class LoadBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                     space.getBackground().addAll(spaceTemplate.background);
                     space.setItem(spaceTemplate.item);
+                }
+            }
+            // TODO: EXPERIMENTAL - uses new PlayerTemplate - see players.txt
+            if (!newGame) {
+                int it = 0;
+                for (PlayerTemplate playerTemplate : template.players) {
+                    Player player = result.getPlayer(it);
+                    if (player != null) {
+                        player.setName(playerTemplate.name);
+                        player.setColor(playerTemplate.color);
+                        player.setHeading(playerTemplate.heading);
+                        player.setSpace(playerTemplate.x, playerTemplate.y);
+                    }
+                    it += 1;
                 }
             }
 			reader.close();
@@ -119,6 +135,8 @@ public class LoadBoard {
                     spaceTemplate.y = space.y;
                     spaceTemplate.actions.addAll(space.getActions());
                     spaceTemplate.walls.addAll(space.getWalls());
+                    spaceTemplate.background.addAll(space.getBackground());
+                    spaceTemplate.item = space.getItem();
                     template.spaces.add(spaceTemplate);
                 }
             }

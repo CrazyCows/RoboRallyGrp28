@@ -40,7 +40,7 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
-    public ArrayList<Object> getDeck;
+    public ArrayList<Object> deck;
 
     private String name;
     private String color;
@@ -116,6 +116,14 @@ public class Player extends Subject {
         }
     }
 
+    public void setSpace(int x, int y) {
+        space = board.getSpace(x, y);
+        if (space != null) {
+            space.setPlayer(this);
+        }
+        notifyChange();
+    }
+
     public Heading getHeading() {
         return heading;
     }
@@ -127,6 +135,30 @@ public class Player extends Subject {
             if (space != null) {
                 space.playerChanged();
             }
+        }
+    }
+
+    public void setHeading(@NotNull String heading) {
+        switch (heading) {
+            case "NORTH":
+                this.heading = Heading.NORTH;
+                break;
+            case "EAST":
+                this.heading = Heading.EAST;
+                break;
+            case "SOUTH":
+                this.heading = Heading.SOUTH;
+                break;
+            case "WEST":
+                this.heading = Heading.WEST;
+                break;
+            default:
+                // handle error case
+        }
+
+        notifyChange();
+        if (space != null) {
+            space.playerChanged();
         }
     }
 

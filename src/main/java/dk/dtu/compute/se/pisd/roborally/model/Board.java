@@ -174,6 +174,10 @@ public class Board extends Subject {
         }
     }
 
+    public List<Player> getAllPlayers() {
+        return players;
+    }
+
     /**
      * Returns the neighbour of the given space of the board in the given heading.
      * The neighbour is returned only, if it can be reached from the given space
