@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -18,17 +19,15 @@ public class CardLoader {
         return cardLoader;
     }
 
-    protected CommandCard drawRandomCommandCard(){ //Protected as this should only be accessed in controller
-        int int_random = rand.nextInt(9);
+    public CommandCard drawRandomCommandCard(){  // TODO: Should be Protected (?) as this should only be accessed in controller
+        int int_random = rand.nextInt(9); // TODO: This is a teacher comment, but has been changed to public for now
         return commandCards[int_random];
     }
 
-    public LinkedList<Object> CreateCardPile(){ //TODO: ADD GENERICS
-        LinkedList<Object> Pile = new LinkedList<Object>();
-        for (int i = 0; i < 20;i++){
-            Pile.add(commandCards[2]); //TODO: Actually make this the correct cards
-        }
-        return Pile;
+    public LinkedList<CommandCard> CreateCardPile(){ //TODO: ADD GENERICS
+        //TODO: Actually make this the correct cards
+        LinkedList<CommandCard> pile = new LinkedList<>(Arrays.asList(commandCards));
+        return pile;
     }
 
     public LinkedList<Object> CreateEmptyPile(){

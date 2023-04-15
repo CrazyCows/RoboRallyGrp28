@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.image.Image;
@@ -52,6 +53,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     private ImageLoader imageLoader = new ImageLoader();
     private ImageView imageBackground;
     private ImageView imageCheckpoint = imageLoader.getImageView("checkpoint.png");
+    private String heading;
 
 
     public SpaceView(@NotNull Space space) {
@@ -112,31 +114,30 @@ public class SpaceView extends StackPane implements ViewObserver {
         // TODO: cycle through them for animations.
         String imagePath;
         if (background.size() != 0) {
-            imagePath = background.get(0);
+            this.heading = background.get(0);
+            imagePath = background.get(1);
             this.imageView = imageLoader.getImageView(imagePath);
-            if (space.getWalls().size() != 0) {
-                switch (space.getWalls().get(0)) {
-                    case NORTH:
-                        this.imageView.setRotate(0);
-                        break;
-                    case EAST:
-                        this.imageView.setRotate(90);
-                        break;
-                    case SOUTH:
-                        this.imageView.setRotate(180);
-                        break;
-                    case WEST:
-                        this.imageView.setRotate(270);
-                        break;
+            switch (this.heading) {
+                case "NORTH":
+                    this.imageView.setRotate(0);
+                    break;
+                case "EAST":
+                    this.imageView.setRotate(90);
+                    break;
+                case "SOUTH":
+                    this.imageView.setRotate(180);
+                    break;
+                case "WEST":
+                    this.imageView.setRotate(270);
+                    break;
                 }
-            }
             this.getChildren().add(this.imageView);
             updatePlayer();
         }
         else {
             imagePath = "test_field.jpg";
-            this.imageBackground = imageLoader.getImageView(imagePath);
-            this.getChildren().add(this.imageBackground);
+            this.imageView = imageLoader.getImageView(imagePath);
+            this.getChildren().add(this.imageView);
             updatePlayer();
         }
     }

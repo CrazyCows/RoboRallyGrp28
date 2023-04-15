@@ -28,7 +28,7 @@ public class Gear extends FieldAction {
             gameController.turnPlayer(space.getPlayer(), Command.RIGHT);
         }
         else {
-            System.out.println("We done f*cked up");
+            throw new IllegalArgumentException();
         }
         System.out.println(space.getPlayer().getHeading());
         // TODO needs to be implemented
