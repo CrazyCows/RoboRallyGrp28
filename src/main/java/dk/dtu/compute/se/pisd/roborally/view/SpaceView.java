@@ -84,11 +84,12 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
 
+
     public void addCheckpoint(){
         this.getChildren().add(imageCheckpoint);
     }
 
-    public void updateCheckPoint(){
+    public void updateCheckpoint(){
         Player player = space.getPlayer();
         if (player != null) {
             System.out.println("player is not null");
@@ -101,7 +102,6 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
         }
     }
-
     public void removeCheckpoint(){
         this.getChildren().remove(imageCheckpoint);
     }
@@ -166,7 +166,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == this.space) {
-            //updateCheckpoint();
+            updateCheckpoint();
             updatePlayer();
         }
     }
