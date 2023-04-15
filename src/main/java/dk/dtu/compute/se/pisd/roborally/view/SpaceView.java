@@ -48,8 +48,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_WIDTH = 60; // 75;
 
     public final Space space;
-
-    String imagePath;
     private ImageView imageView;
     private ImageLoader imageLoader = new ImageLoader();
     private ImageView imageBackground;
@@ -112,6 +110,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void setBackround(List<String> background) {
         // TODO: background is a list of ressource image strings
         // TODO: cycle through them for animations.
+        String imagePath;
         if (background.size() != 0) {
             imagePath = background.get(0);
             this.imageView = imageLoader.getImageView(imagePath);
