@@ -69,9 +69,30 @@ public class SpaceView extends StackPane implements ViewObserver {
 
 
         if ((space.x + space.y) % 2 == 0) {
-            this.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 4px;");
+            this.setStyle("-fx-background-color: black; -fx-border-color: black; -fx-border-width: 4px;");
         } else {
             this.setStyle("-fx-background-color: black; -fx-border-color: black; -fx-border-width: 4px;");
+        }
+
+        if (!this.space.getWalls().isEmpty()) {
+            for (Heading heading : this.space.getWalls()) {
+                if (heading == NORTH) {
+                    System.out.println("wall");
+                    this.setStyle("-fx-border-width: 4; -fx-border-color: red black black black;");
+                }
+                if (heading == EAST) {
+                    this.setStyle("-fx-border-width: 4; -fx-border-color: black red black black;");
+                    System.out.println("wall");
+                }
+                if (heading == SOUTH) {
+                    this.setStyle("-fx-border-width: 4; -fx-border-color: black black red black;");
+                    System.out.println("wall");
+                }
+                if (heading == WEST) {
+                    this.setStyle("-fx-border-width: 4; -fx-border-color: black black black red;");
+                    System.out.println("wall");
+                }
+            }
         }
 
         //this.imageView.setPreserveRatio(true);
@@ -145,7 +166,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-
     private void updatePlayer() {
         // Remove the player arrow, if it exists
         this.getChildren().removeIf(node -> node instanceof Polygon);
@@ -169,6 +189,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     @Override
     public void updateView(Subject subject) {
+        System.out.println("Space update");
         if (subject == this.space) {
             updateCheckpoint();
             updatePlayer();

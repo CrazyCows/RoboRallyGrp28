@@ -36,6 +36,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -104,10 +105,12 @@ public class BoardView extends VBox implements ViewObserver {
 
     @Override
     public void updateView(Subject subject) {
+        System.out.println("Board update");
         if (subject == board) {
             Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
             }
+
     }
 
     // XXX this handler and its uses should eventually be deleted! This is just to help test the

@@ -86,8 +86,6 @@ public class Space extends Subject {
         return item;
     }
 
-
-
     public List<Heading> getWalls() {
         return walls;
     }

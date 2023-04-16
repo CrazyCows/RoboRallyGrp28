@@ -26,8 +26,8 @@ import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 //import java.util.*;
@@ -179,10 +179,22 @@ public class GameController {
     public void finishProgrammingPhase() {
     }
 
-    public void executePrograms(ArrayList<CommandCard> commandCards) {
-        for (CommandCard commandCard : commandCards) {
-            eventController.doAction(board.getCurrentPlayer(), commandCard.command);
-        }
+    public void executeProgram(List<CommandCard> commandCards) {
+        Thread commandThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (CommandCard commandCard : commandCards) {
+                    eventController.doAction(board.getCurrentPlayer(), commandCard.command);
+                    try {
+                        Thread.sleep(420);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        commandThread.start(); // start the thread
     }
 
     public void executeStep(Space space) {

@@ -32,6 +32,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 /**
  * ...
  *
@@ -94,7 +96,7 @@ public class PlayerView extends Tab implements ViewObserver {
         finishButton.setOnAction( e -> gameController.finishProgrammingPhase());
 
         executeButton = new Button("Execute Program");
-        executeButton.setOnAction( e-> gameController.executePrograms(player.currentProgram()));
+        executeButton.setOnAction( e-> gameController.executeProgram(player.currentProgram()));
 
         stepButton = new Button("Execute Current Register");
         stepButton.setOnAction( e-> gameController.executeStep(player.getSpace()));
@@ -134,6 +136,7 @@ public class PlayerView extends Tab implements ViewObserver {
 
     @Override
     public void updateView(Subject subject) {
+        System.out.println("PlayerView has been run");
         if (subject == player.board) {
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
                 CardFieldView cardFieldView = programCardViews[i];
