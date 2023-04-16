@@ -33,7 +33,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+
+import javafx.scene.media.Media;
+import java.io.File;
 
 
 /**
@@ -48,6 +52,7 @@ public class RoboRally extends Application {
 
     private Stage stage;
     private BorderPane boardRoot;
+    private MediaPlayer mediaPlayer;
 
     @Override
     public void init() throws Exception {
@@ -68,6 +73,11 @@ public class RoboRally extends Application {
         VBox vbox = new VBox(menuBar, boardRoot);
 
         addImageToWindow();
+        this.mediaPlayer = play8BitMusic();
+        new Thread(() -> {
+            // Play the music
+            mediaPlayer.play();
+        }).start();
 
 
         //ImageView imageView = new ImageView(new Image("file:bruno!.jpeg"));
@@ -128,6 +138,23 @@ public class RoboRally extends Application {
         if (!children.isEmpty() && children.get(children.size() - 1) instanceof ImageView) {
             children.remove(children.size() - 1);
         }
+    }
+
+    private MediaPlayer play8BitMusic() {
+        // Use a Media object to load the music file from disk
+        Media musicFile = new Media(new File("8bityo.mp3").toURI().toString());
+
+        // Create a MediaPlayer object to play the music file
+        MediaPlayer mediaPlayer = new MediaPlayer(musicFile);
+
+        // Set the MediaPlayer to loop indefinitely
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+
+        // Play the music
+        //mediaPlayer.play();
+
+        // Return the MediaPlayer object
+        return mediaPlayer;
     }
 
 
