@@ -75,7 +75,8 @@ public class RoboRally extends Application {
         addImageToWindow();
         this.mediaPlayer = play8BitMusic();
         new Thread(() -> {
-            // Play the music
+            // Play the music at half volume
+            mediaPlayer.setVolume(0.5);
             mediaPlayer.play();
         }).start();
 
@@ -155,6 +156,18 @@ public class RoboRally extends Application {
 
         // Return the MediaPlayer object
         return mediaPlayer;
+    }
+
+    public void setMusicVolume(double volume) {
+        this.mediaPlayer.setVolume(volume);
+    }
+
+    public void playMusic() {
+        this.mediaPlayer.play();
+    }
+
+    public void pauseMusic() {
+        this.mediaPlayer.pause();
     }
 
 
