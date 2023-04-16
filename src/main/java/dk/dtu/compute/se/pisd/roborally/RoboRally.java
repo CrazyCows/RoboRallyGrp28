@@ -26,6 +26,8 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.RoboRallyMenuBar;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -65,11 +67,13 @@ public class RoboRally extends Application {
         boardRoot = new BorderPane();
         VBox vbox = new VBox(menuBar, boardRoot);
 
+        addImageToWindow();
 
-        ImageView imageView = new ImageView(new Image("file:bruno!.jpeg"));
-        imageView.setFitHeight(420);
-        imageView.setFitWidth(620);
-        imageView.setPreserveRatio(false);
+
+        //ImageView imageView = new ImageView(new Image("file:bruno!.jpeg"));
+        //imageView.setFitHeight(420);
+        //imageView.setFitWidth(620);
+        //imageView.setPreserveRatio(false);
 
         // create the green box
         //VBox greenBox = new VBox();
@@ -77,7 +81,7 @@ public class RoboRally extends Application {
         //greenBox.setStyle("-fx-background-color: green;");
 
         // add the green box to the existing vbox
-        vbox.getChildren().add(imageView);
+        //vbox.getChildren().add(imageView);
 
         vbox.setMinWidth(MIN_APP_WIDTH);
         Scene primaryScene = new Scene(vbox);
@@ -105,6 +109,27 @@ public class RoboRally extends Application {
 
         stage.sizeToScene();
     }
+
+    private void addImageToWindow() {
+        // create an ImageView object for the image
+        ImageView imageView = new ImageView(new Image("file:bruno!.jpeg"));
+
+        // set the size and position of the image
+        imageView.setFitHeight(420);
+        imageView.setFitWidth(620);
+        imageView.setPreserveRatio(false);
+
+        // add the image to the bottom of the BorderPane
+        boardRoot.setBottom(imageView);
+    }
+
+    public void removeStartImage() {
+        ObservableList<Node> children = boardRoot.getChildren();
+        if (!children.isEmpty() && children.get(children.size() - 1) instanceof ImageView) {
+            children.remove(children.size() - 1);
+        }
+    }
+
 
     @Override
     public void stop() throws Exception {

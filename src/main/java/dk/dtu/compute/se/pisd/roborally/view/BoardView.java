@@ -29,12 +29,13 @@ import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -82,6 +83,9 @@ public class BoardView extends VBox implements ViewObserver {
                 SpaceView spaceView = new SpaceView(space);
                 spaceView.setBackround(space.getBackground());
                 spaces[x][y] = spaceView;
+
+                //spaceView.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
+                //spaceView.setPadding(new Insets(10));
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
                 if (space.getItem() != null){
@@ -89,6 +93,7 @@ public class BoardView extends VBox implements ViewObserver {
                 }
             }
         }
+
         board.attach(this);
         update(board);
     }

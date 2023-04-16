@@ -45,13 +45,12 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    final public static int SPACE_HEIGHT = 60; // 75;
-    final public static int SPACE_WIDTH = 60; // 75;
+    final public static int SPACE_HEIGHT = 75; // 75;
+    final public static int SPACE_WIDTH = 75; // 75;
 
     public final Space space;
     private ImageView imageView;
     private ImageLoader imageLoader = new ImageLoader();
-    private ImageView imageBackground;
     private ImageView imageCheckpoint = imageLoader.getImageView("checkpoint.png");
     private String heading;
 
@@ -70,9 +69,9 @@ public class SpaceView extends StackPane implements ViewObserver {
 
 
         if ((space.x + space.y) % 2 == 0) {
-            this.setStyle("-fx-background-color: white;");
+            this.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 4px;");
         } else {
-            this.setStyle("-fx-background-color: black;");
+            this.setStyle("-fx-background-color: black; -fx-border-color: black; -fx-border-width: 4px;");
         }
 
         //this.imageView.setPreserveRatio(true);
@@ -130,13 +129,17 @@ public class SpaceView extends StackPane implements ViewObserver {
                 case "WEST":
                     this.imageView.setRotate(270);
                     break;
-                }
+            }
+            this.imageView.setFitHeight(SPACE_HEIGHT-4);
+            this.imageView.setFitWidth(SPACE_WIDTH-4);
             this.getChildren().add(this.imageView);
             updatePlayer();
         }
         else {
-            imagePath = "test_field.jpg";
+            imagePath = "test_field.png";
             this.imageView = imageLoader.getImageView(imagePath);
+            this.imageView.setFitHeight(SPACE_HEIGHT-4);
+            this.imageView.setFitWidth(SPACE_WIDTH-4);
             this.getChildren().add(this.imageView);
             updatePlayer();
         }
