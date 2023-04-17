@@ -39,6 +39,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * ...
  *
@@ -56,7 +60,10 @@ public class BoardView extends VBox implements ViewObserver {
 
     private Label statusLabel;
 
+    private Timer timer;
+
     private SpaceEventHandler spaceEventHandler;
+    int timerSecondsCount;
 
     public SpaceView[][] getSpaces(){
         return this.spaces;
@@ -69,10 +76,23 @@ public class BoardView extends VBox implements ViewObserver {
         mainBoardPane = new GridPane();
         playersView = new PlayersView(gameController);
         statusLabel = new Label("<no status>");
+        ImageView imageView = new ImageView(new Image("checkpoint.png"));
 
-        this.getChildren().add(mainBoardPane);
+        timerSecondsCount = 0;
+        startTimer();
+
+        // create a GridPane and add the nodes to it
+        GridPane gridPane = new GridPane();
+        gridPane.addRow(0, mainBoardPane, imageView);
+        gridPane.addRow(1, playersView);
+        gridPane.add(statusLabel, 0, 2, 2, 1); // span 2 columns and 1 row
+
+
+        /*this.getChildren().add(mainBoardPane);
+        this.getChildren().add(imageView);
         this.getChildren().add(playersView);
-        this.getChildren().add(statusLabel);
+        this.getChildren().add(statusLabel);*/
+        this.getChildren().add(gridPane);
 
         spaces = new SpaceView[board.width][board.height];
 
@@ -99,8 +119,21 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
     }
 
-
-
+    private void startTimer() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                timerSecondsCount += 1;
+                System.out.println("counting: " + timerSecondsCount);
+                if (timerSecondsCount >= 30) {
+                    timer.cancel();
+                    timer.purge();
+                    System.out.println("Time to fire event!");
+                }
+            }
+        }, 0, 1000);
+    }
 
 
     @Override
