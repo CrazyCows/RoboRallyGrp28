@@ -250,8 +250,9 @@ public class Board extends Subject {
                 if (timerSecondsCount >= 30) {
                     timer.cancel();
                     timer.purge();
-                    notifyChange();
                     timerIsRunning = false;
+                    notifyChange();
+                    timerSecondsCount = 0;
                     System.out.println("Time to fire event!");
                 }
             }

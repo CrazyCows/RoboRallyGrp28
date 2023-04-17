@@ -129,10 +129,14 @@ public class BoardView extends VBox implements ViewObserver {
     private void nextTimer() {
         if (board.getTimerIsRunning()) {
             nextTimerInt += 1;
-            if (timers.length == nextTimerInt) {
+            if (timers.length < nextTimerInt - 1) {
                 nextTimerInt = 0;
             }
             this.timerView.setImage(timers[nextTimerInt]);
+        }
+        else {
+            nextTimerInt = 0;
+            this.timerView.setImage(timers[0]);
         }
     }
 
