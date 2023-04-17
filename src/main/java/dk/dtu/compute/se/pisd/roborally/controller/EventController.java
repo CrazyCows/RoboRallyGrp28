@@ -47,7 +47,11 @@ public class EventController {
                 }
             }
             case BACKUP -> {
-                gameController.moveInDirection(player, -1, player.getHeading());
+                gameController.turnPlayer(player, RIGHT);
+                gameController.turnPlayer(player, RIGHT);
+                gameController.moveForward(player);
+                gameController.turnPlayer(player, RIGHT);
+                gameController.turnPlayer(player, RIGHT);
             }
             case POWERUP -> {
                 System.out.println("POWERUP - Not yet implemented");
