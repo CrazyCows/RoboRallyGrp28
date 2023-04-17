@@ -71,11 +71,6 @@ public class Board extends Subject {
         for (int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
-                if (space.getItem() != null) {
-                    if (space.getItem().equals("priorityAntenna")) {
-                        this.priorityAntennaSpace = space;
-                    }
-                }
                 spaces[x][y] = space;
             }
         }
@@ -88,7 +83,18 @@ public class Board extends Subject {
     }
 
     public Space getPriorityAntennaSpace() {
-        return this.priorityAntennaSpace;
+        if (priorityAntennaSpace == null) {
+            for (Space[] spaceRow : spaces) {
+                for (Space space : spaceRow) {
+                    if (space.getItem() != null) {
+                        if (space.getItem().equals("priorityAntenna")) {
+                            priorityAntennaSpace = space;
+                        }
+                    }
+                }
+            }
+        }
+        return priorityAntennaSpace;
     }
 
     public Integer getGameId() {

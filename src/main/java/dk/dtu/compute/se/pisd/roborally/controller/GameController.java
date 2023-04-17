@@ -176,7 +176,9 @@ public class GameController {
         for (Player player : board.getAllPlayers()) {
             int playerX = player.getSpace().getPosition()[0];
             int playerY = player.getSpace().getPosition()[1];
+            System.out.println(player.getColor() + ": " + playerX + ", " + playerY);
             closeness = distanceToSpace(priorityAntenna, playerX, playerY);
+            System.out.println(player.getColor() + ": " + closeness);
             if (closeness < closest) {
                 closest = closeness;
                 closestPlayerToAntenna = player;
@@ -197,7 +199,7 @@ public class GameController {
 
     private double distanceToSpace(Space space, int otherX, int otherY) {
         int x = space.getPosition()[0];
-        int y = space.getPosition()[0];
+        int y = space.getPosition()[1];
         int dx = x - otherX;
         int dy = y - otherY;
         return Math.sqrt(dx*dx + dy*dy);
