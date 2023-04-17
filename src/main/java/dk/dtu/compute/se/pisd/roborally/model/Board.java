@@ -28,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -57,6 +59,10 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
+    private Timer timer;
+    private int timerSecondsCount;
+    private boolean timerIsRunning;
+
     public Board(int width, int height) {
         this.width = width;
         this.height = height;
@@ -68,6 +74,8 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
+        this.timerSecondsCount = 0;
+        this.timerIsRunning = false;
     }
 
     public Integer getGameId() {
@@ -224,6 +232,38 @@ public class Board extends Subject {
             }
         }
         return result;
+    }
+
+    public void startTimer() {
+        timer = new Timer();
+        timerIsRunning = true;
+        notifyChange();
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                timerSecondsCount += 1;
+                System.out.println("timer: " + timerSecondsCount);
+                if (timerSecondsCount % 6 == 0) {
+                    notifyChange();
+                }
+                if (timerSecondsCount >= 30) {
+                    timer.cancel();
+                    timer.purge();
+                    notifyChange();
+                    timerIsRunning = false;
+                    System.out.println("Time to fire event!");
+                }
+            }
+        }, 0, 1000);
+    }
+
+    public int getTimerSecondsCount() {
+        return this.timerSecondsCount;
+    }
+
+    public boolean getTimerIsRunning() {
+        return this.timerIsRunning;
     }
 
     public String getStatusMessage() {

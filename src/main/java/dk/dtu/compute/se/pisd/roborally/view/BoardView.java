@@ -23,25 +23,17 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
-
-import java.time.Duration;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * ...
@@ -60,7 +52,10 @@ public class BoardView extends VBox implements ViewObserver {
 
     private Label statusLabel;
 
-    private Timer timer;
+    private Image[] timers;
+    private int nextTimerInt = 0;
+    private Image currentTimerImage;
+    ImageView timerView;
 
     private SpaceEventHandler spaceEventHandler;
     int timerSecondsCount;
@@ -79,19 +74,31 @@ public class BoardView extends VBox implements ViewObserver {
         ImageView imageView = new ImageView(new Image("checkpoint.png"));
 
         timerSecondsCount = 0;
-        startTimer();
+        timers = new Image[7];
+
+        timers[0] = new Image("hourglass0.png");
+        timers[1] = new Image("hourglass1.png");
+        timers[2] = new Image("hourglass2.png");
+        timers[3] = new Image("hourglass3.png");
+        timers[4] = new Image("hourglass4.png");
+        timers[5] = new Image("hourglass5.png");
+        timers[6] = new Image("hourglass6.png");
+        timerView = new ImageView(timers[0]);
+
+        Button timerButton = new Button("Start timer");
+        timerButton.setOnAction( e -> board.startTimer());
+
+        GridPane timerGridPane = new GridPane();
+        timerGridPane.addRow(0, timerView);
+        timerGridPane.addRow(1, timerButton);
+
 
         // create a GridPane and add the nodes to it
         GridPane gridPane = new GridPane();
-        gridPane.addRow(0, mainBoardPane, imageView);
+        gridPane.addRow(0, mainBoardPane, timerGridPane);
         gridPane.addRow(1, playersView);
-        gridPane.add(statusLabel, 0, 2, 2, 1); // span 2 columns and 1 row
+        gridPane.add(statusLabel, 0, 2, 2, 1); // spans 2 columns and 1 row
 
-
-        /*this.getChildren().add(mainBoardPane);
-        this.getChildren().add(imageView);
-        this.getChildren().add(playersView);
-        this.getChildren().add(statusLabel);*/
         this.getChildren().add(gridPane);
 
         spaces = new SpaceView[board.width][board.height];
@@ -119,20 +126,14 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
     }
 
-    private void startTimer() {
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                timerSecondsCount += 1;
-                System.out.println("counting: " + timerSecondsCount);
-                if (timerSecondsCount >= 30) {
-                    timer.cancel();
-                    timer.purge();
-                    System.out.println("Time to fire event!");
-                }
+    private void nextTimer() {
+        if (board.getTimerIsRunning()) {
+            nextTimerInt += 1;
+            if (timers.length == nextTimerInt) {
+                nextTimerInt = 0;
             }
-        }, 0, 1000);
+            this.timerView.setImage(timers[nextTimerInt]);
+        }
     }
 
 
@@ -142,8 +143,8 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == board) {
             Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
-            }
-
+            nextTimer();
+        }
     }
 
     // XXX this handler and its uses should eventually be deleted! This is just to help test the
