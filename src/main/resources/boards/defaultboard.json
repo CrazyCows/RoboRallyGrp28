@@ -260,6 +260,25 @@
       ],
       "x": 7,
       "y": 7
+    },
+    {
+      "item": "priorityAntenna",
+      "walls": [
+      ],
+      "background": [
+        "NORTH",
+        "priorityAntenna.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.PriorityAntenna",
+          "INSTANCE": {
+            "heading": "NORTH"
+          }
+        }
+      ],
+      "x": 5,
+      "y": 2
     }
   ]
 }

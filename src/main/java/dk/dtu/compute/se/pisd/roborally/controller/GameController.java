@@ -108,6 +108,8 @@ public class GameController {
             }
         }
         player.setSpace(space);
+        Player nextPlayer = getNextPlayer(player);
+        board.setCurrentPlayer(nextPlayer);
     }
 
     public void moveCurrentPlayerToSpace(Space space) {
@@ -167,13 +169,38 @@ public class GameController {
     }
 
     public Player getNextPlayer(Player currentPlayer){
-        int amountOfPlayers = board.getPlayersNumber()-1;
+        Space priorityAntenna = board.getPriorityAntennaSpace();
+        Player closestPlayerToAntenna = currentPlayer;
+        double closest = Double.MAX_VALUE;
+        double closeness;
+        for (Player player : board.getAllPlayers()) {
+            int playerX = player.getSpace().getPosition()[0];
+            int playerY = player.getSpace().getPosition()[1];
+            closeness = distanceToSpace(priorityAntenna, playerX, playerY);
+            if (closeness < closest) {
+                closest = closeness;
+                closestPlayerToAntenna = player;
+            }
+        }
+        System.out.println("closest player to antenna: " + closestPlayerToAntenna.getColor());
+        return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
+
+
+        /*int amountOfPlayers = board.getPlayersNumber()-1;
         int playerNumber = board.getPlayerNumber(currentPlayer);
 
         if (playerNumber >= amountOfPlayers){
             return board.getPlayer(0);
         }
-        return board.getPlayer(playerNumber+1);
+        return board.getPlayer(playerNumber+1);*/
+    }
+
+    private double distanceToSpace(Space space, int otherX, int otherY) {
+        int x = space.getPosition()[0];
+        int y = space.getPosition()[0];
+        int dx = x - otherX;
+        int dy = y - otherY;
+        return Math.sqrt(dx*dx + dy*dy);
     }
 
     public void finishProgrammingPhase() {
@@ -199,17 +226,18 @@ public class GameController {
 
     public void executeStep(Space space) {
         System.out.println(space.getItem() + " is space things ");
-        if (space.getItem() != null){
-
-            space.setItem(null);
-            Random rand = new Random();
-            int maxHeight = rand.nextInt(board.height);
-            int maxWidth = rand.nextInt(board.width);
-            SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-            space = board.getSpace(maxWidth, maxHeight);
-            System.out.println(space.x + " and " + space.y);
-            space.setItem("checkpoint");
-            updatedSpaceView.addCheckpoint();
+        if (space.getItem() != null) {
+            if (space.getItem().equals("checkpoint")) {
+                space.setItem(null);
+                Random rand = new Random();
+                int maxHeight = rand.nextInt(board.height);
+                int maxWidth = rand.nextInt(board.width);
+                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
+                space = board.getSpace(maxWidth, maxHeight);
+                System.out.println(space.x + " and " + space.y);
+                space.setItem("checkpoint");
+                updatedSpaceView.addCheckpoint();
+            }
         }
 
 

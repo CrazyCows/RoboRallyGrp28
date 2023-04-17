@@ -62,6 +62,7 @@ public class Board extends Subject {
     private Timer timer;
     private int timerSecondsCount;
     private boolean timerIsRunning;
+    private Space priorityAntennaSpace;
 
     public Board(int width, int height) {
         this.width = width;
@@ -70,12 +71,24 @@ public class Board extends Subject {
         for (int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
+                if (space.getItem() != null) {
+                    if (space.getItem().equals("priorityAntenna")) {
+                        this.priorityAntennaSpace = space;
+                    }
+                }
                 spaces[x][y] = space;
             }
+        }
+        if (priorityAntennaSpace == null) {
+            System.out.println("ERROR: NO PRIORITY ANTENNA");
         }
         this.stepMode = false;
         this.timerSecondsCount = 0;
         this.timerIsRunning = false;
+    }
+
+    public Space getPriorityAntennaSpace() {
+        return this.priorityAntennaSpace;
     }
 
     public Integer getGameId() {

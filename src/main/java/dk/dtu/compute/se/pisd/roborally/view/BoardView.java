@@ -117,7 +117,9 @@ public class BoardView extends VBox implements ViewObserver {
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
                 if (space.getItem() != null){
-                    spaceView.addCheckpoint();
+                    if (space.getItem().equals("checkpoint")) {
+                        spaceView.addCheckpoint();
+                    }
                 }
             }
         }
