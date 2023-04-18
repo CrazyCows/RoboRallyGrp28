@@ -199,26 +199,30 @@ public class GameController {
 
     public void newCheckpoint(Space space) {
         // Checks if player is on checkpoint
-        if (space.getItem().equals("checkpoint")) {
-            // Removes the checkpoint
-            space.setItem(null);
-            // Randomize a position for next checkpoint
-            Random rand = new Random();
-            int maxHeight = rand.nextInt(board.height);
-            int maxWidth = rand.nextInt(board.width);
-            SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-            space = board.getSpace(maxWidth, maxHeight);
-            // Checks if the randomized space already contains something
-            while (!space.getActions().isEmpty() && space.getItem() == null && space.getPlayer() == null) {
-                System.out.println("item on place is : " + space.getItem() + " Action on the space is: " + space.getActions() + " Player is on space " + space.getPlayer());
-                maxHeight = rand.nextInt(board.height);
-                maxWidth = rand.nextInt(board.width);
-                updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
+        if (space.getItem() != null) {
+            if (space.getItem().equals("checkpoint")) {
+                // Removes the checkpoint
+                space.setItem(null);
+                // Randomize a position for next checkpoint
+                Random rand = new Random();
+
+                int maxHeight = rand.nextInt(board.height);
+                int maxWidth = rand.nextInt(board.width);
+                maxHeight = 1;
+                maxWidth = 3;
+                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
                 space = board.getSpace(maxWidth, maxHeight);
+                while (!space.getActions().isEmpty() || space.getItem() != null || space.getPlayer() != null) {
+                    System.out.println("item on place is : " + space.getItem() + " Action on the space is: " + space.getActions() + " Player is on space " + space.getPlayer());
+                    maxHeight = rand.nextInt(board.height);
+                    maxWidth = rand.nextInt(board.width);
+                    updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
+                    space = board.getSpace(maxWidth, maxHeight);
+                }
+                // If the space is free, place a new checkpoint
+                space.setItem("checkpoint");
+                updatedSpaceView.addCheckpoint();
             }
-            // If the space is free, place a new checkpoint
-            space.setItem("checkpoint");
-            updatedSpaceView.addCheckpoint();
         }
     }
 
