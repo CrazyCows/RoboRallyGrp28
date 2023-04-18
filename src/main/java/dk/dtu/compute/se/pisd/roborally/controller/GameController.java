@@ -197,24 +197,35 @@ public class GameController {
         commandThread.start(); // start the thread
     }
 
-    public void executeStep(Space space) {
-        System.out.println(space.getItem() + " is space things ");
-        if (space.getItem() != null){
-
+    public void newCheckpoint(Space space) {
+        // Checks if player is on checkpoint
+        if (space.getItem().equals("checkpoint")) {
+            // Removes the checkpoint
             space.setItem(null);
+            // Randomize a position for next checkpoint
             Random rand = new Random();
             int maxHeight = rand.nextInt(board.height);
             int maxWidth = rand.nextInt(board.width);
             SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
             space = board.getSpace(maxWidth, maxHeight);
-            System.out.println(space.x + " and " + space.y);
+            // Checks if the randomized space already contains something
+            while (!space.getActions().isEmpty() && space.getItem() == null) {
+                System.out.println("item on place is : " + space.getItem() + " Action on the space is: " + space.getActions());
+                maxHeight = rand.nextInt(board.height);
+                maxWidth = rand.nextInt(board.width);
+                updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
+                space = board.getSpace(maxWidth, maxHeight);
+            }
+            // If the space is free, place a new checkpoint
             space.setItem("checkpoint");
             updatedSpaceView.addCheckpoint();
         }
+    }
 
+    public void executeStep(Space space) {
 
+        newCheckpoint(space);
         for (FieldAction fieldAction : space.getActions()) {
-
             fieldAction.doAction(this, space);
 
 
