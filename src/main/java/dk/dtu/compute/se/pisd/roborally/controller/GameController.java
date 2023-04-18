@@ -208,8 +208,6 @@ public class GameController {
 
                 int maxHeight = rand.nextInt(board.height);
                 int maxWidth = rand.nextInt(board.width);
-                maxHeight = 1;
-                maxWidth = 3;
                 SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
                 space = board.getSpace(maxWidth, maxHeight);
                 while (!space.getActions().isEmpty() || space.getItem() != null || space.getPlayer() != null) {
