@@ -209,8 +209,8 @@ public class GameController {
             SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
             space = board.getSpace(maxWidth, maxHeight);
             // Checks if the randomized space already contains something
-            while (!space.getActions().isEmpty() && space.getItem() == null) {
-                System.out.println("item on place is : " + space.getItem() + " Action on the space is: " + space.getActions());
+            while (!space.getActions().isEmpty() && space.getItem() == null && space.getPlayer() == null) {
+                System.out.println("item on place is : " + space.getItem() + " Action on the space is: " + space.getActions() + " Player is on space " + space.getPlayer());
                 maxHeight = rand.nextInt(board.height);
                 maxWidth = rand.nextInt(board.width);
                 updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];

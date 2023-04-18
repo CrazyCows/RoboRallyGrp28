@@ -22,7 +22,6 @@
       "y": 0
     },
     {
-      "item": "checkpoint",
       "walls": [
         "NORTH"
       ],
@@ -260,6 +259,12 @@
       ],
       "x": 7,
       "y": 7
+    },
+    {
+      "item": "checkpoint",
+      "walls": ["NORTH"],
+      "x": 3,
+      "y": 0
     }
   ]
 }
