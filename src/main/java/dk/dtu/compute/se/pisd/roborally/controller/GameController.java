@@ -58,7 +58,6 @@ public class GameController {
         for (Player player : board.getAllPlayers()) {
             cardController.drawCards(player);
         }
-        System.out.println(board.getPlayer(0).getCards());
         board.setPhase(Phase.PROGRAMMING);
         this.eventController = new EventController(this);
     }
