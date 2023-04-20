@@ -11,26 +11,43 @@ public class CardController {
     private static CardController cardController;
     private CardLoader cardLoader;
     private LinkedList<CommandCard> deck;
+    //TODO: This deck needs to be removed. Player (model) has cards, controller doesnt.
+    //TODO: Also, each player needs to have their own cards
 
-    public static CardController getInstance(){ //Singleton
+
+
+    public static CardController getInstance(){ //Singleton, make private?
         if (cardController == null){
             cardController = new CardController();
         }
         return cardController;
     }
 
+    /**
+     * Singleton constuctor.
+     * Creates a card pile, and shuffles them
+     * @return
+     */
     public CardController() {
         this.cardLoader = CardLoader.getInstance();
         this.deck = cardLoader.CreateCardPile();
         shuffleDeck(deck);
     }
 
+    /**
+     * Fills player hand with cards from pile
+     * @param player player who draws cards
+     */
     public void drawCards(Player player){
         for (int i = 0; i < player.getHandSize(); i++) {
             drawOneCard(player);
         }
     }
 
+    /**
+     * This function is WRONG as it uses the pile from above instead of the one from the player
+     * @param player player who draws a card
+     */
     public void drawOneCard(Player player) {
         CommandCard commandCard = deck.get(0);
         if (player.getNextEmptyCardField() != - 1) {
@@ -43,6 +60,9 @@ public class CardController {
         }
     }
 
+    /**
+     * Shuffles a given deck (linkedList) of CommandCards
+     */
     private LinkedList<CommandCard> shuffleDeck(LinkedList<CommandCard> deck){
         Collections.shuffle(deck);
         return deck;

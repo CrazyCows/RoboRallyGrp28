@@ -40,7 +40,6 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
-    public ArrayList<Object> deck;
 
     private String name;
     private String color;
@@ -48,8 +47,12 @@ public class Player extends Subject {
     private Space space;
     private Heading heading = SOUTH;
 
-    private ArrayList<CommandCardField> program;
-    private ArrayList<CommandCardField> cards;
+    private ArrayList<CommandCardField> program; //Cards selected to be the in the program
+    private ArrayList<CommandCardField> drawnCards; //Drawn cards
+    public ArrayList<Object> drawPile; //Pile of cards to draw from //TODO: Make type safe
+    public ArrayList<Object> discardPile; //Cards that have been run //TODO: Make type safe
+
+
     private int checkpointsCollected = 0;
     private static int handSize = 8;
     private static int programSize = 5;
@@ -67,9 +70,9 @@ public class Player extends Subject {
             program.add(new CommandCardField(this));
         }
 
-        cards = new ArrayList<>();
+        drawnCards = new ArrayList<>();
         for (int i = 0; i < handSize; i++) {
-            cards.add(new CommandCardField(this));
+            drawnCards.add(new CommandCardField(this));
         }
     }
 
@@ -77,6 +80,10 @@ public class Player extends Subject {
         return name;
     }
 
+    /**
+     * Sets the name of the player
+     * @param name new name
+     */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
@@ -169,7 +176,7 @@ public class Player extends Subject {
     }
 
     public CommandCardField getCardField(int i) {
-        return cards.get(i);
+        return drawnCards.get(i);
     }
 
     public int getCheckpointsCollected() {
@@ -185,13 +192,13 @@ public class Player extends Subject {
     }
 
     public void drawCard(int position, CommandCard commandCard) {
-        cards.get(position).setCard(commandCard);
+        drawnCards.get(position).setCard(commandCard);
         //System.out.println(cards.get(position - 1).getCard().getName());
     }
 
-    public ArrayList<CommandCard> getCards() {
+    public ArrayList<CommandCard> getDrawnCards() {
         ArrayList<CommandCard>  commandCards = new ArrayList<>();
-        for (CommandCardField commandCardField : this.cards) {
+        for (CommandCardField commandCardField : this.drawnCards) {
             commandCards.add(commandCardField.getCard());
         }
         return commandCards;
@@ -214,8 +221,8 @@ public class Player extends Subject {
     }
 
     public int getNextEmptyCardField() {
-        for (int i = 0; i < cards.size(); i++) {
-            if (cards.get(i).getCard() == null) {
+        for (int i = 0; i < drawnCards.size(); i++) {
+            if (drawnCards.get(i).getCard() == null) {
                 return i;
             }
         }
