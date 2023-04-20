@@ -241,19 +241,42 @@ public class GameController {
                 updatedSpaceView.addCheckpoint();
             }
         }
+    }
 
+    public void newCheckpoint(Space space) {
+        // Checks if player is on checkpoint
+        if (space.getItem() != null) {
+            if (space.getItem().equals("checkpoint")) {
+                // Removes the checkpoint
+                space.setItem(null);
+                // Randomize a position for next checkpoint
+                Random rand = new Random();
 
-        for (FieldAction fieldAction : space.getActions()) {
-
-            fieldAction.doAction(this, space);
-
-
-            /*if (FieldAction instanceof ConveyorBelt) {
-                ConveyorBelt conveyorBelt = (ConveyorBelt) space.getActions().get(0);
-                conveyorBelt.doAction(this, space);
-            }*/
+                int maxHeight = rand.nextInt(board.height);
+                int maxWidth = rand.nextInt(board.width);
+                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
+                space = board.getSpace(maxWidth, maxHeight);
+                while (!space.getActions().isEmpty() || space.getItem() != null || space.getPlayer() != null) {
+                    System.out.println("item on place is : " + space.getItem() + " Action on the space is: " + space.getActions() + " Player is on space " + space.getPlayer());
+                    maxHeight = rand.nextInt(board.height);
+                    maxWidth = rand.nextInt(board.width);
+                    updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
+                    space = board.getSpace(maxWidth, maxHeight);
+                }
+                // If the space is free, place a new checkpoint
+                space.setItem("checkpoint");
+                updatedSpaceView.addCheckpoint();
+            }
         }
     }
+
+    /*public void executeStep(Space space) {
+
+        newCheckpoint(space);
+        for (FieldAction fieldAction : space.getActions()) {
+            fieldAction.doAction(this, space);
+        }
+    }*/
 
     /**
      * A method called when no corresponding controller operation is implemented yet.
