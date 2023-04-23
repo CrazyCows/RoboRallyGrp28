@@ -22,7 +22,6 @@
       "y": 0
     },
     {
-      "item": "checkpoint",
       "walls": [
         "NORTH"
       ],
@@ -278,6 +277,15 @@
         }
       ],
       "x": 5,
+      "y": 2
+    },
+    {
+      "item": "checkpoint",
+      "background": [
+        "SOUTH",
+        "test_field.jpg"
+      ],
+      "x": 7,
       "y": 2
     }
   ]
