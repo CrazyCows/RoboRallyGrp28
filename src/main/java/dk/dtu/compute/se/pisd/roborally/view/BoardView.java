@@ -33,6 +33,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -56,6 +61,10 @@ public class BoardView extends VBox implements ViewObserver {
     private int nextTimerInt = 0;
     private Image currentTimerImage;
     ImageView timerView;
+    GridPane gridPane;
+    GridPane upgradeShop;
+    StackPane stackPane;
+    Rectangle mask;
 
     private SpaceEventHandler spaceEventHandler;
     int timerSecondsCount;
@@ -88,14 +97,43 @@ public class BoardView extends VBox implements ViewObserver {
         Button timerButton = new Button("Start timer");
         timerButton.setOnAction( e -> board.startTimer());
 
+        Button upgradeShopButton = new Button("Upgrade Shop");
+        upgradeShopButton.setOnAction( e -> displayUpgradeShop());
+
         GridPane timerGridPane = new GridPane();
         timerGridPane.addRow(0, timerView);
         timerGridPane.addRow(1, timerButton);
+        timerGridPane.addRow(2, upgradeShopButton);
 
+        upgradeShop = new GridPane();
+        upgradeShop.setVisible(false);
+
+        Image upgradeShopImage = new Image("upgradeShopBackGround.png");
+        ImageView upgradeShopImageView = new ImageView(upgradeShopImage);
+        upgradeShopImageView.setFitWidth(board.width * 75);
+        upgradeShopImageView.setFitHeight(board.height * 75);
+        upgradeShop.getChildren().add(upgradeShopImageView);
+        System.out.println(board.height * 75);
+        System.out.println(board.width * 75);
+
+        mask = new Rectangle(board.width * 75, board.height * 75);
+        mask.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
+                new Stop(0, Color.rgb(0, 0, 0, 0.69)),
+                new Stop(0.18, Color.rgb(0, 0, 0, 0.69)),
+                new Stop(0.19, Color.rgb(0, 0, 0, 1)),
+                new Stop(0.82, Color.rgb(0, 0, 0, 1)),
+                new Stop(0.83, Color.rgb(0, 0, 0, 0.69)),
+                new Stop(1, Color.rgb(0, 0, 0, 0.69))));
+        //mask.setY(upgradeShopImageView.getFitHeight() / 4);
+        //mask.setHeight(upgradeShopImageView.getFitHeight() / 2);
+
+        upgradeShop.setClip(mask);
+
+        stackPane = new StackPane(mainBoardPane, upgradeShop);
 
         // create a GridPane and add the nodes to it
-        GridPane gridPane = new GridPane();
-        gridPane.addRow(0, mainBoardPane, timerGridPane);
+        gridPane = new GridPane();
+        gridPane.addRow(0, stackPane, timerGridPane);
         gridPane.addRow(1, playersView);
         gridPane.add(statusLabel, 0, 2, 2, 1); // spans 2 columns and 1 row
 
@@ -117,13 +155,26 @@ public class BoardView extends VBox implements ViewObserver {
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
                 if (space.getItem() != null){
-                    spaceView.addCheckpoint();
+                    if (space.getItem().equals("checkpoint")) {
+                        spaceView.addCheckpoint();
+                    }
                 }
             }
         }
 
         board.attach(this);
         update(board);
+    }
+
+    private void displayUpgradeShop() {
+        System.out.println("upgrade shop is no longer displayed");
+        if (upgradeShop.isVisible()) {
+            upgradeShop.setVisible(false);
+        }
+        else {
+            System.out.println("upgrade shop is displayed");
+            upgradeShop.setVisible(true);
+        }
     }
 
     private void nextTimer() {
