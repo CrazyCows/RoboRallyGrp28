@@ -226,6 +226,7 @@ public class GameController {
     }
 
     public void executeStep(Space space) {
+        newCheckpoint(space);
         System.out.println(space.getItem() + " is space things ");
         if (space.getItem() != null) {
             if (space.getItem().equals("checkpoint")) {
