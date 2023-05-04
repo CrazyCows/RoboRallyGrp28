@@ -123,7 +123,7 @@ public class RoboRally extends Application {
 
     private void addImageToWindow() {
         // create an ImageView object for the image
-        ImageView imageView = new ImageView(new Image("file:bruno!.jpeg"));
+        ImageView imageView = new ImageView(new Image("file:pretty.jpeg"));
 
         // set the size and position of the image
         imageView.setFitHeight(420);
