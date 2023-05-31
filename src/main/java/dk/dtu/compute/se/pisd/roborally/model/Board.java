@@ -86,8 +86,8 @@ public class Board extends Subject {
         if (priorityAntennaSpace == null) {
             for (Space[] spaceRow : spaces) {
                 for (Space space : spaceRow) {
-                    if (space.getItem() != null) {
-                        if (space.getItem().equals("priorityAntenna")) {
+                    if (!space.getItems().isEmpty()) {
+                        if (space.getItems().get(0).getName().equals("priorityAntenna")) {
                             priorityAntennaSpace = space;
                         }
                     }

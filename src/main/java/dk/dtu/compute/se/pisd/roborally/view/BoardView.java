@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Item;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.event.EventHandler;
@@ -32,6 +33,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -67,6 +69,7 @@ public class BoardView extends VBox implements ViewObserver {
     Rectangle mask;
 
     private SpaceEventHandler spaceEventHandler;
+    private ArrowKeyEventHandler arrowKeyEventHandler;
     int timerSecondsCount;
 
     public SpaceView[][] getSpaces(){
@@ -142,23 +145,22 @@ public class BoardView extends VBox implements ViewObserver {
         spaces = new SpaceView[board.width][board.height];
 
         spaceEventHandler = new SpaceEventHandler(gameController);
+        arrowKeyEventHandler = new ArrowKeyEventHandler(gameController);
 
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
                 spaceView.setBackround(space.getBackground());
+                for (Item item : space.getItems()) {
+                    spaceView.updateItem(item.getImage());
+                }
                 spaces[x][y] = spaceView;
 
                 //spaceView.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
                 //spaceView.setPadding(new Insets(10));
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
-                if (space.getItem() != null){
-                    if (space.getItem().equals("checkpoint")) {
-                        spaceView.addCheckpoint();
-                    }
-                }
             }
         }
 
@@ -227,6 +229,21 @@ public class BoardView extends VBox implements ViewObserver {
             }
         }
 
+    }
+
+    private class ArrowKeyEventHandler implements EventHandler<KeyEvent> {
+
+        final public GameController gameController;
+
+        public ArrowKeyEventHandler(@NotNull GameController gameController) {
+            this.gameController = gameController;
+        }
+
+        @Override
+        public void handle(KeyEvent event) {
+            System.out.println(event.getCharacter());
+            event.consume();
+        }
     }
 
 }

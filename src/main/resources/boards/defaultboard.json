@@ -261,26 +261,26 @@
       "y": 7
     },
     {
-      "item": "priorityAntenna",
-      "walls": [
-      ],
-      "background": [
-        "NORTH",
-        "priorityAntenna.png"
-      ],
-      "actions": [
+      "items": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.PriorityAntenna",
-          "INSTANCE": {
-            "heading": "NORTH"
-          }
+          "name": "priorityAntenna",
+          "image" : "priorityAntenna.png",
+          "heading" : "NORTH",
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.PriorityAntenna"
         }
       ],
       "x": 5,
       "y": 2
     },
     {
-      "item": "checkpoint",
+      "items": [
+        {
+          "name": "checkpoint",
+          "image" : "checkpoint.png",
+          "heading" : "NORTH",
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+        }
+      ],
       "background": [
         "SOUTH",
         "test_field.jpg"

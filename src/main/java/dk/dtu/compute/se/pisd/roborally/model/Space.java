@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.EventController;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import javafx.scene.image.Image;
 
@@ -38,7 +39,7 @@ public class Space extends Subject {
 
     private Player player;
 
-    private String item;
+    private ArrayList<Item> items = new ArrayList<>();
     private List<Heading> walls = new ArrayList<>();
     private List<FieldAction> actions = new ArrayList<>();
     private List<String> background = new ArrayList<>();
@@ -75,15 +76,17 @@ public class Space extends Subject {
             notifyChange();
         }
     }
-    
 
-    public void setItem(String item) {
-        this.item = item;
+    public ArrayList<Item> getItems() {
+        return items;
     }
 
-    public String getItem() {
-        System.out.println(item);
-        return item;
+    public void addItem(Item item) {
+        this.items.add(item);
+    }
+
+    public void removeItem(String name) {
+        this.items.removeIf(item -> item.name.equals(name));
     }
 
     public List<Heading> getWalls() {

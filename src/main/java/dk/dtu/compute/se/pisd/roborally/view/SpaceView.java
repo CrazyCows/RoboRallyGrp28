@@ -24,9 +24,9 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Item;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -111,23 +111,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().add(imageCheckpoint);
     }
 
-    public void updateCheckpoint(){
-        Player player = space.getPlayer();
-        if (player != null) {
-            if (space.getItem() != null) {
-                if (space.getItem().equals("checkpoint")) {
-                    System.out.println("player is not null");
-                    System.out.println("position is: " + space.getItem());
-                    if (this.getChildren().contains(imageCheckpoint) && space.getItem() != null) {
-                        this.getChildren().remove(imageCheckpoint);
-                    } else if (!this.getChildren().contains(imageCheckpoint) && space.getItem() != null) {
-                        this.getChildren().add(imageCheckpoint);
-
-                    }
-                }
-            }
-        }
-    }
     public void removeCheckpoint(){
         this.getChildren().remove(imageCheckpoint);
     }
@@ -170,6 +153,15 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    public void updateItem(String imagePath) {
+        this.imageView = imageLoader.getImageView(imagePath);
+        this.imageView.setFitHeight(SPACE_HEIGHT-4);
+        this.imageView.setFitWidth(SPACE_WIDTH-4);
+        this.getChildren().add(this.imageView);
+    }
+
+
+
     private void updatePlayer() {
         // Remove the player arrow, if it exists
         this.getChildren().removeIf(node -> node instanceof Polygon);
@@ -195,8 +187,13 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         System.out.println("Space update");
         if (subject == this.space) {
-            updateCheckpoint();
             updatePlayer();
+            if (!space.getItems().isEmpty()) {
+                for (Item item : space.getItems()) {
+                    updateItem(item.getImage());
+                }
+            }
+
         }
     }
 

@@ -32,17 +32,6 @@ public class Checkpoint extends FieldAction {
 
 
 
-        if (space.getItem() != null) {
-            if (space.getItem().equals("checkpoint")) {
-                space.setItem(null);
-                Random rand = new Random();
-                int maxHeight = rand.nextInt(board.height);
-                int maxWidth = rand.nextInt(board.width);
-                space = board.getSpace(maxWidth, maxHeight);
-                space.setItem("checkpoint");
-            }
-        }
-
 
         return false;
     }

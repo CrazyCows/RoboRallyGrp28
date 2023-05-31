@@ -31,6 +31,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Item;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.apache.commons.compress.utils.OsgiUtils;
@@ -74,8 +75,8 @@ public class LoadBoard {
 
 
             // In simple cases, we can create a Gson object with new Gson():
-            GsonBuilder simpleBuilder = new GsonBuilder().
-                    registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+            GsonBuilder simpleBuilder = new GsonBuilder()
+                    .registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
             Gson gson = simpleBuilder.create();
 
             Board result;
@@ -92,7 +93,13 @@ public class LoadBoard {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
                     space.getBackground().addAll(spaceTemplate.background);
-                    space.setItem(spaceTemplate.item);
+                    space.getItems().addAll(spaceTemplate.items);
+                    if (!space.getItems().isEmpty()) {
+                        for (Item item : space.getItems()) {
+                            item.createEvent();
+                        }
+                    }
+
                 }
             }
             // TODO: EXPERIMENTAL - uses new PlayerTemplate - see players.txt
@@ -148,7 +155,7 @@ public class LoadBoard {
                     spaceTemplate.actions.addAll(space.getActions());
                     spaceTemplate.walls.addAll(space.getWalls());
                     spaceTemplate.background.addAll(space.getBackground());
-                    spaceTemplate.item = space.getItem();
+                    spaceTemplate.items.addAll(space.getItems());
                     template.spaces.add(spaceTemplate);
                 }
             }
@@ -196,5 +203,4 @@ public class LoadBoard {
             }
         }
     }
-
 }

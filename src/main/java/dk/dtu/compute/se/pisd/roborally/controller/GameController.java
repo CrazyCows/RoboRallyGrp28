@@ -127,7 +127,11 @@ public class GameController {
 
         Player nextPlayer = getNextPlayer(currentPlayer);
         board.setCurrentPlayer(nextPlayer);
-        System.out.println(space.getItem());
+        if (!space.getItems().isEmpty()) {
+            for (Item item : space.getItems()) {
+                System.out.println(item.getName());
+            }
+        }
     }
 
     public void moveInDirection(@NotNull Player player, int amount, @NotNull Heading heading) {
@@ -227,16 +231,18 @@ public class GameController {
 
     public void executeStep(Space space) {
 
-
-        newCheckpoint(space);
-        System.out.println(space.getItem() + " is space things ");
-
         for (FieldAction fieldAction : space.getActions()) {
             fieldAction.doAction(this, space);
         }
 
+        for (Item item : space.getItems()) {
+            System.out.println(item.getName() + " is space things ");
+            item.getEvent().doAction(this, space);
+        }
 
-        if (space.getItem() != null) {
+
+
+        /*if (space.getItem() != null) {
             if (space.getItem().equals("checkpoint")) {
                 space.setItem(null);
                 Random rand = new Random();
@@ -248,10 +254,10 @@ public class GameController {
                 space.setItem("checkpoint");
                 updatedSpaceView.addCheckpoint();
             }
-        }
+        }*/
     }
 
-    public void newCheckpoint(Space space) {
+    /*public void newCheckpoint(Space space) {
         // Checks if player is on checkpoint
         if (space.getItem() != null) {
             if (space.getItem().equals("checkpoint")) {
@@ -277,6 +283,7 @@ public class GameController {
             }
         }
     }
+     */
 
 
 
