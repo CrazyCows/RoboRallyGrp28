@@ -25,6 +25,15 @@ public class Checkpoint extends FieldAction {
         this.heading = heading;
     }
 
+
+    /**
+     *
+     * See the abstract class, 'FieldAction' for more information.
+     *
+     * @param gameController the gameController of the respective game
+     * @param space the space this action should be executed for
+     * @return boolean
+     */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         System.out.println("THE CHECKPOINT");

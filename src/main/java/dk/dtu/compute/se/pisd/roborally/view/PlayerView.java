@@ -36,8 +36,11 @@ import java.util.ArrayList;
 
 /**
  * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * his is everything that the player sees, in the bottom
+ * of the window, when you press on a player's tab.
+ * It's important to note, that the buttons for executing
+ * one or more commands, are also here - and that they
+ * trigger the programming methods in the GameController.
  *
  */
 public class PlayerView extends Tab implements ViewObserver {

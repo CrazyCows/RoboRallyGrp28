@@ -31,8 +31,14 @@ import java.util.List;
 
 /**
  * ...
+ * This is the model of a space. Each space is contained within
+ * an array of spaces in a Board. The space has different components
+ * that define it, such as: walls, actions and items.
  *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * A space itself can have zero-to-many actions, all while a space
+ * can also have zero-to-many items - and these items can also have actions
+ * Please note, that an 'item' is an object of type Item, and that is defined
+ * as such.
  *
  */
 public class Space extends Subject {
@@ -45,10 +51,11 @@ public class Space extends Subject {
     private List<String> background = new ArrayList<>();
 
     public final Board board;
-    //boolean checkpoint;
+
+    // The coordinates on the board
     public final int x;
     public final int y;
-    public String imagePath;
+
 
     public Space(Board board, int x, int y) {
         this.board = board;
@@ -61,6 +68,10 @@ public class Space extends Subject {
         return player;
     }
 
+
+    // removes the player from its old position
+    // and places the player on this new space instead
+    // TODO: THIS IS THE MODEL. SHOULD BE HANDLED BY CONTROLLER
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
@@ -86,6 +97,8 @@ public class Space extends Subject {
         notifyChange();
     }
 
+    // Removes all items on the space
+    // from name of the item
     public void removeItem(String name) {
         this.items.removeIf(item -> item.name.equals(name));
         notifyChange();

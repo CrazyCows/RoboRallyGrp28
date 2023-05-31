@@ -35,8 +35,9 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
 /**
  * ...
+ * This is the model of the Board.
+ * The board contains space objects of type 'Space'
  *
- * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
 public class Board extends Subject {
@@ -253,6 +254,8 @@ public class Board extends Subject {
         return result;
     }
 
+
+    // TODO: I forgot why this is places here??? (but it works though)
     public void startTimer() {
         timer = new Timer();
         timerIsRunning = true;

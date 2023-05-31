@@ -40,8 +40,10 @@ import java.io.*;
 
 /**
  * ...
+ * Used to load and save a board using JSON with Google's GSON library.
+ * It uses both the 'ressources' folder and the 'Save Games' folder
+ * to store and retrieve game files.
  *
- * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class LoadBoard {
 

@@ -34,14 +34,19 @@ public abstract class FieldAction {
 
 
     /**
-     * Executes the field action for a given space. In order to be able to do
-     * that the GameController associated with the game is passed to this method.
+     *
+     * This is the holy grail of methods.
+     * 'doAction' makes it possible for an item, space or card to perform an action.
+     * By using this implementation, any 'doAction' will be run, when a given object
+     * uses its doAction - and it will find out by itself, which doAction to use (simplified)
+     *
+     * Please note, that command cards that determines movement uses the EventController.
+     *
      *
      * @param gameController the gameController of the respective game
      * @param space the space this action should be executed for
      * @return whether the action was successfully executed
      */
-
     public abstract boolean doAction(GameController gameController, Space space);
 
 }

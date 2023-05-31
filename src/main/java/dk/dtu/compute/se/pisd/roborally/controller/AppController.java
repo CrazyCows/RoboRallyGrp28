@@ -43,8 +43,10 @@ import java.util.Optional;
 
 /**
  * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * The AppController is used to set up a game, and
+ * initializes most of the objects that will be used
+ * throughout the game.
+ * It uses JavaFX input to start / close / save a game.
  *
  */
 public class AppController implements Observer {

@@ -24,7 +24,6 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Item;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.image.ImageView;
@@ -39,8 +38,13 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
 
 /**
  * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * The spaceView is tied together with every space on the board.
+ * Here, there are two ImageViews that are important for the implementation
+ * of the 'SpaceView' class: backgroundImageView and overlayImageView.
+ * This is because, that every space can have a background and an image
+ * on top of the background. This way, we have the ability to better
+ * distinguish between what IS the 'board' and what is on top of it.
+ * It is primarily used to make a space able to hold an item on top of it.
  *
  */
 public class SpaceView extends StackPane implements ViewObserver {
@@ -49,7 +53,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_WIDTH = 75; // 75;
 
     public final Space space;
-    private ImageView imageView;
+    private ImageView backgroundImageView;
     private ImageView overlayImageView;
     private ImageLoader imageLoader = new ImageLoader();
     private String heading;
@@ -113,32 +117,32 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (background.size() != 0) {
             this.heading = background.get(0);
             imagePath = background.get(1);
-            this.imageView = imageLoader.getImageView(imagePath);
+            this.backgroundImageView = imageLoader.getImageView(imagePath);
             switch (this.heading) {
                 case "NORTH":
-                    this.imageView.setRotate(0);
+                    this.backgroundImageView.setRotate(0);
                     break;
                 case "EAST":
-                    this.imageView.setRotate(90);
+                    this.backgroundImageView.setRotate(90);
                     break;
                 case "SOUTH":
-                    this.imageView.setRotate(180);
+                    this.backgroundImageView.setRotate(180);
                     break;
                 case "WEST":
-                    this.imageView.setRotate(270);
+                    this.backgroundImageView.setRotate(270);
                     break;
             }
-            this.imageView.setFitHeight(SPACE_HEIGHT-4);
-            this.imageView.setFitWidth(SPACE_WIDTH-4);
-            this.getChildren().add(this.imageView);
+            this.backgroundImageView.setFitHeight(SPACE_HEIGHT-4);
+            this.backgroundImageView.setFitWidth(SPACE_WIDTH-4);
+            this.getChildren().add(this.backgroundImageView);
             updatePlayer();
         }
         else {
             imagePath = "test_field.png";
-            this.imageView = imageLoader.getImageView(imagePath);
-            this.imageView.setFitHeight(SPACE_HEIGHT-4);
-            this.imageView.setFitWidth(SPACE_WIDTH-4);
-            this.getChildren().add(this.imageView);
+            this.backgroundImageView = imageLoader.getImageView(imagePath);
+            this.backgroundImageView.setFitHeight(SPACE_HEIGHT-4);
+            this.backgroundImageView.setFitWidth(SPACE_WIDTH-4);
+            this.getChildren().add(this.backgroundImageView);
             updatePlayer();
         }
     }

@@ -35,8 +35,8 @@ import java.util.Random;
 
 /**
  * ...
- *
- * @author Ekkart Kindler, ekki@dtu.dk
+ * Controls the main flow of the game.
+ * The GameController is mainly used to control player movement.
  *
  */
 public class GameController {
@@ -172,6 +172,7 @@ public class GameController {
 
     }
 
+    // returns the player who is closest to the Priority antenna
     public Player getNextPlayer(Player currentPlayer){
         Space priorityAntenna = board.getPriorityAntennaSpace();
         Player closestPlayerToAntenna = currentPlayer;
@@ -201,6 +202,7 @@ public class GameController {
         return board.getPlayer(playerNumber+1);*/
     }
 
+    // Calculates the distance between the priority antenna and a given player
     private double distanceToSpace(Space space, int otherX, int otherY) {
         int x = space.getPosition()[0];
         int y = space.getPosition()[1];
@@ -212,6 +214,7 @@ public class GameController {
     public void finishProgrammingPhase() {
     }
 
+    // Executes the commandCards
     public void executeProgram(List<CommandCard> commandCards) {
         Thread commandThread = new Thread(new Runnable() {
             @Override
@@ -230,6 +233,7 @@ public class GameController {
         commandThread.start(); // start the thread
     }
 
+    // executes a single step
     public void executeStep(Space space) {
         // Execute field actions
         for (FieldAction fieldAction : space.getActions()) {
@@ -324,6 +328,7 @@ public class GameController {
     }
 
 
+    // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         CommandCard sourceCard = source.getCard();
         CommandCard targetCard = target.getCard();

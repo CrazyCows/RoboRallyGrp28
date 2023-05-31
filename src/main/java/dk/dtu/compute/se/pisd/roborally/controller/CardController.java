@@ -11,7 +11,7 @@ public class CardController {
     private static CardController cardController;
     private CardLoader cardLoader;
     private LinkedList<CommandCard> deck;
-    //TODO: This deck needs to be removed. Player (model) has cards, controller doesnt.
+    //TODO: This deck needs to be removed. Player (model) has cards, controller doesn't.
     //TODO: Also, each player needs to have their own cards
 
 

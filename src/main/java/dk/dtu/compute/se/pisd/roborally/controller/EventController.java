@@ -12,6 +12,13 @@ public class EventController {
 
     private GameController gameController;
 
+    /**
+     * The EventController works much like the FieldController,
+     * although it is not abstract. It makes it possible to execute a
+     * command upon a given player. This is used for programming the robot,
+     * and simply translates the command into action.
+     */
+
     public EventController(GameController gameController) {
         this.gameController = gameController;
     }

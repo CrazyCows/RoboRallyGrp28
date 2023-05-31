@@ -4,6 +4,14 @@ import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 
 import java.lang.reflect.InvocationTargetException;
 
+/*
+    This is the model of an item. It defines an item
+    with its given action.
+    An item can be placed on a space, and is used by
+    the Space class, which can hold any number of items.
+
+ */
+
 public class Item {
     String name;
     String image;
@@ -30,6 +38,10 @@ public class Item {
         return event;
     }
 
+
+    // A method that converts the eventClassName string
+    // to an actual event. This method should only be used once
+    // when the items are created in the LoadBoard class
     public void createEvent() {
         try {
             Class<?> eventClass = Class.forName(this.eventClassName);
