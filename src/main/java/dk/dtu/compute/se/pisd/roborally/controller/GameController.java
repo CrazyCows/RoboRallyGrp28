@@ -226,8 +226,16 @@ public class GameController {
     }
 
     public void executeStep(Space space) {
+
+
         newCheckpoint(space);
         System.out.println(space.getItem() + " is space things ");
+
+        for (FieldAction fieldAction : space.getActions()) {
+            fieldAction.doAction(this, space);
+        }
+
+
         if (space.getItem() != null) {
             if (space.getItem().equals("checkpoint")) {
                 space.setItem(null);
@@ -269,6 +277,8 @@ public class GameController {
             }
         }
     }
+
+
 
     /*public void executeStep(Space space) {
 
