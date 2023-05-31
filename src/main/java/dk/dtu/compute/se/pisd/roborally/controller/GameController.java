@@ -231,6 +231,8 @@ public class GameController {
 
     public void executeStep(Space space) {
 
+
+
         for (FieldAction fieldAction : space.getActions()) {
             fieldAction.doAction(this, space);
         }
