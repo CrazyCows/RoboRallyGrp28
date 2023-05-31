@@ -83,15 +83,17 @@ public class Space extends Subject {
 
     public void addItem(Item item) {
         this.items.add(item);
+        notifyChange();
     }
 
     public void removeItem(String name) {
         this.items.removeIf(item -> item.name.equals(name));
-
+        notifyChange();
     }
 
     public void removeItem(Item item) {
         this.items.remove(item);
+        notifyChange();
     }
 
 

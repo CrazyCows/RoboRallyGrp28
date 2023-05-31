@@ -14,8 +14,8 @@ import java.util.Random;
 
 
 public class Checkpoint extends FieldAction {
-    private Heading heading;
 
+    private Heading heading;
 
     public Heading getHeading() {
         return heading;
@@ -47,8 +47,6 @@ public class Checkpoint extends FieldAction {
 
         return true;
     }
-
-
 
 }
 

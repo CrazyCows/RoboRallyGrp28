@@ -65,7 +65,7 @@ public class AppController implements Observer {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
-        roboRally.setMusicVolume(0.1);
+        roboRally.setMusicVolume(0.0);
         Optional<Integer> result = dialog.showAndWait();
 
         if (result.isPresent()) {
@@ -123,7 +123,7 @@ public class AppController implements Observer {
             ChoiceDialog<String> dialog = new ChoiceDialog<>("OK");
             dialog.setTitle("Load Game");
             dialog.setHeaderText("There are no saved games");
-            roboRally.setMusicVolume(0.1);
+            roboRally.setMusicVolume(0.0);
             //Optional<String> result = dialog.showAndWait();
         }
         for (File file : listJsonFiles) {
@@ -135,7 +135,7 @@ public class AppController implements Observer {
         ChoiceDialog<String> dialog = new ChoiceDialog<>(this.savedBoards.get(0), this.savedBoards);
         dialog.setTitle("Load Game");
         dialog.setHeaderText("Select a game to load");
-        roboRally.setMusicVolume(0.1);
+        roboRally.setMusicVolume(0.0);
         Optional<String> result = dialog.showAndWait();
 
         System.out.println(result);

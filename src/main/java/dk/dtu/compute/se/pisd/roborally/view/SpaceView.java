@@ -161,11 +161,17 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         // Add the overlay ImageView to the SpaceView
         this.getChildren().add(overlayImageView);
+
+        // Trigger a layout pass to update the view
+        this.requestLayout();
     }
 
     public void removeOverlay() {
         // Remove the overlay ImageView, if it exists
         this.getChildren().remove(overlayImageView);
+
+        // Trigger a layout pass to update the view
+        this.requestLayout();
     }
 
     private void updatePlayer() {
