@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally;
 
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
+import dk.dtu.compute.se.pisd.roborally.controller.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.RoboRallyMenuBar;
@@ -114,7 +115,6 @@ public class RoboRally extends Application {
         if (gameController != null) {
             // create and add view for new board
             BoardView boardView = new BoardView(gameController);
-            gameController.setBoardView(boardView);
             boardRoot.setCenter(boardView);
         }
 

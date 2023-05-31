@@ -154,11 +154,14 @@ public class BoardView extends VBox implements ViewObserver {
                 //spaceView.setPadding(new Insets(10));
                 mainBoardPane.add(spaceView, x, y);
                 spaceView.setOnMouseClicked(spaceEventHandler);
+                /*
                 if (space.getItem() != null){
                     if (space.getItem().equals("checkpoint")) {
                         spaceView.addCheckpoint();
                     }
                 }
+
+                 */
             }
         }
 

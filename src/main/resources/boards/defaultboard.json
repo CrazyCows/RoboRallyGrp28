@@ -282,8 +282,16 @@
     {
       "item": "checkpoint",
       "background": [
-        "SOUTH",
-        "test_field.jpg"
+        "NORTH",
+        "checkpoint.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint",
+          "INSTANCE": {
+            "heading": "SOUTH"
+          }
+        }
       ],
       "x": 7,
       "y": 2

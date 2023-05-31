@@ -12,37 +12,28 @@ import java.util.Random;
 
 public class Checkpoint extends FieldAction {
     private Heading heading;
-
-
     public Heading getHeading() {
         return heading;
     }
-
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
 
+
+
+
+
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         System.out.println("THE CHECKPOINT");
-        // TODO needs to be implemented
         Board board = gameController.board;
-        BoardView boardView;
-        SpaceView spaceView;
-
-
-
-        if (space.getItem() != null) {
-            if (space.getItem().equals("checkpoint")) {
-                space.setItem(null);
-                Random rand = new Random();
-                int maxHeight = rand.nextInt(board.height);
-                int maxWidth = rand.nextInt(board.width);
-                space = board.getSpace(maxWidth, maxHeight);
-                space.setItem("checkpoint");
-            }
-        }
-
+        System.out.println(space.getItem() + " <<-------------");
+        space.setItem(null);
+        Random rand = new Random();
+        int maxHeight = rand.nextInt(board.height);
+        int maxWidth = rand.nextInt(board.width);
+        space = board.getSpace(maxWidth, maxHeight);
+        space.setItem("checkpoint");
 
         return false;
     }

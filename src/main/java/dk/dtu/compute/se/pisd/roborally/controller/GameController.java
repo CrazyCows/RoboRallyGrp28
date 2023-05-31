@@ -42,16 +42,13 @@ public class GameController {
 
     final public Board board;
     public static CardLoader cardLoader;
-    private BoardView boardView;
-    private SpaceView spaceView;
 
 
     protected CardController cardController;
     private EventController eventController;
 
-    public void setBoardView(BoardView boardView){
-        this.boardView = boardView;
-    }
+
+
     public GameController(Board board) {
         this.board = board;
         this.cardController = CardController.getInstance();
@@ -228,14 +225,14 @@ public class GameController {
     public void executeStep(Space space) {
 
 
-        newCheckpoint(space);
+        //newCheckpoint(space);
         System.out.println(space.getItem() + " is space things ");
 
         for (FieldAction fieldAction : space.getActions()) {
             fieldAction.doAction(this, space);
         }
 
-
+/*
         if (space.getItem() != null) {
             if (space.getItem().equals("checkpoint")) {
                 space.setItem(null);
@@ -249,8 +246,10 @@ public class GameController {
                 updatedSpaceView.addCheckpoint();
             }
         }
-    }
 
+ */
+    }
+/*
     public void newCheckpoint(Space space) {
         // Checks if player is on checkpoint
         if (space.getItem() != null) {
@@ -277,7 +276,7 @@ public class GameController {
             }
         }
     }
-
+*/
 
 
     /*public void executeStep(Space space) {

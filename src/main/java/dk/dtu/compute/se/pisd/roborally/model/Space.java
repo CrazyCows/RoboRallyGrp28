@@ -79,6 +79,8 @@ public class Space extends Subject {
 
     public void setItem(String item) {
         this.item = item;
+        System.out.println("New item on the space");
+        notifyChange();
     }
 
     public String getItem() {
