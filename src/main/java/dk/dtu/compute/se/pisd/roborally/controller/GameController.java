@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -230,14 +231,16 @@ public class GameController {
     }
 
     public void executeStep(Space space) {
-
-
-
+        // Execute field actions
         for (FieldAction fieldAction : space.getActions()) {
             fieldAction.doAction(this, space);
         }
 
-        for (Item item : space.getItems()) {
+        // Create a copy of the items list
+        List<Item> itemsToProcess = new ArrayList<>(space.getItems());
+
+        // Process items in the copied list
+        for (Item item : itemsToProcess) {
             System.out.println(item.getName() + " is space things ");
             item.getEvent().doAction(this, space);
         }

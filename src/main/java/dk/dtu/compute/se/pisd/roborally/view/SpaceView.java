@@ -50,8 +50,8 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     public final Space space;
     private ImageView imageView;
+    private ImageView overlayImageView;
     private ImageLoader imageLoader = new ImageLoader();
-    private ImageView imageCheckpoint = imageLoader.getImageView("checkpoint.png");
     private String heading;
 
 
@@ -106,16 +106,6 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
 
-
-    public void addCheckpoint(){
-        this.getChildren().add(imageCheckpoint);
-    }
-
-    public void removeCheckpoint(){
-        this.getChildren().remove(imageCheckpoint);
-    }
-
-
     public void setBackround(List<String> background) {
         // TODO: background is a list of ressource image strings
         // TODO: cycle through them for animations.
@@ -153,14 +143,30 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    public void updateItem(String imagePath) {
-        this.imageView = imageLoader.getImageView(imagePath);
-        this.imageView.setFitHeight(SPACE_HEIGHT-4);
-        this.imageView.setFitWidth(SPACE_WIDTH-4);
-        this.getChildren().add(this.imageView);
+    public void updateItem(String overlayImagePath) {
+        this.overlayImageView = imageLoader.getImageView(overlayImagePath);
+        this.overlayImageView.setFitHeight(SPACE_HEIGHT-4);
+        this.overlayImageView.setFitWidth(SPACE_WIDTH-4);
+        this.getChildren().add(this.overlayImageView);
     }
 
+    public void updateOverlay(String overlayImagePath) {
+        // Remove the existing overlay ImageView, if it exists
+        this.getChildren().remove(overlayImageView);
 
+        // Create a new ImageView for the overlay image
+        this.overlayImageView = imageLoader.getImageView(overlayImagePath);
+        overlayImageView.setFitHeight(SPACE_HEIGHT - 4);
+        overlayImageView.setFitWidth(SPACE_WIDTH - 4);
+
+        // Add the overlay ImageView to the SpaceView
+        this.getChildren().add(overlayImageView);
+    }
+
+    public void removeOverlay() {
+        // Remove the overlay ImageView, if it exists
+        this.getChildren().remove(overlayImageView);
+    }
 
     private void updatePlayer() {
         // Remove the player arrow, if it exists
@@ -187,14 +193,16 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         System.out.println("Space update");
         if (subject == this.space) {
-            updatePlayer();
             if (!space.getItems().isEmpty()) {
-                for (Item item : space.getItems()) {
-                    updateItem(item.getImage());
+                updateOverlay(space.getItems().get(space.getItems().size() - 1).getImage());
+            }
+            else {
+                if (overlayImageView != null) {
+                    removeOverlay();
                 }
             }
-
         }
+        updatePlayer();
     }
 
 }

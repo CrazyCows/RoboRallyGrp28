@@ -87,7 +87,13 @@ public class Space extends Subject {
 
     public void removeItem(String name) {
         this.items.removeIf(item -> item.name.equals(name));
+
     }
+
+    public void removeItem(Item item) {
+        this.items.remove(item);
+    }
+
 
     public List<Heading> getWalls() {
         return walls;
