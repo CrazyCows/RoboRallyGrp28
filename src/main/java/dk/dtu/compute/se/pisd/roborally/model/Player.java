@@ -251,4 +251,8 @@ public class Player extends Subject {
         //TODO: ADD THIS
         System.out.println(this.name + " Draws a SPAM damage card and adds it to their discard pile");
     }
+
+    public void discardCurrentProgram() {
+        //TODO: ADD THIS. Basically clears the current program so the robot no longer moves
+    }
 }
