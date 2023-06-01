@@ -61,5 +61,47 @@
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
+
+    {
+      "name": "Brakes",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Deflector Shield",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Cache Memory",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Defrag Gizmo",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Double Barrel Laser",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Modular Chassis",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Admin Privilege",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    }
   ]
 }
