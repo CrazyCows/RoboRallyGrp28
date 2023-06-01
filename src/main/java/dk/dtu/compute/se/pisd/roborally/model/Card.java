@@ -7,6 +7,7 @@ public class Card extends Subject {
     String name;
     int cost;
     String effect;
+
     String imagePath;
     String actionClassName;
 
@@ -25,5 +26,22 @@ public class Card extends Subject {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getCost(){
+        return this.cost;
+    }
+
+    public void setCost(){
+        this.cost = cost;
+    }
+
+    public String getEffect(){
+        return this.effect;
+    }
+
+    public void setEffect(){
+        this.effect = effect;
+    }
+
 
 }
