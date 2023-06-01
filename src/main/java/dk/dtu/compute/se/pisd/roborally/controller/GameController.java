@@ -106,7 +106,7 @@ public class GameController {
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
             }
-        }
+        } //If player needs to be pushed
         player.setSpace(space);
         Player nextPlayer = getNextPlayer(player);
         board.setCurrentPlayer(nextPlayer);
@@ -311,6 +311,10 @@ public class GameController {
     public void notImplemented() {
         // XXX just for now to indicate that the actual method to be used by a handler
         //     is not yet implemented
+    }
+
+    public void win(Player currentPlayer) {
+        System.out.println("The player " + currentPlayer.getName() + " has won!");
     }
 
     class ImpossibleMoveException extends Exception {

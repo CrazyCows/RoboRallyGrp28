@@ -53,6 +53,8 @@ public class Player extends Subject {
     public ArrayList<Object> discardPile; //Cards that have been run //TODO: Make type safe
 
 
+    //This is used to keep track of how many checkpoints are collected. Each time a checkpoint is reached,
+    //checkpointsCollected is to be iterated by one. Once it reaches the magic number, the player wins
     private int checkpointsCollected = 0;
     private static int handSize = 8;
     private static int programSize = 5;
@@ -147,6 +149,8 @@ public class Player extends Subject {
         }
     }
 
+
+
     public void setHeading(@NotNull String heading) {
         switch (heading) {
             case "NORTH":
@@ -183,8 +187,8 @@ public class Player extends Subject {
         return checkpointsCollected;
     }
 
-    public void setCheckpointsCollected(int checkpointsCollected) {
-        this.checkpointsCollected = checkpointsCollected;
+    public void iterateCheckpointsCollected() { //TODO: check if player has won
+        this.checkpointsCollected += 1;
     }
 
     public void setCardField(int i, Object card){
