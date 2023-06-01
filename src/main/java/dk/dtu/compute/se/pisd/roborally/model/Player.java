@@ -40,6 +40,7 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
+    public Space startSpace;
 
     private String name;
     private String color;
@@ -122,6 +123,10 @@ public class Player extends Subject {
             }
             if (space != null) {
                 space.setPlayer(this);
+            }
+
+            if (this.startSpace == null && space != null){ //I assume this work
+                this.startSpace = space;
             }
             notifyChange();
         }
@@ -242,4 +247,12 @@ public class Player extends Subject {
         return -1;
     }
 
+    public void addSpamCardToDiscardPile() {
+        //TODO: ADD THIS
+        System.out.println(this.name + " Draws a SPAM damage card and adds it to their discard pile");
+    }
+
+    public void discardCurrentProgram() {
+        //TODO: ADD THIS. Basically clears the current program so the robot no longer moves
+    }
 }
