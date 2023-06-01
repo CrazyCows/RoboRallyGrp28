@@ -13,6 +13,8 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -106,6 +108,24 @@ public class CardLoader {
             }
         }
         System.out.println("Commandcards created");
+    }
+
+
+    public void loadCardsFromJsonFile(){
+        ClassLoader classLoader;
+        InputStream inputStream = null;
+
+        JsonReader reader = null;
+        Gson gson = new Gson();
+        try{
+            String json = new String(Files.readAllBytes(Paths.get("cards/cards.json")));
+
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
