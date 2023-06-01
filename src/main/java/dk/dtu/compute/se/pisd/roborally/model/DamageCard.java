@@ -8,8 +8,9 @@ public class DamageCard extends Card {
 
     CardAction<DamageCard> action;
 
-    public DamageCard(String name, String imagePath, String actionClassName) {
+    public DamageCard(String name, String effect, String imagePath, String actionClassName) {
         this.name = name;
+        this.effect = effect;
         this.imagePath = imagePath;
         this.actionClassName = actionClassName;
 

@@ -20,6 +20,7 @@ public class CardLoader {
     private static CardLoader cardLoader = null;
     Random rand = new Random();
     ArrayList<ProgrammingCard> programmingCards;
+    ArrayList<SpecialProgrammingCard> specialProgrammingCards;
     ArrayList<DamageCard> damageCards;
     ArrayList<UpgradeCard> upgradeCards;
     ArrayList<TempUpgradeCard> tempUpgradeCards;
@@ -67,6 +68,12 @@ public class CardLoader {
             for (ProgrammingCard card : programmingCards) {
                 card.createAction();
                 card.createCommand();
+            }
+
+            // Extract and create damage cards
+            this.specialProgrammingCards = new ArrayList<>(cardData.getSpecialProgrammingCards());
+            for (SpecialProgrammingCard card : specialProgrammingCards) {
+                card.createAction();
             }
 
             // Extract and create damage cards

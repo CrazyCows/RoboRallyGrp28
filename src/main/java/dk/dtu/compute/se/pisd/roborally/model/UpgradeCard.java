@@ -8,9 +8,12 @@ import java.lang.reflect.InvocationTargetException;
 public class UpgradeCard extends Card {
 
     CardAction<UpgradeCard> action;
+    int cost;
 
-    public UpgradeCard(String name, String imagePath, String actionClassName) {
+    public UpgradeCard(String name, String effect, int cost, String imagePath, String actionClassName) {
         this.name = name;
+        this.effect = effect;
+        this.cost = cost;
         this.imagePath = imagePath;
         this.actionClassName = actionClassName;
 
