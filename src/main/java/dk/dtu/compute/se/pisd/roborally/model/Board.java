@@ -65,6 +65,9 @@ public class Board extends Subject {
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
 
+    //TODO: Anton har ligget added den her frækkert
+    private int numberOfCheckpoints;
+
     public Board(int width, int height) {
         this.width = width;
         this.height = height;

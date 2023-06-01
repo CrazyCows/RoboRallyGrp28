@@ -149,6 +149,8 @@ public class Player extends Subject {
         }
     }
 
+
+
     public void setHeading(@NotNull String heading) {
         switch (heading) {
             case "NORTH":
@@ -185,8 +187,13 @@ public class Player extends Subject {
         return checkpointsCollected;
     }
 
-    public void setCheckpointsCollected(int checkpointsCollected) {
-        this.checkpointsCollected = checkpointsCollected;
+    public void iterateCheckpointsCollected() { //TODO: check if player has won
+        this.checkpointsCollected += 1;
+        int wincon = 1; //To be removed
+        if (checkpointsCollected == wincon){
+            //win();
+            System.out.println(this.name + " Has won");
+        }
     }
 
     public void setCardField(int i, Object card){
