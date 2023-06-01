@@ -27,7 +27,7 @@ public class Pit extends FieldAction {
         System.out.println(currentPlayer.getName() + " has fallen in a pit");
         currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
         currentPlayer.addSpamCardToDiscardPile();
-        currentPlayer.setSpace(currentPlayer.startSpace); //Order shouldn't really matter here
+        currentPlayer.setSpace(currentPlayer.startSpace);
         currentPlayer.discardCurrentProgram();
         currentPlayer.setHeading(Heading.NORTH);
 
