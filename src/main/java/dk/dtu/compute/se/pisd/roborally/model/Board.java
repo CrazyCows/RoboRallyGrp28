@@ -26,10 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -65,8 +62,7 @@ public class Board extends Subject {
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
 
-    //TODO: Anton har ligget added den her frækkert
-    private int numberOfCheckpoints;
+    private int numberOfCheckpoints = 0;
 
     public Board(int width, int height) {
         this.width = width;
@@ -296,4 +292,20 @@ public class Board extends Subject {
         return "temp STATUS MESSAGE 0";
     }
 
+    public int getNumberOfCheckpoints() {
+        if (numberOfCheckpoints == 0){
+            int counter = 0;
+            for (int x = 0; x < width; x++) {
+                for(int y = 0; y < height; y++) {
+                    for (Item item : spaces[x][y].getItems()){
+                        if (Objects.equals(item.getName(), "checkpoint")){
+                            counter += 1;
+                        }
+                    }
+                }
+            }
+            numberOfCheckpoints = counter;
+        }
+        return numberOfCheckpoints;
+    }
 }
