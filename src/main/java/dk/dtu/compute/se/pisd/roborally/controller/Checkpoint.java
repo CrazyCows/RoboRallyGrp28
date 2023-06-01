@@ -22,6 +22,7 @@ public class Checkpoint extends FieldAction {
         this.heading = heading;
     }
 
+    //This is only temporary and should be added in the constructor
     private int number = 0;
 
 
@@ -36,13 +37,14 @@ public class Checkpoint extends FieldAction {
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         System.out.println("THE CHECKPOINT");
-        // TODO needs to be implemented
         Board board = gameController.board;
         Player currentPlayer = space.getPlayer();
         if (currentPlayer.getCheckpointsCollected() == number){
-            currentPlayer.iterateCheckpointsCollected();
+            currentPlayer.iterateCheckpointsCollected(); //We could also just currentplayer.checkpointscolled = number
+            if (currentPlayer.getCheckpointsCollected() == board.getNumberOfCheckpoints()){
+                gameController.win(currentPlayer);
+            }
         }
-
         return true;
     }
 
