@@ -40,6 +40,7 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
+    public Space startSpace;
 
     private String name;
     private String color;
@@ -122,6 +123,10 @@ public class Player extends Subject {
             }
             if (space != null) {
                 space.setPlayer(this);
+            }
+
+            if (this.startSpace == null && space != null){ //I assume this work
+                this.startSpace = space;
             }
             notifyChange();
         }
