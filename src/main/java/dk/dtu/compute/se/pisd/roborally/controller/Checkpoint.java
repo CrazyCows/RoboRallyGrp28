@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 
 public class Checkpoint extends FieldAction {
@@ -22,9 +23,6 @@ public class Checkpoint extends FieldAction {
         this.heading = heading;
     }
 
-    //This is only temporary and should be added in the constructor
-    private int number = 0;
-
 
     /**
      *
@@ -36,11 +34,21 @@ public class Checkpoint extends FieldAction {
      */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+        String s = "12";
+        for (Item item : space.getItems()){
+            if (item.getName().equals("checkpoint")){
+                s = item.getImage();
+                break;
+            }
+        }
+        String clean = s.replaceAll("\\D+",""); //Uses regex to remove all non-numbers from string
+        int number = Integer.parseInt(clean);
+
         System.out.println("THE CHECKPOINT");
         Board board = gameController.board;
         Player currentPlayer = space.getPlayer();
         if (currentPlayer.getCheckpointsCollected() == number){
-            currentPlayer.iterateCheckpointsCollected(); //We could also just currentplayer.checkpointscolled = number
+            currentPlayer.iterateCheckpointsCollected();
             if (currentPlayer.getCheckpointsCollected() == board.getNumberOfCheckpoints()){
                 gameController.win(currentPlayer);
             }

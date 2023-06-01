@@ -277,7 +277,7 @@
       "items": [
         {
           "name": "checkpoint",
-          "image" : "checkpointhansi.png",
+          "image" : "checkpointhansi1.png",
           "heading" : "NORTH",
           "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
         }
