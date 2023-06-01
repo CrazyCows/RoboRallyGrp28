@@ -313,6 +313,10 @@ public class GameController {
         //     is not yet implemented
     }
 
+    public void win(Player currentPlayer) {
+        System.out.println("The player " + currentPlayer.getName() + " has won!");
+    }
+
     class ImpossibleMoveException extends Exception {
 
         private Player player;
