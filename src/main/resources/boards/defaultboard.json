@@ -277,13 +277,25 @@
       "items": [
         {
           "name": "checkpoint",
-          "image" : "checkpointhansi.png",
+          "image" : "checkpointhansi0.png",
           "heading" : "NORTH",
           "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
         }
       ],
       "x": 7,
       "y": 2
+    },
+    {
+      "items": [
+        {
+          "name": "checkpoint",
+          "image" : "checkpointhansi1.png",
+          "heading" : "NORTH",
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+        }
+      ],
+      "x": 3,
+      "y": 4
     }
   ]
 }
