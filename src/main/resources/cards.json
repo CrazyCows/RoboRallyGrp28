@@ -175,7 +175,7 @@
     {
       "name": "Mini Howitzer",
       "cost": 2,
-      "effect": "",
+      "effect": "Once per register, when you shoot, you may pay one energy to deal two additional SPAM damage cards and push the attacked robot one space in the direction you are shooting.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -183,7 +183,7 @@
     {
       "name": "Rear Laser",
       "cost": 2,
-      "effect": "",
+      "effect": "Your robot may shoot backward as well as forward.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -191,7 +191,7 @@
     {
       "name": "Scrambler",
       "cost": 3,
-      "effect": "",
+      "effect": "If you attack a robot, that player replaces the card in their next register with the top card of their deck, unless it is the final register.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -199,7 +199,7 @@
     {
       "name": "Tractor Beam",
       "cost": 3,
-      "effect": "",
+      "effect": "When you shoot a robot, you may pull it toward you one space. Tractor beam may not be used on adjacent robots.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -207,7 +207,7 @@
     {
       "name": "Side Arms",
       "cost": 3,
-      "effect": "",
+      "effect": "When you push a robot, you may choose to push it to the left or right instead of the direction you are facing.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -215,7 +215,7 @@
     {
       "name": "Trojan Needler",
       "cost": 3,
-      "effect": "",
+      "effect": "When you shoot or push a robot, target robot receives damage in the form of one Trojan horse damage card instead of one SPAM damage card.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -223,7 +223,7 @@
     {
       "name": "Teleporter",
       "cost": 3,
-      "effect": "",
+      "effect": "You may pay one energy to ignore obstacles when moving. You cannot land on obstacles. If you move to a space with another robot, swap places with that robot.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -231,7 +231,7 @@
     {
       "name": "Virus Module",
       "cost": 2,
-      "effect": "",
+      "effect": "When you push a robot, give that player a virus damage card.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
