@@ -110,91 +110,166 @@
 
     {
       "name": "Firewall",
-      "cost": 4,
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Pressor Beam",
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Hover Unit",
+      "cost": 1,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Rail Gun",
+      "cost": 2,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Memory Stick",
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Ramming Gear",
+      "cost": 2,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Mini Howitzer",
+      "cost": 2,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Rear Laser",
+      "cost": 2,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Scrambler",
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Tractor Beam",
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Side Arms",
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Trojan Needler",
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Teleporter",
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Virus Module",
+      "cost": 2,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+
+
+
+    {
+      "name": "Boink",
+      "cost": 1,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Hack",
+      "cost": 1,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Energy Routine",
+      "cost": 3,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Manual Sort",
+      "cost": 1,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Memory Swap",
+      "cost": 1,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Repeat Routine",
+      "cost": 3,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Reboot",
+      "cost": 1,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Sandbox Routine",
+      "cost": 5,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Hack",
+      "cost": 1,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     }
-
-
-
-
   ]
 }
