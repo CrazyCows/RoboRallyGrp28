@@ -266,7 +266,56 @@
     },
 
     {
-      "name": "Hack",
+      "name": "Recharge",
+      "cost": 0,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Spam blocker",
+      "cost": 3,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Recompile",
+      "cost": 1,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Spam Folder Routine",
+      "cost": 2,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Refresh",
+      "cost": 2,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Speed Routine",
+      "cost": 3,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Weasel Routine",
+      "cost": 3,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Zoop",
       "cost": 1,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
