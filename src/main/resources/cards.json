@@ -47,6 +47,7 @@
     {
       "name": "Admin Privilege",
       "cost": 3,
+      "effect": "Once per round, you may give your robot priority for one register.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -54,6 +55,7 @@
     {
       "name": "Corruption Wave",
       "cost": 4,
+      "effect": "You may put SPAM damage cards you deal on top of opponents' decks.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -61,6 +63,7 @@
     {
       "name": "Blue Screen of Death",
       "cost": 4,
+      "effect": "When you shoot or push an adjacent robot, you may give that player one worm damage card instead of one SPAM damage card.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -68,20 +71,23 @@
     {
       "name": "Crab Legs",
       "cost": 5,
+      "effect": "When executing a Move 1 card, you may move one space forward then one space right or left, without rotating. Then move forward one additional space in the direction you are facing.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Brakes",
-      "image" : "navn.png",
       "cost": 3,
+      "effect": "You may treat your Move 1's as Move 0's.",
+      "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Deflector Shield",
       "cost": 2,
+      "effect": "At the beginning of a register, you may spend one energy to negate any robot lasers that would hit you that register.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -89,6 +95,7 @@
     {
       "name": "Cache Memory",
       "cost": 4,
+      "effect": "You may discard cards from your hand and place them on the top of your deck. Do not draw replacement cards.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -96,6 +103,7 @@
     {
       "name": "Defrag Gizmo",
       "cost": 5,
+      "effect": "Once during each round, you may permanently discard one damage card from your hand. Draw a replacement card from the top of your deck.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -103,6 +111,7 @@
     {
       "name": "Double Barrel Laser",
       "cost": 2,
+      "effect": "Deal one additional SPAM damage card to any robot you shoot.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -110,6 +119,7 @@
     {
       "name": "Modular Chassis",
       "cost": 1,
+      "effect": "When you push another robot, give that player this card, and take one of their installed upgrades. That player keeps this card until they use it.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -117,6 +127,7 @@
     {
       "name": "Firewall",
       "cost": 3,
+      "effect": "Take no SPAM damage cards when rebooting.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -124,6 +135,7 @@
     {
       "name": "Pressor Beam",
       "cost": 3,
+      "effect": "You may push any robot you shoot one space in the direction you are shooting.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -131,6 +143,7 @@
     {
       "name": "Hover Unit",
       "cost": 1,
+      "effect": "Your robot can pass over, but not land on, pits. If you end your move on a pit, you fall in. You can't turn off Hover Unit, and you can't hover above another robot.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -138,6 +151,7 @@
     {
       "name": "Rail Gun",
       "cost": 2,
+      "effect": "You may shoot through any number of walls and/or robots. Robots in the line of fire take one SPAM damage card.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -145,6 +159,7 @@
     {
       "name": "Memory Stick",
       "cost": 3,
+      "effect": "Draw one additional programming card at the start of each round.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -152,6 +167,7 @@
     {
       "name": "Ramming Gear",
       "cost": 2,
+      "effect": "Deal one SPAM damage card when you push a robot.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -159,6 +175,7 @@
     {
       "name": "Mini Howitzer",
       "cost": 2,
+      "effect": "",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -166,6 +183,7 @@
     {
       "name": "Rear Laser",
       "cost": 2,
+      "effect": "",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -173,6 +191,7 @@
     {
       "name": "Scrambler",
       "cost": 3,
+      "effect": "",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -180,6 +199,7 @@
     {
       "name": "Tractor Beam",
       "cost": 3,
+      "effect": "",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -187,6 +207,7 @@
     {
       "name": "Side Arms",
       "cost": 3,
+      "effect": "",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -194,6 +215,7 @@
     {
       "name": "Trojan Needler",
       "cost": 3,
+      "effect": "",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -201,6 +223,7 @@
     {
       "name": "Teleporter",
       "cost": 3,
+      "effect": "",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -208,6 +231,7 @@
     {
       "name": "Virus Module",
       "cost": 2,
+      "effect": "",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
