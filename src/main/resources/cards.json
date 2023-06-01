@@ -242,6 +242,7 @@
     {
       "name": "Boink",
       "cost": 1,
+      "effect": "Move to an adjacent space. Do not change direction.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -249,6 +250,7 @@
     {
       "name": "Hack",
       "cost": 1,
+      "effect": "Execute the programming in your current register again. This action does not replace any existing programming.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -256,6 +258,7 @@
     {
       "name": "Energy Routine",
       "cost": 3,
+      "effect": "Add the Energy Routine programming card to your discard pile. It is now permanently part of your deck. This acts as a Power-Up Card in your programming deck.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -263,6 +266,7 @@
     {
       "name": "Manual Sort",
       "cost": 1,
+      "effect": "You may give your robot priority for this register. This card overrides Admin Privilege.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -270,6 +274,7 @@
     {
       "name": "Memory Swap",
       "cost": 1,
+      "effect": "Draw three cards. Then choose three from your hand to put on top of your deck.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -277,6 +282,7 @@
     {
       "name": "Repeat Routine",
       "cost": 3,
+      "effect": "Add the Repeat Routine programming card to your discard pile. It is now permanently part of your deck. This card acts as an extra Again card in your programming deck.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -284,6 +290,7 @@
     {
       "name": "Reboot",
       "cost": 1,
+      "effect": "Reboot your robot, but take no damage.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -291,6 +298,7 @@
     {
       "name": "Sandbox Routine",
       "cost": 5,
+      "effect": "Add the Sandbox Routine programming card to your discard pile. It is now permanently part of your deck. This allows you to choose between the following: Move 1, 2, or 3; Back Up; Turn Left; Turn Right; U-Turn.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -298,6 +306,7 @@
     {
       "name": "Recharge",
       "cost": 0,
+      "effect": "Gain three energy.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -305,6 +314,7 @@
     {
       "name": "Spam blocker",
       "cost": 3,
+      "effect": "Replace each SPAM damage card in your hand with a card from the top of your deck.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -312,6 +322,7 @@
     {
       "name": "Recompile",
       "cost": 1,
+      "effect": "Discard your entire hand. Draw a new one. You can reshuffle your discard pile.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -319,6 +330,7 @@
     {
       "name": "Spam Folder Routine",
       "cost": 2,
+      "effect": "Add the SPAM Folder programming card to your discard pile. It is now permanently part of your deck. It allows you to permanently discard one SPAM damage card from your discard pile.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -326,6 +338,7 @@
     {
       "name": "Refresh",
       "cost": 2,
+      "effect": "Change the programming in your current register to any of the following: Move 1, 2, or 3; Turn Left; Turn Right; U-Turn; Back Up; Again. If you're replacing a damage card, you may permanently discard the damage card.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -333,6 +346,7 @@
     {
       "name": "Speed Routine",
       "cost": 3,
+      "effect": "Add the Speed Routine programming card to your discard pile. It is now permanently part of your deck. The Speed Routine programming card acts as an extra Move 3 card in your programming deck.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -340,6 +354,7 @@
     {
       "name": "Weasel Routine",
       "cost": 3,
+      "effect": "Add the Weasel Routine programming card to your discard pile. It is now permanently part of your deck. The Weasel Routine programming card allows you to choose one of the following actions to perform in the register where it is programmed: Turn Left, Turn Right, U-Turn.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -347,6 +362,7 @@
     {
       "name": "Zoop",
       "cost": 1,
+      "effect": "Rotate to face any direction.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     }
