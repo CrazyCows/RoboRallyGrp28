@@ -33,7 +33,7 @@ public class CommandCardField extends Subject {
 
     final public Player player;
 
-    private CommandCard card;
+    private ProgrammingCard card;
 
     private boolean visible;
 
@@ -43,11 +43,11 @@ public class CommandCardField extends Subject {
         this.visible = true;
     }
 
-    public CommandCard getCard() {
+    public ProgrammingCard getCard() {
         return card;
     }
 
-    public void setCard(CommandCard card) {
+    public void setCard(ProgrammingCard card) {
         if (card != this.card) {
             this.card = card;
             notifyChange();

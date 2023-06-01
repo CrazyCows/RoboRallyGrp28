@@ -195,21 +195,21 @@ public class Player extends Subject {
 
     }
 
-    public void drawCard(int position, CommandCard commandCard) {
+    public void drawCard(int position, ProgrammingCard commandCard) {
         drawnCards.get(position).setCard(commandCard);
         //System.out.println(cards.get(position - 1).getCard().getName());
     }
 
-    public ArrayList<CommandCard> getDrawnCards() {
-        ArrayList<CommandCard>  commandCards = new ArrayList<>();
+    public ArrayList<ProgrammingCard> getDrawnCards() {
+        ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.drawnCards) {
             commandCards.add(commandCardField.getCard());
         }
         return commandCards;
     }
 
-    public ArrayList<CommandCard> currentProgram() {
-        ArrayList<CommandCard>  commandCards = new ArrayList<>();
+    public ArrayList<ProgrammingCard> currentProgram() {
+        ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.program) {
             commandCards.add(commandCardField.getCard());
         }

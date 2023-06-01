@@ -22,9 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.EventController;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;

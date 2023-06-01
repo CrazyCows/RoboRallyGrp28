@@ -1,19 +1,19 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.CardLoader;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCard;
+import dk.dtu.compute.se.pisd.roborally.model.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
 public class CardController {
     private static CardController cardController;
     private CardLoader cardLoader;
-    private LinkedList<CommandCard> deck;
+    private ArrayList<ProgrammingCard> deck;
     //TODO: This deck needs to be removed. Player (model) has cards, controller doesn't.
     //TODO: Also, each player needs to have their own cards
-
 
 
     public static CardController getInstance(){ //Singleton, make private?
@@ -30,7 +30,7 @@ public class CardController {
      */
     public CardController() {
         this.cardLoader = CardLoader.getInstance();
-        this.deck = cardLoader.CreateCardPile();
+        this.deck = cardLoader.getProgrammingCards();
         shuffleDeck(deck);
     }
 
@@ -49,7 +49,7 @@ public class CardController {
      * @param player player who draws a card
      */
     public void drawOneCard(Player player) {
-        CommandCard commandCard = deck.get(0);
+        ProgrammingCard commandCard = deck.get(0);
         if (player.getNextEmptyCardField() != - 1) {
             player.drawCard(player.getNextEmptyCardField(), commandCard);
             deck.add(commandCard);
@@ -63,7 +63,7 @@ public class CardController {
     /**
      * Shuffles a given deck (linkedList) of CommandCards
      */
-    private LinkedList<CommandCard> shuffleDeck(LinkedList<CommandCard> deck){
+    private ArrayList<ProgrammingCard> shuffleDeck(ArrayList<ProgrammingCard> deck){
         Collections.shuffle(deck);
         return deck;
     }

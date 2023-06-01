@@ -40,7 +40,7 @@ public abstract class FieldAction {
      * By using this implementation, any 'doAction' will be run, when a given object
      * uses its doAction - and it will find out by itself, which doAction to use (simplified)
      *
-     * Please note, that command cards that determines movement uses the EventController.
+     * Please note, that command cards that determines movement uses the CommandCardController.
      *
      *
      * @param gameController the gameController of the respective game

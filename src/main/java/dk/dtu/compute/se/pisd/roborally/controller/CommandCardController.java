@@ -1,30 +1,26 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Command;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Command.LEFT;
-import static dk.dtu.compute.se.pisd.roborally.model.Command.RIGHT;
-
-public class EventController {
+public class CommandCardController {
 
     private GameController gameController;
 
     /**
-     * The EventController works much like the FieldController,
+     * The CommandCardController works much like the FieldController,
      * although it is not abstract. It makes it possible to execute a
      * command upon a given player. This is used for programming the robot,
      * and simply translates the command into action.
      */
 
-    public EventController(GameController gameController) {
+    public CommandCardController(GameController gameController) {
         this.gameController = gameController;
     }
 
 
-    public void doAction(Player player, Command command) {
+    /*public void doAction(Player player, Command command) {
         switch (command) {
             case MOVEONE -> {
                 gameController.moveForward(player);
@@ -111,6 +107,6 @@ public class EventController {
 
     public void fireLaser(Player player, Space space) {
 
-    }
+    }*/
 
 }

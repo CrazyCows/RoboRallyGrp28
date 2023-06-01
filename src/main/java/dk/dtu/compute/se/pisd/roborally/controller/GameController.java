@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 //import java.util.*;
 
@@ -48,7 +47,7 @@ public class GameController {
 
 
     protected CardController cardController;
-    private EventController eventController;
+    private CommandCardController eventController;
 
     public void setBoardView(BoardView boardView){
         this.boardView = boardView;
@@ -60,7 +59,7 @@ public class GameController {
             cardController.drawCards(player);
         }
         board.setPhase(Phase.PROGRAMMING);
-        this.eventController = new EventController(this);
+        this.eventController = new CommandCardController(this);
     }
 
 
@@ -215,15 +214,18 @@ public class GameController {
     }
 
     // Executes the commandCards
-    public void executeProgram(List<CommandCard> commandCards) {
+    public void executeProgram(List<ProgrammingCard> commandCards) {
         Thread commandThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (CommandCard commandCard : commandCards) {
-                    eventController.doAction(board.getCurrentPlayer(), commandCard.command);
+                for (ProgrammingCard commandCard : commandCards) {
                     try {
+                        commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard);
                         Thread.sleep(420);
-                    } catch (InterruptedException e) {
+                    } catch (NullPointerException e) {
+                        System.out.println("Error: No more commandCards");
+                    }
+                    catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
@@ -334,8 +336,8 @@ public class GameController {
 
     // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        CommandCard sourceCard = source.getCard();
-        CommandCard targetCard = target.getCard();
+        ProgrammingCard sourceCard = source.getCard();
+        ProgrammingCard targetCard = target.getCard();
         if (sourceCard != null & targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);
