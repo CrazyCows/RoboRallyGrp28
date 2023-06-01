@@ -4,13 +4,13 @@
       "name": "Move 1",
       "imagePath": "trojan.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.ProgrammingAction",
-      "commandName": "LEFT"
+      "commandName": "MOVEONE"
     },
     {
       "name": "Turn Left",
       "imagePath": "trojan.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.ProgrammingAction",
-      "commandName": "MOVEONE"
+      "commandName": "LEFT"
     }
   ],
   "damageCards": [
