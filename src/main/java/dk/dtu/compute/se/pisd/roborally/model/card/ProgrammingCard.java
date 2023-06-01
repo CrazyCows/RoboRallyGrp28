@@ -19,11 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.card;
 
-import dk.dtu.compute.se.pisd.roborally.controller.CardAction;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import org.jetbrains.annotations.NotNull;
+import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
+import dk.dtu.compute.se.pisd.roborally.model.Command;
 
 import java.lang.reflect.InvocationTargetException;
 

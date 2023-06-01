@@ -1,12 +1,11 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.model.CardLoader;
-import dk.dtu.compute.se.pisd.roborally.model.ProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
+import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 
 public class CardController {
     private static CardController cardController;

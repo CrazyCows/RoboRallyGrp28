@@ -21,7 +21,9 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +49,6 @@ public class GameController {
 
 
     protected CardController cardController;
-    private CommandCardController eventController;
 
     public void setBoardView(BoardView boardView){
         this.boardView = boardView;
@@ -59,7 +60,7 @@ public class GameController {
             cardController.drawCards(player);
         }
         board.setPhase(Phase.PROGRAMMING);
-        this.eventController = new CommandCardController(this);
+        //this.eventController = new CommandCardController(this);
     }
 
 

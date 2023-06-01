@@ -1,27 +1,27 @@
-package dk.dtu.compute.se.pisd.roborally.controller;
+package dk.dtu.compute.se.pisd.roborally.controller.card;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 
-public class CommandCardController {
+import static dk.dtu.compute.se.pisd.roborally.model.Command.LEFT;
+import static dk.dtu.compute.se.pisd.roborally.model.Command.RIGHT;
 
-    private GameController gameController;
+public class ProgrammingAction extends CardAction<ProgrammingCard> {
 
     /**
-     * The CommandCardController works much like the FieldController,
+     * The ProgrammingAction controller class works much like the FieldController,
      * although it is not abstract. It makes it possible to execute a
      * command upon a given player. This is used for programming the robot,
      * and simply translates the command into action.
      */
 
-    public CommandCardController(GameController gameController) {
-        this.gameController = gameController;
-    }
+    @Override
+    public boolean doAction(GameController gameController, Player player, ProgrammingCard card) {
+        // Implement the action specific to UpgradeCard
+        // Use the gameController and card parameters as needed
 
-
-    /*public void doAction(Player player, Command command) {
-        switch (command) {
+        switch (card.getCommand()) {
             case MOVEONE -> {
                 gameController.moveForward(player);
             }
@@ -63,31 +63,9 @@ public class CommandCardController {
                 System.out.println("AGAIN - Not yet implemented");
             }
         }
+        return true; // Return a boolean result indicating the success/failure of the action
     }
 
-
-    public void moveSpaces(Player player, Board board) {
-        int amount = 2;
-        Space space = player.getSpace();
-        int[] spacePosition = space.getPosition();
-        for (int i = 0; i < amount; i++) {
-            switch (player.getHeading()) {
-                case NORTH -> {
-                    spacePosition[1] -= 1;
-                }
-                case WEST -> {
-                    spacePosition[0] -= 1;
-                }
-                case SOUTH -> {
-                    spacePosition[1] += 1;
-                }
-                case EAST -> {
-                    spacePosition[0] += 1;
-                }
-            }
-        }
-        player.setSpace(board.getSpace(spacePosition[0], spacePosition[1]));
-    }
 
     public void moveToSpace(Player player) {
 
@@ -105,7 +83,7 @@ public class CommandCardController {
 
     }
 
-    public void fireLaser(Player player, Space space) {
+    /*public void fireLaser(Player player, Space space) {
 
     }*/
 

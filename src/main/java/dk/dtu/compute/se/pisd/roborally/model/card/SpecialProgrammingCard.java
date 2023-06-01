@@ -1,14 +1,14 @@
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.card;
 
-import dk.dtu.compute.se.pisd.roborally.controller.CardAction;
+import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class DamageCard extends Card {
+public class SpecialProgrammingCard extends Card {
 
-    CardAction<DamageCard> action;
+    CardAction<SpecialProgrammingCard> action;
 
-    public DamageCard(String name, String effect, String imagePath, String actionClassName) {
+    public SpecialProgrammingCard(String name, String effect, String imagePath, String actionClassName) {
         this.name = name;
         this.effect = effect;
         this.imagePath = imagePath;
@@ -20,7 +20,7 @@ public class DamageCard extends Card {
     public void createAction() {
         try {
             Class<?> eventClass = Class.forName(this.actionClassName);
-            this.action = (CardAction<DamageCard>) eventClass.getDeclaredConstructor().newInstance();
+            this.action = (CardAction<SpecialProgrammingCard>) eventClass.getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException |
                  InvocationTargetException e) {
             e.printStackTrace();
@@ -29,11 +29,11 @@ public class DamageCard extends Card {
     }
 
 
-    public void setAction(CardAction<DamageCard> action) {
+    public void setAction(CardAction<SpecialProgrammingCard> action) {
         this.action = action;
     }
 
-    public CardAction<DamageCard> getAction() {
+    public CardAction<SpecialProgrammingCard> getAction() {
         return this.action;
     }
 

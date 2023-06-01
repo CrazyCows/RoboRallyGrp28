@@ -12,7 +12,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Pit",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Pit",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -31,7 +31,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -50,7 +50,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -67,7 +67,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -84,7 +84,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Gear",
           "INSTANCE": {
             "heading": "NORTH",
             "direction": "right"
@@ -102,7 +102,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Gear",
           "INSTANCE": {
             "heading": "NORTH",
             "direction": "left"
@@ -120,7 +120,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -137,7 +137,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -156,7 +156,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -175,7 +175,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH"
           }
@@ -194,7 +194,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -213,7 +213,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -232,7 +232,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -252,7 +252,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH"
           }
@@ -267,7 +267,7 @@
           "name": "priorityAntenna",
           "image" : "priorityAntenna.png",
           "heading" : "NORTH",
-          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.PriorityAntenna"
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.PriorityAntenna"
         }
       ],
       "x": 5,
@@ -279,7 +279,7 @@
           "name": "checkpoint",
           "image" : "checkpointhansi0.png",
           "heading" : "NORTH",
-          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.Checkpoint"
         }
       ],
       "x": 7,
@@ -291,7 +291,7 @@
           "name": "checkpoint",
           "image" : "checkpointhansi1.png",
           "heading" : "NORTH",
-          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.Checkpoint"
         }
       ],
       "x": 3,

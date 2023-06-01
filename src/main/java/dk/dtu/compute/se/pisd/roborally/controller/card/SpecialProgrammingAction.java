@@ -1,7 +1,8 @@
-package dk.dtu.compute.se.pisd.roborally.controller;
+package dk.dtu.compute.se.pisd.roborally.controller.card;
 
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.SpecialProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.SpecialProgrammingCard;
 
 public class SpecialProgrammingAction extends CardAction<SpecialProgrammingCard> {
 

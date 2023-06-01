@@ -1,14 +1,11 @@
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import dk.dtu.compute.se.pisd.roborally.controller.CardAction;
-import dk.dtu.compute.se.pisd.roborally.controller.DamageAction;
-import dk.dtu.compute.se.pisd.roborally.controller.UpgradeAction;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.card.*;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,7 +1,8 @@
-package dk.dtu.compute.se.pisd.roborally.controller;
+package dk.dtu.compute.se.pisd.roborally.controller.card;
 
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.TempUpgradeCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.TempUpgradeCard;
 
 public class TempUpgradeAction extends CardAction<TempUpgradeCard> {
 

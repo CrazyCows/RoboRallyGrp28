@@ -1,6 +1,7 @@
-package dk.dtu.compute.se.pisd.roborally.controller;
+package dk.dtu.compute.se.pisd.roborally.controller.card;
 
-import dk.dtu.compute.se.pisd.roborally.model.DamageCard;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 public class DamageAction extends CardAction<DamageCard> {

@@ -1,16 +1,15 @@
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.card;
 
-import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.CardAction;
+import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class UpgradeCard extends Card {
+public class TempUpgradeCard extends Card {
 
-    CardAction<UpgradeCard> action;
+    CardAction<TempUpgradeCard> action;
     int cost;
 
-    public UpgradeCard(String name, String effect, int cost, String imagePath, String actionClassName) {
+    public TempUpgradeCard(String name, String effect, int cost, String imagePath, String actionClassName) {
         this.name = name;
         this.effect = effect;
         this.cost = cost;
@@ -23,7 +22,7 @@ public class UpgradeCard extends Card {
     public void createAction() {
         try {
             Class<?> eventClass = Class.forName(this.actionClassName);
-            this.action = (CardAction<UpgradeCard>) eventClass.getDeclaredConstructor().newInstance();
+            this.action = (CardAction<TempUpgradeCard>) eventClass.getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException |
                  InvocationTargetException e) {
             e.printStackTrace();
@@ -32,13 +31,12 @@ public class UpgradeCard extends Card {
     }
 
 
-    public void setAction(CardAction<UpgradeCard> action) {
+    public void setAction(CardAction<TempUpgradeCard> action) {
         this.action = action;
     }
 
-    public CardAction<UpgradeCard> getAction() {
+    public CardAction<TempUpgradeCard> getAction() {
         return this.action;
     }
-
 
 }

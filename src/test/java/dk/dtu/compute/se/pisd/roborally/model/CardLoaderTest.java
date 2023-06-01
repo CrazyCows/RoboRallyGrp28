@@ -1,10 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import org.junit.jupiter.api.Assertions;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CardLoaderTest {
 

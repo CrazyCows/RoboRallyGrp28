@@ -1,8 +1,8 @@
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.card;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
-public class Card extends Subject {
+public abstract class Card extends Subject {
 
     String name;
     String effect;
