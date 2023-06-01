@@ -40,24 +40,28 @@
 
     {
       "name": "Admin Privilege",
+      "cost": 3,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Corruption Wave",
+      "cost": 4,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Blue Screen of Death",
+      "cost": 4,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Crab Legs",
+      "cost": 5,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
@@ -65,43 +69,132 @@
     {
       "name": "Brakes",
       "image" : "navn.png",
+      "cost": 3,
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Deflector Shield",
+      "cost": 2,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Cache Memory",
+      "cost": 4,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Defrag Gizmo",
+      "cost": 5,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Double Barrel Laser",
+      "cost": 2,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
       "name": "Modular Chassis",
+      "cost": 1,
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     },
 
     {
-      "name": "Admin Privilege",
+      "name": "Firewall",
+      "cost": 4,
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Pressor Beam",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Hover Unit",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Rail Gun",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Memory Stick",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Ramming Gear",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Mini Howitzer",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Rear Laser",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Scrambler",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Tractor Beam",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Side Arms",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Trojan Needler",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Teleporter",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Virus Module",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
     }
+
+
+
+
   ]
 }
