@@ -19,6 +19,9 @@ public class Item {
     String eventClassName;
     FieldAction event;
 
+    //Only to be used in checkpoints
+    int checkpointNumber;
+
     public Item(String name, String image, Heading heading, String eventClassName) {
         this.name = name;
         this.image = image;
