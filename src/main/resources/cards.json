@@ -1,0 +1,65 @@
+{
+  "cards": [
+    {
+      "name": "Energy Routine",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Weasel Routine",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Spam Folder",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Sandbox Routine",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Speed Routine",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Repeat Routine",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+
+
+    {
+      "name": "Admin Privilege",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Corruption Wave",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Blue Screen of Death",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Crab Legs",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+  ]
+}
