@@ -193,7 +193,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragOverHandler detected");
+            //System.out.println("OnDragOverHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView target = (CardFieldView) t;
