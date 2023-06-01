@@ -23,8 +23,30 @@ public class Pit extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        System.out.println("PIT - HVOR HAIDAR HØRER TIL");
-        // TODO needs to be implemented
+        Player player = space.getPlayer();
+        System.out.println(player.getName() + " has fallen in a pit");
+        player.addSpamCardToDiscardPile(); //Draws two spam damage cards
+        player.addSpamCardToDiscardPile();
+        player.setSpace(player.startSpace); //Order shouldn't really matter here
+        player.discardCurrentProgram();
+        player.setHeading(Heading.NORTH);
+
+
+        /*
+        //Alternative to this is to let the choosing player/client finish the entire game, and then push the new
+        //game state to the server, which everyone would then receive. This would be easier but would mess up the
+        //animations and such, because it would suddenly set the game to be somewhere else.
+        if (gameController.localPlayer == player){
+            //TODO: ASK FOR ROBOT HEADING
+            //Heading newHeading = askforheading;
+            //player.setHeading(newHeading);
+            //TODO: PUSH HEADING SOMEWHERE (SPECIFIC FILE?)
+
+        } else {
+            //TODO: Repeatedly poll until direction has been pushed
+            //player.setHeading(newHeading); //newHeading from server
+        }*/
+
         return false;
     }
 }
