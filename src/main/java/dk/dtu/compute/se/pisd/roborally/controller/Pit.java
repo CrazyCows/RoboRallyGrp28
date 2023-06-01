@@ -23,28 +23,40 @@ public class Pit extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        Player player = space.getPlayer();
-        System.out.println(player.getName() + " has fallen in a pit");
-        player.addSpamCardToDiscardPile(); //Draws two spam damage cards
-        player.addSpamCardToDiscardPile();
-        player.setSpace(player.startSpace); //Order shouldn't really matter here
-        player.discardCurrentProgram();
-        player.setHeading(Heading.NORTH);
+        Player currentPlayer = space.getPlayer();
+        System.out.println(currentPlayer.getName() + " has fallen in a pit");
+        currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
+        currentPlayer.addSpamCardToDiscardPile();
+        currentPlayer.setSpace(currentPlayer.startSpace); //Order shouldn't really matter here
+        currentPlayer.discardCurrentProgram();
+        currentPlayer.setHeading(Heading.NORTH);
+
 
 
         /*
-        //Alternative to this is to let the choosing player/client finish the entire game, and then push the new
+        System.out.println("THE CHECKPOINT");
+        Board board = gameController.board;
+        Player currentPlayer = space.getPlayer();
+        if (currentPlayer.getCheckpointsCollected() == number){
+            currentPlayer.iterateCheckpointsCollected(); //We could also just currentplayer.checkpointscolled = number
+            if (currentPlayer.getCheckpointsCollected() == board.getNumberOfCheckpoints()){
+                gameController.win(currentPlayer);
+            }
+        }
+         */
+        /*
+        //Alternative to this is to let the choosing currentPlayer/client finish the entire game, and then push the new
         //game state to the server, which everyone would then receive. This would be easier but would mess up the
         //animations and such, because it would suddenly set the game to be somewhere else.
-        if (gameController.localPlayer == player){
+        if (gameController.localPlayer == currentPlayer){
             //TODO: ASK FOR ROBOT HEADING
             //Heading newHeading = askforheading;
-            //player.setHeading(newHeading);
+            //currentPlayer.setHeading(newHeading);
             //TODO: PUSH HEADING SOMEWHERE (SPECIFIC FILE?)
 
         } else {
             //TODO: Repeatedly poll until direction has been pushed
-            //player.setHeading(newHeading); //newHeading from server
+            //currentPlayer.setHeading(newHeading); //newHeading from server
         }*/
 
         return false;
