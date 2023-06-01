@@ -243,7 +243,8 @@
     },
     {
       "walls": [
-        "EAST"
+        "EAST",
+        "WEST"
       ],
       "background": [
         "SOUTH",
@@ -276,7 +277,7 @@
       "items": [
         {
           "name": "checkpoint",
-          "image" : "checkpoint.png",
+          "image" : "checkpointhansi.png",
           "heading" : "NORTH",
           "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
         }
