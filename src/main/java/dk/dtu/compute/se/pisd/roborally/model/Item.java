@@ -19,6 +19,8 @@ public class Item {
     String eventClassName;
     FieldAction event;
 
+
+
     //Only to be used in checkpoints
     int checkpointNumber;
 
@@ -39,6 +41,14 @@ public class Item {
 
     public FieldAction getEvent() {
         return event;
+    }
+
+    public int getCheckpointNumber() {
+        return checkpointNumber;
+    }
+
+    public void setCheckpointNumber(int checkpointNumber) {
+        this.checkpointNumber = checkpointNumber;
     }
 
 
