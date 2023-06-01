@@ -1,16 +1,34 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Random;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import dk.dtu.compute.se.pisd.roborally.controller.CardAction;
+import dk.dtu.compute.se.pisd.roborally.controller.DamageAction;
+import dk.dtu.compute.se.pisd.roborally.controller.UpgradeAction;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.Adapter;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Command.*;
-//import static dk.dtu.compute.se.pisd.roborally.model.Command.LEFT;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
+
 
 public class CardLoader {
     private static CardLoader cardLoader = null;
     Random rand = new Random();
-    CommandCard[] commandCards;
+    ArrayList<ProgrammingCard> programmingCards;
+    ArrayList<DamageCard> damageCards;
+    ArrayList<UpgradeCard> upgradeCards;
+    ArrayList<TempUpgradeCard> tempUpgradeCards;
+
+
+
+    private static final String CARDSFOLDER = "cards";
+    private static final String DEFAULTCARDS = "defaultCards";
+    private static final String JSON_EXT = "json";
 
     public static CardLoader getInstance(){ //Singleton
         if (cardLoader == null){
@@ -19,39 +37,93 @@ public class CardLoader {
         return cardLoader;
     }
 
-    public CommandCard drawRandomCommandCard(){  // TODO: Should be Protected (?) as this should only be accessed in controller
-        int int_random = rand.nextInt(9); // TODO: This is a teacher comment, but has been changed to public for now
-        return commandCards[int_random];
-    }
-
-    public LinkedList<CommandCard> CreateCardPile(){ //TODO: ADD GENERICS
-        //TODO: Actually make this the correct cards
-        LinkedList<CommandCard> pile = new LinkedList<>(Arrays.asList(commandCards));
-        return pile;
-    }
-
-    public LinkedList<Object> CreateEmptyPile(){
-        return new LinkedList<Object>();
-    }
-
-    private CommandCard[] createCommandCards(){ //Private, only used once, in constructor
-        commandCards = new CommandCard[]{ //This is hardcoded, very yummy. Shouldnt wary across game versions so its fine
-                new CommandCard(MOVEONE),
-                new CommandCard(MOVETWO),
-                new CommandCard(MOVETHREE),
-                new CommandCard(RIGHT),
-                new CommandCard(LEFT),
-                new CommandCard(UTURN),
-                new CommandCard(BACKUP),
-                new CommandCard(POWERUP),
-                new CommandCard(AGAIN)
-        };
-        return commandCards;
-    }
-
-    private CardLoader(){ //Constructor
+    private CardLoader() {
         System.out.println("Created singleton class");
-        createCommandCards();
+
+        ClassLoader classLoader;
+        InputStream inputStream = null;
+
+        JsonReader reader = null;
+        try {
+            classLoader = LoadBoard.class.getClassLoader();
+            inputStream = classLoader.getResourceAsStream(CARDSFOLDER + "/" + DEFAULTCARDS + "." + JSON_EXT);
+
+            if (inputStream == null) {
+                // TODO: Handle error
+                System.out.println("ERROR");
+            }
+
+            // WE BUILT THIS CITY.
+            GsonBuilder simpleBuilder = new GsonBuilder()
+                    .registerTypeAdapter(CardAction.class, new Adapter<CardAction<Card>>());
+            Gson gson = simpleBuilder.create();
+
+            // Read the JSON data for all card types
+            reader = new JsonReader(new InputStreamReader(inputStream));
+            CardDataTemplate cardData = gson.fromJson(reader, CardDataTemplate.class);
+
+            // Extract and create programming cards
+            this.programmingCards = new ArrayList<>(cardData.getProgrammingCards());
+            for (ProgrammingCard card : programmingCards) {
+                card.createAction();
+                card.createCommand();
+            }
+
+            // Extract and create damage cards
+            this.damageCards = new ArrayList<>(cardData.getDamageCards());
+            for (DamageCard card : damageCards) {
+                card.createAction();
+            }
+
+            // Extract and create upgrade cards
+            this.upgradeCards = new ArrayList<>(cardData.getUpgradeCards());
+            for (UpgradeCard card : upgradeCards) {
+                card.createAction();
+            }
+
+            // Extract and create temporary upgrade cards
+            this.tempUpgradeCards = new ArrayList<>(cardData.getTempUpgradeCards());
+            for (TempUpgradeCard card : tempUpgradeCards) {
+                card.createAction();
+            }
+
+            // Close the reader
+            reader.close();
+
+        } catch (IOException e1) {
+            if (reader != null) {
+                try {
+                    reader.close();
+                    inputStream = null;
+                } catch (IOException e2) {
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
         System.out.println("Commandcards created");
     }
+
+
+    public ArrayList<ProgrammingCard> getProgrammingCards() {
+        return programmingCards;
+    }
+
+    public ArrayList<DamageCard> getDamageCards() {
+        return damageCards;
+    }
+
+    public ArrayList<UpgradeCard> getUpgradeCards() {
+        return upgradeCards;
+    }
+
+    public ArrayList<TempUpgradeCard> getTempUpgradeCards() {
+        return tempUpgradeCards;
+    }
+
+
 }

@@ -1,0 +1,52 @@
+{
+  "programmingCards": [
+    {
+      "name": "Move 1",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.ProgrammingAction",
+      "commandName": "LEFT"
+    },
+    {
+      "name": "Turn Left",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.ProgrammingAction",
+      "commandName": "MOVEONE"
+    }
+  ],
+  "damageCards": [
+    {
+      "name": "Trojan",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.DamageAction"
+    },
+    {
+      "name": "Morten",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.DamageAction"
+    }
+  ],
+  "upgradeCards": [
+    {
+      "name": "Trojan",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.UpgradeAction"
+    },
+    {
+      "name": "Morten",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.UpgradeAction"
+    }
+  ],
+  "tempUpgradeCards": [
+    {
+      "name": "Trojan",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.TempUpgradeAction"
+    },
+    {
+      "name": "Morten",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.TempUpgradeAction"
+    }
+  ]
+}
