@@ -106,7 +106,7 @@ public class GameController {
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
             }
-        }
+        } //If player needs to be pushed
         player.setSpace(space);
         Player nextPlayer = getNextPlayer(player);
         board.setCurrentPlayer(nextPlayer);
