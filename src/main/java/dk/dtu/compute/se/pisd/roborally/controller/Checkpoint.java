@@ -43,23 +43,6 @@ public class Checkpoint extends FieldAction {
             currentPlayer.iterateCheckpointsCollected();
         }
 
-
-
-
-
-
-        //OLD CODE BELOW
-        BoardView boardView;
-        SpaceView spaceView;
-        List<Item> itemsToMove  = new ArrayList<>(space.getItems());
-        // Iterate over the items in the space
-        for (Item item : itemsToMove) {
-            if (item.getName().equals("checkpoint")) {
-
-                //if (currentPlayer.getCheckpointsCollected() == )
-            }
-        }
-
         return true;
     }
 
