@@ -2,6 +2,7 @@
   "cards": [
     {
       "name": "Energy Routine",
+      "cost": 0,
       "effect": "Take one energy cube, and place it on your player mat.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
@@ -9,6 +10,7 @@
 
     {
       "name": "Weasel Routine",
+      "cost": 0,
       "effect": "Choose one of the following actions to perform this register: Turn Left, Turn Right, U-Turn.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
@@ -16,6 +18,7 @@
 
     {
       "name": "Spam Folder",
+      "cost": 0,
       "effect": "Permanently discard one SPAM damage card from your discard pile to the SPAM damage card draw pile.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
@@ -23,6 +26,7 @@
 
     {
       "name": "Sandbox Routine",
+      "cost": 0,
       "effect": "Choose one of the following actions to perform this register: Move 1, 2, or 3, Back Up, Turn Left, Turn Right, U-Turn.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
@@ -30,6 +34,7 @@
 
     {
       "name": "Speed Routine",
+      "cost": 0,
       "effect": "Move your robot 3 spaces in the direction it is facing.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
@@ -37,6 +42,7 @@
 
     {
       "name": "Repeat Routine",
+      "cost": 0,
       "effect": "Repeat the programming in your previous register.",
       "image" : "navn.png",
       "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"

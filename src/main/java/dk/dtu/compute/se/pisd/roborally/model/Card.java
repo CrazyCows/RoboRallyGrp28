@@ -5,6 +5,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 public class Card extends Subject {
 
     String name;
+    int cost;
+    String effect;
     String imagePath;
     String actionClassName;
 
