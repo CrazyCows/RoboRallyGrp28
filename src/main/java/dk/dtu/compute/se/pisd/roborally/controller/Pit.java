@@ -32,18 +32,7 @@ public class Pit extends FieldAction {
         currentPlayer.setHeading(Heading.NORTH);
 
 
-
-        /*
-        System.out.println("THE CHECKPOINT");
-        Board board = gameController.board;
-        Player currentPlayer = space.getPlayer();
-        if (currentPlayer.getCheckpointsCollected() == number){
-            currentPlayer.iterateCheckpointsCollected(); //We could also just currentplayer.checkpointscolled = number
-            if (currentPlayer.getCheckpointsCollected() == board.getNumberOfCheckpoints()){
-                gameController.win(currentPlayer);
-            }
-        }
-         */
+        // TODO: Below is basically pseudocode for one way to handle how we could manage selecting direction
         /*
         //Alternative to this is to let the choosing currentPlayer/client finish the entire game, and then push the new
         //game state to the server, which everyone would then receive. This would be easier but would mess up the
