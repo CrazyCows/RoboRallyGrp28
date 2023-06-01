@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import dk.dtu.compute.se.pisd.roborally.controller.CardAction;
 import dk.dtu.compute.se.pisd.roborally.controller.DamageAction;
@@ -16,6 +17,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.lang.reflect.Type;
 
 
 public class CardLoader {
@@ -30,6 +32,7 @@ public class CardLoader {
 
     private static final String CARDSFOLDER = "cards";
     private static final String DEFAULTCARDS = "defaultCards";
+    private static final String CARDS = "cards";
     private static final String JSON_EXT = "json";
 
     public static CardLoader getInstance(){ //Singleton
@@ -41,7 +44,7 @@ public class CardLoader {
 
     private CardLoader() {
         System.out.println("Created singleton class");
-
+        loadCardsFromJsonFile();
         ClassLoader classLoader;
         InputStream inputStream = null;
 
@@ -118,7 +121,16 @@ public class CardLoader {
         JsonReader reader = null;
         Gson gson = new Gson();
         try{
-            String json = new String(Files.readAllBytes(Paths.get("cards/cards.json")));
+            String json = new String(Files.readAllBytes(Paths.get(CARDSFOLDER + "/" + CARDS + "." + JSON_EXT)));
+            Type deckType = new TypeToken<List<Card>>() {}.getType();
+
+            List<Card> deck = gson.fromJson(json,deckType);
+
+            for(Card card : deck){
+                System.out.println(card.getCost());
+                System.out.println(card.getEffect());
+                System.out.println(card.getName());
+            }
 
 
 

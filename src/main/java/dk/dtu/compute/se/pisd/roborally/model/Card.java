@@ -11,6 +11,8 @@ public class Card extends Subject {
     String imagePath;
     String actionClassName;
 
+
+
     public String getName() {
         return this.name;
     }
