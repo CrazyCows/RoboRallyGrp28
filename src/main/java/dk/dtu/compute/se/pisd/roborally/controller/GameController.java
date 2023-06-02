@@ -46,6 +46,7 @@ public class GameController {
     public static CardLoader cardLoader;
     private BoardView boardView;
     private SpaceView spaceView;
+    final String[] boardElementOrder = {"pit","conveyorBelt2","conveyorBelt1","pushPanel","Gears","boardLaser","robotLaser","energySpace","checkpoint"};
 
 
     protected CardController cardController;
@@ -249,8 +250,13 @@ public class GameController {
         // Process items in the copied list
         for (Item item : itemsToProcess) {
             System.out.println(item.getName() + " is space things ");
-            item.getEvent().doAction(this, space);
+            if (item.getName().equals("conveyorBelt2")){ //Very WIP, waiting for confirmation b4 more work
+                item.getEvent().doAction(this, space);
+            }
+
         }
+
+
 
 
 
