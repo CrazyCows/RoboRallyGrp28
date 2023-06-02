@@ -43,15 +43,10 @@ import java.util.List;
 public class GameController {
 
     final public Board board;
-    private BoardView boardView;
-    private SpaceView spaceView;
 
 
     protected CardController cardController;
 
-    public void setBoardView(BoardView boardView){
-        this.boardView = boardView;
-    }
     public GameController(Board board) {
         this.board = board;
         this.cardController = CardController.getInstance();
@@ -254,60 +249,8 @@ public class GameController {
             item.getEvent().doAction(this, space);
         }
 
-
-
-        /*if (space.getItem() != null) {
-            if (space.getItem().equals("checkpoint")) {
-                space.setItem(null);
-                Random rand = new Random();
-                int maxHeight = rand.nextInt(board.height);
-                int maxWidth = rand.nextInt(board.width);
-                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-                space = board.getSpace(maxWidth, maxHeight);
-                System.out.println(space.x + " and " + space.y);
-                space.setItem("checkpoint");
-                updatedSpaceView.addCheckpoint();
-            }
-        }*/
     }
 
-    /*public void newCheckpoint(Space space) {
-        // Checks if player is on checkpoint
-        if (space.getItem() != null) {
-            if (space.getItem().equals("checkpoint")) {
-                // Removes the checkpoint
-                space.setItem(null);
-                // Randomize a position for next checkpoint
-                Random rand = new Random();
-
-                int maxHeight = rand.nextInt(board.height);
-                int maxWidth = rand.nextInt(board.width);
-                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-                space = board.getSpace(maxWidth, maxHeight);
-                while (!space.getActions().isEmpty() || space.getItem() != null || space.getPlayer() != null) {
-                    System.out.println("item on place is : " + space.getItem() + " Action on the space is: " + space.getActions() + " Player is on space " + space.getPlayer());
-                    maxHeight = rand.nextInt(board.height);
-                    maxWidth = rand.nextInt(board.width);
-                    updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-                    space = board.getSpace(maxWidth, maxHeight);
-                }
-                // If the space is free, place a new checkpoint
-                space.setItem("checkpoint");
-                updatedSpaceView.addCheckpoint();
-            }
-        }
-    }
-     */
-
-
-
-    /*public void executeStep(Space space) {
-
-        newCheckpoint(space);
-        for (FieldAction fieldAction : space.getActions()) {
-            fieldAction.doAction(this, space);
-        }
-    }*/
 
     /**
      * A method called when no corresponding controller operation is implemented yet.
