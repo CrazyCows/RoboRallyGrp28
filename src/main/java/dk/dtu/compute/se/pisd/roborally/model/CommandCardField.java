@@ -65,4 +65,9 @@ public class CommandCardField extends Subject {
             notifyChange();
         }
     }
+
+    public String getImageOnCard() {
+        return this.card.getImagePath();
+    }
+
 }

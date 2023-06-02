@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
@@ -128,6 +130,17 @@ public class CardLoader {
         String filename = DATAFOLDER + "/" + CARDSEQUENCE + "." + JSON_EXT;
 
         GsonBuilder simpleBuilder = new GsonBuilder().setPrettyPrinting();
+        simpleBuilder.addSerializationExclusionStrategy(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getName().equals("action");
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        });
         Gson gson = simpleBuilder.create();
 
         FileWriter fileWriter = null;
