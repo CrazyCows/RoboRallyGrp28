@@ -303,7 +303,7 @@
           "name": "laserGun",
           "image" : "hourglass0.png",
           "heading" : "NORTH",
-          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.laserGun"
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.LaserGun"
         }
       ],
       "x": 6,

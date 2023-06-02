@@ -1,7 +1,8 @@
-package dk.dtu.compute.se.pisd.roborally.controller.field;
+package dk.dtu.compute.se.pisd.roborally.controller.item;
 
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Laserbeam;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Item;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
