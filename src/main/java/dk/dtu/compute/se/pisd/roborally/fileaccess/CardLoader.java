@@ -146,6 +146,11 @@ public class CardLoader {
         FileWriter fileWriter = null;
         JsonWriter writer = null;
         try {
+            File directory = new File(DATAFOLDER);
+            if (!directory.exists()) {
+                directory.mkdirs(); // Create directories if they don't exist
+            }
+
             File file = new File(filename);
             fileWriter = new FileWriter(file, false); // Set second argument to 'true' if you want to append to an existing file
             writer = gson.newJsonWriter(fileWriter);
