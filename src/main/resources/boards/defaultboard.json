@@ -190,11 +190,11 @@
       ],
       "background": [
         "WEST",
-        "test_field2.jpg"
+        "test_field3.png"
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt3",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -228,11 +228,11 @@
       ],
       "background": [
         "EAST",
-        "test_field2.jpg"
+        "test_field1.png"
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt1",
           "INSTANCE": {
             "heading": "EAST"
           }
