@@ -146,13 +146,17 @@ public class CardFieldView extends GridPane implements ViewObserver {
             ProgrammingCard card = field.getCard();
             if (card != null) {
                 if (field.isVisible()) {
-                    Image image = new Image(field.getImageOnCard());
-                    BackgroundImage backgroundImage = new BackgroundImage(
-                            image, BackgroundRepeat.NO_REPEAT,
-                            BackgroundRepeat.NO_REPEAT,
-                            BackgroundPosition.DEFAULT,
-                            new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
-                    this.setBackground(new Background(backgroundImage));
+                    try {
+                        Image image = new Image(field.getImageOnCard());
+                        BackgroundImage backgroundImage = new BackgroundImage(
+                                image, BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.DEFAULT,
+                                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                        this.setBackground(new Background(backgroundImage));
+                    } catch (Exception e) {
+                        this.setBackground(BG_ACTIVE);
+                    }
                     label.setText(card.getName());
                 } else {
                     this.setBackground(BG_DONE); // set background color to green
@@ -299,7 +303,18 @@ public class CardFieldView extends GridPane implements ViewObserver {
                     }
                 }
                 event.setDropCompleted(success);
-                target.setBackground(BG_DEFAULT);
+                try {
+                    Image image = new Image(field.getImageOnCard());
+                    BackgroundImage backgroundImage = new BackgroundImage(
+                            image, BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.DEFAULT,
+                            new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                    target.setBackground(new Background(backgroundImage));
+                } catch (Exception e) {
+                    target.setBackground(BG_DEFAULT);
+                }
+                label.setText(field.getCard().getName());
             }
             event.consume();
         }
