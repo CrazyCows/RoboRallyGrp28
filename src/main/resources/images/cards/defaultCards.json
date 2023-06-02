@@ -2,39 +2,57 @@
   "programmingCards": [
     {
       "name": "Move 1",
-      "imagePath": "hansi.png",
+      "imagePath": "images/cards/programmingCardImages/Move1.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "MOVEONE"
     },
     {
       "name": "Move 2",
-      "imagePath": "checkpointhansi0.png",
+      "imagePath": "images/cards/programmingCardImages/Move2.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "MOVETWO"
     },
     {
       "name": "Move 3",
-      "imagePath": "trojan.png",
+      "imagePath": "images/cards/programmingCardImages/Move3.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "MOVETHREE"
     },
     {
       "name": "Turn Left",
-      "imagePath": "trojan.png",
+      "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "LEFT"
     },
     {
       "name": "Turn Right",
-      "imagePath": "trojan.png",
+      "imagePath": "images/cards/programmingCardImages/RightTurn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "RIGHT"
     },
     {
-      "name": "U-turn",
-      "imagePath": "trojan.png",
+      "name": "U-Turn",
+      "imagePath": "images/cards/programmingCardImages/U-Turn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "UTURN"
+    },
+    {
+      "name": "Again",
+      "imagePath": "images/cards/programmingCardImages/Again.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "AGAIN"
+    },
+    {
+      "name": "Back Up",
+      "imagePath": "images/cards/programmingCardImages/MoveBack.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "BACKUP"
+    },
+    {
+      "name": "Power Up",
+      "imagePath": "images/cards/programmingCardImages/PowerUp.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "POWERUP"
     }
   ],
   "specialProgrammingCards": [

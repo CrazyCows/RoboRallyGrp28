@@ -6,13 +6,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.*;
 
 
@@ -27,7 +25,7 @@ public class CardLoader {
 
 
 
-    private static final String CARDSFOLDER = "cards";
+    private static final String CARDSFOLDER = "images/cards";
     private static final String DEFAULTCARDS = "defaultCards";
     private static final String DATAFOLDER = "data";
     private static final String CARDSEQUENCE = "cardSequenceRequest";
