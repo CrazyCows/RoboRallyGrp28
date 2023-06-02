@@ -63,6 +63,10 @@ public class RoboRally extends Application {
     public void start(Stage primaryStage) {
         stage = primaryStage;
 
+
+        Image icon = new Image("robotIcon.png");
+        stage.getIcons().add(icon);
+
         AppController appController = new AppController(this);
 
         // create the primary scene with the a menu bar and a pane for
