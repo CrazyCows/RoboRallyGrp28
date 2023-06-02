@@ -43,7 +43,6 @@ import java.util.List;
 public class GameController {
 
     final public Board board;
-    public static CardLoader cardLoader;
     private BoardView boardView;
     private SpaceView spaceView;
 
@@ -215,11 +214,14 @@ public class GameController {
     }
 
     // Executes the commandCards
-    public void executeProgram(List<ProgrammingCard> commandCards) {
+    public void executeProgram(List<ProgrammingCard> programmingCards) {
+
+        cardController.getCardLoader().sendCardSequenceRequest(programmingCards);
+
         Thread commandThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (ProgrammingCard commandCard : commandCards) {
+                for (ProgrammingCard commandCard : programmingCards) {
                     try {
                         commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard);
                         Thread.sleep(420);
