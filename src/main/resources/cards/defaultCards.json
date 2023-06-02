@@ -2,13 +2,13 @@
   "programmingCards": [
     {
       "name": "Move 1",
-      "imagePath": "trojan.png",
+      "imagePath": "hansi.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "MOVEONE"
     },
     {
       "name": "Move 2",
-      "imagePath": "trojan.png",
+      "imagePath": "checkpointhansi0.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "MOVETWO"
     },
