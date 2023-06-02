@@ -30,10 +30,7 @@ import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 //import java.util.*;
 
@@ -257,23 +254,25 @@ public class GameController {
             System.out.println(item.getName() + " is space things ");
             item.getEvent().doAction(this, space);
         }
-        List<Space> visited = new ArrayList<>();
+        Queue<Space> visited = new LinkedList<>();
         ArrayList<Space> spaces = space.board.getLaserSpaces();
         for (Space s : spaces){ //This assumes there's only one action per space, which is a laser
             System.out.println("Firing laser");
             LaserGun lg = (LaserGun) s.getItems().get(0).getEvent(); //I think this works?
             visited.addAll(lg.shootLaser(s, s.getItems().get(0).getHeading())); //Runs shootLaser, which returns every field that has been passed by a laser
+            s.board.notifyChange();
+            s.notifyChange();
+            s.notifyChange();
         }
         System.out.println(visited);
 
-        for (Space s : visited){
-            ArrayList<Item> items = s.getItems();
-            for (Item item : items){
-                if (item.getName().equals("laserbeam")){
-                    s.removeItem(item);
-                }
-            }
+        System.out.println("sleeping");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+
         System.out.println("end of executestep");
         /*if (space.getItem() != null) {
             if (space.getItem().equals("checkpoint")) {
@@ -288,6 +287,21 @@ public class GameController {
                 updatedSpaceView.addCheckpoint();
             }
         }*/
+
+        Space s = visited.poll();
+        while (s != null){
+            Queue<Item> items = new LinkedList<>(s.getItems());
+            Item a = items.poll();
+            if (a == null){
+                s = visited.poll();
+                continue;
+            }
+            if (a.getName().equals("laserbeam")) {
+                s.removeItem(a); //TODO: MAKE THINGS RENDER BEFORE THIS
+                visited.remove(a);
+            }
+            s = visited.poll();
+        }
     }
 
     /*public void newCheckpoint(Space space) {
