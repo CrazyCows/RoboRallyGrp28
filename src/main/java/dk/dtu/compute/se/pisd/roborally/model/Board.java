@@ -294,13 +294,13 @@ public class Board extends Subject {
         return "temp STATUS MESSAGE 0";
     }
 
-    public int getNumberOfCheckpoints() {
+    public int getNumberOfItemsOnBoard(String spaceName) {
         if (numberOfCheckpoints == 0){
             int counter = 0;
             for (int x = 0; x < width; x++) {
                 for(int y = 0; y < height; y++) {
                     for (Item item : spaces[x][y].getItems()){
-                        if (Objects.equals(item.getName(), "checkpoint")){
+                        if (Objects.equals(item.getName(), spaceName)){
                             counter += 1;
                         }
                     }
@@ -309,5 +309,20 @@ public class Board extends Subject {
             numberOfCheckpoints = counter;
         }
         return numberOfCheckpoints;
+    }
+
+    public ArrayList<Space> getLaserSpaces(){ //Distinguish between types of lasers
+        if (laserSpaces == null){
+            for (int x = 0; x < width; x++) {
+                for(int y = 0; y < height; y++) {
+                    for (FieldAction fieldAction : spaces[x][y].getActions()){
+                        if (fieldAction instanceof Laser){
+                            laserSpaces.add(spaces[x][y]);
+                        }
+                    }
+                }
+            }
+        }
+        return laserSpaces;
     }
 }
