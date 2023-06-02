@@ -113,6 +113,9 @@ public class Player extends Subject {
         return space;
     }
 
+/*
+* I think this is where players gets pushed?
+ */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
         if (space != oldSpace &&
