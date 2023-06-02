@@ -61,7 +61,6 @@ public class Player extends Subject {
     private static int handSize = 8;
     private static int programSize = 5;
 
-
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;

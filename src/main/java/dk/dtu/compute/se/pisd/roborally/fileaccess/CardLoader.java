@@ -25,7 +25,7 @@ public class CardLoader {
 
 
 
-    private static final String CARDSFOLDER = "images/cards";
+    private static final String CARDSFOLDER = "cards";
     private static final String DEFAULTCARDS = "defaultCards";
     private static final String DATAFOLDER = "data";
     private static final String CARDSEQUENCE = "cardSequenceRequest";
