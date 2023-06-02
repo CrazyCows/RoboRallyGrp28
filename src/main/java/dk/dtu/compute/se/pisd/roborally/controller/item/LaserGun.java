@@ -33,9 +33,8 @@ public class LaserGun extends FieldAction {
         System.out.println("Shooting laser on space [" + space.x + "," + space.y + "] in direction " + heading);
         List<Heading> walls = space.getWalls(); //All walls from space
 
-        Item laser = new Item("laser","checkpointhansi1.png", Heading.NORTH, new Laserbeam());
+        Item laser = new Item("laserbeam","checkpointhansi1.png", Heading.NORTH, new Laserbeam());
         space.addItem(laser);
-        notifyAll();
 
         for (Heading wall : walls){
             if (wall == heading.next().next()){ //If any wall is on the side of the laser
