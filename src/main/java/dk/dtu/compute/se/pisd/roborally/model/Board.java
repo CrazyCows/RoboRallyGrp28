@@ -64,7 +64,7 @@ public class Board extends Subject {
 
     private int numberOfCheckpoints = 0;
 
-    private ArrayList<Space> laserSpaces = null;
+    private ArrayList<Space> laserSpaces = new ArrayList<>();
 
     public Board(int width, int height) {
         this.width = width;
@@ -312,13 +312,15 @@ public class Board extends Subject {
     }
 
     public ArrayList<Space> getLaserSpaces(){ //Distinguish between types of lasers
-        if (laserSpaces == null){
+        if (laserSpaces.size() == 0){
             for (int x = 0; x < width; x++) {
                 for(int y = 0; y < height; y++) {
-                    for (FieldAction fieldAction : spaces[x][y].getActions()){
-                        if (fieldAction instanceof LaserGun){
+                    for (Item item : spaces[x][y].getItems()){
+                        if (Objects.equals(item.getName(),"laserGun")){
                             laserSpaces.add(spaces[x][y]);
                         }
+                        System.out.println(item.getName());
+                        System.out.println(x + "," + y);
                     }
                 }
             }
