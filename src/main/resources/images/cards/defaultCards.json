@@ -59,37 +59,37 @@
     {
       "name": "Energy Routine",
       "effect": "Take one energy cube, and place it on your player mat.",
-      "imagePath" : "navn.png",
+      "imagePath" : "images/cards/specialProgrammingCardImages/Energy Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Weasel Routine",
       "effect": "Choose one of the following actions to perform this register: Turn Left, Turn Right, U-Turn.",
-      "imagePath" : "navn.png",
+      "imagePath" : "images/cards/specialProgrammingCardImages/Weasel Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Spam Folder",
       "effect": "Permanently discard one SPAM damage card from your discard pile to the SPAM damage card draw pile.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/specialProgrammingCardImages/Spam Folder.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Sandbox Routine",
       "effect": "Choose one of the following actions to perform this register: Move 1, 2, or 3, Back Up, Turn Left, Turn Right, U-Turn.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/specialProgrammingCardImages/Sandbox Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Speed Routine",
       "effect": "Move your robot 3 spaces in the direction it is facing.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/specialProgrammingCardImages/Speed Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Repeat Routine",
       "effect": "Repeat the programming in your previous register.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/specialPrhadddogrammingCardImages/Repeat Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     }
   ],
