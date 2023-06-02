@@ -255,12 +255,16 @@ public class GameController {
             System.out.println(item.getName() + " is space things ");
             item.getEvent().doAction(this, space);
         }
-
+        List<Space> visited = new ArrayList<Space>();
         ArrayList<Space> spaces = space.board.getLaserSpaces();
         for (Space s : spaces){ //This assumes theres only one action per space, which is a laser
             System.out.println("Firing laser");
             LaserGun lg = (LaserGun) s.getItems().get(0).getEvent(); //I think this works?
-            lg.shootLaser(s, s.getItems().get(0).getHeading());
+            visited.addAll(lg.shootLaser(s, s.getItems().get(0).getHeading())); //Runs shootLaser, which returns every field that has been passed by a laser
+        }
+        System.out.println(visited);
+
+        for (Space s : spaces){
         }
 
 

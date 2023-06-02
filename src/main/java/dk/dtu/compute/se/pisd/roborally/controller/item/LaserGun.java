@@ -29,31 +29,35 @@ public class LaserGun extends FieldAction {
 
 
     //Some of this code should be moved to the laserbeam class
-    public void shootLaser(Space space, Heading heading) { //Will break if there's a wall in the laser.
+    public List<Space> shootLaser(Space space, Heading heading) { //Will break if there's a wall in the laser.
+        List<Space> visited = new ArrayList<>();
         System.out.println("Shooting laser on space [" + space.x + "," + space.y + "] in direction " + heading);
         List<Heading> walls = space.getWalls(); //All walls from space
 
         Item laser = new Item("laserbeam","checkpointhansi1.png", Heading.NORTH, new Laserbeam());
         space.addItem(laser);
+        visited.add(space);
 
         for (Heading wall : walls){
             if (wall == heading.next().next()){ //If any wall is on the side of the laser
-                return;
+                return visited;
             }
         }
         Player player = space.getPlayer();
         if (player != null){
             player.addSpamCardToDiscardPile(); //To be repeated the amount of times that the laser is strong
-            return;
+            return visited;
         }
 
         //Check if we can continue. If theres a wall in the heading, we cant
         for (Heading wall : walls){
             if (wall == heading){
-                return;
+                return visited;
             }
         }
         Space nextSpace = space.board.getNeighbour(space,heading);
         shootLaser(nextSpace,heading);
+
+        return visited;
     }
 }
