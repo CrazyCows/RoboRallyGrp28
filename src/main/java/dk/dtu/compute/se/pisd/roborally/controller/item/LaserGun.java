@@ -21,7 +21,7 @@ public class LaserGun extends FieldAction {
     }
 
 
-    @Override
+    @Override //Maybe this code should be moved to the gamecontroller? Doesnt really make sense that a lasergun controls this
     public boolean doAction(GameController gameController, Space space) {
 
         ArrayList<Space> spaces = space.board.getLaserSpaces();
