@@ -24,22 +24,18 @@ public class LaserGun extends FieldAction {
     @Override //Maybe this code should be moved to the gamecontroller? Doesnt really make sense that a lasergun controls this
     public boolean doAction(GameController gameController, Space space) {
 
-        ArrayList<Space> spaces = space.board.getLaserSpaces();
-        for (Space s : spaces){ //This assumes theres only one action per space, which is a laser
-            System.out.println("Firing laser");
-            shootLaser(s, s.getItems().get(0).getHeading());
-        }
         return false;
     }
 
 
     //Some of this code should be moved to the laserbeam class
     public void shootLaser(Space space, Heading heading) { //Will break if there's a wall in the laser.
-        System.out.println("Shooting laser on space [" + space.x + "," + space.y + "]");
+        System.out.println("Shooting laser on space [" + space.x + "," + space.y + "] in direction " + heading);
         List<Heading> walls = space.getWalls(); //All walls from space
 
-        Item laser = new Item("laser","checkpointhansi1.png",Heading.NORTH,new Laserbeam());
+        Item laser = new Item("laser","checkpointhansi1.png", Heading.NORTH, new Laserbeam());
         space.addItem(laser);
+        notifyAll();
 
         for (Heading wall : walls){
             if (wall == heading.next().next()){ //If any wall is on the side of the laser

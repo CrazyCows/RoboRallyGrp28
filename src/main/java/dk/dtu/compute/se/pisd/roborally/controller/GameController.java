@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.controller.item.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
@@ -253,6 +254,13 @@ public class GameController {
         for (Item item : itemsToProcess) {
             System.out.println(item.getName() + " is space things ");
             item.getEvent().doAction(this, space);
+        }
+
+        ArrayList<Space> spaces = space.board.getLaserSpaces();
+        for (Space s : spaces){ //This assumes theres only one action per space, which is a laser
+            System.out.println("Firing laser");
+            LaserGun lg = (LaserGun) s.getItems().get(0).getEvent(); //I think this works?
+            lg.shootLaser(s, s.getItems().get(0).getHeading());
         }
 
 
