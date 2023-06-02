@@ -64,6 +64,8 @@ public class Board extends Subject {
 
     private int numberOfCheckpoints = 0;
 
+    private ArrayList<Space> laserSpaces = null;
+
     public Board(int width, int height) {
         this.width = width;
         this.height = height;
