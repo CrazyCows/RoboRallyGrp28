@@ -100,8 +100,10 @@ public class GameController {
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
             }
-        } //If player needs to be pushed
+        }
+        //If player needs to be pushed
         player.setSpace(space);
+        // I don't understand this.... Lucas? - Crazy
         Player nextPlayer = getNextPlayer(player);
         board.setCurrentPlayer(nextPlayer);
     }
@@ -165,9 +167,15 @@ public class GameController {
         }
 
     }
-
+    /*
+    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+    *
+     */
     // returns the player who is closest to the Priority antenna
     public Player getNextPlayer(Player currentPlayer){
+
         Space priorityAntenna = board.getPriorityAntennaSpace();
         Player closestPlayerToAntenna = currentPlayer;
         double closest = Double.MAX_VALUE;
@@ -184,7 +192,8 @@ public class GameController {
             }
         }
         System.out.println("closest player to antenna: " + closestPlayerToAntenna.getColor());
-        return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
+        //return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
+        return currentPlayer;
 
 
         /*int amountOfPlayers = board.getPlayersNumber()-1;
