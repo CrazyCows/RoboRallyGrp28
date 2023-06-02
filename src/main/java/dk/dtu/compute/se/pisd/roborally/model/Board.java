@@ -22,8 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Laser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
