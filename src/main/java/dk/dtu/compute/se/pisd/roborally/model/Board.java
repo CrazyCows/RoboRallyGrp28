@@ -23,7 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
+import dk.dtu.compute.se.pisd.roborally.controller.item.LaserGun;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
