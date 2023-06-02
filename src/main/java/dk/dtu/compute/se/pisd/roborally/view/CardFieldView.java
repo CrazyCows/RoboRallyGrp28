@@ -329,7 +329,17 @@ public class CardFieldView extends GridPane implements ViewObserver {
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView source = (CardFieldView) t;
-                source.setBackground(BG_DEFAULT);
+                try {
+                    Image image = new Image(field.getImageOnCard());
+                    BackgroundImage backgroundImage = new BackgroundImage(
+                            image, BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.DEFAULT,
+                            new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                    source.setBackground(new Background(backgroundImage));
+                } catch (Exception e) {
+                    source.setBackground(BG_DEFAULT);
+                }
             }
             event.consume();
         }
