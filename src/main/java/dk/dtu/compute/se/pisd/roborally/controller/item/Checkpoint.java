@@ -44,7 +44,7 @@ public class Checkpoint extends FieldAction {
         Player currentPlayer = space.getPlayer();
         if (currentPlayer.getCheckpointsCollected() == number){
             currentPlayer.iterateCheckpointsCollected();
-            if (currentPlayer.getCheckpointsCollected() == board.getNumberOfCheckpoints()){
+            if (currentPlayer.getCheckpointsCollected() == board.getNumberOfItemsOnBoard("checkpoint")){
                 gameController.win(currentPlayer);
             }
         }
