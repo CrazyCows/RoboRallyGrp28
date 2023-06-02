@@ -241,6 +241,7 @@ public class GameController {
         // Execute field actions
         for (FieldAction fieldAction : space.getActions()) {
             fieldAction.doAction(this, space);
+
         }
 
         // Create a copy of the items list
@@ -319,6 +320,7 @@ public class GameController {
     public void win(Player currentPlayer) { //TODO: Add something about winning
         System.out.println("The player " + currentPlayer.getName() + " has won!");
     }
+
 
     class ImpossibleMoveException extends Exception {
 

@@ -23,7 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.controller.field.Laser;
+import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -316,7 +316,7 @@ public class Board extends Subject {
             for (int x = 0; x < width; x++) {
                 for(int y = 0; y < height; y++) {
                     for (FieldAction fieldAction : spaces[x][y].getActions()){
-                        if (fieldAction instanceof Laser){
+                        if (fieldAction instanceof LaserGun){
                             laserSpaces.add(spaces[x][y]);
                         }
                     }
