@@ -1,11 +1,11 @@
 package dk.dtu.compute.se.pisd.roborally.controller.card;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Command;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Command.LEFT;
-import static dk.dtu.compute.se.pisd.roborally.model.Command.RIGHT;
+import static dk.dtu.compute.se.pisd.roborally.model.Command.*;
 
 public class ProgrammingAction extends CardAction<ProgrammingCard> {
 
@@ -16,6 +16,7 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
      * and simply translates the command into action.
      */
 
+    ProgrammingCard lastProgrammingCard = null;
     @Override
     public boolean doAction(GameController gameController, Player player, ProgrammingCard card) {
         // Implement the action specific to UpgradeCard
@@ -61,9 +62,14 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
                 System.out.println(player.getName() + " now has " + player.getEnergyCubes() + " energy cubes");
             }
             case AGAIN -> {
-                System.out.println("AGAIN - Not yet implemented");
+                if (lastProgrammingCard.getCommand() == AGAIN){
+                    System.out.println("Dont recurse me forever daddy");
+                    return false;
+                }
+                return doAction(gameController,player,lastProgrammingCard);
             }
         }
+        lastProgrammingCard = card;
         return true; // Return a boolean result indicating the success/failure of the action
     }
 
