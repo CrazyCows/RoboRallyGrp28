@@ -13,15 +13,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
 import java.io.IOException;
-import java.nio.file.Path;
 
-public class JSON_Connect {
+public class ClientController {
     private HttpClient client;
     private String baseUrl;
     ObjectMapper objectMapper;
     String path;
 
-    public JSON_Connect() {
+    public ClientController() {
         this.client = HttpClient.newHttpClient();
         this.baseUrl = baseUrl = "http://localhost:8080";
         this.objectMapper = new ObjectMapper();
@@ -162,9 +161,6 @@ public class JSON_Connect {
             System.out.println("An error occurred while sending the request: " + e.getMessage());
         }
     }
-
-
-
 
     public String getMoves(String ID) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
