@@ -38,6 +38,14 @@ public class LaserGun extends FieldAction {
         space.addItem(laser);
         visited.add(space);
 
+        System.out.println("Sleeping");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Not sleeping");
+
         for (Heading wall : walls){
             if (wall == heading.next().next()){ //If any wall is on the side of the laser
                 return visited;
