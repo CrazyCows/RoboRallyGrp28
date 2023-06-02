@@ -26,10 +26,10 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -57,6 +57,8 @@ public class SpaceView extends StackPane implements ViewObserver {
     private ImageView overlayImageView;
     private ImageLoader imageLoader = new ImageLoader();
     private String heading;
+    private ImageView playerImageView;
+    private ColorAdjust colorAdjust;
 
 
     public SpaceView(@NotNull Space space) {
@@ -179,22 +181,28 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     private void updatePlayer() {
-        // Remove the player arrow, if it exists
-        this.getChildren().removeIf(node -> node instanceof Polygon);
-        Player player = space.getPlayer();
-        if (player != null) {
-            Polygon arrow = new Polygon(0.0, 0.0,
-                    10.0, 20.0,
-                    20.0, 0.0 );
-            try {
-                arrow.setFill(Color.valueOf(player.getColor()));
-            } catch (Exception e) {
-                arrow.setFill(Color.MEDIUMPURPLE);
-            }
+        // Remove the existing player image, if it exists
+        if (playerImageView != null) {
+            this.getChildren().remove(playerImageView);
+            playerImageView = null;
+        }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
-            this.getChildren().add(arrow);
-            arrow.toFront();
+        Player player = space.getPlayer();
+
+        if (player != null) {
+            // Create an ImageView with the player image
+            playerImageView = new ImageView();
+            Image playerImage = new Image("images/robots/" + player.getColor() + "_robot.png");
+            playerImageView.setFitWidth(SPACE_WIDTH);
+            playerImageView.setFitHeight(SPACE_HEIGHT);
+            playerImageView.setImage(playerImage);
+
+            // Set the rotation of the player image
+            playerImageView.setRotate((90 * player.getHeading().ordinal()) % 360);
+
+            // Add the ImageView to the pane
+            this.getChildren().add(playerImageView);
+            playerImageView.toFront();
         }
         // Add the ImageView back again
     }
