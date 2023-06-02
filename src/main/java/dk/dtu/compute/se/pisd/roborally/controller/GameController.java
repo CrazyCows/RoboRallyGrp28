@@ -43,15 +43,10 @@ import java.util.*;
 public class GameController {
 
     final public Board board;
-    private BoardView boardView;
-    private SpaceView spaceView;
 
 
     protected CardController cardController;
 
-    public void setBoardView(BoardView boardView){
-        this.boardView = boardView;
-    }
     public GameController(Board board) {
         this.board = board;
         this.cardController = CardController.getInstance();
@@ -105,8 +100,10 @@ public class GameController {
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
             }
-        } //If player needs to be pushed
+        }
+        //If player needs to be pushed
         player.setSpace(space);
+        // I don't understand this.... Lucas? - Crazy
         Player nextPlayer = getNextPlayer(player);
         board.setCurrentPlayer(nextPlayer);
     }
@@ -170,9 +167,15 @@ public class GameController {
         }
 
     }
-
+    /*
+    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+    *
+     */
     // returns the player who is closest to the Priority antenna
     public Player getNextPlayer(Player currentPlayer){
+
         Space priorityAntenna = board.getPriorityAntennaSpace();
         Player closestPlayerToAntenna = currentPlayer;
         double closest = Double.MAX_VALUE;
@@ -189,7 +192,8 @@ public class GameController {
             }
         }
         System.out.println("closest player to antenna: " + closestPlayerToAntenna.getColor());
-        return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
+        //return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
+        return currentPlayer;
 
 
         /*int amountOfPlayers = board.getPlayersNumber()-1;
@@ -241,7 +245,6 @@ public class GameController {
     // executes a single step
     public void executeStep(Space space) {
         // Execute field actions
-        System.out.println("Executestep");
         for (FieldAction fieldAction : space.getActions()) {
             fieldAction.doAction(this, space);
         }
@@ -302,43 +305,6 @@ public class GameController {
         }
     }
 
-    /*public void newCheckpoint(Space space) {
-        // Checks if player is on checkpoint
-        if (space.getItem() != null) {
-            if (space.getItem().equals("checkpoint")) {
-                // Removes the checkpoint
-                space.setItem(null);
-                // Randomize a position for next checkpoint
-                Random rand = new Random();
-
-                int maxHeight = rand.nextInt(board.height);
-                int maxWidth = rand.nextInt(board.width);
-                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-                space = board.getSpace(maxWidth, maxHeight);
-                while (!space.getActions().isEmpty() || space.getItem() != null || space.getPlayer() != null) {
-                    System.out.println("item on place is : " + space.getItem() + " Action on the space is: " + space.getActions() + " Player is on space " + space.getPlayer());
-                    maxHeight = rand.nextInt(board.height);
-                    maxWidth = rand.nextInt(board.width);
-                    updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-                    space = board.getSpace(maxWidth, maxHeight);
-                }
-                // If the space is free, place a new checkpoint
-                space.setItem("checkpoint");
-                updatedSpaceView.addCheckpoint();
-            }
-        }
-    }
-     */
-
-
-
-    /*public void executeStep(Space space) {
-
-        newCheckpoint(space);
-        for (FieldAction fieldAction : space.getActions()) {
-            fieldAction.doAction(this, space);
-        }
-    }*/
 
     /**
      * A method called when no corresponding controller operation is implemented yet.

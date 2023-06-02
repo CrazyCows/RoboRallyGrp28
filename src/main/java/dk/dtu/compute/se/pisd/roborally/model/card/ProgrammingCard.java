@@ -45,7 +45,6 @@ public class ProgrammingCard extends Card {
         this.imagePath = imagePath;
         this.actionClassName = actionClassName;
         this.commandName = commandName;
-
     }
 
     @SuppressWarnings("unchecked")
