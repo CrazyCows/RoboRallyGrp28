@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -36,6 +37,7 @@ import javafx.scene.control.Alert.AlertType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +64,7 @@ public class AppController implements Observer {
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
+    String ID;
 
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
@@ -94,6 +97,13 @@ public class AppController implements Observer {
             gameController = new GameController(board);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
+
+            // usr input prompt
+            try {
+                onlineGame("125");
+            } catch (Exception e){
+
+            }
         }
     }
 
@@ -167,6 +177,30 @@ public class AppController implements Observer {
             roboRally.createBoardView(gameController);
         }
 
+    }
+
+    public void onlineGamePostUpdate(){
+
+
+    }
+
+
+
+    public void onlineGame(String ID) throws Exception{
+        ClientController clientController = new ClientController();
+
+        clientController.createBoard(ID);
+
+        new Thread(() -> {
+            try {
+                clientController.getBoard(ID);
+                Thread.sleep(200);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
     /**

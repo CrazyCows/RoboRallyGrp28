@@ -85,6 +85,7 @@ public class RoboRally extends Application {
         }).start();
 
 
+
         //ImageView imageView = new ImageView(new Image("file:bruno!.jpeg"));
         //imageView.setFitHeight(420);
         //imageView.setFitWidth(620);

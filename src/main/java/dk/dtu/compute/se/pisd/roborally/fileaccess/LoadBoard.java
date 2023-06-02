@@ -183,6 +183,7 @@ public class LoadBoard {
 
         FileWriter fileWriter = null;
         JsonWriter writer = null;
+
         try {
             fileWriter = new FileWriter(filename);
             writer = gson.newJsonWriter(fileWriter);
