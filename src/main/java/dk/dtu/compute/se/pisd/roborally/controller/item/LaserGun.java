@@ -19,6 +19,7 @@ public class LaserGun extends FieldAction {
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
+    List<Space> visited = new ArrayList<>();
 
 
     @Override //Maybe this code should be moved to the gamecontroller? Doesnt really make sense that a lasergun controls this
@@ -30,7 +31,6 @@ public class LaserGun extends FieldAction {
 
     //Some of this code should be moved to the laserbeam class
     public List<Space> shootLaser(Space space, Heading heading) { //Will break if there's a wall in the laser.
-        List<Space> visited = new ArrayList<>();
         System.out.println("Shooting laser on space [" + space.x + "," + space.y + "] in direction " + heading);
         List<Heading> walls = space.getWalls(); //All walls from space
 
