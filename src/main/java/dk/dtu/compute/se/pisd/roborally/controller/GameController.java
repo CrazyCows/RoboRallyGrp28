@@ -260,9 +260,7 @@ public class GameController {
             System.out.println("Firing laser");
             LaserGun lg = (LaserGun) s.getItems().get(0).getEvent(); //I think this works?
             visited.addAll(lg.shootLaser(s, s.getItems().get(0).getHeading())); //Runs shootLaser, which returns every field that has been passed by a laser
-            s.board.notifyChange();
-            s.notifyChange();
-            s.notifyChange();
+
         }
         System.out.println(visited);
 

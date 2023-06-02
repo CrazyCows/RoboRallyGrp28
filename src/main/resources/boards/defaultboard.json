@@ -308,6 +308,18 @@
       ],
       "x": 6,
       "y": 4
+    },
+    {
+      "items": [
+        {
+          "name": "laserGun",
+          "image" : "hourglass0.png",
+          "heading" : "WEST",
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.LaserGun"
+        }
+      ],
+      "x": 5,
+      "y": 3
     }
   ]
 }
