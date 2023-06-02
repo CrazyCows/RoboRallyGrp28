@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/data/cardSequenceRequest.json
+/Save Games/
+/src/main/resources/checkpointtest.png
+/RoboRallyGrp28.zip

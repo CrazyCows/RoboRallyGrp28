@@ -1,0 +1,32 @@
+{
+  "programmingCards": [
+    {
+      "commandName": "MOVEONE",
+      "command": "MOVEONE",
+      "name": "Move 1",
+      "imagePath": "hansi.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction"
+    },
+    {
+      "commandName": "RIGHT",
+      "command": "RIGHT",
+      "name": "Turn Right",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction"
+    },
+    {
+      "commandName": "UTURN",
+      "command": "UTURN",
+      "name": "U-turn",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction"
+    },
+    {
+      "commandName": "LEFT",
+      "command": "LEFT",
+      "name": "Turn Left",
+      "imagePath": "trojan.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction"
+    }
+  ]
+}
