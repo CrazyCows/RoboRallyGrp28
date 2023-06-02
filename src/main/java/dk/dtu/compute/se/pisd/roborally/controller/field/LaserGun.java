@@ -27,14 +27,17 @@ public class LaserGun extends FieldAction {
             System.out.println("Firing laser");
             shootLaser(s, ((LaserGun)(s.getActions().get(0))).getHeading());
         }
-
         return false;
     }
 
 
-    public void shootLaser(Space space, Heading heading) { //Will break if theres a wall in the laser
+    //Some of this code should be moved to the laserbeam class
+    public void shootLaser(Space space, Heading heading) { //Will break if there's a wall in the laser.
         System.out.println("Shooting laser on space [" + space.x + "," + space.y + "]");
         List<Heading> walls = space.getWalls(); //All walls from space
+
+        Item laser = new Item("laser","checkpointhansi1.png",Heading.NORTH,new Laserbeam());
+        space.addItem(laser);
 
         for (Heading wall : walls){
             if (wall == heading.next().next()){ //If any wall is on the side of the laser
@@ -53,8 +56,6 @@ public class LaserGun extends FieldAction {
                 return;
             }
         }
-        Item laser = new Item("laser","checkpointhansi1.png",Heading.NORTH,)
-        //space.addItem(laser);
         Space nextSpace = space.board.getNeighbour(space,heading);
         shootLaser(nextSpace,heading);
     }
