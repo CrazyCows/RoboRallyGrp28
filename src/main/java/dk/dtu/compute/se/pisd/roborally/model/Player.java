@@ -49,6 +49,25 @@ public class Player extends Subject {
     private Space space;
     private Heading heading = SOUTH;
 
+    public void addEnergyCubes(int energyCubesAdded) {
+        this.energyCubes += energyCubesAdded;
+    }
+
+    public boolean subtractEnergyCubes(int energyCubesUsed) {
+        if (this.energyCubes - energyCubesUsed < 0){
+            return false;
+        }
+        this.energyCubes -= energyCubesUsed;
+        return true;
+    }
+
+    public int getEnergyCubes() {
+        return energyCubes;
+    }
+
+    //The amount of energy a player has. Starts at zero
+    private int energyCubes = 0;
+
     private ArrayList<CommandCardField> program; //Cards selected to be the in the program
     private ArrayList<CommandCardField> drawnCards; //Drawn cards
     public ArrayList<Object> drawPile; //Pile of cards to draw from //TODO: Make type safe

@@ -57,7 +57,8 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
                 gameController.turnPlayer(player, RIGHT);
             }
             case POWERUP -> {
-                System.out.println("POWERUP - Not yet implemented");
+                player.addEnergyCubes(1);
+                System.out.println(player.getName() + " now has " + player.getEnergyCubes() + " energy cubes");
             }
             case AGAIN -> {
                 System.out.println("AGAIN - Not yet implemented");
