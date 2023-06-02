@@ -26,6 +26,13 @@ public class Item {
         this.eventClassName = eventClassName;
     }
 
+    public Item(String name, String image, Heading heading, FieldAction event) {
+        this.name = name;
+        this.image = image;
+        this.heading = heading;
+        this.event = event;
+    }
+
     public String getName() {
         return this.name;
     }

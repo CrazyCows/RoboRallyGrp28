@@ -3,13 +3,14 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.*;
 
 
@@ -26,6 +27,8 @@ public class CardLoader {
 
     private static final String CARDSFOLDER = "cards";
     private static final String DEFAULTCARDS = "defaultCards";
+    private static final String DATAFOLDER = "data";
+    private static final String CARDSEQUENCE = "cardSequenceRequest";
     private static final String JSON_EXT = "json";
 
     public static CardLoader getInstance(){ //Singleton
@@ -110,6 +113,46 @@ public class CardLoader {
             }
         }
         System.out.println("Commandcards created");
+    }
+
+    public void sendCardSequenceRequest(List<ProgrammingCard> programmingCards) {
+
+        CardSequenceTemplate cardSequenceTemplate = new CardSequenceTemplate();
+
+        for (ProgrammingCard programmingCard : programmingCards) {
+            if (programmingCard != null) {
+                cardSequenceTemplate.getProgrammingCards().add(programmingCard);
+            }
+        }
+
+        String filename = DATAFOLDER + "/" + CARDSEQUENCE + "." + JSON_EXT;
+
+        GsonBuilder simpleBuilder = new GsonBuilder().setPrettyPrinting();
+        Gson gson = simpleBuilder.create();
+
+        FileWriter fileWriter = null;
+        JsonWriter writer = null;
+        try {
+            File file = new File(filename);
+            fileWriter = new FileWriter(file, false); // Set second argument to 'true' if you want to append to an existing file
+            writer = gson.newJsonWriter(fileWriter);
+            gson.toJson(cardSequenceTemplate, cardSequenceTemplate.getClass(), writer);
+        } catch (IOException e1) {
+            System.out.println("An exception occurred while creating the FileWriter:");
+            e1.printStackTrace();
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
+            } catch (IOException e2) {
+                System.out.println("An exception occurred while closing the writers:");
+                e2.printStackTrace();
+            }
+        }
     }
 
 

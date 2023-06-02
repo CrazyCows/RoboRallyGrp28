@@ -67,4 +67,9 @@ public class CardController {
         return deck;
     }
 
+    public CardLoader getCardLoader() {
+        return this.cardLoader;
+    }
+
+
 }
