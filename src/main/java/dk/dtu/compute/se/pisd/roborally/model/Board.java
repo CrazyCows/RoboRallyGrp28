@@ -22,8 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.controller.item.LaserGun;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -218,9 +216,9 @@ public class Board extends Subject {
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
-        if (space.getWalls().contains(heading)) {
+        /*if (space.getWalls().contains(heading)) {
             return null;
-        }
+        }*/
         // TODO needs to be implemented based on the actual spaces
         //      and obstacles and walls placed there. For now it,
         //      just calculates the next space in the respective
@@ -233,17 +231,24 @@ public class Board extends Subject {
         int y = space.y;
         switch (heading) {
             case SOUTH:
-                y = (y + 1) % height;
+                y = (y + 1);
                 break;
             case WEST:
-                x = (x + width - 1) % width;
+                x = (x - 1);
                 break;
             case NORTH:
-                y = (y + height - 1) % height;
+                y = (y - 1);
                 break;
             case EAST:
-                x = (x + 1) % width;
+                x = (x + 1);
                 break;
+        }
+        Board board = space.board;
+        if (y < 0 || y > board.height) {
+            return null;
+        }
+        else if (x < 0 || x > board.width) {
+            return null;
         }
         Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
         Space result = getSpace(x, y);

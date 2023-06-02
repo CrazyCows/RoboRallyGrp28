@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -97,6 +98,8 @@ public class AppController implements Observer {
         }
     }
 
+
+
     public void saveGame() {
 
         TextInputDialog dialog = new TextInputDialog();
@@ -115,7 +118,7 @@ public class AppController implements Observer {
         /*if (gameController == null) {
             newGame();
         }*/
-
+        ClientController clientController = new ClientController();
         this.savedBoards = new ArrayList<>();
 
         File folder = new File("./Save Games");

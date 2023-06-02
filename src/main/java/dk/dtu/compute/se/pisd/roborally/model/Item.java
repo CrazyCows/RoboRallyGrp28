@@ -31,6 +31,14 @@ public class Item {
         this.eventClassName = eventClassName;
     }
 
+
+    /**
+     *
+     * @param name
+     * @param image
+     * @param heading
+     * @param event
+     */
     public Item(String name, String image, Heading heading, FieldAction event) {
         this.name = name;
         this.image = image;

@@ -90,6 +90,15 @@ public class Space extends Subject {
         return items;
     }
 
+    public boolean hasItemName(String name) {
+        for (Item item : items) {
+            if (item.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addItem(Item item) {
         this.items.add(item);
         notifyChange();
