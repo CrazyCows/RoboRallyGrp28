@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LaserGun extends FieldAction {
-    private Heading heading;
+    private Heading heading = Heading.EAST; //TODO: This value is temporary
     public Heading getHeading() {
         return heading;
     }
@@ -20,13 +20,14 @@ public class LaserGun extends FieldAction {
         this.heading = heading;
     }
 
+
     @Override
     public boolean doAction(GameController gameController, Space space) {
 
         ArrayList<Space> spaces = space.board.getLaserSpaces();
-        for (Space s : spaces){ //This assumes theres only one action, which is a laser
+        for (Space s : spaces){ //This assumes theres only one action per space, which is a laser
             System.out.println("Firing laser");
-            shootLaser(s, ((LaserGun)(s.getActions().get(0))).getHeading());
+            shootLaser(s, s.getItems().get(0).getHeading());
         }
         return false;
     }
