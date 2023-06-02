@@ -227,7 +227,7 @@ public class GameController {
             public void run() {
                 for (ProgrammingCard commandCard : programmingCards) {
                     try {
-                        commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard);
+                        commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard); //I hate this implementation
                         Thread.sleep(420);
                     } catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");

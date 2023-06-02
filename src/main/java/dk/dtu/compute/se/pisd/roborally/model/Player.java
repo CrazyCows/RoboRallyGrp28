@@ -22,7 +22,11 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
+import dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.SpecialProgrammingCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -48,6 +52,19 @@ public class Player extends Subject {
 
     private Space space;
     private Heading heading = SOUTH;
+
+    public Card getLastCard() {
+        return lastCard;
+    }
+
+    public void setLastCard(Card lastCard) {
+        this.lastCard = lastCard;
+    }
+
+    //The last card that the player used
+
+    boolean lastCardIsSpecial;
+    private Card lastCard = null;
 
     public void addEnergyCubes(int energyCubesAdded) {
         this.energyCubes += energyCubesAdded;

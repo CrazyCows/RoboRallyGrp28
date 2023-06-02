@@ -3,7 +3,11 @@ package dk.dtu.compute.se.pisd.roborally.controller.card;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Command;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.SpecialProgrammingCard;
+
+import java.util.Objects;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Command.*;
 
@@ -16,7 +20,8 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
      * and simply translates the command into action.
      */
 
-    ProgrammingCard lastProgrammingCard = null;
+
+
     @Override
     public boolean doAction(GameController gameController, Player player, ProgrammingCard card) {
         // Implement the action specific to UpgradeCard
@@ -62,14 +67,21 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
                 System.out.println(player.getName() + " now has " + player.getEnergyCubes() + " energy cubes");
             }
             case AGAIN -> {
-                if (lastProgrammingCard.getCommand() == AGAIN){
-                    System.out.println("Dont recurse me forever daddy");
-                    return false;
+
+                Card oldCard = player.getLastCard();
+                if (oldCard instanceof SpecialProgrammingCard){
+                    System.out.println("AGAIN on special programming card");
+                    ((SpecialProgrammingCard) oldCard).getAction().doAction(gameController,player, (SpecialProgrammingCard) oldCard);
+                } else{
+                    if (((ProgrammingCard) oldCard).getCommand() == AGAIN){
+                        System.out.println("Don't recurse me daddy");
+                        return false;
+                    }
+                    doAction(gameController,player, (ProgrammingCard) oldCard);
                 }
-                return doAction(gameController,player,lastProgrammingCard);
             }
         }
-        lastProgrammingCard = card;
+        player.setLastCard(card);
         return true; // Return a boolean result indicating the success/failure of the action
     }
 
