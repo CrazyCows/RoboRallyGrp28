@@ -55,7 +55,6 @@ public class Adapter<E> implements JsonSerializer<E>, JsonDeserializer<E>{
     @Override
     public JsonElement serialize(E src, Type typeOfSrc,
             JsonSerializationContext context) {
-
         JsonObject retValue = new JsonObject();
         String className = src.getClass().getName();
         retValue.addProperty(CLASSNAME, className);

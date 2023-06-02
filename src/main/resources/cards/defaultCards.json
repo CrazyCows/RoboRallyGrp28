@@ -2,76 +2,94 @@
   "programmingCards": [
     {
       "name": "Move 1",
-      "imagePath": "hansi.png",
+      "imagePath": "images/cards/programmingCardImages/Move1.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "MOVEONE"
     },
     {
       "name": "Move 2",
-      "imagePath": "checkpointhansi0.png",
+      "imagePath": "images/cards/programmingCardImages/Move2.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "MOVETWO"
     },
     {
       "name": "Move 3",
-      "imagePath": "trojan.png",
+      "imagePath": "images/cards/programmingCardImages/Move3.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "MOVETHREE"
     },
     {
       "name": "Turn Left",
-      "imagePath": "trojan.png",
+      "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "LEFT"
     },
     {
       "name": "Turn Right",
-      "imagePath": "trojan.png",
+      "imagePath": "images/cards/programmingCardImages/RightTurn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "RIGHT"
     },
     {
-      "name": "U-turn",
-      "imagePath": "trojan.png",
+      "name": "U-Turn",
+      "imagePath": "images/cards/programmingCardImages/U-Turn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "UTURN"
+    },
+    {
+      "name": "Again",
+      "imagePath": "images/cards/programmingCardImages/Again.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "AGAIN"
+    },
+    {
+      "name": "Back Up",
+      "imagePath": "images/cards/programmingCardImages/MoveBack.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "BACKUP"
+    },
+    {
+      "name": "Power Up",
+      "imagePath": "images/cards/programmingCardImages/PowerUp.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "POWERUP"
     }
   ],
   "specialProgrammingCards": [
     {
       "name": "Energy Routine",
       "effect": "Take one energy cube, and place it on your player mat.",
-      "imagePath" : "navn.png",
+      "imagePath" : "images/cards/specialProgrammingCardImages/Energy Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Weasel Routine",
       "effect": "Choose one of the following actions to perform this register: Turn Left, Turn Right, U-Turn.",
-      "imagePath" : "navn.png",
+      "imagePath" : "images/cards/specialProgrammingCardImages/Weasel Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Spam Folder",
       "effect": "Permanently discard one SPAM damage card from your discard pile to the SPAM damage card draw pile.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/specialProgrammingCardImages/Spam Folder.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Sandbox Routine",
       "effect": "Choose one of the following actions to perform this register: Move 1, 2, or 3, Back Up, Turn Left, Turn Right, U-Turn.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/specialProgrammingCardImages/Sandbox Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Speed Routine",
       "effect": "Move your robot 3 spaces in the direction it is facing.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/specialProgrammingCardImages/Speed Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     },
     {
       "name": "Repeat Routine",
       "effect": "Repeat the programming in your previous register.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/specialPrhadddogrammingCardImages/Repeat Routine.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
     }
   ],
