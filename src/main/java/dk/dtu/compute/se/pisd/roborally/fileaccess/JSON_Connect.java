@@ -7,22 +7,28 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class JSON_Connect {
     private HttpClient client;
     private String baseUrl;
+    ObjectMapper objectMapper;
+    String path;
 
-    public JSON_Connect(String baseUrl) {
+    public JSON_Connect() {
         this.client = HttpClient.newHttpClient();
-        this.baseUrl = baseUrl;
+        this.baseUrl = baseUrl = "http://localhost:8080";
+        this.objectMapper = new ObjectMapper();
+        this.path = "data";
     }
 
-    public String getBoard(String ID) throws IOException, InterruptedException {
+    public void getBoard(String ID) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/jsonBoard?ID=" + ID))
                 .GET()
@@ -34,14 +40,17 @@ public class JSON_Connect {
             throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
         }
 
-        return response.body();
+
+        String responseJson = response.body();
+        JsonNode jsonNode = objectMapper.readTree(responseJson);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "sharedBoard.json"), jsonNode);
     }
 
-    public void createBoard(JsonNode json, String ID) throws IOException, InterruptedException {
+    public void createBoard(String ID) throws IOException, InterruptedException {
+        File file = new File(path, "sharedBoard.json");
+        JsonNode json = objectMapper.readTree(file);
 
         WebClient webClient = WebClient.create();
-
-
         Mono<String> response = webClient.post()
                 .uri(baseUrl + "/jsonBoard?ID=" + ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -107,8 +116,10 @@ public class JSON_Connect {
          */
     }
 
-    public void updateBoard(JsonNode json, String ID) throws IOException, InterruptedException{
+    public void updateBoard(String ID) throws IOException, InterruptedException{
         WebClient webClient = WebClient.create();
+        File file = new File(path, "sharedBoard.json");
+        JsonNode json = objectMapper.readTree(file);
 
 
         Mono<String> response = webClient.put()
@@ -170,7 +181,9 @@ public class JSON_Connect {
         return response.body();
     }
 
-    public void createMoves(JsonNode json, String ID) throws IOException, InterruptedException {
+    public void createMoves(String ID) throws IOException, InterruptedException {
+        File file = new File(path, "cardSequenceRequest.json");
+        JsonNode json = objectMapper.readTree(file);
 
         WebClient webClient = WebClient.create();
 
@@ -240,9 +253,11 @@ public class JSON_Connect {
          */
     }
 
-    public void updateMoves(JsonNode json, String ID) throws IOException, InterruptedException{
+    public void updateMoves(String ID) throws IOException, InterruptedException{
         WebClient webClient = WebClient.create();
 
+        File file = new File(path, "sharedBoard.json");
+        JsonNode json = objectMapper.readTree(file);
 
         Mono<String> response = webClient.put()
                 .uri(baseUrl + "/jsonMoves?ID=" + ID)
@@ -284,11 +299,6 @@ public class JSON_Connect {
             System.out.println("An error occurred while sending the request: " + e.getMessage());
         }
     }
-
-
-
-
-
 
 
 }
