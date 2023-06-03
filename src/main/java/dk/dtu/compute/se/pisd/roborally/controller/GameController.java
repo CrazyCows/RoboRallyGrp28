@@ -82,13 +82,13 @@ public class GameController {
         }
     }
 
-    void moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+    boolean moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         if (Objects.isNull(space)){ //This is kinda a stupid thing to parse since we have the space. Maybe we should just give player a die() function?
             Pit pit = new Pit();
             pit.doAction(this,player.getSpace());
             Player nextPlayer = getNextPlayer(player);
             board.setCurrentPlayer(nextPlayer);
-            return;
+            return false;
         }
         jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
@@ -114,6 +114,7 @@ public class GameController {
         // I don't understand this.... Lucas? - Crazy
         Player nextPlayer = getNextPlayer(player);
         board.setCurrentPlayer(nextPlayer);
+        return true;
     }
 
     public void moveCurrentPlayerToSpace(Space space) {
@@ -159,15 +160,16 @@ public class GameController {
             }
             try {
                 Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
-                moveToSpace(player, nextSpace, heading); //TODO: Notify?
-
-                //Basically checks if the player is moved into a pit
-                for (FieldAction fieldAction : nextSpace.getActions()){
-                    if (fieldAction instanceof Pit){
-                        fieldAction.doAction(this,nextSpace);
-                        break;
+                if (moveToSpace(player, nextSpace, heading)){
+                    for (FieldAction fieldAction : nextSpace.getActions()){
+                        if (fieldAction instanceof Pit){
+                            fieldAction.doAction(this,nextSpace);
+                            break;
+                        }
                     }
                 }
+                //Basically checks if the player is moved into a pit
+
 
             } catch (ImpossibleMoveException e) {
                 System.out.println("Impossible move caught");
