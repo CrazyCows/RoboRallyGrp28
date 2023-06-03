@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
@@ -105,7 +106,7 @@ public class GameController {
             } else {
                 throw new ImpossibleMoveException(player, space, heading);
             }
-        }
+        } //TODO: Should this be here?
 
         player.setSpace(space);
         // I don't understand this.... Lucas? - Crazy
@@ -156,7 +157,16 @@ public class GameController {
             }
             try {
                 Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
-                moveToSpace(player, nextSpace, heading);
+                moveToSpace(player, nextSpace, heading); //TODO: Notify?
+
+                //Basically checks if the player is moved into a pit
+                for (FieldAction fieldAction : nextSpace.getActions()){
+                    if (fieldAction instanceof Pit){
+                        fieldAction.doAction(this,nextSpace);
+                        break;
+                    }
+                }
+
             } catch (ImpossibleMoveException e) {
                 System.out.println("Impossible move caught");
                 break;
