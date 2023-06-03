@@ -83,7 +83,10 @@ public class GameController {
         }
     }
 
-    void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+    void moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+        if (Objects.isNull(space)){
+            throw new ImpossibleMoveException(player,space,heading);
+        }
         jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
@@ -155,6 +158,7 @@ public class GameController {
                 Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
                 moveToSpace(player, nextSpace, heading);
             } catch (ImpossibleMoveException e) {
+                System.out.println("Impossible move caught");
                 break;
             }
         }
