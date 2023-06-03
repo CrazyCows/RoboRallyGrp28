@@ -106,6 +106,7 @@ public class GameController {
 
                 assert target.getPlayer() == null : target; // make sure target is free now
             } else {
+                //TODO: I think we need to make it fall into the pit here
                 throw new ImpossibleMoveException(player, space, heading);
             }
         } //TODO: Should this be here?
