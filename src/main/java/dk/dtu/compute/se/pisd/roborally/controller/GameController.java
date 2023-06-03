@@ -44,7 +44,7 @@ import java.util.*;
 public class GameController {
 
     final public Board board;
-    final private JsonPlayerBuilder jsonPlayerBuilder;
+    //final private JsonPlayerBuilder jsonPlayerBuilder;
 
     private Pit pit = new Pit();
 
@@ -57,7 +57,9 @@ public class GameController {
             cardController.drawCards(player);
         }
         board.setPhase(Phase.PROGRAMMING);
-        jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
+        System.out.println("HER");
+        //jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
+        System.out.println("OGSÅ HER");
         //this.eventController = new CommandCardController(this);
     }
 
