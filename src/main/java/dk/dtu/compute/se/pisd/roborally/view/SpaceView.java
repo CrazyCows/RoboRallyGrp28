@@ -32,6 +32,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
@@ -110,7 +112,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         space.attach(this);
         update(space);
     }
-
 
     public void setBackround(List<String> background) {
         // TODO: background is a list of ressource image strings
@@ -219,6 +220,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                     removeOverlay();
                 }
             }
+            setBackround(space.getBackground());
         }
         updatePlayer();
     }

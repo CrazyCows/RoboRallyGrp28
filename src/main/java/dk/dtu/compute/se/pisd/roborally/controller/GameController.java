@@ -254,9 +254,8 @@ public class GameController {
             item.getEvent().doAction(this, space);
         }
 
-        System.out.println("sleeping");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

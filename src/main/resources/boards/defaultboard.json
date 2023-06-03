@@ -307,7 +307,9 @@
       "walls": [],
       "background": [
         "SOUTH",
-        "laserGun.png"
+        "laserGun.png",
+        "pit.jpg",
+        "navn.png"
       ],
       "actions": [
         {

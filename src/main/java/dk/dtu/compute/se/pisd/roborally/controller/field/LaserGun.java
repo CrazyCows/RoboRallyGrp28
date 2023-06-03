@@ -29,6 +29,8 @@ public class LaserGun extends FieldAction {
 
         System.out.println("FIRING LASER");
 
+        backgroundAnimationThread(space, space.getBackground());
+
         /*Queue<Space> visited = new LinkedList<>();
         ArrayList<Space> spaces = space.board.getLaserSpaces();
         for (Space s : spaces){ //This assumes there's only one action per space, which is a laser
@@ -85,6 +87,7 @@ public class LaserGun extends FieldAction {
     }
 
     public void setup(Space space) {
+        space.getWalls().add(heading.prev().prev());
         Space nextSpace = space.board.getNeighbour(space, heading);
         if (nextSpace != null) {
             if (!nextSpace.hasItemName("Laser Beam")) {
