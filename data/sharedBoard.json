@@ -103,7 +103,7 @@
     "x" : 2,
     "y" : 2
   }, {
-    "walls" : [ "EAST" ],
+    "walls" : [ "EAST", "WEST" ],
     "background" : [ "SOUTH", "test_field2.jpg" ],
     "actions" : [ {
       "CLASSNAME" : "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",

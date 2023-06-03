@@ -56,6 +56,7 @@ public class Player extends Subject {
     private String name;
     private String color;
     private boolean ready;
+    private boolean leader;
 
     private Space space;
     private Heading heading = SOUTH;
@@ -304,5 +305,9 @@ public class Player extends Subject {
 
     public boolean isReady() {
         return ready;
+    }
+
+    public boolean isLeader() {
+        return leader;
     }
 }
