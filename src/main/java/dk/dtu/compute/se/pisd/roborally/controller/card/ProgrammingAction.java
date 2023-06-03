@@ -64,7 +64,7 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
             }
             case POWERUP -> {
                 player.addEnergyCubes(1);
-                System.out.println(player.getName() + " now has " + player.getEnergyCubes() + " energy cubes");
+                System.out.println(player.getName() + " now has " + player.getEnergyCubes() + " energy cube(s)");
             }
             case AGAIN -> {
 

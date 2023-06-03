@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
@@ -44,6 +45,8 @@ public class GameController {
 
     final public Board board;
     final private JsonPlayerBuilder jsonPlayerBuilder;
+
+    private Pit pit = new Pit();
 
     protected CardController cardController;
 
@@ -71,23 +74,27 @@ public class GameController {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
             Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                try {
-                    moveToSpace(player, target, heading);
-                } catch (ImpossibleMoveException e) {
-                    // we don't do anything here  for now; we just catch the
-                    // exception so that we do not pass it on to the caller
-                    // (which would be very bad style).
-                }
+            try {
+                moveToSpace(player, target, heading);
+            } catch (ImpossibleMoveException e) {
+                // we don't do anything here  for now; we just catch the
+                // exception so that we do not pass it on to the caller
+                // (which would be very bad style).
             }
         }
     }
 
-    void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+    boolean moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+        if (null == space){ //This is kinda a stupid thing to parse since we have the space. Maybe we should just give player a die() function?
+            pit.doAction(this,player.getSpace());
+            Player nextPlayer = getNextPlayer(player);
+            board.setCurrentPlayer(nextPlayer);
+            return false;
+        }
         jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
-        if (other != null){
+        if (other != null){ //If player needs to be pushed
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
                 // XXX Note that there might be additional problems with
@@ -100,14 +107,17 @@ public class GameController {
 
                 assert target.getPlayer() == null : target; // make sure target is free now
             } else {
-                throw new ImpossibleMoveException(player, space, heading);
+                //TODO: I think we need to make it fall into the pit here
+                pit.doAction(this,other.getSpace());
+                //throw new ImpossibleMoveException(player, space, heading);
             }
-        }
-        //If player needs to be pushed
+        } //TODO: Should this be here?
+
         player.setSpace(space);
         // I don't understand this.... Lucas? - Crazy
         Player nextPlayer = getNextPlayer(player);
         board.setCurrentPlayer(nextPlayer);
+        return true;
     }
 
     public void moveCurrentPlayerToSpace(Space space) {
@@ -153,8 +163,19 @@ public class GameController {
             }
             try {
                 Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
-                moveToSpace(player, nextSpace, heading);
+                if (moveToSpace(player, nextSpace, heading)){
+                    for (FieldAction fieldAction : nextSpace.getActions()){
+                        if (fieldAction instanceof Pit){
+                            fieldAction.doAction(this,nextSpace);
+                            break;
+                        }
+                    }
+                }
+                //Basically checks if the player is moved into a pit
+
+
             } catch (ImpossibleMoveException e) {
+                System.out.println("Impossible move caught");
                 break;
             }
         }
