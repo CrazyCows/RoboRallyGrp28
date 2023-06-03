@@ -90,7 +90,7 @@ public class GameController {
         jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
-        if (other != null){
+        if (other != null){ //If player needs to be pushed
             Space target = board.getNeighbour(space, heading);
             if (target != null) {
                 // XXX Note that there might be additional problems with
@@ -106,7 +106,7 @@ public class GameController {
                 throw new ImpossibleMoveException(player, space, heading);
             }
         }
-        //If player needs to be pushed
+
         player.setSpace(space);
         // I don't understand this.... Lucas? - Crazy
         Player nextPlayer = getNextPlayer(player);
