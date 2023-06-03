@@ -1,8 +1,7 @@
 {
-  "posX" : 4,
-  "posY" : 1,
-  "color" : "green",
-  "energyCubes" : 0,
-  "name" : "Player 2",
+  "posX" : 2,
+  "posY" : 3,
+  "color" : "green2",
+  "name" : "Player 3",
   "readyState" : false
 }

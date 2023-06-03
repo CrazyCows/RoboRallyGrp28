@@ -36,10 +36,24 @@ public class ClientController {
 
     }
 
+
+    public String jsonType(String jsonName){
+        if (jsonName.equals("playerData.json")){
+            return "/jsonPlayer?ID=";
+        } else {
+            return "/jsonHandler?ID=";
+        }
+    }
+
     public void getJSON(String jsonName) {
+        String jsonTypeToURL = jsonType(jsonName);
+
+
+
+
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl + "/jsonHandler?ID=" + this.ID + "&=" + jsonName))
+                    .uri(URI.create(baseUrl + jsonTypeToURL + this.ID + "&=" + jsonName))
                     .GET()
                     .build();
 
@@ -52,7 +66,7 @@ public class ClientController {
 
             String responseJson = response.body();
             JsonNode jsonNode = objectMapper.readTree(responseJson);
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, jsonName), jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), jsonNode);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -60,13 +74,14 @@ public class ClientController {
 
 
     public void createJSON(String jsonName) {
+        String jsonTypeToURL = jsonType(jsonName);
         try {
             File file = new File(path, jsonName);
             JsonNode json = objectMapper.readTree(file);
 
             WebClient webClient = WebClient.create();
             Mono<String> response = webClient.post()
-                    .uri(baseUrl + "/jsonHandler?ID=" + this.ID + "&jsonFileName=" + jsonName)
+                    .uri(baseUrl + jsonTypeToURL + this.ID + "&jsonFileName=" + jsonName)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(json)
                     .retrieve()
@@ -120,6 +135,7 @@ public class ClientController {
     }
 
     public void updateJSON(String jsonName) {
+        String jsonTypeToURL = jsonType(jsonName);
         try {
             WebClient webClient = WebClient.create();
             File file = new File(path, jsonName);
@@ -127,7 +143,7 @@ public class ClientController {
 
 
             Mono<String> response = webClient.put()
-                    .uri(baseUrl + "/jsonHandler?ID=" + this.ID + "&jsonFileName=" + jsonName)
+                    .uri(baseUrl + jsonTypeToURL + this.ID + "&jsonFileName=" + jsonName)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(json)
                     .retrieve()

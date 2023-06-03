@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class JsonReader {
 
-    // TODO: something
+    // TODO: Remove jsonFileName from arguments adn make it a static variable in each method
 
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -18,10 +18,10 @@ public class JsonReader {
      * gets board data from the board json file
      * @param jsonFileName boardJsonFileName
      * @param key Value to be found
-     * @param x key
-     * @param y key
-     * @return
-     * @throws Exception
+     * @param x position
+     * @param y position
+     * @return String value
+     * @throws Exception Laziness
      */
     public String getBoardData(String jsonFileName, String key, int x, int y) throws Exception {
         JsonNode rootNode = objectMapper.readTree(new File("data", jsonFileName));
@@ -81,7 +81,6 @@ public class JsonReader {
         // Check if the node is an array
         if (node.isArray()) {
             // Iterate through array elements
-            System.out.println("RUnning");
             for (JsonNode element : node) {
                 // If the valueToCompare field is the key element, print the value is fo
                 if (playerName.equals(element.get("name").asText())) {
@@ -94,5 +93,27 @@ public class JsonReader {
             return node.get(key).asText();
         }
         return "No data";
+    }
+
+    public String getCardData(String jsonFileName, String playerName, String key) throws Exception {
+        // Read JSON file and convert to list of Person
+        JsonNode node = objectMapper.readTree(new File("data", jsonFileName));
+
+        // Check if the node is an array
+        if (node.isArray()) {
+            // Iterate through array elements
+            System.out.println("RUnning");
+            for (JsonNode element : node) {
+                // If the valueToCompare field is the key element, print the value is fo
+                if (playerName.equals(element.get("name").asText())) {
+                    System.out.println(element.get(key));
+                    return element.get(key).asText();
+                }
+            }
+        } else if (playerName.equals(node.get("name").asText())) {
+            System.out.println(node.get(key));
+            return node.get(key).asText();
+        }
+        return null;
     }
 }
