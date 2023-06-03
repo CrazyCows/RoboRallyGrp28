@@ -27,6 +27,48 @@ public class ClientController {
         this.path = "data";
     }
 
+    public void getPlayerData(String ID) throws IOException, InterruptedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
+        }
+
+
+        String responseJson = response.body();
+        JsonNode jsonNode = objectMapper.readTree(responseJson);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), jsonNode);
+    }
+
+    public void pushPlayerData(String ID) throws IOException{
+        WebClient webClient = WebClient.create();
+        File file = new File(path, "collectivePlayerData.json");
+        JsonNode json = objectMapper.readTree(file);
+
+
+        Mono<String> response = webClient.post()
+                .uri(baseUrl + "/jsonPlayer?ID=" + ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(json)
+                .retrieve()
+                .bodyToMono(String.class);
+
+        String responseString;
+        try {
+            responseString = response.block();
+            System.out.println("Success");
+            System.out.println(responseString);
+        } catch (RuntimeException e) {
+            System.out.println("Failure");
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void getBoard(String ID) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/jsonBoard?ID=" + ID))
