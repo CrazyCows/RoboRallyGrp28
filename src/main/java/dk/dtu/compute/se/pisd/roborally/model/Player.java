@@ -45,6 +45,12 @@ public class Player extends Subject {
     final public static int NO_CARDS = 8;
 
     final public Board board;
+
+    public Space getStartSpace() {
+        return startSpace;
+    }
+
+    //TODO: Use getters instead
     public Space startSpace;
 
     private String name;
@@ -64,7 +70,6 @@ public class Player extends Subject {
 
     //The last card that the player used
 
-    boolean lastCardIsSpecial;
     private Card lastCard = null;
 
     public void addEnergyCubes(int energyCubesAdded) {
@@ -288,8 +293,9 @@ public class Player extends Subject {
     }
 
     public void addSpamCardToDiscardPile() {
-        //TODO: ADD THIS
+        //TODO: ADD THIS.
         System.out.println(this.name + " Draws a SPAM damage card and adds it to their discard pile");
+        //Try to draw a spam Card (from board?). If there are no more spam cards, do whatever the rules say.
     }
 
     public void discardCurrentProgram() {
