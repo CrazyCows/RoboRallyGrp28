@@ -64,7 +64,6 @@ public class Player extends Subject {
 
     //The last card that the player used
 
-    boolean lastCardIsSpecial;
     private Card lastCard = null;
 
     public void addEnergyCubes(int energyCubesAdded) {
