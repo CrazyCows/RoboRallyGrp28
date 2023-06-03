@@ -15,10 +15,13 @@ public class JsonReader {
 
 
     /**
-     * Gets the key value from a jsonFile. The jsonFile must only contain one key value
-     * @param jsonFileName
-     * @param key
+     * gets board data from the board json file
+     * @param jsonFileName boardJsonFileName
+     * @param key Value to be found
+     * @param x key
+     * @param y key
      * @return
+     * @throws Exception
      */
     public String getBoardData(String jsonFileName, String key, int x, int y) throws Exception {
         JsonNode rootNode = objectMapper.readTree(new File("data", jsonFileName));
@@ -27,21 +30,24 @@ public class JsonReader {
         for (JsonNode spaceNode : spacesNode) {
             if (spaceNode.get("x").asInt() == x && spaceNode.get("y").asInt() == y) {
                 if (spaceNode.has(key)) {
-                    // Assuming that the field is an array and you want the first value
+                    // If the field is an array, return the entire array as a string
                     if (spaceNode.get(key).isArray()) {
-                        return spaceNode.get(key).get(0).asText();
+                        if (spaceNode.get(key).size() == 1) {
+                            return spaceNode.get(key).get(0).asText();
+                        } else {
+                            return spaceNode.get(key).toString();
+                        }
                     }
                     // If the field is not an array but a simple key-value pair
                     else {
                         return spaceNode.get(key).asText();
                     }
                 }
-            }
-        }
-        for (JsonNode spaceNode : spacesNode) {
-            if (spaceNode.get("x").asInt() == x && spaceNode.get("y").asInt() == y) {
                 if (spaceNode.has("actions")) {
                     for (JsonNode actionNode : spaceNode.get("actions")) {
+                        if (actionNode.has("CLASSNAME") && key.equals("CLASSNAME")) {
+                            return actionNode.get("CLASSNAME").asText();
+                        }
                         if (actionNode.has("INSTANCE") && actionNode.get("INSTANCE").has(key)) {
                             return actionNode.get("INSTANCE").get(key).asText();
                         }
@@ -56,7 +62,6 @@ public class JsonReader {
                 }
             }
         }
-
         return null;
     }
 
