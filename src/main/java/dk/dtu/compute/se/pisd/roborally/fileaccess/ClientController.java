@@ -204,7 +204,7 @@ public class ClientController {
         }
     }
 
-    public String getMoves(String ID) throws IOException, InterruptedException {
+    public void getMoves(String ID) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/jsonMoves?ID=" + ID))
                 .GET()
@@ -216,7 +216,12 @@ public class ClientController {
             throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
         }
 
-        return response.body();
+
+
+
+        String responseJson = response.body();
+        JsonNode jsonNode = objectMapper.readTree(responseJson);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "playerMoves.json"), jsonNode);
     }
 
     public void createMoves(String ID) throws IOException, InterruptedException {
@@ -290,4 +295,26 @@ public class ClientController {
 
          */
     }
+
+    public void getSharedPlayerData(String ID) throws IOException, InterruptedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
+        }
+
+
+        String responseJson = response.body();
+        JsonNode jsonNode = objectMapper.readTree(responseJson);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "playerData.json"), jsonNode);
+    }
+
+
+
+
 }

@@ -29,7 +29,7 @@ public class JsonPlayerBuilder {
         playerData.put("posX", player.getSpace().getPosition()[0]);
         playerData.put("posY", player.getSpace().getPosition()[1]);
 
-        file = new File("data", "collectivePlayerData.json");
+        file = new File("data", "playerData.json");
 
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, playerData);
