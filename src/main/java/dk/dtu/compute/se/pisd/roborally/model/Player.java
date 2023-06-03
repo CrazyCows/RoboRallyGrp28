@@ -49,6 +49,7 @@ public class Player extends Subject {
 
     private String name;
     private String color;
+    private boolean ready;
 
     private Space space;
     private Heading heading = SOUTH;
@@ -293,5 +294,9 @@ public class Player extends Subject {
 
     public void discardCurrentProgram() {
         //TODO: ADD THIS. Basically clears the current program so the robot no longer moves
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 }

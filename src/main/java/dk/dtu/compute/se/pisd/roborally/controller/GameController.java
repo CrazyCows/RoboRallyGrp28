@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
@@ -43,7 +44,7 @@ import java.util.List;
 public class GameController {
 
     final public Board board;
-
+    final private JsonPlayerBuilder jsonPlayerBuilder;
 
     protected CardController cardController;
 
@@ -54,6 +55,7 @@ public class GameController {
             cardController.drawCards(player);
         }
         board.setPhase(Phase.PROGRAMMING);
+        jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this);
     }
 
@@ -83,6 +85,7 @@ public class GameController {
     }
 
     void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+        jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
         if (other != null){
