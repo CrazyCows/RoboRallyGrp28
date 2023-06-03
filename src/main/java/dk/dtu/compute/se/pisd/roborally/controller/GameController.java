@@ -163,7 +163,7 @@ public class GameController {
             }
             try {
                 Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
-                if (moveToSpace(player, nextSpace, heading)){
+                if (moveToSpace(player, nextSpace, heading)){ //Basically checks if the player is moved into a pit
                     for (FieldAction fieldAction : nextSpace.getActions()){
                         if (fieldAction instanceof Pit){
                             fieldAction.doAction(this,nextSpace);
@@ -171,7 +171,7 @@ public class GameController {
                         }
                     }
                 }
-                //Basically checks if the player is moved into a pit
+
 
 
             } catch (ImpossibleMoveException e) {
