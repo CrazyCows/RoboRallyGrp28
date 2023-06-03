@@ -85,7 +85,7 @@ public class GameController {
     }
 
     boolean moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
-        if (null == space){
+        if (space == null){
             pit.doAction(this,player.getSpace());
             Player nextPlayer = getNextPlayer(player);
             board.setCurrentPlayer(nextPlayer);
@@ -96,6 +96,8 @@ public class GameController {
         Player other = space.getPlayer();
         if (other != null){ //If player needs to be pushed
             Space target = board.getNeighbour(space, heading);
+            moveToSpace(other,target,heading);
+            /*
             if (target != null) {
                 // XXX Note that there might be additional problems with
                 //     infinite recursion here (in some special cases)!
@@ -108,8 +110,10 @@ public class GameController {
                 assert target.getPlayer() == null : target; // make sure target is free now
             } else if (target == null){
                 //TODO: I think we need to make it fall into the pit here
+
                 pit.doAction(this,other.getSpace());
             }
+            */
         } //TODO: Should this be here?
 
         player.setSpace(space);
