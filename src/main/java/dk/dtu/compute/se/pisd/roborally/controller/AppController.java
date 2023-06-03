@@ -126,7 +126,7 @@ public class AppController implements Observer {
         /*if (gameController == null) {
             newGame();
         }*/
-
+        ClientController clientController = new ClientController();
         this.savedBoards = new ArrayList<>();
 
         File folder = new File("./Save Games");

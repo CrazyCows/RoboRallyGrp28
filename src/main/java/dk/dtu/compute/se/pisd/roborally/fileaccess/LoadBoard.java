@@ -25,7 +25,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import dk.dtu.compute.se.pisd.roborally.controller.field.Laser;
+import dk.dtu.compute.se.pisd.roborally.controller.field.Gear;
+import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
+import dk.dtu.compute.se.pisd.roborally.controller.item.Laserbeam;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
@@ -92,6 +94,11 @@ public class LoadBoard {
                 Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
                 if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
+                    for (FieldAction fieldAction : space.getActions()) {
+                        if (fieldAction instanceof LaserGun) {
+                            ((LaserGun) fieldAction).setup(space);
+                        }
+                    }
                     space.getWalls().addAll(spaceTemplate.walls);
                     space.getBackground().addAll(spaceTemplate.background);
                     space.getItems().addAll(spaceTemplate.items);

@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
@@ -29,9 +30,7 @@ import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 //import java.util.*;
 
@@ -261,6 +260,26 @@ public class GameController {
             item.getEvent().doAction(this, space);
         }
 
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("end of executestep");
+        /*if (space.getItem() != null) {
+            if (space.getItem().equals("checkpoint")) {
+                space.setItem(null);
+                Random rand = new Random();
+                int maxHeight = rand.nextInt(board.height);
+                int maxWidth = rand.nextInt(board.width);
+                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
+                space = board.getSpace(maxWidth, maxHeight);
+                System.out.println(space.x + " and " + space.y);
+                space.setItem("checkpoint");
+                updatedSpaceView.addCheckpoint();
+            }
+        }*/
     }
 
 
@@ -276,6 +295,7 @@ public class GameController {
     public void win(Player currentPlayer) { //TODO: Add something about winning
         System.out.println("The player " + currentPlayer.getName() + " has won!");
     }
+
 
     class ImpossibleMoveException extends Exception {
 
