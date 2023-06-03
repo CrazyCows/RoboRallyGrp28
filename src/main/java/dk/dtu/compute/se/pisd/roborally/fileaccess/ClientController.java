@@ -24,12 +24,15 @@ public class ClientController {
     HashMap<String, String> jsonID = new HashMap<>();
     String ID;
 
+    // TODO: All exceptions is handled rather lazily here. Should be tightened up such errors give useful information..
+    // TODO: Throwing stuff is more fun tho..
+
     public ClientController() {
         this.client = HttpClient.newHttpClient();
         this.baseUrl = baseUrl = "http://localhost:8080";
         this.objectMapper = new ObjectMapper();
         this.path = "data";
-        this.jsonID.put("sharedBoard.json", "/jsonBoard?ID=");
+        this.jsonID.put("sharedBoard.json", "/jsonHandler?ID=");
         this.jsonID.put("sharedPlayers.json", "/jsonPlayers?ID=");
         this.jsonID.put("cardSequenceRequest.json", "/jsonMoves?ID=");
 
@@ -37,7 +40,7 @@ public class ClientController {
 
     public void getJSON(String ID, String jsonName) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + jsonID.get(jsonName) + ID))
+                .uri(URI.create(baseUrl + "/jsonHandler?ID=" + ID + "&=" + jsonName))
                 .GET()
                 .build();
 
@@ -60,7 +63,7 @@ public class ClientController {
 
         WebClient webClient = WebClient.create();
         Mono<String> response = webClient.post()
-                .uri(baseUrl + jsonID.get(jsonName) + ID)
+                .uri(baseUrl + "/jsonHandler?ID=" + ID + "&jsonFileName=" + jsonName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(json)
                 .retrieve()
@@ -108,20 +111,6 @@ public class ClientController {
             System.out.println("Failure");
             System.out.println(e.getMessage());
         }
-
-        /*
-
-        Mono<String> response = webClient.post()
-                .uri(baseUrl + "/jsonBoards?fileName=" + fileName + "&ID=" + ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(json)
-                .retrieve()
-                .bodyToMono(String.class);
-
-        System.out.println("Success");
-        System.out.println(response.block());
-
-         */
     }
 
     public void updateJSON(String ID, String jsonName) throws IOException, InterruptedException{
