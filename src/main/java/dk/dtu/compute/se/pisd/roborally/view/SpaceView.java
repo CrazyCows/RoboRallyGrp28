@@ -51,8 +51,8 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    final public static int SPACE_HEIGHT = 75; // 75;
-    final public static int SPACE_WIDTH = 75; // 75;
+    final public static int SPACE_HEIGHT = 75;
+    final public static int SPACE_WIDTH = 75;
 
     public final Space space;
     private ImageView backgroundImageView;
