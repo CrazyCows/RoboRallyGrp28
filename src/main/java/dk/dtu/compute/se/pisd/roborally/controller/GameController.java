@@ -292,8 +292,10 @@ public class GameController {
         //     is not yet implemented
     }
 
-    public void win(Player currentPlayer) { //TODO: Add something about winning
+    public void win(Player currentPlayer) {
+        //TODO: Display that a player won with some graphics and stop GUI(?)
         System.out.println("The player " + currentPlayer.getName() + " has won!");
+
     }
 
 
