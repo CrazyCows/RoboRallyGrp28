@@ -85,7 +85,7 @@ public class GameController {
     }
 
     boolean moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
-        if (null == space){ //This is kinda a stupid thing to parse since we have the space. Maybe we should just give player a die() function?
+        if (null == space){
             pit.doAction(this,player.getSpace());
             Player nextPlayer = getNextPlayer(player);
             board.setCurrentPlayer(nextPlayer);
@@ -106,10 +106,9 @@ public class GameController {
                 // the thrown exception is supposed to be passed on to the caller
 
                 assert target.getPlayer() == null : target; // make sure target is free now
-            } else {
+            } else if (target == null){
                 //TODO: I think we need to make it fall into the pit here
                 pit.doAction(this,other.getSpace());
-                //throw new ImpossibleMoveException(player, space, heading);
             }
         } //TODO: Should this be here?
 
