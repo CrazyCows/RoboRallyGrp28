@@ -288,8 +288,9 @@ public class Player extends Subject {
     }
 
     public void addSpamCardToDiscardPile() {
-        //TODO: ADD THIS
+        //TODO: ADD THIS.
         System.out.println(this.name + " Draws a SPAM damage card and adds it to their discard pile");
+        //Try to draw a spam Card (from board?). If there are no more spam cards, do whatever the rules say.
     }
 
     public void discardCurrentProgram() {
