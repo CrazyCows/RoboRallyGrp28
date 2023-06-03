@@ -32,9 +32,6 @@ public class ClientController {
         this.baseUrl = baseUrl = "http://localhost:8080";
         this.objectMapper = new ObjectMapper();
         this.path = "data";
-        this.jsonID.put("sharedBoard.json", "/jsonHandler?ID=");
-        this.jsonID.put("sharedPlayers.json", "/jsonPlayers?ID=");
-        this.jsonID.put("cardSequenceRequest.json", "/jsonMoves?ID=");
 
     }
 
@@ -120,7 +117,7 @@ public class ClientController {
 
 
         Mono<String> response = webClient.put()
-                .uri(baseUrl + jsonID.get(jsonName) + ID)
+                .uri(baseUrl + "/jsonHandler?ID=" + ID + "&jsonFileName=" + jsonName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(json)
                 .retrieve()
@@ -137,14 +134,14 @@ public class ClientController {
         }
     }
 
-    public void deleteJSON(String ID, String jsonName) throws IOException, InterruptedException {
+
+    // Deletes the whole game folder. Individual files should not be deleted.
+    public void deleteJSON(String ID) throws IOException, InterruptedException {
         // Create the DELETE request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + jsonID.get(jsonName) + ID))
+                .uri(URI.create(baseUrl + "/jsonHandler?ID=" + ID))
                 .DELETE()
                 .build();
-
-
         try {
             // Send the request and get the response
             HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
