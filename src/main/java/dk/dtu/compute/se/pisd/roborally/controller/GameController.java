@@ -46,6 +46,8 @@ public class GameController {
     final public Board board;
     final private JsonPlayerBuilder jsonPlayerBuilder;
 
+    private Pit pit = new Pit();
+
     protected CardController cardController;
 
     public GameController(Board board) {
@@ -83,8 +85,7 @@ public class GameController {
     }
 
     boolean moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
-        if (Objects.isNull(space)){ //This is kinda a stupid thing to parse since we have the space. Maybe we should just give player a die() function?
-            Pit pit = new Pit();
+        if (null == space){ //This is kinda a stupid thing to parse since we have the space. Maybe we should just give player a die() function?
             pit.doAction(this,player.getSpace());
             Player nextPlayer = getNextPlayer(player);
             board.setCurrentPlayer(nextPlayer);
@@ -107,6 +108,7 @@ public class GameController {
                 assert target.getPlayer() == null : target; // make sure target is free now
             } else {
                 //TODO: I think we need to make it fall into the pit here
+                pit.doAction(this,other.getSpace());
                 throw new ImpossibleMoveException(player, space, heading);
             }
         } //TODO: Should this be here?
