@@ -1,11 +1,15 @@
 package dk.dtu.compute.se.pisd.roborally.controller.card;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Command;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.SpecialProgrammingCard;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Command.LEFT;
-import static dk.dtu.compute.se.pisd.roborally.model.Command.RIGHT;
+import java.util.Objects;
+
+import static dk.dtu.compute.se.pisd.roborally.model.Command.*;
 
 public class ProgrammingAction extends CardAction<ProgrammingCard> {
 
@@ -15,6 +19,8 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
      * command upon a given player. This is used for programming the robot,
      * and simply translates the command into action.
      */
+
+
 
     @Override
     public boolean doAction(GameController gameController, Player player, ProgrammingCard card) {
@@ -61,9 +67,21 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
                 System.out.println(player.getName() + " now has " + player.getEnergyCubes() + " energy cubes");
             }
             case AGAIN -> {
-                System.out.println("AGAIN - Not yet implemented");
+
+                Card oldCard = player.getLastCard();
+                if (oldCard instanceof SpecialProgrammingCard){
+                    System.out.println("AGAIN on special programming card");
+                    ((SpecialProgrammingCard) oldCard).getAction().doAction(gameController,player, (SpecialProgrammingCard) oldCard);
+                } else{
+                    if (((ProgrammingCard) oldCard).getCommand() == AGAIN){
+                        System.out.println("Don't recurse me daddy");
+                        return false;
+                    }
+                    doAction(gameController,player, (ProgrammingCard) oldCard);
+                }
             }
         }
+        player.setLastCard(card);
         return true; // Return a boolean result indicating the success/failure of the action
     }
 
