@@ -72,21 +72,23 @@ public class GameController {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
             Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                try {
-                    moveToSpace(player, target, heading);
-                } catch (ImpossibleMoveException e) {
-                    // we don't do anything here  for now; we just catch the
-                    // exception so that we do not pass it on to the caller
-                    // (which would be very bad style).
-                }
+            try {
+                moveToSpace(player, target, heading);
+            } catch (ImpossibleMoveException e) {
+                // we don't do anything here  for now; we just catch the
+                // exception so that we do not pass it on to the caller
+                // (which would be very bad style).
             }
         }
     }
 
     void moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
-        if (Objects.isNull(space)){
-            throw new ImpossibleMoveException(player,space,heading);
+        if (Objects.isNull(space)){ //This is kinda a stupid thing to parse since we have the space. Maybe we should just give player a die() function?
+            Pit pit = new Pit();
+            pit.doAction(this,player.getSpace());
+            Player nextPlayer = getNextPlayer(player);
+            board.setCurrentPlayer(nextPlayer);
+            return;
         }
         jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
