@@ -1,25 +1,7 @@
-[ {
-  "posX" : 2,
-  "posY" : 3,
-  "color" : "green3",
-  "name" : "Player 4",
-  "readyState" : false
-}, {
-  "posX" : 2,
-  "posY" : 3,
-  "color" : "green3",
-  "name" : "Player 4",
-  "readyState" : false
-}, {
-  "posX" : 2,
-  "posY" : 3,
-  "color" : "green3",
-  "name" : "Player 4",
-  "readyState" : false
-}, {
+{
   "posX" : 2,
   "posY" : 3,
   "color" : "green3",
   "name" : "Player 2",
   "readyState" : false
-} ]
+}

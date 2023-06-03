@@ -23,7 +23,7 @@ public class JsonSharedPlayerData {
 
 
         // Read JSON file and convert to list of Person
-        JsonNode node = objectMapper.readTree(new File("data", "playerData.json"));
+        JsonNode node = objectMapper.readTree(new File("data", "collectivePlayerData.json"));
 
         // Check if the node is an array
         if (node.isArray()) {
@@ -39,6 +39,12 @@ public class JsonSharedPlayerData {
     }
 
     public void getSharedData(){
+
+    }
+
+    // Should be used after each turn
+    // Should only be used by the game leader
+    public void deletePlayerDataFromServer(String ID){
 
     }
 

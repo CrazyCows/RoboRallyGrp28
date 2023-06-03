@@ -6,14 +6,15 @@ public class helpRunStatic {
         JsonSharedPlayerData jsonSharedPlayerData = new JsonSharedPlayerData();
 
 
-        //jsonConnect.createBoard("117");
-        jsonConnect.pushPlayerData("117");
+        //jsonConnect.createBoard("118");
+        //jsonConnect.pushPlayerData("118");
 
 
 
 
-        jsonConnect.getSharedPlayerData("117");
+        //jsonConnect.getSharedPlayerData("118");
 
+        //jsonConnect.getPlayerData("118");
 
 
         jsonSharedPlayerData.JsonReader();

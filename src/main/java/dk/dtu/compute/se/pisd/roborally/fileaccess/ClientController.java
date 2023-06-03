@@ -27,6 +27,8 @@ public class ClientController {
         this.path = "data";
     }
 
+    // Idk, this is a double? - might just have forgotten why it's important.
+    // TODO: Delete latest 06/06 if not used - crazy
     public void getPlayerData(String ID) throws IOException, InterruptedException{
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
@@ -45,9 +47,53 @@ public class ClientController {
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), jsonNode);
     }
 
+    // Player data
+    public void getSharedPlayerData(String ID) throws IOException, InterruptedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
+        }
+
+
+        String responseJson = response.body();
+        JsonNode jsonNode = objectMapper.readTree(responseJson);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), jsonNode);
+    }
+
+
+    // Should only ever be run from the leaders computer
+    public void deleteSharedPlayerData(String ID) throws IOException, InterruptedException {
+        // Create the DELETE request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
+                .DELETE()
+                .build();
+
+
+        try {
+            // Send the request and get the response
+            HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
+
+            // Check the response status code
+            if (response.statusCode() == 200) {
+                System.out.println("Success");
+            } else {
+                System.out.println("Fail " + response.statusCode());
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred while sending the request: " + e.getMessage());
+        }
+    }
+
     public void pushPlayerData(String ID) throws IOException{
         WebClient webClient = WebClient.create();
-        File file = new File(path, "collectivePlayerData.json");
+        File file = new File(path, "playerData.json");
         JsonNode json = objectMapper.readTree(file);
 
 
@@ -69,6 +115,7 @@ public class ClientController {
         }
     }
 
+    // Board data
     public void getBoard(String ID) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/jsonBoard?ID=" + ID))
@@ -204,6 +251,7 @@ public class ClientController {
         }
     }
 
+    // Moves data
     public void getMoves(String ID) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/jsonMoves?ID=" + ID))
@@ -296,23 +344,8 @@ public class ClientController {
          */
     }
 
-    public void getSharedPlayerData(String ID) throws IOException, InterruptedException{
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
-        }
 
 
-        String responseJson = response.body();
-        JsonNode jsonNode = objectMapper.readTree(responseJson);
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "playerData.json"), jsonNode);
-    }
 
 
 
