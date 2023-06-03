@@ -295,16 +295,42 @@
       "y": 2
     },
     {
-      "items": [
+      "walls": [],
+      "background": [
+        "NORTH",
+        "LaserGun.png"
+      ],
+      "actions": [
         {
-          "name": "checkpoint",
-          "image" : "checkpointhansi1.png",
-          "heading" : "NORTH",
-          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.Checkpoint"
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun",
+          "INSTANCE": {
+            "heading": "NORTH",
+            "name": "LaserGun"
+          }
         }
       ],
-      "x": 3,
-      "y": 4
+      "x": 4,
+      "y": 3
+    },
+    {
+      "walls": [],
+      "background": [
+        "SOUTH",
+        "laserGun.png",
+        "pit.jpg",
+        "navn.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun",
+          "INSTANCE": {
+            "heading": "SOUTH",
+            "name": "LaserGun"
+          }
+        }
+      ],
+      "x": 4,
+      "y": 1
     }
   ]
 }

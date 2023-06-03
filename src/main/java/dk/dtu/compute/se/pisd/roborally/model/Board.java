@@ -22,8 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -63,6 +61,8 @@ public class Board extends Subject {
     private Space priorityAntennaSpace;
 
     private int numberOfCheckpoints = 0;
+
+    private ArrayList<Space> laserSpaces = new ArrayList<>();
 
     public Board(int width, int height) {
         this.width = width;
@@ -216,9 +216,9 @@ public class Board extends Subject {
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
-        if (space.getWalls().contains(heading)) {
+        /*if (space.getWalls().contains(heading)) {
             return null;
-        }
+        }*/
         // TODO needs to be implemented based on the actual spaces
         //      and obstacles and walls placed there. For now it,
         //      just calculates the next space in the respective
@@ -231,17 +231,24 @@ public class Board extends Subject {
         int y = space.y;
         switch (heading) {
             case SOUTH:
-                y = (y + 1) % height;
+                y = (y + 1);
                 break;
             case WEST:
-                x = (x + width - 1) % width;
+                x = (x - 1);
                 break;
             case NORTH:
-                y = (y + height - 1) % height;
+                y = (y - 1);
                 break;
             case EAST:
-                x = (x + 1) % width;
+                x = (x + 1);
                 break;
+        }
+        Board board = space.board;
+        if (y < 0 || y > board.height) {
+            return null;
+        }
+        else if (x < 0 || x > board.width) {
+            return null;
         }
         Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
         Space result = getSpace(x, y);
@@ -292,13 +299,13 @@ public class Board extends Subject {
         return "temp STATUS MESSAGE 0";
     }
 
-    public int getNumberOfCheckpoints() {
+    public int getNumberOfItemsOnBoard(String spaceName) {
         if (numberOfCheckpoints == 0){
             int counter = 0;
             for (int x = 0; x < width; x++) {
                 for(int y = 0; y < height; y++) {
                     for (Item item : spaces[x][y].getItems()){
-                        if (Objects.equals(item.getName(), "checkpoint")){
+                        if (Objects.equals(item.getName(), spaceName)){
                             counter += 1;
                         }
                     }
@@ -307,5 +314,22 @@ public class Board extends Subject {
             numberOfCheckpoints = counter;
         }
         return numberOfCheckpoints;
+    }
+
+    public ArrayList<Space> getLaserSpaces(){ //Distinguish between types of lasers
+        if (laserSpaces.size() == 0){
+            for (int x = 0; x < width; x++) {
+                for(int y = 0; y < height; y++) {
+                    for (Item item : spaces[x][y].getItems()){
+                        if (Objects.equals(item.getName(),"laserGun")){
+                            laserSpaces.add(spaces[x][y]);
+                        }
+                        System.out.println(item.getName());
+                        System.out.println(x + "," + y);
+                    }
+                }
+            }
+        }
+        return laserSpaces;
     }
 }

@@ -25,6 +25,10 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * ...
  *
@@ -32,6 +36,25 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
  *
  */
 public abstract class FieldAction {
+
+
+
+    public void backgroundAnimationThread(Space space, List<String> background) {
+
+        Thread thread = new Thread(() -> {
+            for (int i = 1; i < background.size(); i++) {
+                System.out.println(background.get(i));
+                try {
+                    space.animate(new ArrayList<>(Arrays.asList(background.get(0), background.get(i))));
+                    Thread.sleep(1000); // Delay for half a second
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            space.animate(background);
+        });
+        thread.start();
+    }
 
 
     /**
