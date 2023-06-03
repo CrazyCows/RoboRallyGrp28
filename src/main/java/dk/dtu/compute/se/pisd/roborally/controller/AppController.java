@@ -27,7 +27,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -126,7 +125,7 @@ public class AppController implements Observer {
         /*if (gameController == null) {
             newGame();
         }*/
-
+        ClientController clientController = new ClientController();
         this.savedBoards = new ArrayList<>();
 
         File folder = new File("./Save Games");
@@ -191,11 +190,11 @@ public class AppController implements Observer {
     public void onlineGame(String ID) throws Exception{
         ClientController clientController = new ClientController();
 
-        clientController.createBoard(ID);
+        clientController.createJSON(ID, "sharedBoard.json");
 
         new Thread(() -> {
             try {
-                clientController.getBoard(ID);
+                clientController.getJSON(ID, "sharedBoard.json");
                 Thread.sleep(200);
             } catch (IOException e) {
                 throw new RuntimeException(e);

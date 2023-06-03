@@ -13,6 +13,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class ClientController {
     private HttpClient client;
@@ -20,18 +21,23 @@ public class ClientController {
     ObjectMapper objectMapper;
     String path;
 
+    HashMap<String, String> jsonID = new HashMap<>();
+    String ID;
+
     public ClientController() {
         this.client = HttpClient.newHttpClient();
         this.baseUrl = baseUrl = "http://localhost:8080";
         this.objectMapper = new ObjectMapper();
         this.path = "data";
+        this.jsonID.put("sharedBoard.json", "/jsonBoard?ID=");
+        this.jsonID.put("sharedPlayers.json", "/jsonPlayers?ID=");
+        this.jsonID.put("cardSequenceRequest.json", "/jsonMoves?ID=");
+
     }
 
-    // Idk, this is a double? - might just have forgotten why it's important.
-    // TODO: Delete latest 06/06 if not used - crazy
-    public void getPlayerData(String ID) throws IOException, InterruptedException{
+    public void getJSON(String ID, String jsonName) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
+                .uri(URI.create(baseUrl + jsonID.get(jsonName) + ID))
                 .GET()
                 .build();
 
@@ -44,103 +50,17 @@ public class ClientController {
 
         String responseJson = response.body();
         JsonNode jsonNode = objectMapper.readTree(responseJson);
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), jsonNode);
-    }
-
-    // Player data
-    public void getSharedPlayerData(String ID) throws IOException, InterruptedException{
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
-        }
-
-
-        String responseJson = response.body();
-        JsonNode jsonNode = objectMapper.readTree(responseJson);
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), jsonNode);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, jsonName), jsonNode);
     }
 
 
-    // Should only ever be run from the leaders computer
-    public void deleteSharedPlayerData(String ID) throws IOException, InterruptedException {
-        // Create the DELETE request
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/jsonPlayer?ID=" + ID))
-                .DELETE()
-                .build();
-
-
-        try {
-            // Send the request and get the response
-            HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
-
-            // Check the response status code
-            if (response.statusCode() == 200) {
-                System.out.println("Success");
-            } else {
-                System.out.println("Fail " + response.statusCode());
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred while sending the request: " + e.getMessage());
-        }
-    }
-
-    public void pushPlayerData(String ID) throws IOException{
-        WebClient webClient = WebClient.create();
-        File file = new File(path, "playerData.json");
-        JsonNode json = objectMapper.readTree(file);
-
-
-        Mono<String> response = webClient.post()
-                .uri(baseUrl + "/jsonPlayer?ID=" + ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(json)
-                .retrieve()
-                .bodyToMono(String.class);
-
-        String responseString;
-        try {
-            responseString = response.block();
-            System.out.println("Success");
-            System.out.println(responseString);
-        } catch (RuntimeException e) {
-            System.out.println("Failure");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    // Board data
-    public void getBoard(String ID) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/jsonBoard?ID=" + ID))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
-        }
-
-
-        String responseJson = response.body();
-        JsonNode jsonNode = objectMapper.readTree(responseJson);
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "sharedBoard.json"), jsonNode);
-    }
-
-    public void createBoard(String ID) throws IOException, InterruptedException {
-        File file = new File(path, "sharedBoard.json");
+    public void createJSON(String ID, String jsonName) throws IOException, InterruptedException {
+        File file = new File(path, jsonName);
         JsonNode json = objectMapper.readTree(file);
 
         WebClient webClient = WebClient.create();
         Mono<String> response = webClient.post()
-                .uri(baseUrl + "/jsonBoard?ID=" + ID)
+                .uri(baseUrl + jsonID.get(jsonName) + ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(json)
                 .retrieve()
@@ -204,14 +124,14 @@ public class ClientController {
          */
     }
 
-    public void updateBoard(String ID) throws IOException, InterruptedException{
+    public void updateJSON(String ID, String jsonName) throws IOException, InterruptedException{
         WebClient webClient = WebClient.create();
-        File file = new File(path, "sharedBoard.json");
+        File file = new File(path, jsonName);
         JsonNode json = objectMapper.readTree(file);
 
 
         Mono<String> response = webClient.put()
-                .uri(baseUrl + "/jsonBoard?ID=" + ID)
+                .uri(baseUrl + jsonID.get(jsonName) + ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(json)
                 .retrieve()
@@ -228,10 +148,10 @@ public class ClientController {
         }
     }
 
-    public void deleteBoard(String ID) throws IOException, InterruptedException {
+    public void deleteJSON(String ID, String jsonName) throws IOException, InterruptedException {
         // Create the DELETE request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/jsonBoard?ID=" + ID))
+                .uri(URI.create(baseUrl + jsonID.get(jsonName) + ID))
                 .DELETE()
                 .build();
 
@@ -250,104 +170,4 @@ public class ClientController {
             System.out.println("An error occurred while sending the request: " + e.getMessage());
         }
     }
-
-    // Moves data
-    public void getMoves(String ID) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/jsonMoves?ID=" + ID))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
-        }
-
-
-
-
-        String responseJson = response.body();
-        JsonNode jsonNode = objectMapper.readTree(responseJson);
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "playerMoves.json"), jsonNode);
-    }
-
-    public void createMoves(String ID) throws IOException, InterruptedException {
-        File file = new File(path, "cardSequenceRequest.json");
-        JsonNode json = objectMapper.readTree(file);
-
-        WebClient webClient = WebClient.create();
-
-
-        Mono<String> response = webClient.post()
-                .uri(baseUrl + "/jsonMoves?ID=" + ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(json)
-                .retrieve()
-                // Error handling
-                // 409 returns File conflict on server - already exists
-                // 500 returns internal error - Could not write to file
-                .onStatus(httpStatus -> httpStatus.is4xxClientError(), clientResponse ->
-                        clientResponse.bodyToMono(String.class)
-                                .map(body -> {
-                                    JsonNode jsonNode;
-                                    try {
-                                        jsonNode = new ObjectMapper().readTree(body);
-                                        String status = jsonNode.get("status").asText();
-                                        String error = jsonNode.get("error").asText();
-                                        String path = jsonNode.get("path").asText();
-                                        return new RuntimeException("Status: " + status + ", Error: " + error + ", Path: " + path);
-                                    } catch (JsonProcessingException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return null;
-                                }))
-                .onStatus(httpStatus -> httpStatus.is5xxServerError(), clientResponse ->
-                        clientResponse.bodyToMono(String.class)
-                                .map(body -> {
-                                    JsonNode jsonNode;
-                                    try {
-                                        jsonNode = new ObjectMapper().readTree(body);
-                                        String status = jsonNode.get("status").asText();
-                                        String error = jsonNode.get("error").asText();
-                                        String path = jsonNode.get("path").asText();
-                                        return new RuntimeException("Status: " + status + ", Error: " + error + ", Path: " + path);
-                                    } catch (JsonProcessingException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return null;
-                                }))
-                .bodyToMono(String.class);
-
-        String responseString;
-        try {
-            responseString = response.block();
-            System.out.println("Success");
-            System.out.println(responseString);
-        } catch (RuntimeException e) {
-            System.out.println("Failure");
-            System.out.println(e.getMessage());
-        }
-
-        /*
-
-        Mono<String> response = webClient.post()
-                .uri(baseUrl + "/jsonBoards?fileName=" + fileName + "&ID=" + ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(json)
-                .retrieve()
-                .bodyToMono(String.class);
-
-        System.out.println("Success");
-        System.out.println(response.block());
-
-         */
-    }
-
-
-
-
-
-
-
 }

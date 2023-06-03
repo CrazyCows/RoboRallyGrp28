@@ -109,12 +109,14 @@ public class RoboRally extends Application {
                     appController.exit();} );
         stage.setResizable(false);
         stage.sizeToScene();
+
         stage.show();
     }
 
     public void createBoardView(GameController gameController) {
         // if present, remove old BoardView
         boardRoot.getChildren().clear();
+
 
         if (gameController != null) {
             // create and add view for new board

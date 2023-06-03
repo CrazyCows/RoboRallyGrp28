@@ -1,7 +1,7 @@
 {
   "posX" : 2,
-  "posY" : 3,
-  "color" : "green3",
+  "posY" : 4,
+  "color" : "green",
   "name" : "Player 2",
   "readyState" : false
 }

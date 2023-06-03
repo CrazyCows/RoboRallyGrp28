@@ -32,6 +32,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
@@ -49,8 +51,8 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    final public static int SPACE_HEIGHT = 75; // 75;
-    final public static int SPACE_WIDTH = 75; // 75;
+    final public static int SPACE_HEIGHT = 75;
+    final public static int SPACE_WIDTH = 75;
 
     public final Space space;
     private ImageView backgroundImageView;
@@ -110,7 +112,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         space.attach(this);
         update(space);
     }
-
 
     public void setBackround(List<String> background) {
         // TODO: background is a list of ressource image strings
@@ -211,6 +212,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         System.out.println("Space update");
         if (subject == this.space) {
+            setBackround(space.getBackground());
             if (!space.getItems().isEmpty()) {
                 updateOverlay(space.getItems().get(space.getItems().size() - 1).getImage());
             }

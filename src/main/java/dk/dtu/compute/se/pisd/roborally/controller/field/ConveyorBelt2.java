@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-public class ConveyorBelt extends FieldAction {
+public class ConveyorBelt2 extends FieldAction {
 
     private Heading heading;
 
