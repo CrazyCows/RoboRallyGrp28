@@ -25,10 +25,13 @@ public class JsonPlayerBuilder {
 
         playerData.put("name", player.getName());
         playerData.put("color", player.getColor());
-        playerData.put("readyState", player.isReady());
-        playerData.put("posX", player.getSpace().getPosition()[0]);
-        playerData.put("posY", player.getSpace().getPosition()[1]);
-        playerData.put("energyCubes",player.getEnergyCubes()); //TODO: Does this work?
+        playerData.put("readystate", player.isReady());
+        playerData.put("playerisLead", player.isLeader());
+        playerData.put("posx", player.getSpace().getPosition()[0]);
+        playerData.put("posy", player.getSpace().getPosition()[1]);
+        playerData.put("energycubes",player.getEnergyCubes()); //TODO: Does this work?
+        playerData.put("startplace", player.getStartSpace());
+        playerData.put("heading", player.getHeading());
 
         file = new File("data", "playerData.json");
 
