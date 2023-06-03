@@ -109,7 +109,7 @@ public class GameController {
             } else {
                 //TODO: I think we need to make it fall into the pit here
                 pit.doAction(this,other.getSpace());
-                throw new ImpossibleMoveException(player, space, heading);
+                //throw new ImpossibleMoveException(player, space, heading);
             }
         } //TODO: Should this be here?
 
