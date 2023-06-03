@@ -7,7 +7,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 public class Laserbeam extends FieldAction {
     @Override
     public boolean doAction(GameController gameController, Space space) {
-        System.out.println("Doing nothing in LaserBeam.java");
-        return false;
+        System.out.println("FIRING LASER");
+        backgroundAnimationThread(space, space.getBackground());
+        space.getPlayer().addSpamCardToDiscardPile();
+        return true;
     }
 }

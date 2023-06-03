@@ -212,6 +212,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         System.out.println("Space update");
         if (subject == this.space) {
+            setBackround(space.getBackground());
             if (!space.getItems().isEmpty()) {
                 updateOverlay(space.getItems().get(space.getItems().size() - 1).getImage());
             }
@@ -220,7 +221,6 @@ public class SpaceView extends StackPane implements ViewObserver {
                     removeOverlay();
                 }
             }
-            setBackround(space.getBackground());
         }
         updatePlayer();
     }
