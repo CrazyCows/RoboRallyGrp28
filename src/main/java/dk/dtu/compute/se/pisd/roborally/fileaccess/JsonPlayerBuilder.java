@@ -28,6 +28,7 @@ public class JsonPlayerBuilder {
         playerData.put("readyState", player.isReady());
         playerData.put("posX", player.getSpace().getPosition()[0]);
         playerData.put("posY", player.getSpace().getPosition()[1]);
+        playerData.put("energyCubes",player.getEnergyCubes()); //TODO: Does this work?
 
         file = new File("data", "collectivePlayerData.json");
 
