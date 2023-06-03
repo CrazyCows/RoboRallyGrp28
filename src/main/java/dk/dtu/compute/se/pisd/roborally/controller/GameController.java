@@ -91,7 +91,7 @@ public class GameController {
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
-        jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
+        //jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
         if (other != null){ //If player needs to be pushed

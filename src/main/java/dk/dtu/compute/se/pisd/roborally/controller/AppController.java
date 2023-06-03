@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -71,6 +72,8 @@ public class AppController implements Observer {
     final private RoboRally roboRally;
 
     private GameController gameController;
+
+    private ClientController clientController;
 
     private String animationRobotDirection;
     private String username;
@@ -123,9 +126,8 @@ public class AppController implements Observer {
     // Should be deleted at some point. Proof of concept.
 
     public void newOnlineGame() {
-        ClientController clientController = new ClientController();
 
-        clientController.createJSON(ID, "sharedBoard.json");
+        //clientController.createJSON(ID, "sharedBoard.json");
 
         setupOnlineGame();
         setupRobot();
@@ -185,7 +187,7 @@ public class AppController implements Observer {
         /*if (gameController == null) {
             newGame();
         }*/
-        ClientController clientController = new ClientController();
+        //ClientController clientController = new ClientController();
         this.savedBoards = new ArrayList<>();
 
         File folder = new File("./Save Games");
@@ -421,11 +423,18 @@ public class AppController implements Observer {
             gridPane.add(usernameLabels.get(i), 1, i);
         }
 
+        Player player = new Player(null, null, null);
+        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+        this.clientController = new ClientController(this.lobbyID);
 
+        this.clientController.createJSON("sharedBoard.json");
+        this.clientController.createJSON("playerData.json");
+        this.clientController.updateJSON("playerData.json");
+        jsonPlayerBuilder.updateDynamicPlayerData();
 
         Thread countThread = new Thread(() -> {
 
-
+            //this.clientController.
 
             System.out.println("Game lobby thread has ended");
         });
