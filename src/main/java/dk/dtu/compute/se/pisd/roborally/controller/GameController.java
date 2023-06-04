@@ -122,6 +122,13 @@ public class GameController {
             return(moveToSpace(other,newTarget,heading));
         }
 
+        for (FieldAction fieldAction : originalTarget.getActions()){
+            if (fieldAction instanceof Pit){
+                ((Pit)fieldAction).doAction(this,originalPlayer); //TODO: originalTarget doesnt contain the player
+                break;
+            }
+        }
+
         originalPlayer.setSpace(originalTarget);// I don't understand this.... Lucas? - Crazy
         Player nextPlayer = getNextPlayer(originalPlayer);
         board.setCurrentPlayer(nextPlayer);

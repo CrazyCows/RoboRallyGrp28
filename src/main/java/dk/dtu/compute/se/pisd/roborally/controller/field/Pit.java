@@ -19,6 +19,15 @@ public class Pit extends FieldAction {
         this.heading = heading;
     }
 
+    public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
+        System.out.println(currentPlayer.getName() + " has fallen in a pit");
+        currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
+        currentPlayer.addSpamCardToDiscardPile();
+        currentPlayer.setSpace(currentPlayer.startSpace);
+        currentPlayer.discardCurrentProgram();
+        currentPlayer.setHeading(Heading.NORTH);
+        return false;
+    }
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         Player currentPlayer = space.getPlayer();
@@ -28,6 +37,8 @@ public class Pit extends FieldAction {
         currentPlayer.setSpace(currentPlayer.startSpace);
         currentPlayer.discardCurrentProgram();
         currentPlayer.setHeading(Heading.NORTH);
+
+
 
 
         // TODO: Below is basically pseudocode for one way to handle how we could manage selecting direction
