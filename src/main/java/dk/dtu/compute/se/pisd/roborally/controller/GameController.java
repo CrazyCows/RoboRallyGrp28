@@ -33,6 +33,9 @@ import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.PROGRAMMING;
 
 //import java.util.*;
 
@@ -49,13 +52,17 @@ public class GameController {
 
     private Pit pit = new Pit();
 
+    public CardController getCardController() {
+        return cardController;
+    }
+
     protected CardController cardController;
 
     public GameController(Board board) {
         this.board = board;
         this.cardController = CardController.getInstance();
         for (Player player : board.getAllPlayers()) {
-            cardController.drawCards(player);
+            cardController.copyOverUniversalDeck(player);
         }
         board.setPhase(Phase.PROGRAMMING);
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
@@ -264,10 +271,21 @@ public class GameController {
         return Math.sqrt(dx*dx + dy*dy);
     }
 
+    void setPhase(Phase phase){
+        if (phase == PROGRAMMING){
+            for (Player player : board.getAllPlayers()){
+                cardController.drawCards(player); //I dont think this breaks MVC?
+            }
+        }
+        board.setPhase(phase);
+    }
+
     /**
      * 'Used in the single player version only, afaik' -Anton
      */
     public void finishProgrammingPhase() {
+        setPhase(Phase.ACTIVATION);
+        CountDownLatch latch = new CountDownLatch(1);
 
         Thread commandThread = new Thread(new Runnable() {
             @Override
@@ -306,10 +324,13 @@ public class GameController {
 
                 for (Player player : board.getAllPlayers()){
                     player.resetUsedCards();
+                    cardController.moveProgramIntoDiscardPile(player);
                 }
+                setPhase(Phase.PROGRAMMING);
             }
         });
         commandThread.start();
+
     }
 
     // Executes the commandCards

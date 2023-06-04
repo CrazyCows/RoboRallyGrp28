@@ -26,9 +26,7 @@ public class Pit extends FieldAction {
         currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
         currentPlayer.addSpamCardToDiscardPile();
         currentPlayer.setSpace(currentPlayer.startSpace);
-        for (CommandCardField CCF : currentPlayer.getProgram()){
-            gameController.clearField(CCF);
-        }
+        gameController.getCardController().moveProgramIntoDiscardPile(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
         return false;
     }
@@ -39,9 +37,7 @@ public class Pit extends FieldAction {
         currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
         currentPlayer.addSpamCardToDiscardPile();
         currentPlayer.setSpace(currentPlayer.startSpace);
-        for (CommandCardField CCF : currentPlayer.getProgram()){
-            gameController.clearField(CCF);
-        }
+        gameController.getCardController().moveProgramIntoDiscardPile(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
 
 
