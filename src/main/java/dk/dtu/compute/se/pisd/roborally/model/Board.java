@@ -173,6 +173,7 @@ public class Board extends Subject {
      * @param phase
      */
     public void setPhase(Phase phase) {
+        System.out.println("Setting phase to " + phase);
         if (phase != this.phase) {
             this.phase = phase;
             if (phase == PROGRAMMING){

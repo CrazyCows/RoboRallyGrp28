@@ -32,6 +32,7 @@ import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 //import java.util.*;
 
@@ -267,6 +268,8 @@ public class GameController {
      * 'Used in the single player version only, afaik' -Anton
      */
     public void finishProgrammingPhase() {
+        board.setPhase(Phase.ACTIVATION);
+        CountDownLatch latch = new CountDownLatch(1);
 
         Thread commandThread = new Thread(new Runnable() {
             @Override
@@ -306,9 +309,16 @@ public class GameController {
                 for (Player player : board.getAllPlayers()){
                     player.resetUsedCards();
                 }
+                latch.countDown();
             }
         });
         commandThread.start();
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        board.setPhase(Phase.PROGRAMMING);
     }
 
     // Executes the commandCards
