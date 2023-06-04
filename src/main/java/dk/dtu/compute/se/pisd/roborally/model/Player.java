@@ -105,8 +105,8 @@ public class Player extends Subject {
 
     private ArrayList<CommandCardField> program; //Cards selected to be the in the program
     private ArrayList<CommandCardField> drawnCards; //Drawn cards
-    public ArrayList<Object> drawPile; //Pile of cards to draw from //TODO: Make type safe
-    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run //TODO: Make type safe
+    public ArrayList<Card> drawPile; //Pile of cards to draw from
+    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
 
     //This is used to keep track of how many checkpoints are collected. Each time a checkpoint is reached,
@@ -236,7 +236,15 @@ public class Player extends Subject {
     }
 
     public CommandCardField getProgramField(int i) {
-        return program.get(i);
+        try{
+            return program.get(i);
+        }
+        catch (IndexOutOfBoundsException e){
+            System.out.println("Something done goofed");
+            return program.get(i);
+        }
+
+
     }
 
     public CommandCardField getCardField(int i) {
@@ -319,7 +327,7 @@ public class Player extends Subject {
             @Override
             public void run() {
                 discardPile.addAll(currentProgram());
-                program.clear();
+                //program.clear(); ///TODO: This doesn't work. Dont ask me why
                 notifyChange();
             }
         });

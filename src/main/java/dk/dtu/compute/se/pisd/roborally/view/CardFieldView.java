@@ -47,7 +47,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     // This data format helps avoiding transfers of e.g. Strings from other
     // programs which can copy/paste Strings.
-    final public static  DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
+    final public static DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
 
     final public static int CARDFIELD_WIDTH = 65;
     final public static int CARDFIELD_HEIGHT = 100;
@@ -59,7 +59,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
     final public static Background BG_DROP = new Background(new BackgroundFill(Color.LIGHTGRAY, null, null));
 
     final public static Background BG_ACTIVE = new Background(new BackgroundFill(Color.YELLOW, null, null));
-    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW,  null, null));
+    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW, null, null));
 
     private CommandCardField field;
 
@@ -295,8 +295,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                                 // ProgrammingCard card = source.getCard();
                                 // if (card != null) {
                                 // if (gameController.moveCards(source, cardField)) {
-                                    // cardField.setCard(card);
-                                    success = true;
+                                // cardField.setCard(card);
+                                success = true;
                                 // }
                             }
                         }
@@ -345,9 +345,4 @@ public class CardFieldView extends GridPane implements ViewObserver {
         }
 
     }
-
 }
-
-
-
-
