@@ -25,7 +25,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import dk.dtu.compute.se.pisd.roborally.view.ViewObserver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -109,6 +108,11 @@ public class Player extends Subject {
     }
 
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
+
+    public ArrayList<CommandCardField> getHandPile() {
+        return handPile;
+    }
+
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
@@ -216,7 +220,8 @@ public class Player extends Subject {
         }
     }
 
-    public void setHeading(@NotNull String heading) { //TODO: This is like stupidly overkill and should be replaced
+    public void setHeading(@NotNull String heading) throws Exception {
+        Heading head = Heading.valueOf(heading);//TODO: Can't we just do this?
         switch (heading) {
             case "NORTH":
                 this.heading = Heading.NORTH;
@@ -231,9 +236,8 @@ public class Player extends Subject {
                 this.heading = Heading.WEST;
                 break;
             default:
-                // handle error case
-        }
 
+        }
         notifyChange();
         if (space != null) {
             space.playerChanged();
@@ -278,7 +282,7 @@ public class Player extends Subject {
         }
     }
 
-    public ArrayList<Card> getHandPile() {
+    public ArrayList<Card> getCopyOfHandPile() {
         ArrayList<Card>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.handPile) {
             commandCards.add(commandCardField.getCard());
@@ -324,23 +328,6 @@ public class Player extends Subject {
         //TODO: ADD THIS.
         System.out.println(this.name + " Draws a SPAM damage card and adds it to their discard pile");
         //Try to draw a spam Card (from board?). If there are no more spam cards, do whatever the rules say.
-    }
-
-    public void discardCurrentProgram(GameController gameController) {
-
-        System.out.println("Attempting to clear hand");
-        Thread commandThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                discardPile.addAll(currentProgram());
-                notifyChange();
-            }
-        });
-        commandThread.start(); // start the thread
-        notifyChange();
-
-
-        //TODO: ADD THIS. Basically clears the current program so the robot no longer moves
     }
 
     public boolean isReady() {
