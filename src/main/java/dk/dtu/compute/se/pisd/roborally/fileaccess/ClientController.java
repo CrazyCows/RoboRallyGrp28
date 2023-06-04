@@ -29,7 +29,7 @@ public class ClientController {
 
     public ClientController(String ID) {
         this.client = HttpClient.newHttpClient();
-        this.baseUrl = baseUrl = "http://localhost:8080";
+        this.baseUrl = "http://localhost:8080";
         this.objectMapper = new ObjectMapper();
         this.path = "data";
         this.ID = ID;
@@ -40,15 +40,16 @@ public class ClientController {
     public String jsonType(String jsonName){
         if (jsonName.equals("playerData.json")){
             return "/jsonPlayer?ID=";
-        } else {
+        } else if (jsonName.equals("cardSequenceRequest.json")){
+            return "/jsonCards?ID=";
+        }
+         else {
             return "/jsonHandler?ID=";
         }
     }
 
     public void getJSON(String jsonName) {
         String jsonTypeToURL = jsonType(jsonName);
-
-
 
 
         try {
