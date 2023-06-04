@@ -99,7 +99,6 @@ public class JsonReader {
                 }
             }
         } else if (playerName.equals(node.get("name").asText())) {
-            System.out.println(node.get(key));
             return node.get(key).asText();
         }
         return "No data";
@@ -130,10 +129,11 @@ public class JsonReader {
 
     /**
      *
-     * @param fileName
+     * @param
      * @param key
      * @return
      */
+
     public static JsonElement search(String fileName, String key) {
         try {
             String json = new String(Files.readAllBytes(Paths.get(fileName)));
@@ -170,6 +170,8 @@ public class JsonReader {
 
         return null;
     }
+
+
 
 
 
