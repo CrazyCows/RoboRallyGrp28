@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import org.jetbrains.annotations.NotNull;
@@ -104,7 +105,7 @@ public class Player extends Subject {
     private ArrayList<CommandCardField> program; //Cards selected to be the in the program
     private ArrayList<CommandCardField> drawnCards; //Drawn cards
     public ArrayList<Object> drawPile; //Pile of cards to draw from //TODO: Make type safe
-    public ArrayList<Object> discardPile; //Cards that have been run //TODO: Make type safe
+    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run //TODO: Make type safe
 
 
     //This is used to keep track of how many checkpoints are collected. Each time a checkpoint is reached,
@@ -209,8 +210,6 @@ public class Player extends Subject {
         }
     }
 
-
-
     public void setHeading(@NotNull String heading) {
         switch (heading) {
             case "NORTH":
@@ -309,7 +308,23 @@ public class Player extends Subject {
     }
 
     public void discardCurrentProgram() {
-        System.out.println("Currently doing nothing, hand should be cleared");
+
+
+        //Maybe set usedCards to zero, but not here?
+
+
+        System.out.println("Attempting to clear hand");
+        Thread commandThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                discardPile.addAll(currentProgram());
+                program.clear();
+                notifyChange();
+            }
+        });
+        commandThread.start(); // start the thread
+
+
         //TODO: ADD THIS. Basically clears the current program so the robot no longer moves
     }
 
