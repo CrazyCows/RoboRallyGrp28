@@ -216,7 +216,7 @@ public class Player extends Subject {
         }
     }
 
-    public void setHeading(@NotNull String heading) {
+    public void setHeading(@NotNull String heading) { //TODO: This is like stupidly overkill and should be replaced
         switch (heading) {
             case "NORTH":
                 this.heading = Heading.NORTH;
