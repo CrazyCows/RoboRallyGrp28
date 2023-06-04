@@ -44,6 +44,7 @@ import java.util.*;
 public class GameController {
 
     final public Board board;
+    //final private JsonPlayerBuilder jsonPlayerBuilder;
 
     private Pit pit = new Pit();
 
