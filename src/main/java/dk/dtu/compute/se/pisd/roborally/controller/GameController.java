@@ -392,6 +392,10 @@ public class GameController {
         }
     }
 
+    public boolean clearField(@NotNull CommandCardField source){
+        source.setCard(null);
+        return true;
+    }
 
     // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {

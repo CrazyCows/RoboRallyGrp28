@@ -103,6 +103,10 @@ public class Player extends Subject {
     //The amount of energy a player has. Starts at zero
     private int energyCubes = 0;
 
+    public ArrayList<CommandCardField> getProgram() {
+        return program;
+    }
+
     private ArrayList<CommandCardField> program; //Cards selected to be the in the program
     private ArrayList<CommandCardField> drawnCards; //Drawn cards
     public ArrayList<Card> drawPile; //Pile of cards to draw from
@@ -316,7 +320,8 @@ public class Player extends Subject {
         //Try to draw a spam Card (from board?). If there are no more spam cards, do whatever the rules say.
     }
 
-    public void discardCurrentProgram() {
+    public void discardCurrentProgram(GameController gameController) {
+
 
 
         //Maybe set usedCards to zero, but not here?
