@@ -44,11 +44,19 @@ public class ConveyorBelt2 extends FieldAction {
         this.heading = heading;
     }
 
-    @Override
-    public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        gameController.moveInDirection(space.getPlayer(), 2, heading);
+    @Override //Issue: Player is pushed two away from conveyorbelt. This should only happen if the player is on a continuous conveyor
+    public boolean doAction(@NotNull GameController gameController, @NotNull Space space){
         System.out.println("CONVEYOR");
-        return false;
+        Player player = space.getPlayer();
+        gameController.moveInDirection(player, 1, heading);
+        Space newSpace = gameController.board.getNeighbour(space,heading,false); //We dont check for walls, as this is already getting done in moveInDirection.
+        for (FieldAction fieldAction : newSpace.getActions()){
+            if (fieldAction instanceof ConveyorBelt2){
+                gameController.moveInDirection(player, 1, heading);
+                break; //break theoretically speeds up code, but mostly makes it nicer to run through in debugger
+            }
+        }
+        return true;
     }
 
 }
