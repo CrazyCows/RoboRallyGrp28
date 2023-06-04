@@ -44,7 +44,7 @@ import java.util.*;
 public class GameController {
 
     final public Board board;
-    final private JsonPlayerBuilder jsonPlayerBuilder;
+    //final private JsonPlayerBuilder jsonPlayerBuilder;
 
     private Pit pit = new Pit();
 
@@ -57,7 +57,7 @@ public class GameController {
             cardController.drawCards(player);
         }
         board.setPhase(Phase.PROGRAMMING);
-        jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
+        //jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this);
     }
 
@@ -114,7 +114,7 @@ public class GameController {
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
-        jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
+        //jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(originalPlayer.getSpace(), heading,true) == originalTarget; // make sure the move to here is possible in principle
         Player other = originalTarget.getPlayer();
         if (other != null){ //If player needs to be pushed

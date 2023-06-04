@@ -55,6 +55,7 @@ public class Player extends Subject {
     private String name;
     private String color;
     private boolean ready;
+    private boolean leader;
 
     //used for keeping track so the priorityAntenna doesn't wildly pick the same player 5 times in a row
     private int usedCards;
@@ -345,5 +346,9 @@ public class Player extends Subject {
 
     public boolean isReady() {
         return ready;
+    }
+
+    public boolean isLeader() {
+        return leader;
     }
 }
