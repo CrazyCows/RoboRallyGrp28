@@ -299,6 +299,7 @@ public class Player extends Subject {
     }
 
     public void discardCurrentProgram() {
+        System.out.println("Currently doing nothing, hand should be cleared");
         //TODO: ADD THIS. Basically clears the current program so the robot no longer moves
     }
 
