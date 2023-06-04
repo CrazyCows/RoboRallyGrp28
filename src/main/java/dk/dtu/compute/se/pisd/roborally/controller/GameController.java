@@ -214,14 +214,27 @@ public class GameController {
 
         Space priorityAntenna = board.getPriorityAntennaSpace();
         Player closestPlayerToAntenna = currentPlayer;
+
+        int usedCards = Integer.MAX_VALUE;
+        for (Player player : board.getAllPlayers()){
+            if (player.getUsedCards() < usedCards){ //Finds minimum value
+                usedCards = player.getUsedCards();
+            }
+        }
+        ArrayList<Player> possiblePlayers = new ArrayList<>();
+        for (Player player : board.getAllPlayers()){
+            if (player.getUsedCards() == usedCards){
+                possiblePlayers.add(player);
+            }
+        }
+
         double closest = Double.MAX_VALUE;
+
         double closeness;
-        for (Player player : board.getAllPlayers()) {
+        for (Player player : possiblePlayers) {//Determines the closest of the eligible players
             int playerX = player.getSpace().getPosition()[0];
             int playerY = player.getSpace().getPosition()[1];
-            System.out.println(player.getColor() + ": " + playerX + ", " + playerY);
             closeness = distanceToSpace(priorityAntenna, playerX, playerY);
-            System.out.println(player.getColor() + ": " + closeness);
             if (closeness < closest) {
                 closest = closeness;
                 closestPlayerToAntenna = player;
@@ -271,6 +284,8 @@ public class GameController {
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    System.out.println("\n\nCurrent player is: " + board.getCurrentPlayer().getName() + "\n\n");
+                    board.getCurrentPlayer().incrementUsedCards();
                     Player nextPlayer = getNextPlayer(board.getCurrentPlayer());
                     board.setCurrentPlayer(nextPlayer);
                 }
