@@ -251,7 +251,7 @@ public class Board extends Subject {
         else if (x < 0 || x > board.width) {
             return null;
         }
-        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
+        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length]; //Think you can just use heading.next.next here
         Space result = getSpace(x, y);
         if (result != null) {
             if (result.getWalls().contains(reverse)) {
@@ -260,6 +260,8 @@ public class Board extends Subject {
         }
         return result;
     }
+
+
 
 
     // TODO: I forgot why this is places here??? (but it works though)
