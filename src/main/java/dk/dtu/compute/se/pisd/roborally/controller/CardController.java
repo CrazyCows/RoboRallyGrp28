@@ -53,7 +53,7 @@ public class CardController {
         Card card = player.drawPile.get(0);
         player.drawPile.remove(card); //Removes it from the drawPile
         player.drawCard(card);
-        player.getHandPile().add(card);
+        //player.getHandPile().add(card);
     }
 
     /**
