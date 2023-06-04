@@ -21,16 +21,21 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonReader;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
@@ -50,6 +55,7 @@ public class GameController {
     //final private JsonPlayerBuilder jsonPlayerBuilder;
 
     private Pit pit = new Pit();
+    private RoboRally roboRally;
 
     public CardController getCardController() {
         return cardController;
@@ -57,15 +63,18 @@ public class GameController {
 
     protected CardController cardController;
 
-    public GameController(Board board) {
+
+    public GameController(RoboRally roboRally, Board board) {
+        this.roboRally = roboRally;
         this.board = board;
         this.cardController = CardController.getInstance();
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);
         }
         setPhase(Phase.PROGRAMMING);
-        //jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
+        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this);
+
     }
 
 
@@ -320,6 +329,7 @@ public class GameController {
                         break;
                     }
                 }
+
                 for (Player player : board.getAllPlayers()){
                     player.resetUsedCards();
                     cardController.moveProgramIntoDiscardPile(player);

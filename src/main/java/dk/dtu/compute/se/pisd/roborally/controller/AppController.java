@@ -116,7 +116,45 @@ public class AppController implements Observer {
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-            gameController = new GameController(board);
+            assert board != null;
+            gameController = new GameController(roboRally, board);
+
+            board.setCurrentPlayer(board.getPlayer(0));
+            roboRally.createBoardView(gameController);
+
+        }
+    }
+    public void newGame(int numberOfPlayers) {
+        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+        dialog.setTitle("Player number");
+        dialog.setHeaderText("Select number of players");
+        roboRally.setMusicVolume(0.0);
+        Optional<Integer> result = numberOfPlayers == -1 ? dialog.showAndWait() : Optional.of(numberOfPlayers);
+
+        if (result.isPresent()) {
+            if (gameController != null) {
+                // The UI should not allow this, but in case this happens anyway.
+                // give the user the option to save the game or abort this operation!
+                if (!stopGame()) {
+                    return;
+                }
+            }
+
+            // XXX the board should eventually be created programmatically or loaded from a file
+            //     here we just create an empty board with the required number of players.
+            roboRally.removeStartImage();
+            Board board = LoadBoard.loadBoard(null, true);
+            roboRally.pauseMusic();
+
+            int no = result.get();
+            for (int i = 1; i <= no; i++) { //TODO: Changed by Anton so players dont start on pit
+                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                board.addPlayer(player);
+                player.setSpace(board.getSpace(i % board.width, i));
+            }
+            assert board != null;
+            gameController = new GameController(roboRally, board);
+
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
 
@@ -234,7 +272,7 @@ public class AppController implements Observer {
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-            gameController = new GameController(board);
+            gameController = new GameController(roboRally, board);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
         }

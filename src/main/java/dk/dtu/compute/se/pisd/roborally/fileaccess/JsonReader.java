@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class JsonReader {
@@ -170,4 +172,58 @@ public class JsonReader {
     }
 
 
+
+    public List<String> getNames(String jsonFileName, String key) throws Exception{
+        JsonNode node = objectMapper.readTree(new File("data", jsonFileName));
+        List<JsonNode> nodes = node.findValues(key);
+        List<String> finish = new ArrayList<>();
+        int i = 0;
+        for (JsonNode json:nodes) {
+            finish.add(nodes.get(i).toString());
+            i++;
+        }
+        return finish;
+    }
+/*
+    public List<String> getValuesFromBoard(String jsonFileName, @Nullable Integer x,@Nullable Integer y, String... keys){
+        try {
+            JsonNode nodes = objectMapper.readTree(new File("data", jsonFileName));
+            List<String> values = new ArrayList<>();
+            Map<String, Object> resultMap = new HashMap<>();
+            Configuration conf = Configuration.defaultConfiguration();
+            conf.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL)
+                    .addOptions(Option.ALWAYS_RETURN_LIST);
+            JsonArray spaces = JsonPath.using(conf).parse(nodes.toString()).read("$.spaces");
+
+            if (x != null && y != null) {
+
+                System.out.println("here");
+                for (Object space : spaces) {
+                    System.out.println("here2");
+                    int spaceX = JsonPath.read(space, "$.x");
+                    int spaceY = JsonPath.read(space, "$.y");
+                    if (spaceX == x && spaceY == y) {
+                        System.out.println("here3");
+                        for (String key : keys) {
+                            String value = JsonPath.read(space, "$." + key);
+                            values.add(value);
+                        }
+                    }
+                }
+            }
+
+/*
+        for (String key : keys) {
+            resultMap.put(key, null);
+        }
+
+
+
+            return values;
+        } catch (Exception e){
+
+        }
+        return null;
+    }
+    */
 }
