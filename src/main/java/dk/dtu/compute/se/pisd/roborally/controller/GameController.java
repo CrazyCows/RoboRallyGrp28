@@ -229,7 +229,7 @@ public class GameController {
         }
         System.out.println("closest player to antenna: " + closestPlayerToAntenna.getColor());
         //return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
-        return currentPlayer;
+        return closestPlayerToAntenna;
 
 
         /*int amountOfPlayers = board.getPlayersNumber()-1;
