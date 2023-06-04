@@ -1,11 +1,10 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-import dk.dtu.compute.se.pisd.roborally.StartRoboRally;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
-import java.awt.event.ActionEvent;
+import javafx.event.ActionEvent;
 
 public class WinnerController {
 

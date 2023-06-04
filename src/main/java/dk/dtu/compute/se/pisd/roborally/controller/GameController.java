@@ -33,6 +33,8 @@ import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -400,10 +402,10 @@ public class GameController {
     public void win(Player currentPlayer) {
         //TODO: Display that a player won with some graphics and stop GUI(?)
 
-        FXMLLoader fxmlLoader = new FXMLLoader(RoboRally.class.getResource("scenes/winnerScreen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(RoboRally.class.getResource("/scenes/winnerScreen.fxml"));
         try {
-            Parent parent = fxmlLoader.load();
-            WinnerController winnerController = fxmlLoader.<WinnerController>getController();
+            Pane parent = fxmlLoader.load();
+            WinnerController winnerController = fxmlLoader.getController();
             winnerController.initialize(roboRally, currentPlayer.getName(), board.getAllPlayers().size());
             roboRally.getStage().getScene().setRoot(parent);
             roboRally.getStage().getScene().getWindow().sizeToScene();
