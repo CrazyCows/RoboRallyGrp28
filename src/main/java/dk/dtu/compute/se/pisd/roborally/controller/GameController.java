@@ -54,7 +54,7 @@ public class GameController {
         this.board = board;
         this.cardController = CardController.getInstance();
         for (Player player : board.getAllPlayers()) {
-            cardController.drawCards(player);
+            cardController.copyOverUniversalDeck(player);
         }
         board.setPhase(Phase.PROGRAMMING);
         //jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));

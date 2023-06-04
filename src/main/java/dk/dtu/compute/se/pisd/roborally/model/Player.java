@@ -25,7 +25,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import dk.dtu.compute.se.pisd.roborally.view.ViewObserver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -78,7 +77,6 @@ public class Player extends Subject {
     public void addEnergyCubes(int energyCubesAdded) {
         this.energyCubes += energyCubesAdded;
     }
-
     public int getUsedCards(){
         return usedCards;
     }
@@ -109,7 +107,7 @@ public class Player extends Subject {
     }
 
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
-    private ArrayList<CommandCardField> drawnCards = new ArrayList<>(); //Drawn cards
+    private ArrayList<CommandCardField> drawnCardsPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
@@ -132,9 +130,9 @@ public class Player extends Subject {
             program.add(new CommandCardField(this));
         }
 
-        drawnCards = new ArrayList<>();
+        drawnCardsPile = new ArrayList<>();
         for (int i = 0; i < handSize; i++) {
-            drawnCards.add(new CommandCardField(this));
+            drawnCardsPile.add(new CommandCardField(this));
         }
     }
 
@@ -253,7 +251,7 @@ public class Player extends Subject {
     }
 
     public CommandCardField getCardField(int i) {
-        return drawnCards.get(i);
+        return drawnCardsPile.get(i);
     }
 
     public int getCheckpointsCollected() {
@@ -269,13 +267,13 @@ public class Player extends Subject {
     }
 
     public void drawCard(int position, ProgrammingCard commandCard) {
-        drawnCards.get(position).setCard(commandCard);
+        drawnCardsPile.get(position).setCard(commandCard);
         //System.out.println(cards.get(position - 1).getCard().getName());
     }
 
-    public ArrayList<ProgrammingCard> getDrawnCards() {
+    public ArrayList<ProgrammingCard> getDrawnCardsPile() {
         ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
-        for (CommandCardField commandCardField : this.drawnCards) {
+        for (CommandCardField commandCardField : this.drawnCardsPile) {
             commandCards.add(commandCardField.getCard());
         }
         return commandCards;
@@ -298,8 +296,8 @@ public class Player extends Subject {
     }
 
     public int getNextEmptyCardField() {
-        for (int i = 0; i < drawnCards.size(); i++) {
-            if (drawnCards.get(i).getCard() == null) {
+        for (int i = 0; i < drawnCardsPile.size(); i++) {
+            if (drawnCardsPile.get(i).getCard() == null) {
                 return i;
             }
         }

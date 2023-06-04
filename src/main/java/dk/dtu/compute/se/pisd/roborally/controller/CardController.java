@@ -10,7 +10,7 @@ import java.util.Collections;
 public class CardController {
     private static CardController cardController;
     private CardLoader cardLoader;
-    private ArrayList<ProgrammingCard> deck;
+    private ArrayList<ProgrammingCard> universalDeck;
     //TODO: This deck needs to be removed. Player (model) has cards, controller doesn't.
     //TODO: Also, each player needs to have their own cards
 
@@ -29,8 +29,8 @@ public class CardController {
      */
     public CardController() {
         this.cardLoader = CardLoader.getInstance();
-        this.deck = cardLoader.getProgrammingCards();
-        shuffleDeck(deck);
+        this.universalDeck = cardLoader.getProgrammingCards();
+        shuffleDeck(universalDeck);
     }
 
     /**
@@ -49,11 +49,11 @@ public class CardController {
      * @param player player who draws a card
      */
     public void drawOneCard(Player player) {
-        ProgrammingCard commandCard = deck.get(0);
+        ProgrammingCard commandCard = universalDeck.get(0);
         if (player.getNextEmptyCardField() != - 1) {
             player.drawCard(player.getNextEmptyCardField(), commandCard);
-            deck.add(commandCard); //This shouldn't be done
-            deck.remove(0);
+            universalDeck.add(commandCard); //This shouldn't be done
+            universalDeck.remove(0);
         }
         else {
             System.out.println("TRIED TO ADD CARD, BUT NO SPACE FOR IT ON HAND");
@@ -73,4 +73,10 @@ public class CardController {
     }
 
 
+    /**
+     * COPIES all cards from the universal deck to the player drawPile. Only time that universalDeck should be used afaik
+     */
+    public void copyOverUniversalDeck(Player player) {
+        player.drawPile.addAll(universalDeck);
+    }
 }
