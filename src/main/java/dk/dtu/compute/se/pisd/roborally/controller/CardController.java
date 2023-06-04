@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
+import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -39,9 +40,20 @@ public class CardController {
      * @param player player who draws cards
      */
     public void drawCards(Player player){
-        for (int i = 0; i < player.getHandSize() - player.getHandPile().size(); i++) {
+        int numberOfCards = getNumberOfCardsInHandPile(player);
+        for (int i = 0; i < player.getHandSize() - numberOfCards; i++) {
             drawOneCard(player);
         }
+    }
+
+    int getNumberOfCardsInHandPile(Player player){
+        int i = 0;
+        for (Card card : player.getHandPile()){
+            if (card != null){
+                i++;
+            }
+        }
+        return i;
     }
 
     /**

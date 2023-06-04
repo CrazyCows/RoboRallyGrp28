@@ -267,13 +267,13 @@ public class Player extends Subject {
     }
 
     public void drawCard(Card card) {
-        ProgrammingCard c = (ProgrammingCard) card;
-        handPile.get(handPile.size()).setCard(c); //REALLY messy integration I dont feel like changing CommandCardField rn
-        //System.out.println(cards.get(position - 1).getCard().getName());
-    }
-    public void drawCard(int position, ProgrammingCard commandCard) {
-        handPile.get(position).setCard(commandCard);
-        //System.out.println(cards.get(position - 1).getCard().getName());
+        ProgrammingCard c = (ProgrammingCard) card; //TODO: Will this not break with damage cards?
+        for (int i = 0; i < 100000;i++){
+            if (handPile.get(i).getCard() == null){
+                handPile.get(i).setCard(c);
+                break;
+            }
+        }
     }
 
     public ArrayList<Card> getHandPile() {
