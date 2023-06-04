@@ -107,12 +107,13 @@ public class Player extends Subject {
         return program;
     }
 
-    private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
+
 
     public ArrayList<CommandCardField> getHandPile() {
         return handPile;
     }
 
+    private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
