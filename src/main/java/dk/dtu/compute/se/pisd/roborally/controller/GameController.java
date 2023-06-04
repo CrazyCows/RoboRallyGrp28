@@ -34,6 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.PROGRAMMING;
+
 //import java.util.*;
 
 /**
@@ -57,7 +59,7 @@ public class GameController {
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);
         }
-        board.setPhase(Phase.PROGRAMMING);
+        setPhase(Phase.PROGRAMMING);
         //jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this);
     }
@@ -264,11 +266,20 @@ public class GameController {
         return Math.sqrt(dx*dx + dy*dy);
     }
 
+    void setPhase(Phase phase){
+        if (phase == PROGRAMMING){
+            for (Player player : board.getAllPlayers()){
+                cardController.drawCards(player); //I dont think this breaks MVC?
+            }
+        }
+        board.setPhase(phase);
+    }
+
     /**
      * 'Used in the single player version only, afaik' -Anton
      */
     public void finishProgrammingPhase() {
-        board.setPhase(Phase.ACTIVATION);
+        setPhase(Phase.ACTIVATION);
         CountDownLatch latch = new CountDownLatch(1);
 
         Thread commandThread = new Thread(new Runnable() {
@@ -318,7 +329,7 @@ public class GameController {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        board.setPhase(Phase.PROGRAMMING);
+        setPhase(Phase.PROGRAMMING);
     }
 
     // Executes the commandCards

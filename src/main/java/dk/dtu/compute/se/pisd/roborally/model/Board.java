@@ -176,11 +176,6 @@ public class Board extends Subject {
         System.out.println("Setting phase to " + phase);
         if (phase != this.phase) {
             this.phase = phase;
-            if (phase == PROGRAMMING){
-                for (Player player : players){
-                    cardController.drawCards(player); //I dont think this breaks MVC?
-                }
-            }
             notifyChange();
         }
     }
