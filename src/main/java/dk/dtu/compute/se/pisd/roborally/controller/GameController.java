@@ -61,6 +61,8 @@ public class GameController {
 
     protected CardController cardController;
 
+    boolean MoreAdvancedGame = false;
+
 
     public GameController(RoboRally roboRally, Board board) {
         this.roboRally = roboRally;
@@ -330,6 +332,10 @@ public class GameController {
                 for (Player player : board.getAllPlayers()){
                     player.resetUsedCards();
                     cardController.moveProgramIntoDiscardPile(player);
+
+                    if (!MoreAdvancedGame){
+                        cardController.clearhand(player);
+                    }
                 }
                 setPhase(Phase.PROGRAMMING);
             }

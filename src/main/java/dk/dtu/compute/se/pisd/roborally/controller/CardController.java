@@ -47,7 +47,7 @@ public class CardController {
 
     int getNumberOfCardsInHandPile(Player player){
         int i = 0;
-        for (Card card : player.getHandPile()){
+        for (Card card : player.getCopyOfHandPile()){
             if (card != null){
                 i++;
             }
@@ -110,5 +110,11 @@ public class CardController {
     public void copyOverUniversalDeck(Player player) {
         player.drawPile.addAll(universalDeck);
         shuffleDeck(player.drawPile);
+    }
+
+    public void clearhand(Player player) {
+        for (CommandCardField commandCardField : player.getHandPile()){
+            commandCardField.setCard(null);
+        }
     }
 }

@@ -25,7 +25,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import dk.dtu.compute.se.pisd.roborally.view.ViewObserver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -109,6 +108,11 @@ public class Player extends Subject {
     }
 
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
+
+    public ArrayList<CommandCardField> getHandPile() {
+        return handPile;
+    }
+
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
@@ -278,7 +282,7 @@ public class Player extends Subject {
         }
     }
 
-    public ArrayList<Card> getHandPile() {
+    public ArrayList<Card> getCopyOfHandPile() {
         ArrayList<Card>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.handPile) {
             commandCards.add(commandCardField.getCard());
