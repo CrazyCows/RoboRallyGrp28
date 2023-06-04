@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
@@ -38,7 +39,7 @@ public class CardController {
      * @param player player who draws cards
      */
     public void drawCards(Player player){
-        for (int i = 0; i < player.getHandSize(); i++) {
+        for (int i = 0; i < player.getHandSize() - player.getHandPile().size(); i++) {
             drawOneCard(player);
         }
     }
@@ -49,15 +50,9 @@ public class CardController {
      * @param player player who draws a card
      */
     public void drawOneCard(Player player) {
-        ProgrammingCard commandCard = universalDeck.get(0);
-        if (player.getNextEmptyCardField() != - 1) {
-            player.drawCard(player.getNextEmptyCardField(), commandCard);
-            universalDeck.add(commandCard); //This shouldn't be done
-            universalDeck.remove(0);
-        }
-        else {
-            System.out.println("TRIED TO ADD CARD, BUT NO SPACE FOR IT ON HAND");
-        }
+        Card card = player.drawPile.get(0);
+        player.drawPile.remove(card); //Removes it from the drawPile
+        player.getHandPile().add(card);
     }
 
     /**
