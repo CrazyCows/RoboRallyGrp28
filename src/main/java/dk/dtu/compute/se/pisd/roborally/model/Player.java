@@ -107,7 +107,7 @@ public class Player extends Subject {
     }
 
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
-    private ArrayList<CommandCardField> drawnCardsPile = new ArrayList<>(); //Drawn cards
+    private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
@@ -130,9 +130,9 @@ public class Player extends Subject {
             program.add(new CommandCardField(this));
         }
 
-        drawnCardsPile = new ArrayList<>();
+        handPile = new ArrayList<>();
         for (int i = 0; i < handSize; i++) {
-            drawnCardsPile.add(new CommandCardField(this));
+            handPile.add(new CommandCardField(this));
         }
     }
 
@@ -251,7 +251,7 @@ public class Player extends Subject {
     }
 
     public CommandCardField getCardField(int i) {
-        return drawnCardsPile.get(i);
+        return handPile.get(i);
     }
 
     public int getCheckpointsCollected() {
@@ -267,13 +267,13 @@ public class Player extends Subject {
     }
 
     public void drawCard(int position, ProgrammingCard commandCard) {
-        drawnCardsPile.get(position).setCard(commandCard);
+        handPile.get(position).setCard(commandCard);
         //System.out.println(cards.get(position - 1).getCard().getName());
     }
 
-    public ArrayList<ProgrammingCard> getDrawnCardsPile() {
-        ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
-        for (CommandCardField commandCardField : this.drawnCardsPile) {
+    public ArrayList<Card> getHandPile() {
+        ArrayList<Card>  commandCards = new ArrayList<>();
+        for (CommandCardField commandCardField : this.handPile) {
             commandCards.add(commandCardField.getCard());
         }
         return commandCards;
@@ -296,8 +296,8 @@ public class Player extends Subject {
     }
 
     public int getNextEmptyCardField() {
-        for (int i = 0; i < drawnCardsPile.size(); i++) {
-            if (drawnCardsPile.get(i).getCard() == null) {
+        for (int i = 0; i < handPile.size(); i++) {
+            if (handPile.get(i).getCard() == null) {
                 return i;
             }
         }
