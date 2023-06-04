@@ -11,13 +11,15 @@ public class WinnerController {
 
     private RoboRally roboRally;
     private String playerName;
+    private int numberOfPlayers;
     @FXML
     private Text winnerPlayer;
 
     @FXML
-    public void initialize(RoboRally roboRally, String playerName) {
+    public void initialize(RoboRally roboRally, String playerName, int numberOfPlayers) {
         this.roboRally = roboRally;
         this.playerName = playerName;
+        this.numberOfPlayers = numberOfPlayers;
         setWinnerPlayerText();
     }
 
@@ -37,7 +39,8 @@ public class WinnerController {
     public void onPlayAgain(ActionEvent actionEvent){
         // When you click the play again button on the winner screen
 
-
+        AppController appController = new AppController(roboRally);
+        appController.newGame(numberOfPlayers);
 
     }
 

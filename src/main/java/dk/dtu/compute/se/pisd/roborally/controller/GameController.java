@@ -66,6 +66,7 @@ public class GameController {
         board.setPhase(Phase.PROGRAMMING);
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this);
+
     }
 
 
@@ -385,7 +386,7 @@ public class GameController {
         try {
             Parent parent = fxmlLoader.load();
             WinnerController winnerController = fxmlLoader.<WinnerController>getController();
-            winnerController.initialize(roboRally, currentPlayer.getName());
+            winnerController.initialize(roboRally, currentPlayer.getName(), board.getAllPlayers().size());
             roboRally.getStage().getScene().setRoot(parent);
             roboRally.getStage().getScene().getWindow().sizeToScene();
         }catch (IOException e){
