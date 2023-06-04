@@ -76,7 +76,7 @@ public class GameController {
         if (player.board == board) {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading);
+            Space target = board.getNeighbour(space, heading,false);
             try {
                 return (moveToSpace(player, target, heading));
             } catch (ImpossibleMoveException e) {
@@ -94,30 +94,31 @@ public class GameController {
     * of falling into a pit or off the map, the function returns false.
     **/
     boolean moveToSpace(@NotNull Player originalPlayer, Space originalTarget, @NotNull Heading heading) throws ImpossibleMoveException {
+        //There is already checks for walls somewhere else, but because this is called recursively I cant use that
 
-        //First we check for walls. Somehow the code that did this got lost.
-
-        //These two walls are functionally the same
-        boolean cond1 = originalPlayer.getSpace().getWalls().contains(heading); //Checks whether theres a wall in the way on the start field
-        boolean cond2 = originalTarget.getWalls().contains(heading.next().next()); //Checks whether theres a wall on the destination field, facing the start field
+        boolean OGTargetIsNull = (originalTarget == null);
+        boolean cond1 = originalPlayer.getSpace().getWalls().contains(heading);//Checks whether theres a wall in the way on the start field
+        boolean cond2 = false;
+        if (!OGTargetIsNull) {cond2 = originalTarget.getWalls().contains(heading.next().next());} //Checks whether theres a wall on the destination field, facing the start field
 
         if (cond1 || cond2){
+            System.out.println(originalPlayer.getName() + " hit a wall");
             Player nextPlayer = getNextPlayer(originalPlayer);
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
 
-        if (originalTarget == null){
+        if (OGTargetIsNull){
             pit.doAction(this,originalPlayer.getSpace());
             Player nextPlayer = getNextPlayer(originalPlayer);
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
         jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
-        assert board.getNeighbour(originalPlayer.getSpace(), heading) == originalTarget; // make sure the move to here is possible in principle
+        assert board.getNeighbour(originalPlayer.getSpace(), heading,true) == originalTarget; // make sure the move to here is possible in principle
         Player other = originalTarget.getPlayer();
         if (other != null){ //If player needs to be pushed
-            Space newTarget = board.getNeighbour(originalTarget, heading);
+            Space newTarget = board.getNeighbour(originalTarget, heading,true);
             return(moveToSpace(other,newTarget,heading));
         }
 
