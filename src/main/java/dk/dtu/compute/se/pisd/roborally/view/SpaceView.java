@@ -210,7 +210,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     @Override
     public void updateView(Subject subject) {
-        System.out.println("Space update");
+        //System.out.println("Space update");
         if (subject == this.space) {
             setBackround(space.getBackground());
             if (!space.getItems().isEmpty()) {

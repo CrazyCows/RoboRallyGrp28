@@ -2,17 +2,15 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.Option;
-import org.eclipse.sisu.Nullable;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
 public class JsonReader {
@@ -90,6 +88,7 @@ public class JsonReader {
         // Check if the node is an array
         if (node.isArray()) {
             // Iterate through array elements
+            System.out.println("Running");
             for (JsonNode element : node) {
                 // If the valueToCompare field is the key element, print the value is fo
                 if (playerName.equals(element.get("name").asText())) {
@@ -125,6 +124,52 @@ public class JsonReader {
         }
         return null;
     }
+
+
+    /**
+     *
+     * @param fileName
+     * @param key
+     * @return
+     */
+    public static JsonElement search(String fileName, String key) {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get(fileName)));
+            JsonElement jsonElement = new Gson().fromJson(json, JsonElement.class);
+            return searchInJson(jsonElement, key);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static JsonElement searchInJson(JsonElement element, String key) {
+        if (element.isJsonObject()) {
+            JsonObject object = element.getAsJsonObject();
+            if (object.has(key)) {
+                return object.get(key);
+            } else {
+                for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
+                    JsonElement result = searchInJson(entry.getValue(), key);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+            }
+        } else if (element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            for (JsonElement value : array) {
+                JsonElement result = searchInJson(value, key);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
 
     public List<String> getNames(String jsonFileName, String key) throws Exception{
         JsonNode node = objectMapper.readTree(new File("data", jsonFileName));

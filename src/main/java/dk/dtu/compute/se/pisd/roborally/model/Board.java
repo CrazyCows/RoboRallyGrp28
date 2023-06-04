@@ -207,15 +207,14 @@ public class Board extends Subject {
 
     /**
      * Returns the neighbour of the given space of the board in the given heading.
-     * The neighbour is returned only, if it can be reached from the given space
-     * (no walls or obstacles in either of the involved spaces); otherwise,
-     * null will be returned.
+     * If checkForWalls is true, then the function returns null in case it is not possible to pass (because of a wall)
      *
      * @param space the space for which the neighbour should be computed
-     * @param heading the heading of the neighbour
+     * @param heading the heading of the neighbour comapred to the original field
+     * @param checkForWalls should there be checked for walls?
      * @return the space in the given direction; null if there is no (reachable) neighbour
      */
-    public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
+    public Space getNeighbour(@NotNull Space space, @NotNull Heading heading, boolean checkForWalls) {
         /*if (space.getWalls().contains(heading)) {
             return null;
         }*/
@@ -223,6 +222,7 @@ public class Board extends Subject {
         //      and obstacles and walls placed there. For now it,
         //      just calculates the next space in the respective
         //      direction in a cyclic way.
+        //      "It might not need that at all" -Tsun Tsu, the art of war (Anton)
 
         // XXX an other option (not for now) would be that null represents a hole
         //     or the edge of the board in which the players can fall
@@ -250,15 +250,19 @@ public class Board extends Subject {
         else if (x < 0 || x > board.width) {
             return null;
         }
-        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
         Space result = getSpace(x, y);
-        if (result != null) {
-            if (result.getWalls().contains(reverse)) {
-                return null;
+        if (checkForWalls){
+            Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length]; //Think you can just use heading.next.next here
+            if (result != null) {
+                if (result.getWalls().contains(reverse)) {
+                    return null;
+                }
             }
         }
         return result;
     }
+
+
 
 
     // TODO: I forgot why this is places here??? (but it works though)

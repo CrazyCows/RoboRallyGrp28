@@ -44,14 +44,15 @@ public class CardController {
     }
 
     /**
-     * This function is WRONG as it uses the pile from above instead of the one from the player
+     * This function is WRONG.
+     *
      * @param player player who draws a card
      */
     public void drawOneCard(Player player) {
         ProgrammingCard commandCard = deck.get(0);
         if (player.getNextEmptyCardField() != - 1) {
             player.drawCard(player.getNextEmptyCardField(), commandCard);
-            deck.add(commandCard);
+            deck.add(commandCard); //This shouldn't be done
             deck.remove(0);
         }
         else {

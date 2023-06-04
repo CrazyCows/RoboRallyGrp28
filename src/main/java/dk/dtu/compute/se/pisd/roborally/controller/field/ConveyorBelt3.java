@@ -28,7 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * NOT AN OFFICIAL GAME FEATURE
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  *
@@ -47,7 +47,7 @@ public class ConveyorBelt3 extends FieldAction { //Composition over inheritance
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         gameController.moveInDirection(space.getPlayer(), 3, heading);
-        System.out.println("CONVEYOR");
+        System.out.println("CONVEYOR X3. NOT AN OFFICIAL GAME FEATURE, AND DOES NOT RUN ACCORDING TO GAME LOGIC");
         return false;
     }
 }

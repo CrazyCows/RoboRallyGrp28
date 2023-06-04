@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.controller.field;
 
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,18 @@ public class Pit extends FieldAction {
         this.heading = heading;
     }
 
+    //Implement generics instead of overloading?
+    public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
+        System.out.println(currentPlayer.getName() + " has fallen in a pit");
+        currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
+        currentPlayer.addSpamCardToDiscardPile();
+        currentPlayer.setSpace(currentPlayer.startSpace);
+        for (CommandCardField CCF : currentPlayer.getProgram()){
+            gameController.clearField(CCF);
+        }
+        currentPlayer.setHeading(Heading.NORTH);
+        return false;
+    }
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         Player currentPlayer = space.getPlayer();
@@ -26,8 +39,12 @@ public class Pit extends FieldAction {
         currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
         currentPlayer.addSpamCardToDiscardPile();
         currentPlayer.setSpace(currentPlayer.startSpace);
-        currentPlayer.discardCurrentProgram();
+        for (CommandCardField CCF : currentPlayer.getProgram()){
+            gameController.clearField(CCF);
+        }
         currentPlayer.setHeading(Heading.NORTH);
+
+
 
 
         // TODO: Below is basically pseudocode for one way to handle how we could manage selecting direction

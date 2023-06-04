@@ -45,6 +45,7 @@ import java.util.*;
 public class GameController {
 
     final public Board board;
+    //final private JsonPlayerBuilder jsonPlayerBuilder;
 
     private Pit pit = new Pit();
 
@@ -68,54 +69,68 @@ public class GameController {
     // TODO lot of stuff missing here
 
 
-
-    public void moveForward(@NotNull Player player) {
+    /**
+     * Returns true if all goes as planned. If all future calls of the function needs to be cancelled, as in the case
+     * of falling into a pit or off the map, the function returns false.
+     **/
+    public boolean moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading);
+            Space target = board.getNeighbour(space, heading,false);
             try {
-                moveToSpace(player, target, heading);
+                return (moveToSpace(player, target, heading));
             } catch (ImpossibleMoveException e) {
                 // we don't do anything here  for now; we just catch the
                 // exception so that we do not pass it on to the caller
                 // (which would be very bad style).
+                System.out.println("Impossible move caught");
+                return true; //TODO: Not sure if this should return true or false
             }
         }
+        return true;
     }
+    /**
+    * Returns true if all goes as planned. If all future calls of the function needs to be cancelled, as in the case
+    * of falling into a pit or off the map, the function returns false.
+    **/
+    boolean moveToSpace(@NotNull Player originalPlayer, Space originalTarget, @NotNull Heading heading) throws ImpossibleMoveException {
+        //There is already checks for walls somewhere else, but because this is called recursively I cant use that
 
-    boolean moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
-        if (null == space){
-            pit.doAction(this,player.getSpace());
-            Player nextPlayer = getNextPlayer(player);
+        boolean OGTargetIsNull = (originalTarget == null);
+        boolean cond1 = originalPlayer.getSpace().getWalls().contains(heading);//Checks whether theres a wall in the way on the start field
+        boolean cond2 = false;
+        if (!OGTargetIsNull) {cond2 = originalTarget.getWalls().contains(heading.next().next());} //Checks whether theres a wall on the destination field, facing the start field
+
+        if (cond1 || cond2){
+            System.out.println(originalPlayer.getName() + " hit a wall");
+            Player nextPlayer = getNextPlayer(originalPlayer);
+            board.setCurrentPlayer(nextPlayer);
+            return false;
+        }
+
+        if (OGTargetIsNull){
+            pit.doAction(this,originalPlayer.getSpace());
+            Player nextPlayer = getNextPlayer(originalPlayer);
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
         //jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
-        assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
-        Player other = space.getPlayer();
+        assert board.getNeighbour(originalPlayer.getSpace(), heading,true) == originalTarget; // make sure the move to here is possible in principle
+        Player other = originalTarget.getPlayer();
         if (other != null){ //If player needs to be pushed
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                // XXX Note that there might be additional problems with
-                //     infinite recursion here (in some special cases)!
-                //     We will come back to that!
-                moveToSpace(other, target, heading);
+            Space newTarget = board.getNeighbour(originalTarget, heading,true);
+            return(moveToSpace(other,newTarget,heading));
+        }
 
-                // Note that we do NOT embed the above statement in a try catch block, since
-                // the thrown exception is supposed to be passed on to the caller
-
-                assert target.getPlayer() == null : target; // make sure target is free now
-            } else if (target == null){
-                //TODO: I think we need to make it fall into the pit here
-                pit.doAction(this,other.getSpace());
+        for (FieldAction fieldAction : originalTarget.getActions()){
+            if (fieldAction instanceof Pit){
+                ((Pit)fieldAction).doAction(this,originalPlayer); //TODO: originalTarget doesnt contain the player
+                break;
             }
-        } //TODO: Should this be here?
+        }
 
-        player.setSpace(space);
-        // I don't understand this.... Lucas? - Crazy
-        Player nextPlayer = getNextPlayer(player);
-        board.setCurrentPlayer(nextPlayer);
+        originalPlayer.setSpace(originalTarget);// I don't understand this.... Lucas? - Crazy
         return true;
     }
 
@@ -200,14 +215,27 @@ public class GameController {
 
         Space priorityAntenna = board.getPriorityAntennaSpace();
         Player closestPlayerToAntenna = currentPlayer;
+
+        int usedCards = Integer.MAX_VALUE;
+        for (Player player : board.getAllPlayers()){
+            if (player.getUsedCards() < usedCards){ //Finds minimum value
+                usedCards = player.getUsedCards();
+            }
+        }
+        ArrayList<Player> possiblePlayers = new ArrayList<>();
+        for (Player player : board.getAllPlayers()){
+            if (player.getUsedCards() == usedCards){
+                possiblePlayers.add(player);
+            }
+        }
+
         double closest = Double.MAX_VALUE;
+
         double closeness;
-        for (Player player : board.getAllPlayers()) {
+        for (Player player : possiblePlayers) {//Determines the closest of the eligible players
             int playerX = player.getSpace().getPosition()[0];
             int playerY = player.getSpace().getPosition()[1];
-            System.out.println(player.getColor() + ": " + playerX + ", " + playerY);
             closeness = distanceToSpace(priorityAntenna, playerX, playerY);
-            System.out.println(player.getColor() + ": " + closeness);
             if (closeness < closest) {
                 closest = closeness;
                 closestPlayerToAntenna = player;
@@ -215,7 +243,7 @@ public class GameController {
         }
         System.out.println("closest player to antenna: " + closestPlayerToAntenna.getColor());
         //return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
-        return currentPlayer;
+        return closestPlayerToAntenna;
 
 
         /*int amountOfPlayers = board.getPlayersNumber()-1;
@@ -236,7 +264,52 @@ public class GameController {
         return Math.sqrt(dx*dx + dy*dy);
     }
 
+    /**
+     * 'Used in the single player version only, afaik' -Anton
+     */
     public void finishProgrammingPhase() {
+
+        Thread commandThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                board.getCurrentPlayer().currentProgram();
+                Player currentPlayer = board.getCurrentPlayer();
+                while (true){
+                    try {
+                        ProgrammingCard programmingCard = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + programmingCard.getName() + " and they've used " + currentPlayer.getUsedCards() + " cards (about to use one more)");
+                        programmingCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), programmingCard); //I hate this implementation
+                        Thread.sleep(420);
+                    }
+                    catch (NullPointerException e) {
+                        System.out.println("Error: No more commandCards");
+                    }
+                    catch (InterruptedException e) {
+                        //This is just here for the sleep. Shouldn't really happen
+                    }
+                    catch (IndexOutOfBoundsException e){
+                        System.out.println("Trying to get a card that was removed from the hand");
+                    }
+                    currentPlayer.incrementUsedCards();
+                    currentPlayer = getNextPlayer(currentPlayer);
+                    board.setCurrentPlayer(currentPlayer);
+                    boolean toBreak = true;
+                    for (Player player : board.getAllPlayers()){
+                        if (player.getUsedCards() < Player.NO_REGISTERS && !(player.currentProgram().size() == 0)){
+                            toBreak = false;
+                        }
+                    }
+                    if (toBreak){
+                        break;
+                    }
+                }
+
+                for (Player player : board.getAllPlayers()){
+                    player.resetUsedCards();
+                }
+            }
+        });
+        commandThread.start();
     }
 
     // Executes the commandCards
@@ -287,19 +360,6 @@ public class GameController {
         }
 
         System.out.println("end of executestep");
-        /*if (space.getItem() != null) {
-            if (space.getItem().equals("checkpoint")) {
-                space.setItem(null);
-                Random rand = new Random();
-                int maxHeight = rand.nextInt(board.height);
-                int maxWidth = rand.nextInt(board.width);
-                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-                space = board.getSpace(maxWidth, maxHeight);
-                System.out.println(space.x + " and " + space.y);
-                space.setItem("checkpoint");
-                updatedSpaceView.addCheckpoint();
-            }
-        }*/
     }
 
 
@@ -333,6 +393,10 @@ public class GameController {
         }
     }
 
+    public boolean clearField(@NotNull CommandCardField source){
+        source.setCard(null);
+        return true;
+    }
 
     // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {

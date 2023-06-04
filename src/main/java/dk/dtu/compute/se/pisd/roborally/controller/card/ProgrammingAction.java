@@ -29,16 +29,22 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
 
         switch (card.getCommand()) {
             case MOVEONE -> {
-                gameController.moveForward(player);
+                if (!gameController.moveForward(player)){
+                    break;
+                };
             }
             case MOVETWO -> {
                 for (int i = 0; i < 2; i++) {
-                    gameController.moveForward(player);
+                    if(!gameController.moveForward(player)){
+                        break;
+                    }
                 }
             }
             case MOVETHREE -> {
                 for (int i = 0; i < 3; i++) {
-                    gameController.moveForward(player);
+                    if(!gameController.moveForward(player)){
+                        break;
+                    }
                 }
             }
             case RIGHT -> {

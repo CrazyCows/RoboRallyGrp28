@@ -22,11 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
-import dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import dk.dtu.compute.se.pisd.roborally.model.card.SpecialProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.view.ViewObserver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -58,6 +57,9 @@ public class Player extends Subject {
     private boolean ready;
     private boolean leader;
 
+    //used for keeping track so the priorityAntenna doesn't wildly pick the same player 5 times in a row
+    private int usedCards;
+
     private Space space;
     private Heading heading = SOUTH;
 
@@ -77,6 +79,16 @@ public class Player extends Subject {
         this.energyCubes += energyCubesAdded;
     }
 
+    public int getUsedCards(){
+        return usedCards;
+    }
+    public void incrementUsedCards(){
+        usedCards++;
+    }
+    public void resetUsedCards(){ //Prevents misuse of usedCards
+        usedCards = 0;
+    }
+
     public boolean subtractEnergyCubes(int energyCubesUsed) {
         if (this.energyCubes - energyCubesUsed < 0){
             return false;
@@ -92,14 +104,18 @@ public class Player extends Subject {
     //The amount of energy a player has. Starts at zero
     private int energyCubes = 0;
 
-    private ArrayList<CommandCardField> program; //Cards selected to be the in the program
-    private ArrayList<CommandCardField> drawnCards; //Drawn cards
-    public ArrayList<Object> drawPile; //Pile of cards to draw from //TODO: Make type safe
-    public ArrayList<Object> discardPile; //Cards that have been run //TODO: Make type safe
+    public ArrayList<CommandCardField> getProgram() {
+        return program;
+    }
+
+    private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
+    private ArrayList<CommandCardField> drawnCards = new ArrayList<>(); //Drawn cards
+    public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
+    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
 
     //This is used to keep track of how many checkpoints are collected. Each time a checkpoint is reached,
-    //checkpointsCollected is to be iterated by one. Once it reaches the magic number, the player wins
+    //checkpointsCollected is to be incremented by one. Once it reaches the magic number, the player wins
     private int checkpointsCollected = 0;
     private static int handSize = 8;
     private static int programSize = 5;
@@ -200,9 +216,7 @@ public class Player extends Subject {
         }
     }
 
-
-
-    public void setHeading(@NotNull String heading) {
+    public void setHeading(@NotNull String heading) { //TODO: This is like stupidly overkill and should be replaced
         switch (heading) {
             case "NORTH":
                 this.heading = Heading.NORTH;
@@ -227,7 +241,15 @@ public class Player extends Subject {
     }
 
     public CommandCardField getProgramField(int i) {
-        return program.get(i);
+        try{
+            return program.get(i);
+        }
+        catch (IndexOutOfBoundsException e){
+            System.out.println("Something done goofed");
+            return program.get(i);
+        }
+
+
     }
 
     public CommandCardField getCardField(int i) {
@@ -238,7 +260,7 @@ public class Player extends Subject {
         return checkpointsCollected;
     }
 
-    public void iterateCheckpointsCollected() { //TODO: check if player has won
+    public void incrementCheckpointsCollected() { //TODO: check if player has won
         this.checkpointsCollected += 1;
     }
 
@@ -299,7 +321,26 @@ public class Player extends Subject {
         //Try to draw a spam Card (from board?). If there are no more spam cards, do whatever the rules say.
     }
 
-    public void discardCurrentProgram() {
+    public void discardCurrentProgram(GameController gameController) {
+
+
+
+        //Maybe set usedCards to zero, but not here?
+
+
+        System.out.println("Attempting to clear hand");
+        Thread commandThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                discardPile.addAll(currentProgram());
+                //program.clear(); ///TODO: This doesn't work. Dont ask me why
+                notifyChange();
+            }
+        });
+        commandThread.start(); // start the thread
+        notifyChange();
+
+
         //TODO: ADD THIS. Basically clears the current program so the robot no longer moves
     }
 
