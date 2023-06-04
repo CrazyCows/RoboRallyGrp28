@@ -106,24 +106,7 @@ public class GameController {
         if (other != null){ //If player needs to be pushed
             Space newTarget = board.getNeighbour(originalTarget, heading);
             moveToSpace(other,newTarget,heading);
-            /*
-            if (target != null) {
-                // XXX Note that there might be additional problems with
-                //     infinite recursion here (in some special cases)!
-                //     We will come back to that!
-                moveToSpace(other, target, heading);
-
-                // Note that we do NOT embed the above statement in a try catch block, since
-                // the thrown exception is supposed to be passed on to the caller
-
-                assert target.getPlayer() == null : target; // make sure target is free now
-            } else if (target == null){
-                //TODO: I think we need to make it fall into the pit here
-
-                pit.doAction(this,other.getSpace());
-            }
-            */
-        } //TODO: Should this be here?
+        }
 
         originalPlayer.setSpace(originalTarget);
         // I don't understand this.... Lucas? - Crazy
