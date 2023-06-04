@@ -223,6 +223,7 @@ public class Board extends Subject {
         //      and obstacles and walls placed there. For now it,
         //      just calculates the next space in the respective
         //      direction in a cyclic way.
+        //      "It might not" -Tsun Tsu, the art of war (Anton)
 
         // XXX an other option (not for now) would be that null represents a hole
         //     or the edge of the board in which the players can fall
