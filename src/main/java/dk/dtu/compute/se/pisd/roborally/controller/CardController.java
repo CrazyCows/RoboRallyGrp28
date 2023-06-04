@@ -1,8 +1,10 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
+import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
@@ -39,14 +41,20 @@ public class CardController {
 
         for (int i = 0; i < 50; i++){ //50 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers
             CommandCardField spam = new CommandCardField(null);
+            spam.setCard(new DamageAction);
             spamPile.push(spam);
         }
 
         for (int i = 0; i < 8; i++){ //8 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers (8*3+50=24)
             CommandCardField virus = new CommandCardField(null);
             CommandCardField trojan = new CommandCardField(null);
-            CommandCardField work = new CommandCardField(null);
+            CommandCardField worm = new CommandCardField(null);
+            virusPile.push(virus);
+            trojanPile.push(trojan);
+            wormPile.push(worm);
         }
+
+        System.out.println("Created piles");
     }
 
     /**

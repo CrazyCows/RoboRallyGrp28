@@ -221,7 +221,7 @@ public class Player extends Subject {
         }
     }
 
-    public void setHeading(@NotNull String heading) throws Exception {
+    public void setHeading(@NotNull String heading) {
         Heading head = Heading.valueOf(heading);//TODO: Can't we just do this?
         switch (heading) {
             case "NORTH":
