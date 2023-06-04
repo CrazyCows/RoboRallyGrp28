@@ -16,10 +16,10 @@ public class CardController {
     private ArrayList<Card> universalDeck = new ArrayList<>();
 
     //Since these cards are simpler, we can just use a stack. Makes operations slightly simpler
-    public Stack<Card> virusPile = new Stack<>(); //Pile of cards to draw from
-    public Stack<Card> trojanPile = new Stack<>(); //Cards that have been run
-    public Stack<Card> wormPile = new Stack<>(); //Pile of cards to draw from
-    public Stack<Card> spamPile = new Stack<>(); //Cards that have been run
+    public Stack<CommandCardField> virusPile = new Stack<>(); //Pile of cards to draw from
+    public Stack<CommandCardField> trojanPile = new Stack<>(); //Cards that have been run
+    public Stack<CommandCardField> wormPile = new Stack<>(); //Pile of cards to draw from
+    public Stack<CommandCardField> spamPile = new Stack<>(); //Cards that have been run
 
     public static CardController getInstance(){ //Singleton, make private?
         if (cardController == null){
@@ -33,9 +33,17 @@ public class CardController {
      * Creates a card pile, and shuffles them
      * @return
      */
-    public CardController() {
+    private CardController() {
         this.cardLoader = CardLoader.getInstance();
         this.universalDeck.addAll(cardLoader.getProgrammingCards());
+
+        for (int i = 0; i < 50; i++){ //50 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers
+            //Intended to fill out the spampile
+        }
+
+        for (int i = 0; i < 8; i++){ //8 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers (8*3+50=24)
+            //Intended to fill out the other 3 piles
+        }
     }
 
     /**
