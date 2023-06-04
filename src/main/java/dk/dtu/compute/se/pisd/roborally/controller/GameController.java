@@ -51,6 +51,10 @@ public class GameController {
 
     private Pit pit = new Pit();
 
+    public CardController getCardController() {
+        return cardController;
+    }
+
     protected CardController cardController;
 
     public GameController(Board board) {
@@ -319,7 +323,10 @@ public class GameController {
 
                 for (Player player : board.getAllPlayers()){
                     player.resetUsedCards();
+                    cardController.moveProgramIntoDiscardPile(player);
+
                 }
+
                 latch.countDown();
             }
         });

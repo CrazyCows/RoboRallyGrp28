@@ -268,7 +268,7 @@ public class Player extends Subject {
 
     public void drawCard(Card card) {
         ProgrammingCard c = (ProgrammingCard) card; //TODO: Will this not break with damage cards?
-        for (int i = 0; i < 100000;i++){
+        for (int i = 0; i < 100000;i++){ //TODO: Shouldnt be 10k
             if (handPile.get(i).getCard() == null){
                 handPile.get(i).setCard(c);
                 break;
@@ -326,17 +326,11 @@ public class Player extends Subject {
 
     public void discardCurrentProgram(GameController gameController) {
 
-
-
-        //Maybe set usedCards to zero, but not here?
-
-
         System.out.println("Attempting to clear hand");
         Thread commandThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 discardPile.addAll(currentProgram());
-                //program.clear(); ///TODO: This doesn't work. Dont ask me why
                 notifyChange();
             }
         });
