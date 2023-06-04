@@ -384,7 +384,8 @@ public class GameController {
         FXMLLoader fxmlLoader = new FXMLLoader(RoboRally.class.getResource("scenes/winnerScreen.fxml"));
         try {
             Parent parent = fxmlLoader.load();
-
+            WinnerController winnerController = fxmlLoader.<WinnerController>getController();
+            winnerController.initialize(roboRally, currentPlayer.getName());
             roboRally.getStage().getScene().setRoot(parent);
             roboRally.getStage().getScene().getWindow().sizeToScene();
         }catch (IOException e){
