@@ -68,22 +68,31 @@ public class GameController {
     // TODO lot of stuff missing here
 
 
-
-    public void moveForward(@NotNull Player player) {
+    /**
+     * Returns true if all goes as planned. If all future calls of the function needs to be cancelled, as in the case
+     * of falling into a pit or off the map, the function returns false.
+     **/
+    public boolean moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
             Heading heading = player.getHeading();
             Space target = board.getNeighbour(space, heading);
             try {
-                moveToSpace(player, target, heading);
+                return (moveToSpace(player, target, heading));
             } catch (ImpossibleMoveException e) {
                 // we don't do anything here  for now; we just catch the
                 // exception so that we do not pass it on to the caller
                 // (which would be very bad style).
+                System.out.println("Impossible move caught");
+                return true; //TODO: Not sure if this should return true or false
             }
         }
+        return true;
     }
-
+    /**
+    * Returns true if all goes as planned. If all future calls of the function needs to be cancelled, as in the case
+    * of falling into a pit or off the map, the function returns false.
+    **/
     boolean moveToSpace(@NotNull Player originalPlayer, Space originalTarget, @NotNull Heading heading) throws ImpossibleMoveException {
         if (originalTarget == null){
             pit.doAction(this,originalPlayer.getSpace());
