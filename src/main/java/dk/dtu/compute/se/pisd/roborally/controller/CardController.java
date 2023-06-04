@@ -41,7 +41,8 @@ public class CardController {
 
         for (int i = 0; i < 50; i++){ //50 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers
             CommandCardField spam = new CommandCardField(null);
-            spam.setCard(new DamageAction);
+            spam.setCard(new DamageCard("SPAM","SPAM","/src/main/resources/checkpointhansi0.png","DamageAction"));
+            //TODO: This is shit
             spamPile.push(spam);
         }
 
