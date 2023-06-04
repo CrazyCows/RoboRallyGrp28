@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.view.ViewObserver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class Player extends Subject {
     public void addEnergyCubes(int energyCubesAdded) {
         this.energyCubes += energyCubesAdded;
     }
+
     public int getUsedCards(){
         return usedCards;
     }

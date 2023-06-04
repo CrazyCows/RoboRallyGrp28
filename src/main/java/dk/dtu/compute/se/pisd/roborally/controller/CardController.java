@@ -5,7 +5,6 @@ import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +74,6 @@ public class CardController {
 
         player.drawPile.remove(card); //Removes it from the drawPile
         player.drawCard(card);
-        //player.getHandPile().add(card);
     }
 
     /**

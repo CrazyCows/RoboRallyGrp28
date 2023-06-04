@@ -37,8 +37,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
-
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.PROGRAMMING;
 
 //import java.util.*;
@@ -293,7 +291,6 @@ public class GameController {
      */
     public void finishProgrammingPhase() {
         setPhase(Phase.ACTIVATION);
-        CountDownLatch latch = new CountDownLatch(1);
 
         Thread commandThread = new Thread(new Runnable() {
             @Override
@@ -338,7 +335,6 @@ public class GameController {
             }
         });
         commandThread.start();
-
     }
 
     // Executes the commandCards
@@ -403,6 +399,17 @@ public class GameController {
 
     public void win(Player currentPlayer) {
         //TODO: Display that a player won with some graphics and stop GUI(?)
+
+        FXMLLoader fxmlLoader = new FXMLLoader(RoboRally.class.getResource("scenes/winnerScreen.fxml"));
+        try {
+            Parent parent = fxmlLoader.load();
+            WinnerController winnerController = fxmlLoader.<WinnerController>getController();
+            winnerController.initialize(roboRally, currentPlayer.getName(), board.getAllPlayers().size());
+            roboRally.getStage().getScene().setRoot(parent);
+            roboRally.getStage().getScene().getWindow().sizeToScene();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         System.out.println("The player " + currentPlayer.getName() + " has won!");
 
     }

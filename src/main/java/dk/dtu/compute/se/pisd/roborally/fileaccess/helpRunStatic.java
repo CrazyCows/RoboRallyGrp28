@@ -11,6 +11,6 @@ public class helpRunStatic {
          */
         JsonReader jsonReader = new JsonReader();
         //System.out.println(jsonReader.getNames("collectivePLayerData.json", "readyState"));
-        //System.out.println(jsonReader.getValuesFromBoard("sharedBoard.json", 3, 3, "walls").get(0));
+       // System.out.println(jsonReader.getPlayerData("collectivePlayerData.json", "readyState", "Player 2"));
     }
 }
