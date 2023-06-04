@@ -140,7 +140,7 @@ public class GameController {
 
         for (FieldAction fieldAction : originalTarget.getActions()){
             if (fieldAction instanceof Pit){
-                ((Pit)fieldAction).doAction(this,originalPlayer); //TODO: originalTarget doesnt contain the player
+                ((Pit)fieldAction).doAction(this,originalPlayer);
                 break;
             }
         }
