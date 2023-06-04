@@ -22,11 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
-import dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import dk.dtu.compute.se.pisd.roborally.model.card.SpecialProgrammingCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -57,6 +54,9 @@ public class Player extends Subject {
     private String color;
     private boolean ready;
 
+    //used for keeping track so the priorityAntenna doesn't wildly pick the same player 5 times in a row
+    private int usedCards;
+
     private Space space;
     private Heading heading = SOUTH;
 
@@ -74,6 +74,16 @@ public class Player extends Subject {
 
     public void addEnergyCubes(int energyCubesAdded) {
         this.energyCubes += energyCubesAdded;
+    }
+
+    public int getUsedCards(){
+        return usedCards;
+    }
+    public void incrementUsedCards(){
+        usedCards++;
+    }
+    public void resetUsedCards(){ //Prevents misuse of usedCards
+        usedCards = 0;
     }
 
     public boolean subtractEnergyCubes(int energyCubesUsed) {
@@ -98,7 +108,7 @@ public class Player extends Subject {
 
 
     //This is used to keep track of how many checkpoints are collected. Each time a checkpoint is reached,
-    //checkpointsCollected is to be iterated by one. Once it reaches the magic number, the player wins
+    //checkpointsCollected is to be incremented by one. Once it reaches the magic number, the player wins
     private int checkpointsCollected = 0;
     private static int handSize = 8;
     private static int programSize = 5;
@@ -237,7 +247,7 @@ public class Player extends Subject {
         return checkpointsCollected;
     }
 
-    public void iterateCheckpointsCollected() { //TODO: check if player has won
+    public void incrementCheckpointsCollected() { //TODO: check if player has won
         this.checkpointsCollected += 1;
     }
 
