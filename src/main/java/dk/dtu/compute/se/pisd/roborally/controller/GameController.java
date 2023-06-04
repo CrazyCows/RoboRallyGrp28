@@ -320,23 +320,15 @@ public class GameController {
                         break;
                     }
                 }
-
                 for (Player player : board.getAllPlayers()){
                     player.resetUsedCards();
                     cardController.moveProgramIntoDiscardPile(player);
-
                 }
-
-                latch.countDown();
+                setPhase(Phase.PROGRAMMING);
             }
         });
         commandThread.start();
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        setPhase(Phase.PROGRAMMING);
+
     }
 
     // Executes the commandCards
