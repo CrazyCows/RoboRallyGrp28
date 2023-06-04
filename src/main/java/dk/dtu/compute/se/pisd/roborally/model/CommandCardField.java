@@ -32,7 +32,7 @@ import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
  */
 public class CommandCardField extends Subject {
 
-    final public Player player;
+    public Player player;
 
     private ProgrammingCard card;
 
@@ -46,6 +46,10 @@ public class CommandCardField extends Subject {
 
     public ProgrammingCard getCard() {
         return card;
+    }
+
+    public void setPlayer(Player player){
+        this.player = player;
     }
 
     public void setCard(ProgrammingCard card) {

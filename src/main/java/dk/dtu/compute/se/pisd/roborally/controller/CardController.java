@@ -38,11 +38,14 @@ public class CardController {
         this.universalDeck.addAll(cardLoader.getProgrammingCards());
 
         for (int i = 0; i < 50; i++){ //50 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers
-            //Intended to fill out the spampile
+            CommandCardField spam = new CommandCardField(null);
+            spamPile.push(spam);
         }
 
         for (int i = 0; i < 8; i++){ //8 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers (8*3+50=24)
-            //Intended to fill out the other 3 piles
+            CommandCardField virus = new CommandCardField(null);
+            CommandCardField trojan = new CommandCardField(null);
+            CommandCardField work = new CommandCardField(null);
         }
     }
 
