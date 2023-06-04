@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +13,7 @@ import java.util.Collections;
 public class CardController {
     private static CardController cardController;
     private CardLoader cardLoader;
-    private ArrayList<ProgrammingCard> universalDeck;
+    private ArrayList<Card> universalDeck = new ArrayList<>();
     //TODO: This deck needs to be removed. Player (model) has cards, controller doesn't.
     //TODO: Also, each player needs to have their own cards
 
@@ -31,8 +32,7 @@ public class CardController {
      */
     public CardController() {
         this.cardLoader = CardLoader.getInstance();
-        this.universalDeck = cardLoader.getProgrammingCards();
-        shuffleDeck(universalDeck);
+        this.universalDeck.addAll(cardLoader.getProgrammingCards());
     }
 
     /**
@@ -62,7 +62,17 @@ public class CardController {
      * @param player player who draws a card
      */
     public void drawOneCard(Player player) {
-        Card card = player.drawPile.get(0);
+        Card card = null;
+        try{
+            card = player.drawPile.get(0); //We add this try/catch for when the pile runs out of cards.
+        } catch (IndexOutOfBoundsException e){
+            //Ignore exception. It's expected. Expect the exception, be the exception
+            System.out.println("Moving cards from discardPile to drawPile for " + player.getName());
+            shuffleDeck(player.discardPile);
+            player.drawPile.addAll(player.discardPile);
+            card = player.drawPile.get(0);
+        }
+
         player.drawPile.remove(card); //Removes it from the drawPile
         player.drawCard(card);
         //player.getHandPile().add(card);
@@ -71,14 +81,26 @@ public class CardController {
     /**
      * Shuffles a given deck (linkedList) of CommandCards
      */
-    private ArrayList<ProgrammingCard> shuffleDeck(ArrayList<ProgrammingCard> deck){
+    void shuffleDeck(ArrayList<Card> deck){
         Collections.shuffle(deck);
-        return deck;
     }
 
     public CardLoader getCardLoader() {
         return this.cardLoader;
     }
+
+    public void moveProgramIntoDiscardPile(Player player){
+        for (CommandCardField commandCardField : player.getProgram()){
+            player.discardPile.add(commandCardField.getCard());
+        }
+        clearProgram(player);
+    }
+
+    private void clearProgram(Player player) {
+        for (CommandCardField CCF : player.getProgram()){
+                CCF.setCard(null);
+            }
+        }
 
 
     /**
@@ -86,5 +108,6 @@ public class CardController {
      */
     public void copyOverUniversalDeck(Player player) {
         player.drawPile.addAll(universalDeck);
+        shuffleDeck(player.drawPile);
     }
 }
