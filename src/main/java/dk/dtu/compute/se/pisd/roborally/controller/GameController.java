@@ -94,6 +94,19 @@ public class GameController {
     * of falling into a pit or off the map, the function returns false.
     **/
     boolean moveToSpace(@NotNull Player originalPlayer, Space originalTarget, @NotNull Heading heading) throws ImpossibleMoveException {
+
+        //First we check for walls. Somehow the code that did this got lost.
+
+        //These two walls are functionally the same
+        boolean cond1 = originalPlayer.getSpace().getWalls().contains(heading); //Checks whether theres a wall in the way on the start field
+        boolean cond2 = originalTarget.getWalls().contains(heading.next().next()); //Checks whether theres a wall on the destination field, facing the start field
+
+        if (cond1 || cond2){
+            Player nextPlayer = getNextPlayer(originalPlayer);
+            board.setCurrentPlayer(nextPlayer);
+            return false;
+        }
+
         if (originalTarget == null){
             pit.doAction(this,originalPlayer.getSpace());
             Player nextPlayer = getNextPlayer(originalPlayer);
@@ -105,11 +118,10 @@ public class GameController {
         Player other = originalTarget.getPlayer();
         if (other != null){ //If player needs to be pushed
             Space newTarget = board.getNeighbour(originalTarget, heading);
-            moveToSpace(other,newTarget,heading);
+            return(moveToSpace(other,newTarget,heading));
         }
 
-        originalPlayer.setSpace(originalTarget);
-        // I don't understand this.... Lucas? - Crazy
+        originalPlayer.setSpace(originalTarget);// I don't understand this.... Lucas? - Crazy
         Player nextPlayer = getNextPlayer(originalPlayer);
         board.setCurrentPlayer(nextPlayer);
         return true;
