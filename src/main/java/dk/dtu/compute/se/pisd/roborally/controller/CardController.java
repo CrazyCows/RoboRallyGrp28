@@ -8,11 +8,18 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 public class CardController {
     private static CardController cardController;
     private CardLoader cardLoader;
     private ArrayList<Card> universalDeck = new ArrayList<>();
+
+    //Since these cards are simpler, we can just use a stack. Makes operations slightly simpler
+    public Stack<Card> virusPile = new Stack<>(); //Pile of cards to draw from
+    public Stack<Card> trojanPile = new Stack<>(); //Cards that have been run
+    public Stack<Card> wormPile = new Stack<>(); //Pile of cards to draw from
+    public Stack<Card> spamPile = new Stack<>(); //Cards that have been run
 
     public static CardController getInstance(){ //Singleton, make private?
         if (cardController == null){
