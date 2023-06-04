@@ -220,7 +220,8 @@ public class Player extends Subject {
         }
     }
 
-    public void setHeading(@NotNull String heading) { //TODO: This is like stupidly overkill and should be replaced
+    public void setHeading(@NotNull String heading) throws Exception {
+        Heading head = Heading.valueOf(heading);//TODO: Can't we just do this?
         switch (heading) {
             case "NORTH":
                 this.heading = Heading.NORTH;
@@ -235,9 +236,8 @@ public class Player extends Subject {
                 this.heading = Heading.WEST;
                 break;
             default:
-                // handle error case
-        }
 
+        }
         notifyChange();
         if (space != null) {
             space.playerChanged();
