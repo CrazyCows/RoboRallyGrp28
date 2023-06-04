@@ -91,7 +91,10 @@ public class CardController {
 
     public void moveProgramIntoDiscardPile(Player player){
         for (CommandCardField commandCardField : player.getProgram()){
-            player.discardPile.add(commandCardField.getCard());
+            ProgrammingCard c = commandCardField.getCard();
+            if (c != null) {
+                player.discardPile.add(c);
+            }
         }
         clearProgram(player);
     }
