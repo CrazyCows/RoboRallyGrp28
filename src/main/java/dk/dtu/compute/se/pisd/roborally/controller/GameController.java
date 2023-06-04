@@ -84,19 +84,19 @@ public class GameController {
         }
     }
 
-    boolean moveToSpace(@NotNull Player player, Space space, @NotNull Heading heading) throws ImpossibleMoveException {
-        if (space == null){
-            pit.doAction(this,player.getSpace());
-            Player nextPlayer = getNextPlayer(player);
+    boolean moveToSpace(@NotNull Player originalPlayer, Space originalTarget, @NotNull Heading heading) throws ImpossibleMoveException {
+        if (originalTarget == null){
+            pit.doAction(this,originalPlayer.getSpace());
+            Player nextPlayer = getNextPlayer(originalPlayer);
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
         jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
-        assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
-        Player other = space.getPlayer();
+        assert board.getNeighbour(originalPlayer.getSpace(), heading) == originalTarget; // make sure the move to here is possible in principle
+        Player other = originalTarget.getPlayer();
         if (other != null){ //If player needs to be pushed
-            Space target = board.getNeighbour(space, heading);
-            moveToSpace(other,target,heading);
+            Space newTarget = board.getNeighbour(originalTarget, heading);
+            moveToSpace(other,newTarget,heading);
             /*
             if (target != null) {
                 // XXX Note that there might be additional problems with
@@ -116,9 +116,9 @@ public class GameController {
             */
         } //TODO: Should this be here?
 
-        player.setSpace(space);
+        originalPlayer.setSpace(originalTarget);
         // I don't understand this.... Lucas? - Crazy
-        Player nextPlayer = getNextPlayer(player);
+        Player nextPlayer = getNextPlayer(originalPlayer);
         board.setCurrentPlayer(nextPlayer);
         return true;
     }
