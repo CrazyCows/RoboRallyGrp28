@@ -330,23 +330,6 @@ public class Player extends Subject {
         //Try to draw a spam Card (from board?). If there are no more spam cards, do whatever the rules say.
     }
 
-    public void discardCurrentProgram(GameController gameController) {
-
-        System.out.println("Attempting to clear hand");
-        Thread commandThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                discardPile.addAll(currentProgram());
-                notifyChange();
-            }
-        });
-        commandThread.start(); // start the thread
-        notifyChange();
-
-
-        //TODO: ADD THIS. Basically clears the current program so the robot no longer moves
-    }
-
     public boolean isReady() {
         return ready;
     }
