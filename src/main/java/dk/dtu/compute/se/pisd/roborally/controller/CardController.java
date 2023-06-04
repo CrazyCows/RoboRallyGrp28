@@ -13,9 +13,6 @@ public class CardController {
     private static CardController cardController;
     private CardLoader cardLoader;
     private ArrayList<Card> universalDeck = new ArrayList<>();
-    //TODO: This deck needs to be removed. Player (model) has cards, controller doesn't.
-    //TODO: Also, each player needs to have their own cards
-
 
     public static CardController getInstance(){ //Singleton, make private?
         if (cardController == null){
