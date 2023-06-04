@@ -276,7 +276,7 @@ public class GameController {
                 while (true){
                     try {
                         ProgrammingCard programmingCard = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + " and they play " + programmingCard.getName() + " and they've used " + currentPlayer.getUsedCards() + " cards (about to use one)");
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + programmingCard.getName() + " and they've used " + currentPlayer.getUsedCards() + " cards (about to use one more)");
                         programmingCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), programmingCard); //I hate this implementation
                         Thread.sleep(420);
                     }
