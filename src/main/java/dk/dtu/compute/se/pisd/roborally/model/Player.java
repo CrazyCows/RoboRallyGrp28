@@ -109,7 +109,7 @@ public class Player extends Subject {
     }
 
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
-    private ArrayList<CommandCardField> drawnCards = new ArrayList<>(); //Drawn cards
+    private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
@@ -132,9 +132,9 @@ public class Player extends Subject {
             program.add(new CommandCardField(this));
         }
 
-        drawnCards = new ArrayList<>();
+        handPile = new ArrayList<>();
         for (int i = 0; i < handSize; i++) {
-            drawnCards.add(new CommandCardField(this));
+            handPile.add(new CommandCardField(this));
         }
     }
 
@@ -253,7 +253,7 @@ public class Player extends Subject {
     }
 
     public CommandCardField getCardField(int i) {
-        return drawnCards.get(i);
+        return handPile.get(i);
     }
 
     public int getCheckpointsCollected() {
@@ -268,14 +268,19 @@ public class Player extends Subject {
 
     }
 
-    public void drawCard(int position, ProgrammingCard commandCard) {
-        drawnCards.get(position).setCard(commandCard);
-        //System.out.println(cards.get(position - 1).getCard().getName());
+    public void drawCard(Card card) {
+        ProgrammingCard c = (ProgrammingCard) card; //TODO: Will this not break with damage cards?
+        for (int i = 0; i < 1000;i++){ //TODO: Shouldnt be 1k
+            if (handPile.get(i).getCard() == null){
+                handPile.get(i).setCard(c);
+                break;
+            }
+        }
     }
 
-    public ArrayList<ProgrammingCard> getDrawnCards() {
-        ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
-        for (CommandCardField commandCardField : this.drawnCards) {
+    public ArrayList<Card> getHandPile() {
+        ArrayList<Card>  commandCards = new ArrayList<>();
+        for (CommandCardField commandCardField : this.handPile) {
             commandCards.add(commandCardField.getCard());
         }
         return commandCards;
@@ -298,8 +303,8 @@ public class Player extends Subject {
     }
 
     public int getNextEmptyCardField() {
-        for (int i = 0; i < drawnCards.size(); i++) {
-            if (drawnCards.get(i).getCard() == null) {
+        for (int i = 0; i < handPile.size(); i++) {
+            if (handPile.get(i).getCard() == null) {
                 return i;
             }
         }
@@ -323,17 +328,11 @@ public class Player extends Subject {
 
     public void discardCurrentProgram(GameController gameController) {
 
-
-
-        //Maybe set usedCards to zero, but not here?
-
-
         System.out.println("Attempting to clear hand");
         Thread commandThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 discardPile.addAll(currentProgram());
-                //program.clear(); ///TODO: This doesn't work. Dont ask me why
                 notifyChange();
             }
         });

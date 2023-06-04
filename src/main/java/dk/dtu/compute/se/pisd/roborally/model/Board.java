@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.CardController;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -55,6 +56,7 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
+    CardController cardController = CardController.getInstance();
     private Timer timer;
     private int timerSecondsCount;
     private boolean timerIsRunning;
@@ -164,6 +166,10 @@ public class Board extends Subject {
         return phase;
     }
 
+    /**
+     * Sets the phase. If the phase is programming, cards are automatically drawn from drawpile to hand
+     * @param phase
+     */
     public void setPhase(Phase phase) {
         if (phase != this.phase) {
             this.phase = phase;
