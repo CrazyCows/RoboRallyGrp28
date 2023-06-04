@@ -26,6 +26,7 @@ public class Pit extends FieldAction {
         currentPlayer.setSpace(currentPlayer.startSpace);
         currentPlayer.discardCurrentProgram();
         currentPlayer.setHeading(Heading.NORTH);
+        currentPlayer.getSpace().notifyChange();
         return false;
     }
     @Override

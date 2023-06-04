@@ -130,8 +130,6 @@ public class GameController {
         }
 
         originalPlayer.setSpace(originalTarget);// I don't understand this.... Lucas? - Crazy
-        Player nextPlayer = getNextPlayer(originalPlayer);
-        board.setCurrentPlayer(nextPlayer);
         return true;
     }
 
@@ -273,6 +271,8 @@ public class GameController {
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    Player nextPlayer = getNextPlayer(board.getCurrentPlayer());
+                    board.setCurrentPlayer(nextPlayer);
                 }
             }
         });
@@ -303,19 +303,6 @@ public class GameController {
         }
 
         System.out.println("end of executestep");
-        /*if (space.getItem() != null) {
-            if (space.getItem().equals("checkpoint")) {
-                space.setItem(null);
-                Random rand = new Random();
-                int maxHeight = rand.nextInt(board.height);
-                int maxWidth = rand.nextInt(board.width);
-                SpaceView updatedSpaceView = boardView.getSpaces()[maxWidth][maxHeight];
-                space = board.getSpace(maxWidth, maxHeight);
-                System.out.println(space.x + " and " + space.y);
-                space.setItem("checkpoint");
-                updatedSpaceView.addCheckpoint();
-            }
-        }*/
     }
 
 
