@@ -39,7 +39,7 @@ public class ClientController {
     public void getJSON(String jsonName) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl + "/jsonHandler?ID=" + this.ID + "&=" + jsonName))
+                    .uri(URI.create(baseUrl + "/jsonHandler?ID=" + this.ID + "&jsonFileName=" + jsonName))
                     .GET()
                     .build();
 

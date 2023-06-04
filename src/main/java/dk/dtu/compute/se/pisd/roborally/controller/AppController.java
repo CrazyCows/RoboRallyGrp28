@@ -21,15 +21,13 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.gson.JsonElement;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.*;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
@@ -81,6 +79,7 @@ public class AppController implements Observer {
     private boolean isPrivate;
     private String gamePassword;
     private String userColor;
+    private Player localPlayer;
 
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -131,6 +130,19 @@ public class AppController implements Observer {
 
         setupOnlineGame();
         setupRobot();
+
+        Board board = LoadBoard.loadBoard(null, true);
+        roboRally.pauseMusic();
+
+        this.localPlayer = new Player(board, this.userColor, this.username);
+        board.addPlayer(localPlayer);
+        localPlayer.setSpace(board.getSpace(1,1));
+
+        gameController = new GameController(board);
+        board.setCurrentPlayer(board.getPlayer(0));
+        roboRally.createBoardView(gameController);
+
+
         gameLobby();
 
 
@@ -278,7 +290,6 @@ public class AppController implements Observer {
         Button continueButton = new Button("Continue");
 
         String[] directions = {"north", "east", "south", "west"};
-        String direction = "";
         Thread countThread = new Thread(() -> {
             int counter = 0;
             while (!continueButton.isPressed()) {
@@ -423,8 +434,8 @@ public class AppController implements Observer {
             gridPane.add(usernameLabels.get(i), 1, i);
         }
 
-        Player player = new Player(null, null, null);
-        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+
+        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
         this.clientController = new ClientController(this.lobbyID);
 
         this.clientController.createJSON("sharedBoard.json");
@@ -434,7 +445,11 @@ public class AppController implements Observer {
 
         Thread countThread = new Thread(() -> {
 
-            //this.clientController.
+            this.clientController.getJSON("playerData.json");
+
+            JsonElement playersFound = JsonReader.search("data/collectivePlayerData.json", "name");
+            String value = String.valueOf(playersFound.getAsJsonPrimitive());
+            System.out.println(value);
 
             System.out.println("Game lobby thread has ended");
         });

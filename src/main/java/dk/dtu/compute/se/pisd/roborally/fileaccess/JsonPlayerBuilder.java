@@ -30,8 +30,8 @@ public class JsonPlayerBuilder {
         playerData.put("posx", player.getSpace().getPosition()[0]);
         playerData.put("posy", player.getSpace().getPosition()[1]);
         playerData.put("energycubes",player.getEnergyCubes()); //TODO: Does this work?
-        playerData.put("startplace", player.getStartSpace());
-        playerData.put("heading", player.getHeading());
+        //playerData.put("startplace", player.getStartSpace());
+        //playerData.put("heading", player.getHeading());
 
         file = new File("data", "playerData.json");
 
