@@ -176,6 +176,9 @@ public class RoboRally extends Application {
         this.mediaPlayer.pause();
     }
 
+    public Stage getStage(){
+        return stage;
+    }
 
     @Override
     public void stop() throws Exception {

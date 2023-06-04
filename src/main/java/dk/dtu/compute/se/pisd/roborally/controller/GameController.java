@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
@@ -30,8 +31,11 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.*;
 
 //import java.util.*;
@@ -48,10 +52,12 @@ public class GameController {
     //final private JsonPlayerBuilder jsonPlayerBuilder;
 
     private Pit pit = new Pit();
-
+    private RoboRally roboRally;
     protected CardController cardController;
 
-    public GameController(Board board) {
+
+    public GameController(RoboRally roboRally, Board board) {
+        this.roboRally = roboRally;
         this.board = board;
         this.cardController = CardController.getInstance();
         for (Player player : board.getAllPlayers()) {
@@ -374,6 +380,16 @@ public class GameController {
 
     public void win(Player currentPlayer) {
         //TODO: Display that a player won with some graphics and stop GUI(?)
+
+        FXMLLoader fxmlLoader = new FXMLLoader(RoboRally.class.getResource("scenes/winnerScreen.fxml"));
+        try {
+            Parent parent = fxmlLoader.load();
+
+            roboRally.getStage().getScene().setRoot(parent);
+            roboRally.getStage().getScene().getWindow().sizeToScene();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         System.out.println("The player " + currentPlayer.getName() + " has won!");
 
     }
