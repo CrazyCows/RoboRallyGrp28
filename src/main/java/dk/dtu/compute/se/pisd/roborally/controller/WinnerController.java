@@ -1,8 +1,11 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
+import dk.dtu.compute.se.pisd.roborally.StartRoboRally;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
+
+import java.awt.event.ActionEvent;
 
 public class WinnerController {
 
@@ -20,6 +23,22 @@ public class WinnerController {
 
     private void setWinnerPlayerText(){
         winnerPlayer.setText(playerName);
+    }
+
+    @FXML
+    public void onMainMenu(ActionEvent actionEvent){
+        // when you click the main menu button on the winner screen.
+
+
+        roboRally.start(roboRally.getStage());
+    }
+
+    @FXML
+    public void onPlayAgain(ActionEvent actionEvent){
+        // When you click the play again button on the winner screen
+
+
+
     }
 
 

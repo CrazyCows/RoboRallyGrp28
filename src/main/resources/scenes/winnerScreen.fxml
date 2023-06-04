@@ -88,7 +88,7 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <Button mnemonicParsing="false" text="Play Again">
+      <Button onAction="#onPlayAgain" mnemonicParsing="false" text="Play Again">
          <font>
             <Font size="18.0" />
          </font>
@@ -98,7 +98,7 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Main Menu">
+      <Button onAction="#onMainMenu" alignment="TOP_LEFT" mnemonicParsing="false" text="Main Menu">
          <font>
             <Font size="18.0" />
          </font>
