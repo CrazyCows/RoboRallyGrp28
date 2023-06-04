@@ -266,6 +266,11 @@ public class Player extends Subject {
 
     }
 
+    public void drawCard(Card card) {
+        ProgrammingCard c = (ProgrammingCard) card;
+        handPile.get(handPile.size()).setCard(c); //REALLY messy integration I dont feel like changing CommandCardField rn
+        //System.out.println(cards.get(position - 1).getCard().getName());
+    }
     public void drawCard(int position, ProgrammingCard commandCard) {
         handPile.get(position).setCard(commandCard);
         //System.out.println(cards.get(position - 1).getCard().getName());
