@@ -263,7 +263,52 @@ public class GameController {
         return Math.sqrt(dx*dx + dy*dy);
     }
 
+    /**
+     * 'Used in the single player version only, afaik' -Anton
+     */
     public void finishProgrammingPhase() {
+
+        Thread commandThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                board.getCurrentPlayer().currentProgram();
+                Player currentPlayer = board.getCurrentPlayer();
+                while (true){
+                    try {
+                        ProgrammingCard programmingCard = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + " and they play " + programmingCard.getName() + " and they've used " + currentPlayer.getUsedCards() + " cards (about to use one)");
+                        programmingCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), programmingCard); //I hate this implementation
+                        Thread.sleep(420);
+                    }
+                    catch (NullPointerException e) {
+                        System.out.println("Error: No more commandCards");
+                    }
+                    catch (InterruptedException e) {
+                        //This is just here for the sleep. Shouldn't really happen
+                    }
+                    catch (IndexOutOfBoundsException e){
+                        System.out.println("Trying to get a card that was removed from the hand");
+                    }
+                    currentPlayer.incrementUsedCards();
+                    currentPlayer = getNextPlayer(currentPlayer);
+                    board.setCurrentPlayer(currentPlayer);
+                    boolean toBreak = true;
+                    for (Player player : board.getAllPlayers()){
+                        if (player.getUsedCards() < Player.NO_REGISTERS && !(player.currentProgram().size() == 0)){
+                            toBreak = false;
+                        }
+                    }
+                    if (toBreak){
+                        break;
+                    }
+                }
+
+                for (Player player : board.getAllPlayers()){
+                    player.resetUsedCards();
+                }
+            }
+        });
+        commandThread.start();
     }
 
     // Executes the commandCards
@@ -284,10 +329,6 @@ public class GameController {
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("\n\nCurrent player is: " + board.getCurrentPlayer().getName() + "\n\n");
-                    board.getCurrentPlayer().incrementUsedCards();
-                    Player nextPlayer = getNextPlayer(board.getCurrentPlayer());
-                    board.setCurrentPlayer(nextPlayer);
                 }
             }
         });
