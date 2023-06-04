@@ -35,6 +35,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -43,7 +46,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
@@ -81,11 +86,14 @@ public class AppController implements Observer {
     private boolean isPrivate;
     private String gamePassword;
     private String userColor;
+    @FXML
+    private Text winnerPlayer;
 
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
+
     String ID;
 
     public void newGame() {

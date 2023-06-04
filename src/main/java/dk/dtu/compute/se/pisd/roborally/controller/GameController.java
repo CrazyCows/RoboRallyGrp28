@@ -406,20 +406,7 @@ public class GameController {
     }
 
     public void win(Player currentPlayer) {
-        //TODO: Display that a player won with some graphics and stop GUI(?)
-
-        FXMLLoader fxmlLoader = new FXMLLoader(RoboRally.class.getResource("/scenes/winnerScreen.fxml"));
-        try {
-            Pane parent = fxmlLoader.load();
-            WinnerController winnerController = fxmlLoader.getController();
-            winnerController.initialize(roboRally, currentPlayer.getName(), board.getAllPlayers().size());
-            roboRally.getStage().getScene().setRoot(parent);
-            roboRally.getStage().getScene().getWindow().sizeToScene();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        System.out.println("The player " + currentPlayer.getName() + " has won!");
-
+        roboRally.winScreen(currentPlayer);
     }
 
 
