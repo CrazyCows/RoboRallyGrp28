@@ -61,6 +61,13 @@ public class Player extends Subject {
 
     private Space space;
     private Heading heading = SOUTH;
+    private int energyCubes = 0;
+    private Card lastCard = null;
+
+    private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
+    private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
+    public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
+    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
     public Card getLastCard() {
         return lastCard;
@@ -71,8 +78,6 @@ public class Player extends Subject {
     }
 
     //The last card that the player used
-
-    private Card lastCard = null;
 
     public void addEnergyCubes(int energyCubesAdded) {
         this.energyCubes += energyCubesAdded;
@@ -88,35 +93,21 @@ public class Player extends Subject {
         usedCards = 0;
     }
 
-    public boolean subtractEnergyCubes(int energyCubesUsed) {
-        if (this.energyCubes - energyCubesUsed < 0){
-            return false;
-        }
-        this.energyCubes -= energyCubesUsed;
-        return true;
-    }
+
 
     public int getEnergyCubes() {
         return energyCubes;
     }
 
     //The amount of energy a player has. Starts at zero
-    private int energyCubes = 0;
 
     public ArrayList<CommandCardField> getProgram() {
         return program;
     }
 
-
-
     public ArrayList<CommandCardField> getHandPile() {
         return handPile;
     }
-
-    private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
-    private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
-    public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
-    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
 
     //This is used to keep track of how many checkpoints are collected. Each time a checkpoint is reached,
@@ -124,6 +115,15 @@ public class Player extends Subject {
     private int checkpointsCollected = 0;
     private static int handSize = 8;
     private static int programSize = 5;
+
+
+    public boolean subtractEnergyCubes(int energyCubesUsed) {
+        if (this.energyCubes - energyCubesUsed < 0){
+            return false;
+        }
+        this.energyCubes -= energyCubesUsed;
+        return true;
+    }
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;

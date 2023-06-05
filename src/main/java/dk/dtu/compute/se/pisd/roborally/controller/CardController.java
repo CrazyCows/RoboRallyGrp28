@@ -149,16 +149,16 @@ public class CardController {
             return;
         }
         try{
-            player.drawCard(spamPile.pop());
+            player.discardPile.add(spamPile.pop());
         } catch (EmptyStackException a){
             try{
-                player.drawCard(virusPile.pop());
+                player.discardPile.add(virusPile.pop());
             } catch (EmptyStackException b){
                 try{
-                    player.drawCard(wormPile.pop());
+                    player.discardPile.add(wormPile.pop());
                 } catch (EmptyStackException c){
                     try{
-                        player.drawCard(trojanPile.pop());
+                        player.discardPile.add(trojanPile.pop());
                     } catch (EmptyStackException d){
                         System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
                     }
