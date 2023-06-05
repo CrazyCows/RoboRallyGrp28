@@ -294,7 +294,7 @@ public class Player extends Subject {
     public ArrayList<ProgrammingCard> currentProgram() {
         ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.program) {
-            commandCards.add(commandCardField.getCard());
+            commandCards.add((ProgrammingCard) commandCardField.getCard());
         }
         return commandCards;
     }

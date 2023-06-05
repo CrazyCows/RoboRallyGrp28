@@ -444,8 +444,8 @@ public class GameController {
 
     // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        ProgrammingCard sourceCard = source.getCard();
-        ProgrammingCard targetCard = target.getCard();
+        ProgrammingCard sourceCard = (ProgrammingCard) source.getCard();
+        ProgrammingCard targetCard = (ProgrammingCard) target.getCard();
         if (sourceCard != null & targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);

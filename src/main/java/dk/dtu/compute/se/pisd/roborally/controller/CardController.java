@@ -85,7 +85,7 @@ public class CardController {
      * @param player player who draws a card
      */
     public void drawOneCard(Player player) {
-        Card card = null;
+        Card card;
         try{
             card = player.drawPile.get(0); //We add this try/catch for when the pile runs out of cards.
         } catch (IndexOutOfBoundsException e){
@@ -113,7 +113,7 @@ public class CardController {
 
     public void moveProgramIntoDiscardPile(Player player){
         for (CommandCardField commandCardField : player.getProgram()){
-            ProgrammingCard c = commandCardField.getCard();
+            ProgrammingCard c = (ProgrammingCard) commandCardField.getCard();
             if (c != null) {
                 player.discardPile.add(c);
             }
