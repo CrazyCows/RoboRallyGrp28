@@ -8,7 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
-public class Pit extends FieldAction {
+public class Pit extends FieldAction { //More generally just used for rebooting at this point
     private Heading heading;
 
 
