@@ -193,6 +193,11 @@ public class RoboRally extends Application {
         try {
             Pane parent = fxmlLoader.load();
             Scene winnerScene = new Scene(parent);
+
+            //"Player" text gets replaced with the winning playerName.
+            Text winnerPlayerText = (Text) parent.lookup("#winnerPlayer");
+            winnerPlayerText.setText(currentPlayer.getName());
+
             winnerStage.setScene(winnerScene);
 
             winnerStage.show();
