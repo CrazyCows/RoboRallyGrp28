@@ -14,7 +14,7 @@ public class DamageAction extends CardAction<DamageCard> {
 
     @Override
     public boolean doAction(GameController gameController, Player player, DamageCard card) {
-        switch (card.getName()){ //TODO: I really want this switch case to be a function, but we are going for composition over anything else
+        switch (card.getName()){ //we are going for composition over anything else
             case "Spam":
                 System.out.println("Spamming the spams");
                 break;
@@ -32,7 +32,6 @@ public class DamageAction extends CardAction<DamageCard> {
                         p.discardPile.add(cardController.virusPile.pop());
                     }
                 }
-
                 break;
             default:
                 System.out.print("Something went wrong. We might want to throw an exception: ");
