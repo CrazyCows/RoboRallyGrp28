@@ -1,1 +1,11 @@
-[ ]
+[ {
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 0,
+  "color" : "green",
+  "readystate" : false,
+  "playerisLead" : false,
+  "name" : "toke",
+  "inGame" : false,
+  "master" : true
+} ]

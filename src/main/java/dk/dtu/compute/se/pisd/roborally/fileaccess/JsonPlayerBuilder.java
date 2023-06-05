@@ -8,6 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,8 @@ public class JsonPlayerBuilder {
         playerData.put("posx", player.getSpace().getPosition()[0]);
         playerData.put("posy", player.getSpace().getPosition()[1]);
         playerData.put("energycubes",player.getEnergyCubes()); //TODO: Does this work?
+        playerData.put("master", player.isMaster());
+        playerData.put("inGame", player.isInGame());
         /*
         playerData.put("startplace", player.getStartSpace());
         playerData.put("heading", player.getHeading());
@@ -51,6 +54,9 @@ public class JsonPlayerBuilder {
             playerData.put("posx", player.getSpace().getPosition()[0]);
             playerData.put("posy", player.getSpace().getPosition()[1]);
             playerData.put("readystate", player.isReady());
+            playerData.put("master", player.isMaster());
+            playerData.put("inGame", player.isInGame());
+            playerData.put("color", player.getColor());
         }
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, playerData);
@@ -60,4 +66,5 @@ public class JsonPlayerBuilder {
             System.out.println(d);
         }
     }
+
 }

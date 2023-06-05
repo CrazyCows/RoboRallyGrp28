@@ -32,9 +32,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -43,14 +41,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,11 +72,15 @@ public class AppController implements Observer {
     private GameController gameController;
 
     private ClientController clientController;
+    private JsonReader jsonReader;
 
     private String animationRobotDirection;
+    ArrayList<Label> usernameLabels;
+    ArrayList<CheckBox> checkBoxes;
     private Player localPlayer;
     private String username;
     private String lobbyID;
+    private boolean isMaster;
     private boolean isPrivate;
     private String gamePassword;
     private String userColor;
@@ -170,73 +170,19 @@ public class AppController implements Observer {
     // Should be deleted at some point. Proof of concept.
 
     public void newOnlineGame() {
-
-        //clientController.createJSON(ID, "sharedBoard.json");
-
-        setupOnlineGame();
+        this.isMaster = true;
+        onlineGame();
         setupRobot();
-
-        if (gameController != null) {
-            // The UI should not allow this, but in case this happens anyway.
-            // give the user the option to save the game or abort this operation!
-            if (!stopGame()) {
-                return;
-            }
-        }
-
-        // XXX the board should eventually be created programmatically or loaded from a file
-        //     here we just create an empty board with the required number of players.
-        roboRally.removeStartImage();
-        Board board = LoadBoard.loadBoard(null, true);
-        roboRally.pauseMusic();
-
-        assert board != null;
-
-        this.localPlayer = new Player(board, userColor, username);
-        board.addPlayer(localPlayer);
-        localPlayer.setSpace(board.getSpace(1 % board.width, 1));
-
-        gameController = new GameController(roboRally, board);
-
-        board.setCurrentPlayer(board.getPlayer(0));
-        roboRally.createBoardView(gameController);
-
         gameLobby();
+    }
 
+    public void joinOnlineGame() {
+        this.isMaster = false;
 
-        /*if (result.isPresent()) {
-            if (gameController != null) {
-                // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
-                if (!stopGame()) {
-                    return;
-                }
-            }
+        onlineGame();
 
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-            roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(null, true);
-            roboRally.pauseMusic();
-
-            int no = result.get();
-            for (int i = 1; i <= no; i++) { //TODO: Changed by Anton so players dont start on pit
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
-            }
-            gameController = new GameController(board);
-            board.setCurrentPlayer(board.getPlayer(0));
-            roboRally.createBoardView(gameController);
-
-            // usr input prompt
-            try {
-                newOnlineGame("125");
-            } catch (Exception e){
-
-            }
-        }*/
-
+        setupRobot();
+        gameLobby();
     }
 
     public void saveGame() {
@@ -300,6 +246,7 @@ public class AppController implements Observer {
 
             int no = 2;
             for (int i = 0; i < no; i++) {
+                assert board != null;
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
@@ -323,6 +270,7 @@ public class AppController implements Observer {
 
         ComboBox<String> robotComboBox = new ComboBox<>();
         robotComboBox.getItems().addAll(PLAYER_COLORS);
+        robotComboBox.getItems().removeAll(jsonReader.getColorsInUse());
         robotComboBox.getSelectionModel().selectFirst();
 
         gridPane.add(robotComboBox, 0, 0);
@@ -387,6 +335,37 @@ public class AppController implements Observer {
             System.out.println(selectedRobot);
             this.userColor = selectedRobot;
 
+
+            if (gameController != null) {
+                // The UI should not allow this, but in case this happens anyway.
+                // give the user the option to save the game or abort this operation!
+                if (!stopGame()) {
+                    return;
+                }
+            }
+
+            // XXX the board should eventually be created programmatically or loaded from a file
+            //     here we just create an empty board with the required number of players.
+            roboRally.removeStartImage();
+            Board board = LoadBoard.loadBoard(null, true);
+            roboRally.pauseMusic();
+
+            assert board != null;
+
+            this.localPlayer = new Player(board, userColor, username);
+            if (this.isMaster) {
+                localPlayer.setMasterStatus(true);
+            }
+
+            board.addPlayer(localPlayer);
+            localPlayer.setSpace(board.getSpace(1 % board.width, 1));
+
+            gameController = new GameController(roboRally, board);
+
+            board.setCurrentPlayer(board.getPlayer(0));
+            roboRally.createBoardView(gameController);
+
+
             dialogStage.close();
         });
 
@@ -400,9 +379,9 @@ public class AppController implements Observer {
         dialogStage.showAndWait();
     }
 
-    public void setupOnlineGame() {
+    public void onlineGame() {
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Setup online game");
+        dialogStage.setTitle("Online game");
 
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10));
@@ -413,12 +392,14 @@ public class AppController implements Observer {
         TextField lobbyNameField = new TextField();
         CheckBox privateGameCheckbox = new CheckBox("Private Game");
         TextField passwordField = new TextField();
+        Label infoLabel = new Label();
 
         gridPane.add(new Label("Username:"), 0, 0);
         gridPane.add(usernameField, 1, 0);
         gridPane.add(new Label("Lobby name:"), 0, 1);
         gridPane.add(lobbyNameField, 1, 1);
         gridPane.add(privateGameCheckbox, 0, 2, 2, 1);
+        gridPane.add(infoLabel, 1, 3);
 
         Label passwordLabel = new Label("password");
         gridPane.add(passwordLabel, 0, 3);
@@ -454,7 +435,29 @@ public class AppController implements Observer {
             this.lobbyID = lobbyName;
             this.isPrivate = privateGame;
             this.gamePassword = password;
-            dialogStage.close();
+            this.clientController = new ClientController(this.lobbyID);
+
+            jsonReader = new JsonReader();
+            try {
+                clientController.getJSON("playerData.json");
+                if (jsonReader.gameStarted()) {
+                    infoLabel.setText("Error: Game already started");
+                }
+                else if (jsonReader.getPlayerNames().size() > 6) {
+                    infoLabel.setText("Game has too many players. ");
+                }
+                else {
+                    dialogStage.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Game does not exist");
+                if (!isMaster) {
+                    infoLabel.setText("Error: game doesn't exist");
+                }
+                else {
+                    dialogStage.close();
+                }
+            }
         });
 
         VBox vbox = new VBox(gridPane, continueButton);
@@ -476,8 +479,8 @@ public class AppController implements Observer {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
-        ArrayList<Label> usernameLabels = new ArrayList<>();
-        ArrayList<CheckBox> checkBoxes = new ArrayList<>();
+        usernameLabels = new ArrayList<>();
+        checkBoxes = new ArrayList<>();
         usernameLabels.add(new Label(this.username));
         checkBoxes.add(new CheckBox());
         for (int i = 0; i < 5; i++) {
@@ -494,26 +497,34 @@ public class AppController implements Observer {
         }
 
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
-        this.clientController = new ClientController(this.lobbyID);
-        JsonReader jsonReader = new JsonReader();
+        jsonReader = new JsonReader();
         System.out.println(localPlayer.getName());
         this.clientController.createJSON("sharedBoard.json");
         this.clientController.createJSON("playerData.json");
+
+        this.clientController.getJSON("playerData.json");
+        localPlayer.setMaster(jsonReader.getMaster());
 
         Thread countThread = new Thread(() -> {
             while (true) {
 
                 this.clientController.getJSON("playerData.json");
                 ArrayList<String> names = jsonReader.getPlayerNames();
+                names.removeIf(s -> s.equals(username));
+
                 System.out.println("All ready: " + jsonReader.isAllReady());
 
-                System.out.println("names: ");
-                for (String name : names) {
-                    System.out.println(name);
-                }
-                for (String name : names) {
-                    System.out.println(name + " readyState: " + jsonReader.isReady(name));
-                }
+                Platform.runLater(() -> {
+                    if (!names.isEmpty()) {
+                        for (int i = 1; i <= names.size(); i++) {
+                            usernameLabels.get(i).setText(names.get(i - 1));
+                        }
+
+                        for (int i = 1; i <= names.size(); i++) {
+                            checkBoxes.get(i).setSelected(jsonReader.isReady(names.get(i - 1)));
+                        }
+                    }
+                });
 
                 this.localPlayer.setReady(checkBoxes.get(0).isSelected());
                 jsonPlayerBuilder.updateDynamicPlayerData();
@@ -528,6 +539,17 @@ public class AppController implements Observer {
 
                 // Check if the stage is closed
                 if (!dialogStage.isShowing()) {
+                    break;
+                }
+                else if (isMaster && checkBoxes.get(0).isSelected()) {
+                    localPlayer.setInGame(true);
+                    jsonPlayerBuilder.updateDynamicPlayerData();
+                    clientController.updateJSON("playerData.json");
+                    clientController.getJSON("playerData.json");
+
+                    createAllNonLocalPlayers(jsonReader, gameController.board, names);
+
+                    Platform.runLater(dialogStage::close);
                     break;
                 }
             }
@@ -553,8 +575,19 @@ public class AppController implements Observer {
         dialogStage.showAndWait();
     }
 
-    public void lobby() {
+    public void createAllNonLocalPlayers(JsonReader jsonReader, Board board, ArrayList<String> names) {
 
+        int counter = 2;
+        for (String name : names) {
+            Player player = new Player(board, jsonReader.getSimplePlayerInfo(name, "color"), name);
+            player.setInGame(Boolean.parseBoolean(jsonReader.getSimplePlayerInfo(name, "inGame")));
+            player.setReady(Boolean.parseBoolean(jsonReader.getSimplePlayerInfo(name, "readystate")));
+            player.setMasterStatus(Boolean.parseBoolean(jsonReader.getSimplePlayerInfo(name, "master")));
+            board.addPlayer(player);
+            player.setSpace(board.getSpace(counter % board.width, counter));
+            counter += 1;
+
+        }
     }
 
 

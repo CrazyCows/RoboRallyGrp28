@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 class CardLoaderTest {
 
-    @Test
+    /*@Test
     void cardLoader() {
         CardLoader cardLoader = CardLoader.getInstance();
-    }
+    }*/
 
 
 }

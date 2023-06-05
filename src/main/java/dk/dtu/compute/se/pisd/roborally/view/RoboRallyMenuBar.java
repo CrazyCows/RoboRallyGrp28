@@ -43,6 +43,7 @@ public class RoboRallyMenuBar extends MenuBar {
     private MenuItem newGame;
 
     private MenuItem newOnlineGame;
+    private MenuItem joinOnlineGame;
 
     private MenuItem loadGame;
 
@@ -63,6 +64,11 @@ public class RoboRallyMenuBar extends MenuBar {
         newOnlineGame = new MenuItem("New Online Game");
         newOnlineGame.setOnAction( e -> this.appController.newOnlineGame());
         controlMenu.getItems().add(newOnlineGame);
+
+        joinOnlineGame = new MenuItem("Join Online Game");
+        joinOnlineGame.setOnAction( e -> this.appController.joinOnlineGame());
+        controlMenu.getItems().add(joinOnlineGame);
+
 
         stopGame = new MenuItem("Stop Game");
         stopGame.setOnAction( e -> this.appController.stopGame());

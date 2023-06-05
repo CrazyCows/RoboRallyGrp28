@@ -22,7 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +54,9 @@ public class Player extends Subject {
     private String color;
     private boolean ready;
     private boolean leader;
+    private boolean isMaster;
+    private String master;
+    private boolean inGame;
 
     //used for keeping track so the priorityAntenna doesn't wildly pick the same player 5 times in a row
     private int usedCards;
@@ -337,7 +339,26 @@ public class Player extends Subject {
         this.ready = state;
     }
 
+    public boolean isInGame() {
+        return this.inGame;
+    }
+
+    public void setInGame(boolean status) {
+        this.inGame = status;
+    }
+
     public boolean isLeader() {
         return leader;
     }
+    public boolean isMaster() { return this.isMaster; }
+    public void setMasterStatus(boolean status) {
+        this.isMaster = status;
+    }
+    public String getMaster() {
+        return this.master;
+    }
+    public void setMaster(String name) {
+        this.master = name;
+    }
+
 }

@@ -2,8 +2,10 @@
   "posx" : 1,
   "posy" : 1,
   "energycubes" : 0,
-  "color" : "red",
+  "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "noget"
+  "name" : "toke",
+  "inGame" : false,
+  "master" : true
 }

@@ -206,6 +206,27 @@ public class JsonReader {
         }
     }
 
+    public String getMaster() {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            List<String> master = JsonPath.read(json, "$.[?(@.master == true)].name");
+            return master.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean gameStarted() {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.master == true)].inGame")).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
     public Boolean isReady (String playerName) {
         try {
             String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
@@ -216,12 +237,12 @@ public class JsonReader {
         }
     }
 
-    public Boolean isAllReady () {
+    public boolean isAllReady () {
         try {
             String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<Boolean> playerNames = JsonPath.read(json, "$.[*].readystate");
+            List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
 
-            if (playerNames.contains(false)) {
+            if (playerReadyStates.contains(false)) {
                 return false;
             }
             return true;
@@ -230,6 +251,28 @@ public class JsonReader {
             return false;
         }
     }
+
+    public ArrayList<String> getColorsInUse() {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            return JsonPath.read(json, "$.[*].color");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getSimplePlayerInfo(String playerName, String key) {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            List<String> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
+            return info.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 /*
     public List<String> getValuesFromBoard(String jsonFileName, @Nullable Integer x,@Nullable Integer y, String... keys){
