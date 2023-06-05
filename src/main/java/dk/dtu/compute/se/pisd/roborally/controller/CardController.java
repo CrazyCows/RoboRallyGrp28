@@ -1,6 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
@@ -8,7 +7,6 @@ import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
-import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EmptyStackException;
@@ -124,11 +122,22 @@ public class CardController {
         return this.cardLoader;
     }
 
-    public void moveProgramIntoDiscardPile(Player player){
+    public void emptyProgram(Player player){
         for (CommandCardField commandCardField : player.getProgram()){
-            ProgrammingCard c = (ProgrammingCard) commandCardField.getCard();
-            if (c != null) {
-                player.discardPile.add(c);
+            Card card = commandCardField.getCard();
+            if (card instanceof DamageCard damageCard){ //Intellij suggested this, and it casts the card to DamageCard, calling it damageCard
+                System.out.println(player.getName() + " moves the " + card.getName() + " to the board pile");
+                switch (card.getName()) {
+                    case "Spam" -> spamPile.push(damageCard);
+                    case "Trojan", "Trojan Horse" -> trojanPile.push(damageCard);
+                    case "Worm" -> wormPile.push(damageCard);
+                    case "Virus" -> virusPile.push(damageCard);
+                }
+            }else{
+                ProgrammingCard c = (ProgrammingCard) commandCardField.getCard();
+                if (c != null) {
+                    player.discardPile.add(c);
+                }
             }
         }
         clearProgram(player);
@@ -171,10 +180,6 @@ public class CardController {
                 }
             }
         }
-
-
-
-
     }
 
     /**
