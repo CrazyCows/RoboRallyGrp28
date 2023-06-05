@@ -267,6 +267,16 @@ public class GameController {
     }
 
     // Calculates the distance between the priority antenna and a given player
+
+    public double distanceToSpace(Space space, Space space2) {
+        int x = space.getPosition()[0];
+        int y = space.getPosition()[1];
+        int otherX = space2.getPosition()[0];
+        int otherY = space2.getPosition()[1];
+        int dx = x - otherX;
+        int dy = y - otherY;
+        return Math.sqrt(dx*dx + dy*dy);
+    }
     private double distanceToSpace(Space space, int otherX, int otherY) {
         int x = space.getPosition()[0];
         int y = space.getPosition()[1];
