@@ -115,13 +115,13 @@ public class CardLoader {
         System.out.println("Commandcards created");
     }
 
-    public void sendCardSequenceRequest(List<ProgrammingCard> programmingCards) {
+    public void sendCardSequenceRequest(List<Card> cards) {
 
         CardSequenceTemplate cardSequenceTemplate = new CardSequenceTemplate();
 
-        for (ProgrammingCard programmingCard : programmingCards) {
-            if (programmingCard != null) {
-                cardSequenceTemplate.getProgrammingCards().add(programmingCard);
+        for (Card card : programmingCards) {
+            if (card != null) {
+                cardSequenceTemplate.getProgrammingCards().add(card);
             }
         }
 

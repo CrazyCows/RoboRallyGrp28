@@ -22,19 +22,13 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonReader;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import dk.dtu.compute.se.pisd.roborally.view.BoardView;
-import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -63,7 +57,7 @@ public class GameController {
 
     protected CardController cardController;
 
-    boolean MoreAdvancedGame = false;
+    boolean MoreAdvancedGame = true;
 
 
     public GameController(RoboRally roboRally, Board board) {
@@ -273,6 +267,16 @@ public class GameController {
     }
 
     // Calculates the distance between the priority antenna and a given player
+
+    public double distanceToSpace(Space space, Space space2) {
+        int x = space.getPosition()[0];
+        int y = space.getPosition()[1];
+        int otherX = space2.getPosition()[0];
+        int otherY = space2.getPosition()[1];
+        int dx = x - otherX;
+        int dy = y - otherY;
+        return Math.sqrt(dx*dx + dy*dy);
+    }
     private double distanceToSpace(Space space, int otherX, int otherY) {
         int x = space.getPosition()[0];
         int y = space.getPosition()[1];
@@ -303,10 +307,10 @@ public class GameController {
                 Player currentPlayer = board.getCurrentPlayer();
                 while (true){
                     try {
-                        ProgrammingCard programmingCard = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + programmingCard.getName() + " and they've used " + currentPlayer.getUsedCards() + " cards (about to use one more)");
-                        programmingCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), programmingCard); //I hate this implementation
-                        Thread.sleep(420);
+                        Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
+                        card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
+                        Thread.sleep(420); //Generify?
                     }
                     catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");
@@ -333,7 +337,7 @@ public class GameController {
 
                 for (Player player : board.getAllPlayers()){
                     player.resetUsedCards();
-                    cardController.moveProgramIntoDiscardPile(player);
+                    cardController.emptyProgram(player);
 
                     if (!MoreAdvancedGame){
                         cardController.clearhand(player);
@@ -346,22 +350,28 @@ public class GameController {
     }
 
     // Executes the commandCards
-    public void executeProgram(List<ProgrammingCard> programmingCards) {
+    public void executeProgram(List<Card> cards) {
 
-        cardController.getCardLoader().sendCardSequenceRequest(programmingCards);
+        cardController.getCardLoader().sendCardSequenceRequest(cards);
 
         Thread commandThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (ProgrammingCard commandCard : programmingCards) {
-                    try {
-                        commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard); //I hate this implementation
-                        Thread.sleep(420);
-                    } catch (NullPointerException e) {
-                        System.out.println("Error: No more commandCards");
-                    }
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
+                for (Card card : cards) {
+
+                    if (card instanceof ProgrammingCard){
+                        ProgrammingCard commandCard = (ProgrammingCard) card;
+                        try {
+                            commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard); //I hate this implementation
+                            Thread.sleep(420);
+                        } catch (NullPointerException e) {
+                            System.out.println("Error: No more commandCards");
+                        }
+                        catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        System.out.println("Something needs to be done about this card");
                     }
                 }
             }
@@ -431,8 +441,8 @@ public class GameController {
 
     // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        ProgrammingCard sourceCard = source.getCard();
-        ProgrammingCard targetCard = target.getCard();
+        Card sourceCard =  source.getCard();
+        Card targetCard = target.getCard();
         if (sourceCard != null & targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);

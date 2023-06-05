@@ -1,14 +1,14 @@
 package dk.dtu.compute.se.pisd.roborally.controller.field;
 
+import dk.dtu.compute.se.pisd.roborally.controller.CardController;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
-public class Pit extends FieldAction {
+public class Pit extends FieldAction { //More generally just used for rebooting at this point
     private Heading heading;
 
 
@@ -20,24 +20,28 @@ public class Pit extends FieldAction {
         this.heading = heading;
     }
 
+
+
     //Implement generics instead of overloading?
     public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
+        CardController cardController = CardController.getInstance();
         System.out.println(currentPlayer.getName() + " has fallen in a pit");
-        currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
-        currentPlayer.addSpamCardToDiscardPile();
+        cardController.addSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
+        cardController.addSpamCardToDiscardPile(currentPlayer);
         currentPlayer.setSpace(currentPlayer.startSpace);
-        gameController.getCardController().moveProgramIntoDiscardPile(currentPlayer);
+        gameController.getCardController().emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
         return false;
     }
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+        CardController cardController = CardController.getInstance();
         Player currentPlayer = space.getPlayer();
         System.out.println(currentPlayer.getName() + " has fallen in a pit");
-        currentPlayer.addSpamCardToDiscardPile(); //Draws two spam damage cards
-        currentPlayer.addSpamCardToDiscardPile();
+        cardController.addSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
+        cardController.addSpamCardToDiscardPile(currentPlayer);
         currentPlayer.setSpace(currentPlayer.startSpace);
-        gameController.getCardController().moveProgramIntoDiscardPile(currentPlayer);
+        gameController.getCardController().emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
 
 

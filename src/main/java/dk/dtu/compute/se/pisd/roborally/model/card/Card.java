@@ -1,6 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally.model.card;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
 
 public abstract class Card extends Subject {
 
@@ -25,4 +27,10 @@ public abstract class Card extends Subject {
         this.name = name;
     }
 
+    /**IntelliJ complains, I dont. TODO: Make intelliJ not angry
+     * @return returns null. This is an abstract class
+     */
+    public CardAction getAction() {
+        return null;
+    }
 }

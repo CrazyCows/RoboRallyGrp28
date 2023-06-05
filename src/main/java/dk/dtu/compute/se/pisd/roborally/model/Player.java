@@ -63,6 +63,13 @@ public class Player extends Subject {
 
     private Space space;
     private Heading heading = SOUTH;
+    private int energyCubes = 0;
+    private Card lastCard = null;
+
+    private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
+    private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
+    public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
+    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
     public Card getLastCard() {
         return lastCard;
@@ -73,8 +80,6 @@ public class Player extends Subject {
     }
 
     //The last card that the player used
-
-    private Card lastCard = null;
 
     public void addEnergyCubes(int energyCubesAdded) {
         this.energyCubes += energyCubesAdded;
@@ -90,34 +95,21 @@ public class Player extends Subject {
         usedCards = 0;
     }
 
-    public boolean subtractEnergyCubes(int energyCubesUsed) {
-        if (this.energyCubes - energyCubesUsed < 0){
-            return false;
-        }
-        this.energyCubes -= energyCubesUsed;
-        return true;
-    }
+
 
     public int getEnergyCubes() {
         return energyCubes;
     }
 
     //The amount of energy a player has. Starts at zero
-    private int energyCubes = 0;
 
     public ArrayList<CommandCardField> getProgram() {
         return program;
     }
 
-    private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
-
     public ArrayList<CommandCardField> getHandPile() {
         return handPile;
     }
-
-    private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
-    public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
-    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
 
     //This is used to keep track of how many checkpoints are collected. Each time a checkpoint is reached,
@@ -125,6 +117,15 @@ public class Player extends Subject {
     private int checkpointsCollected = 0;
     private static int handSize = 8;
     private static int programSize = 5;
+
+
+    public boolean subtractEnergyCubes(int energyCubesUsed) {
+        if (this.energyCubes - energyCubesUsed < 0){
+            return false;
+        }
+        this.energyCubes -= energyCubesUsed;
+        return true;
+    }
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -275,10 +276,10 @@ public class Player extends Subject {
     }
 
     public void drawCard(Card card) {
-        ProgrammingCard c = (ProgrammingCard) card; //TODO: Will this not break with damage cards?
+        //ProgrammingCard c = (ProgrammingCard) card; //TODO: Will this not break with damage cards?
         for (int i = 0; i < 1000;i++){ //TODO: Shouldnt be 1k
             if (handPile.get(i).getCard() == null){
-                handPile.get(i).setCard(c);
+                handPile.get(i).setCard(card);
                 break;
             }
         }
@@ -292,8 +293,16 @@ public class Player extends Subject {
         return commandCards;
     }
 
-    public ArrayList<ProgrammingCard> currentProgram() {
+    public ArrayList<ProgrammingCard> currentProgram2() {
         ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
+        for (CommandCardField commandCardField : this.program) {
+            commandCards.add((ProgrammingCard) commandCardField.getCard());
+        }
+        return commandCards;
+    }
+
+    public ArrayList<Card> currentProgram() {
+        ArrayList<Card>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.program) {
             commandCards.add(commandCardField.getCard());
         }
@@ -324,12 +333,6 @@ public class Player extends Subject {
             }
         }
         return -1;
-    }
-
-    public void addSpamCardToDiscardPile() {
-        //TODO: ADD THIS.
-        System.out.println(this.name + " Draws a SPAM damage card and adds it to their discard pile");
-        //Try to draw a spam Card (from board?). If there are no more spam cards, do whatever the rules say.
     }
 
     public boolean isReady() {
