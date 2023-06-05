@@ -50,7 +50,7 @@ public class JsonPlayerBuilder {
         if (this.player.getName().equals(player.getName())){
             playerData.put("posX", player.getSpace().getPosition()[0]);
             playerData.put("posY", player.getSpace().getPosition()[1]);
-            playerData.put("readyState", player.isReady());
+            playerData.put("readystate", player.isReady());
         }
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, playerData);

@@ -33,7 +33,6 @@ public class ClientController {
         this.objectMapper = new ObjectMapper();
         this.path = "data";
         this.ID = ID;
-
     }
 
 
