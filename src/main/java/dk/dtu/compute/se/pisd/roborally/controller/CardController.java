@@ -46,7 +46,7 @@ public class CardController {
             spamPile.push(spam);
         }
 
-        for (int i = 0; i < 8; i++){ //8 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers (8*3+50=24)
+        for (int i = 0; i < 8; i++){ //8 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers (8*3+50=74)
             CommandCardField virus = new CommandCardField(null);
             CommandCardField trojan = new CommandCardField(null);
             CommandCardField worm = new CommandCardField(null);
