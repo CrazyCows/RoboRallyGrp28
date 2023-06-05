@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonReader;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
@@ -304,7 +305,7 @@ public class GameController {
                 while (true){
                     try {
                         ProgrammingCard programmingCard = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + programmingCard.getName() + " which is at slot number " + currentPlayer.getUsedCards() + 1);
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + programmingCard.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
                         programmingCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), programmingCard); //I hate this implementation
                         Thread.sleep(420);
                     }
@@ -444,8 +445,8 @@ public class GameController {
 
     // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        ProgrammingCard sourceCard = (ProgrammingCard) source.getCard();
-        ProgrammingCard targetCard = (ProgrammingCard) target.getCard();
+        Card sourceCard =  source.getCard();
+        Card targetCard = target.getCard();
         if (sourceCard != null & targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);
