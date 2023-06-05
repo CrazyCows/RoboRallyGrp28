@@ -8,6 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -18,10 +19,15 @@ public class CardController {
     private ArrayList<Card> universalDeck = new ArrayList<>();
 
     //Since these cards are simpler, we can just use a stack. Makes operations slightly simpler
-    public Stack<CommandCardField> virusPile = new Stack<>(); //Pile of cards to draw from
-    public Stack<CommandCardField> trojanPile = new Stack<>(); //Cards that have been run
-    public Stack<CommandCardField> wormPile = new Stack<>(); //Pile of cards to draw from
-    public Stack<CommandCardField> spamPile = new Stack<>(); //Cards that have been run
+
+    /**
+     * ONLY TO BE USED DURING INITIAL LOADING
+     */
+    ArrayList<DamageCard> allDamageCards = new ArrayList<>();
+    public Stack<DamageCard> virusPile = new Stack<>(); //Pile of cards to draw from
+    public Stack<DamageCard> trojanPile = new Stack<>(); //Cards that have been run
+    public Stack<DamageCard> wormPile = new Stack<>(); //Pile of cards to draw from
+    public Stack<DamageCard> spamPile = new Stack<>(); //Cards that have been run
 
     public static CardController getInstance(){ //Singleton, make private?
         if (cardController == null){
@@ -39,23 +45,27 @@ public class CardController {
         this.cardLoader = CardLoader.getInstance();
         this.universalDeck.addAll(cardLoader.getProgrammingCards());
 
-        for (int i = 0; i < 50; i++){ //50 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers
-            CommandCardField spam = new CommandCardField(null);
-            spam.setCard(new DamageCard("SPAM","SPAM","/src/main/resources/checkpointhansi0.png","DamageAction"));
-            //TODO: This is shit
-            spamPile.push(spam);
+        this.allDamageCards.addAll(cardLoader.getDamageCards());
+
+        for (DamageCard damageCard : allDamageCards){ //Sorts out the damage cards, since they all come in one pile
+            switch (damageCard.getName()){
+                case "Spam":
+                    spamPile.push(damageCard);
+                break;
+                case "Trojan":
+                    trojanPile.push(damageCard);
+                break;
+                case "Worm":
+                    wormPile.push(damageCard);
+                    break;
+                case "Virus":
+                    break;
+                default:
+                    System.out.println("Something went wrong. We might want to throw an exception");
+            }
         }
 
-        for (int i = 0; i < 8; i++){ //8 is chosen arbitrarily, based on the size of the piles in the rulebook and because it gives nice, round numbers (8*3+50=74)
-            CommandCardField virus = new CommandCardField(null);
-            CommandCardField trojan = new CommandCardField(null);
-            CommandCardField worm = new CommandCardField(null);
-            virusPile.push(virus);
-            trojanPile.push(trojan);
-            wormPile.push(worm);
-        }
-
-        System.out.println("Created piles");
+        System.out.println("Created cardController and piles");
     }
 
     /**
@@ -123,10 +133,16 @@ public class CardController {
 
     private void clearProgram(Player player) {
         for (CommandCardField CCF : player.getProgram()){
-                CCF.setCard(null);
-            }
+            CCF.setCard(null);
         }
+    }
 
+    private void addSpamCardToDiscardPile(Player player){
+        //player.drawCard();
+
+
+
+    }
 
     /**
      * COPIES all cards from the universal deck to the player drawPile. Only time that universalDeck should be used afaik
