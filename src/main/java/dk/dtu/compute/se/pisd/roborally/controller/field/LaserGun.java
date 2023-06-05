@@ -24,12 +24,11 @@ public class LaserGun extends FieldAction {
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
-    CardController cardController = CardController.getInstance();
 
 
     @Override //Maybe this code should be moved to the gamecontroller? Doesnt really make sense that a lasergun controls this
     public boolean doAction(GameController gameController, Space space) {
-
+        CardController cardController = CardController.getInstance();
         System.out.println("FIRING LASER");
         backgroundAnimationThread(space, space.getBackground());
         cardController.addSpamCardToDiscardPile(space.getPlayer());

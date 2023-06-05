@@ -21,10 +21,11 @@ public class Pit extends FieldAction {
         this.heading = heading;
     }
 
-    CardController cardController = CardController.getInstance();
+
 
     //Implement generics instead of overloading?
     public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
+        CardController cardController = CardController.getInstance();
         System.out.println(currentPlayer.getName() + " has fallen in a pit");
         cardController.addSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
         cardController.addSpamCardToDiscardPile(currentPlayer);
@@ -35,6 +36,7 @@ public class Pit extends FieldAction {
     }
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+        CardController cardController = CardController.getInstance();
         Player currentPlayer = space.getPlayer();
         System.out.println(currentPlayer.getName() + " has fallen in a pit");
         cardController.addSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
