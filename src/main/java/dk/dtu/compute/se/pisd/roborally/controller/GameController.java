@@ -22,20 +22,13 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
-import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonReader;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import dk.dtu.compute.se.pisd.roborally.view.BoardView;
-import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -307,7 +300,7 @@ public class GameController {
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
                         System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
                         card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
-                        Thread.sleep(420);
+                        Thread.sleep(420); //Generify?
                     }
                     catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");
@@ -334,7 +327,7 @@ public class GameController {
 
                 for (Player player : board.getAllPlayers()){
                     player.resetUsedCards();
-                    cardController.moveProgramIntoDiscardPile(player);
+                    cardController.emptyProgram(player);
 
                     if (!MoreAdvancedGame){
                         cardController.clearhand(player);

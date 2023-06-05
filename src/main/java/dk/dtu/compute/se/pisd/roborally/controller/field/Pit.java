@@ -3,7 +3,6 @@ package dk.dtu.compute.se.pisd.roborally.controller.field;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +29,7 @@ public class Pit extends FieldAction {
         cardController.addSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
         cardController.addSpamCardToDiscardPile(currentPlayer);
         currentPlayer.setSpace(currentPlayer.startSpace);
-        gameController.getCardController().moveProgramIntoDiscardPile(currentPlayer);
+        gameController.getCardController().emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
         return false;
     }
@@ -42,7 +41,7 @@ public class Pit extends FieldAction {
         cardController.addSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
         cardController.addSpamCardToDiscardPile(currentPlayer);
         currentPlayer.setSpace(currentPlayer.startSpace);
-        gameController.getCardController().moveProgramIntoDiscardPile(currentPlayer);
+        gameController.getCardController().emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
 
 
