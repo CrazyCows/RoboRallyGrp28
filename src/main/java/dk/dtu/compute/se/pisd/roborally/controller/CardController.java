@@ -11,6 +11,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class CardController {
@@ -64,7 +65,6 @@ public class CardController {
                     System.out.println("Something went wrong. We might want to throw an exception");
             }
         }
-
         System.out.println("Created cardController and piles");
     }
 
@@ -137,8 +137,33 @@ public class CardController {
         }
     }
 
-    private void addSpamCardToDiscardPile(Player player){
-        //player.drawCard();
+    /**
+     * Adds a spamCard to the discard pile of the player. If there are no more spam cards it draws a virus card.
+     * If there are none of those, then a worm card and finally a trojan card.
+     * @param player
+     */
+    public void addSpamCardToDiscardPile(Player player){
+        if (player == null){
+
+        }
+        try{
+            player.drawCard(spamPile.pop());
+        } catch (EmptyStackException a){
+            try{
+                player.drawCard(virusPile.pop());
+            } catch (EmptyStackException b){
+                try{
+                    player.drawCard(wormPile.pop());
+                } catch (EmptyStackException c){
+                    try{
+                        player.drawCard(trojanPile.pop());
+                    } catch (EmptyStackException d){
+                        System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
+                    }
+                }
+            }
+        }
+
 
 
 

@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.controller.field;
 
+import dk.dtu.compute.se.pisd.roborally.controller.CardController;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.item.Laserbeam;
@@ -7,6 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Item;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,15 +24,16 @@ public class LaserGun extends FieldAction {
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
+    CardController cardController = CardController.getInstance();
 
 
     @Override //Maybe this code should be moved to the gamecontroller? Doesnt really make sense that a lasergun controls this
     public boolean doAction(GameController gameController, Space space) {
 
         System.out.println("FIRING LASER");
-
         backgroundAnimationThread(space, space.getBackground());
-        space.getPlayer().addSpamCardToDiscardPile();
+        cardController.addSpamCardToDiscardPile(space.getPlayer());
+
         return true;
     }
 
