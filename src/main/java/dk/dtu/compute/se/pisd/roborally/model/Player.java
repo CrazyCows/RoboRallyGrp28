@@ -291,10 +291,18 @@ public class Player extends Subject {
         return commandCards;
     }
 
-    public ArrayList<ProgrammingCard> currentProgram() {
+    public ArrayList<ProgrammingCard> currentProgram2() {
         ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.program) {
             commandCards.add((ProgrammingCard) commandCardField.getCard());
+        }
+        return commandCards;
+    }
+
+    public ArrayList<Card> currentProgram() {
+        ArrayList<Card>  commandCards = new ArrayList<>();
+        for (CommandCardField commandCardField : this.program) {
+            commandCards.add(commandCardField.getCard());
         }
         return commandCards;
     }

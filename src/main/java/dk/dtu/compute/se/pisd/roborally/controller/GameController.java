@@ -304,9 +304,9 @@ public class GameController {
                 Player currentPlayer = board.getCurrentPlayer();
                 while (true){
                     try {
-                        ProgrammingCard programmingCard = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + programmingCard.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
-                        programmingCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), programmingCard); //I hate this implementation
+                        Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
+                        card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
                         Thread.sleep(420);
                     }
                     catch (NullPointerException e) {
@@ -347,22 +347,28 @@ public class GameController {
     }
 
     // Executes the commandCards
-    public void executeProgram(List<ProgrammingCard> programmingCards) {
+    public void executeProgram(List<Card> cards) {
 
-        cardController.getCardLoader().sendCardSequenceRequest(programmingCards);
+        cardController.getCardLoader().sendCardSequenceRequest(cards);
 
         Thread commandThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (ProgrammingCard commandCard : programmingCards) {
-                    try {
-                        commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard); //I hate this implementation
-                        Thread.sleep(420);
-                    } catch (NullPointerException e) {
-                        System.out.println("Error: No more commandCards");
-                    }
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
+                for (Card card : cards) {
+
+                    if (card instanceof ProgrammingCard){
+                        ProgrammingCard commandCard = (ProgrammingCard) card;
+                        try {
+                            commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard); //I hate this implementation
+                            Thread.sleep(420);
+                        } catch (NullPointerException e) {
+                            System.out.println("Error: No more commandCards");
+                        }
+                        catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        System.out.println("Something needs to be done about this card");
                     }
                 }
             }

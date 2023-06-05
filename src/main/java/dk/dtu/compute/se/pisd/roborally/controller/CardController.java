@@ -54,15 +54,18 @@ public class CardController {
                     spamPile.push(damageCard);
                 break;
                 case "Trojan":
+                case "Trojan Horse":
                     trojanPile.push(damageCard);
-                break;
+                    break;
                 case "Worm":
                     wormPile.push(damageCard);
                     break;
                 case "Virus":
+                    virusPile.push(damageCard);
                     break;
                 default:
-                    System.out.println("Something went wrong. We might want to throw an exception");
+                    System.out.print("Something went wrong. We might want to throw an exception: ");
+                    System.out.println(damageCard.getName());
             }
         }
         System.out.println("Created cardController and piles");
