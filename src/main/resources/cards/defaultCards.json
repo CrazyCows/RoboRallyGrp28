@@ -97,25 +97,25 @@
     {
       "name": "Spam",
       "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
     },
     {
       "name": "Trojan Horse",
       "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
     },
     {
       "name": "Worm",
       "effect": "When you program a worm damage card, you must immediately reboot your robot.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
     },
     {
       "name": "Virus",
       "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
-      "imagePath": "navn.png",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
     }
 
