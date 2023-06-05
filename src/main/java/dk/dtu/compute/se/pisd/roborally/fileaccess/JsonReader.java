@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.jayway.jsonpath.JsonPath;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class JsonReader {
 
 
     ObjectMapper objectMapper = new ObjectMapper();
+
 
 
     /**
@@ -175,17 +177,60 @@ public class JsonReader {
 
 
 
-    public List<String> getNames(String jsonFileName, String key) throws Exception{
-        JsonNode node = objectMapper.readTree(new File("data", jsonFileName));
-        List<JsonNode> nodes = node.findValues(key);
-        List<String> finish = new ArrayList<>();
-        int i = 0;
-        for (JsonNode json:nodes) {
-            finish.add(nodes.get(i).toString());
-            i++;
+    public ArrayList<String> getInfoFromAllPlayers(String jsonFileName, String key) {
+        try {
+            JsonNode node = objectMapper.readTree(new File("data", jsonFileName));
+            List<JsonNode> nodes = node.findValues(key);
+            ArrayList<String> finish = new ArrayList<>();
+            int i = 0;
+            for (JsonNode json : nodes) {
+                finish.add(nodes.get(i).toString());
+                i++;
+            }
+            return finish;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-        return finish;
     }
+
+    public ArrayList<String> getPlayerNames () {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            List<String> playerNames = JsonPath.read(json, "$.[*].name");
+
+            return new ArrayList<>(playerNames);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Boolean isReady (String playerName) {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].readystate")).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Boolean isAllReady () {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            List<Boolean> playerNames = JsonPath.read(json, "$.[*].readystate");
+
+            if (playerNames.contains(false)) {
+                return false;
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 /*
     public List<String> getValuesFromBoard(String jsonFileName, @Nullable Integer x,@Nullable Integer y, String... keys){
         try {

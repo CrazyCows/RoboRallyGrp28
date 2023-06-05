@@ -48,8 +48,8 @@ public class JsonPlayerBuilder {
 
     public void updateDynamicPlayerData(){
         if (this.player.getName().equals(player.getName())){
-            playerData.put("posX", player.getSpace().getPosition()[0]);
-            playerData.put("posY", player.getSpace().getPosition()[1]);
+            playerData.put("posx", player.getSpace().getPosition()[0]);
+            playerData.put("posy", player.getSpace().getPosition()[1]);
             playerData.put("readystate", player.isReady());
         }
         try {

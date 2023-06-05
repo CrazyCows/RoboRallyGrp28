@@ -26,10 +26,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.*;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
@@ -81,6 +78,7 @@ public class AppController implements Observer {
     private ClientController clientController;
 
     private String animationRobotDirection;
+    private Player localPlayer;
     private String username;
     private String lobbyID;
     private boolean isPrivate;
@@ -177,6 +175,32 @@ public class AppController implements Observer {
 
         setupOnlineGame();
         setupRobot();
+
+        if (gameController != null) {
+            // The UI should not allow this, but in case this happens anyway.
+            // give the user the option to save the game or abort this operation!
+            if (!stopGame()) {
+                return;
+            }
+        }
+
+        // XXX the board should eventually be created programmatically or loaded from a file
+        //     here we just create an empty board with the required number of players.
+        roboRally.removeStartImage();
+        Board board = LoadBoard.loadBoard(null, true);
+        roboRally.pauseMusic();
+
+        assert board != null;
+
+        this.localPlayer = new Player(board, userColor, username);
+        board.addPlayer(localPlayer);
+        localPlayer.setSpace(board.getSpace(1 % board.width, 1));
+
+        gameController = new GameController(roboRally, board);
+
+        board.setCurrentPlayer(board.getPlayer(0));
+        roboRally.createBoardView(gameController);
+
         gameLobby();
 
 
@@ -469,19 +493,44 @@ public class AppController implements Observer {
             gridPane.add(usernameLabels.get(i), 1, i);
         }
 
-        Player player = new Player(null, null, null);
-        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
         this.clientController = new ClientController(this.lobbyID);
-
+        JsonReader jsonReader = new JsonReader();
+        System.out.println(localPlayer.getName());
         this.clientController.createJSON("sharedBoard.json");
         this.clientController.createJSON("playerData.json");
-        this.clientController.updateJSON("playerData.json");
-        jsonPlayerBuilder.updateDynamicPlayerData();
 
         Thread countThread = new Thread(() -> {
+            while (true) {
 
-            //this.clientController.
+                this.clientController.getJSON("playerData.json");
+                ArrayList<String> names = jsonReader.getPlayerNames();
+                System.out.println("All ready: " + jsonReader.isAllReady());
 
+                System.out.println("names: ");
+                for (String name : names) {
+                    System.out.println(name);
+                }
+                for (String name : names) {
+                    System.out.println(name + " readyState: " + jsonReader.isReady(name));
+                }
+
+                this.localPlayer.setReady(checkBoxes.get(0).isSelected());
+                jsonPlayerBuilder.updateDynamicPlayerData();
+                clientController.updateJSON("playerData.json");
+
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                // Check if the stage is closed
+                if (!dialogStage.isShowing()) {
+                    break;
+                }
+            }
             System.out.println("Game lobby thread has ended");
         });
         countThread.start();

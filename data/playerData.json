@@ -2,8 +2,8 @@
   "posx" : 1,
   "posy" : 1,
   "energycubes" : 0,
-  "color" : "green",
+  "color" : "red",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "Player 2"
+  "name" : "noget"
 }
