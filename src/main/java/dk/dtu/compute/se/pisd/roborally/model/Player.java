@@ -274,10 +274,10 @@ public class Player extends Subject {
     }
 
     public void drawCard(Card card) {
-        ProgrammingCard c = (ProgrammingCard) card; //TODO: Will this not break with damage cards?
+        //ProgrammingCard c = (ProgrammingCard) card; //TODO: Will this not break with damage cards?
         for (int i = 0; i < 1000;i++){ //TODO: Shouldnt be 1k
             if (handPile.get(i).getCard() == null){
-                handPile.get(i).setCard(c);
+                handPile.get(i).setCard(card);
                 break;
             }
         }

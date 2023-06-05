@@ -143,8 +143,10 @@ public class CardController {
      * @param player
      */
     public void addSpamCardToDiscardPile(Player player){
+        System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
         if (player == null){
-
+            System.out.println("Null player cannot draw cards");
+            return;
         }
         try{
             player.drawCard(spamPile.pop());

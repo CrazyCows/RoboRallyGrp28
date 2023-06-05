@@ -63,7 +63,7 @@ public class GameController {
 
     protected CardController cardController;
 
-    boolean MoreAdvancedGame = false;
+    boolean MoreAdvancedGame = true;
 
 
     public GameController(RoboRally roboRally, Board board) {
@@ -304,7 +304,7 @@ public class GameController {
                 while (true){
                     try {
                         ProgrammingCard programmingCard = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + programmingCard.getName() + " and they've used " + currentPlayer.getUsedCards() + " cards (about to use one more)");
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + programmingCard.getName() + " which is at slot number " + currentPlayer.getUsedCards() + 1);
                         programmingCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), programmingCard); //I hate this implementation
                         Thread.sleep(420);
                     }
