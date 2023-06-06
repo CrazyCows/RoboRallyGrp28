@@ -168,10 +168,12 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane upgradeShopElements = new GridPane();
 
         // Create the upgrade shop cards
-        int cardSize = 400;
+        int cardWidth = 100;
+        int cardHeight = 150;
         int cardGap = 20;
         int nextCCol = 0;
         int nextCRow = 0;
+
 
         File permanentUpgradeCardsDirectory = new File("images/cards/upgradeCardImages");
         File[] permanentUpgradeCards = permanentUpgradeCardsDirectory.listFiles();
@@ -179,6 +181,36 @@ public class BoardView extends VBox implements ViewObserver {
         if (permanentUpgradeCards != null){
             for (int i = 0; i < permanentUpgradeCards.length; i++){
                 Image cardImage = new Image(permanentUpgradeCards[i].toURI().toString());
+                ImageView cardImageView = new ImageView(cardImage);
+                cardImageView.setFitWidth(cardWidth);
+                cardImageView.setFitHeight(cardHeight);
+                upgradeShopElements.add(cardImageView, nextCCol, nextCRow);
+
+                nextCCol += 1;
+                if (nextCCol >= 2){
+                    nextCCol = 0;
+                    nextCRow += 1;
+                }
+            }
+        }
+
+        File temporaryUpgradeCardsDirectory = new File("images/cards/tempUpgradeCardImages");
+        File[] temporaryUpgradeCards = temporaryUpgradeCardsDirectory.listFiles();
+
+        if (temporaryUpgradeCards != null){
+            for (int i = 0; i < temporaryUpgradeCards.length; i++){
+                Image cardImage = new Image(temporaryUpgradeCards[i].toURI().toString());
+                ImageView cardImageView = new ImageView(cardImage);
+                cardImageView.setFitWidth(cardWidth);
+                cardImageView.setFitHeight(cardHeight);
+                upgradeShopElements.add(cardImageView, nextCCol, nextCRow);
+
+                nextCCol += 1;
+                if (nextCCol >= 2){
+                    nextCCol = 0;
+                    nextCRow += 1;
+                }
+
             }
         }
 
