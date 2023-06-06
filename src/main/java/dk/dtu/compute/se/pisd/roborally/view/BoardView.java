@@ -173,9 +173,14 @@ public class BoardView extends VBox implements ViewObserver {
         int nextCCol = 0;
         int nextCRow = 0;
 
-        File permanentUpgradeCardsDirectory = new File("permanentUpgradeCards");
+        File permanentUpgradeCardsDirectory = new File("images/cards/upgradeCardImages");
         File[] permanentUpgradeCards = permanentUpgradeCardsDirectory.listFiles();
 
+        if (permanentUpgradeCards != null){
+            for (int i = 0; i < permanentUpgradeCards.length; i++){
+                Image cardImage = new Image(permanentUpgradeCards[i].toURI().toString());
+            }
+        }
 
         upgradeShop.add(upgradeShopElements, 0, 0);
         board.attach(this);
