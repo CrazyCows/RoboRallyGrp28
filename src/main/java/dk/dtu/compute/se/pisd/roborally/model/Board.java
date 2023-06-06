@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -275,10 +276,11 @@ public class Board extends Subject {
 
 
     // TODO: I forgot why this is places here??? (but it works though)
-    public void startTimer() {
-        timer = new Timer();
+    public void startTimer(GameController gameController) {
+        timer = new Timer(); //I'd like this to be a daemon but eh, doesn't matter much
         timerIsRunning = true;
         notifyChange();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -294,13 +296,25 @@ public class Board extends Subject {
                     timerIsRunning = false;
                     timerSecondsCount = 0;
                     System.out.println("Time to fire event!");
-                    for (Player player : players){
-                        cardController.fillProgramFromHand(player);
-                    }
                     notifyChange();
+                    countDownLatch.countDown();
                 }
             }
-        }, 0, 1000);
+        }, 0, 200);
+
+        Thread threadA = new Thread(() -> { //TODO: IS THIS DIRTY?
+            try{
+                countDownLatch.await();
+                cardController.fillAllPlayersProgramFromHand(this);
+                Thread.sleep(400);
+                gameController.finishProgrammingPhase();
+            } catch (InterruptedException e) {
+                System.out.println("Something very bad with the timer implementation happened");
+                e.printStackTrace();
+            }
+        });
+        threadA.setDaemon(false);
+        threadA.start();
     }
 
     public int getTimerSecondsCount() {

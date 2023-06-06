@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
@@ -81,6 +82,11 @@ public class CardController {
                     if (handCommandCardField.getCard() != null){
                         programCommandCardField.setCard(handCommandCardField.getCard());
                         handCommandCardField.setCard(null);
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         break;
                     }
                 }
@@ -230,6 +236,12 @@ public class CardController {
     public void clearhand(Player player) {
         for (CommandCardField commandCardField : player.getHandPile()){
             commandCardField.setCard(null);
+        }
+    }
+
+    public void fillAllPlayersProgramFromHand(Board board) {
+        for (Player player : board.getAllPlayers()){
+            this.fillProgramFromHand(player);
         }
     }
 }
