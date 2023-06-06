@@ -74,7 +74,7 @@ public class GameController {
         this.online = online;
         setPhase(Phase.PROGRAMMING);
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
-        //this.eventController = new CommandCardController(this);
+        //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
 
     }
 
@@ -178,22 +178,14 @@ public class GameController {
         int[] spacePosition = space.getPosition();
         for (int i = 0; i < amount; i++) {
             switch (heading) {
-                case NORTH -> {
-                    spacePosition[1] -= 1;
-                }
-                case WEST -> {
-                    spacePosition[0] -= 1;
-                }
-                case SOUTH -> {
-                    spacePosition[1] += 1;
-                }
-                case EAST -> {
-                    spacePosition[0] += 1;
-                }
+                case NORTH -> spacePosition[1] -= 1;
+                case WEST -> spacePosition[0] -= 1;
+                case SOUTH -> spacePosition[1] += 1;
+                case EAST -> spacePosition[0] += 1;
             }
             try {
                 Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
-                if (moveToSpace(player, nextSpace, heading)){ //Basically checks if the player is moved into a pit
+                if (moveToSpace(player, nextSpace, heading)){ //Moves the player and basically checks if they fell in a pit
                     for (FieldAction fieldAction : nextSpace.getActions()){
                         if (fieldAction instanceof Pit){
                             fieldAction.doAction(this,nextSpace);
@@ -201,15 +193,11 @@ public class GameController {
                         }
                     }
                 }
-
-
-
             } catch (ImpossibleMoveException e) {
                 System.out.println("Impossible move caught");
                 break;
             }
         }
-        //player.setSpace(board.getSpace(spacePosition[0], spacePosition[1]));
     }
 
     public void turnPlayer(Player player, Command direction) {
@@ -455,6 +443,9 @@ public class GameController {
         }
     }
 
+    /**
+     * TODO: This function should probably be deleted, as this is in the domain of the cardController
+     */
     public boolean clearField(@NotNull CommandCardField source){
         source.setCard(null);
         return true;
