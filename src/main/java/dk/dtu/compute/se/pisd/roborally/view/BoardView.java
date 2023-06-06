@@ -42,6 +42,8 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+
 /**
  * ...
  *
@@ -170,6 +172,10 @@ public class BoardView extends VBox implements ViewObserver {
         int cardGap = 20;
         int nextCCol = 0;
         int nextCRow = 0;
+
+        File permanentUpgradeCardsDirectory = new File("permanentUpgradeCards");
+        File[] permanentUpgradeCards = permanentUpgradeCardsDirectory.listFiles();
+
 
         upgradeShop.add(upgradeShopElements, 0, 0);
         board.attach(this);
