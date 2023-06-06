@@ -5,7 +5,7 @@
   "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "toke",
+  "name" : "Player 2",
   "inGame" : false,
-  "master" : true
+  "master" : false
 }

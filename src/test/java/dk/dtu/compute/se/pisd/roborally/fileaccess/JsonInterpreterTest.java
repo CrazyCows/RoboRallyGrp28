@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JsonReaderTest {
+class JsonInterpreterTest {
 
     @BeforeEach
     void setUp() {
@@ -15,11 +15,11 @@ class JsonReaderTest {
 
     @Test
     void getPlayerNamesAndReadyStates() {
-        JsonReader jsonReader = new JsonReader();
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
 
-        ArrayList<String> names = jsonReader.getPlayerNames();
+        ArrayList<String> names = jsonInterpreter.getPlayerNames();
         ArrayList<Boolean> readyStates = new ArrayList<>();
-        System.out.println("All ready: " + jsonReader.isAllReady());
+        System.out.println("All ready: " + jsonInterpreter.isAllReady());
 
         System.out.println("names: ");
         for (String name : names) {
@@ -28,8 +28,8 @@ class JsonReaderTest {
         System.out.println();
 
         for (String name : names) {
-            readyStates.add(jsonReader.isReady(name));
-            System.out.println(name + " readyState: " + jsonReader.isReady(name));
+            readyStates.add(jsonInterpreter.isReady(name));
+            System.out.println(name + " readyState: " + jsonInterpreter.isReady(name));
         }
 
         assertNotNull(names);

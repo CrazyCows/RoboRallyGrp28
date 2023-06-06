@@ -1,14 +1,19 @@
 package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
+import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Item;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.util.*;
@@ -70,7 +75,7 @@ public class CardLoader {
                 card.createCommand();
             }
 
-            // Extract and create damage cards
+            // Extract and create special Programming cards
             this.specialProgrammingCards = new ArrayList<>(cardData.getSpecialProgrammingCards());
             for (SpecialProgrammingCard card : specialProgrammingCards) {
                 card.createAction();
@@ -119,7 +124,7 @@ public class CardLoader {
 
         CardSequenceTemplate cardSequenceTemplate = new CardSequenceTemplate();
 
-        for (Card card : programmingCards) {
+        for (ProgrammingCard card : programmingCards) {
             if (card != null) {
                 cardSequenceTemplate.getProgrammingCards().add(card);
             }
@@ -170,6 +175,83 @@ public class CardLoader {
             }
         }
     }
+
+    public ArrayList<ProgrammingCard> loadCardSequence(String name) {
+
+        extractPlayerAndSaveToJson(name);
+
+        InputStream inputStream = null;
+
+        JsonReader reader = null;
+        try {
+            inputStream = new FileInputStream("data/cardSequenceRequestsHelper.json");
+
+            // In simple cases, we can create a Gson object with new Gson():
+            GsonBuilder simpleBuilder = new GsonBuilder()
+                    .registerTypeAdapter(FieldAction.class, new Adapter<CardAction<ProgrammingCard>>());
+            Gson gson = simpleBuilder.create();
+
+            ArrayList<ProgrammingCard> result;
+
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            CardSequenceTemplate template = gson.fromJson(reader, CardSequenceTemplate.class);
+
+            result = new ArrayList<>(template.programmingCards);
+
+            for (ProgrammingCard card : result) {
+                card.createAction();
+                card.createCommand();
+            }
+
+            reader.close();
+            return result;
+
+        } catch (IOException e1) {
+            if (reader != null) {
+                try {
+                    reader.close();
+                    inputStream = null;
+                } catch (IOException e2) {
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
+        return null;
+    }
+
+    private void extractPlayerAndSaveToJson(String name) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser parser = new JsonParser();
+
+        try (FileReader reader = new FileReader("data/cardSequenceRequests.json")) {
+            JsonObject jsonData = parser.parse(reader).getAsJsonObject();
+
+            // Access the player based on playerName
+            JsonObject player = jsonData.getAsJsonObject(name);
+
+            // Get the "programmingCards" array from the player object
+            JsonArray programmingCards = player.getAsJsonArray("programmingCards");
+
+            // Create a new JSON object to store the extracted "programmingCards" array
+            JsonObject extractedData = new JsonObject();
+            extractedData.add("programmingCards", programmingCards);
+
+            // Save the extracted data to a new JSON file
+            try (FileWriter writer = new FileWriter("data/cardSequenceRequestsHelper.json")) {
+                gson.toJson(extractedData, writer);
+            }
+
+            System.out.println("Extraction completed successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public ArrayList<ProgrammingCard> getProgrammingCards() {

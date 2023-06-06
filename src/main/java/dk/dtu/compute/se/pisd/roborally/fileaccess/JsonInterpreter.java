@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class JsonReader {
+public class JsonInterpreter {
 
     // TODO: Remove jsonFileName from arguments adn make it a static variable in each method
 

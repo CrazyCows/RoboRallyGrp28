@@ -40,7 +40,7 @@ public class ClientController {
         if (jsonName.equals("playerData.json")){
             return "/jsonPlayer?ID=";
         } else if (jsonName.equals("cardSequenceRequest.json")){
-            return "/jsonCards?ID=";
+            return "/jsonCardSequence?ID=";  // TODO: JEG HAR LAVET NOGET OM HER
         }
          else {
             return "/jsonHandler?ID=";
@@ -49,7 +49,13 @@ public class ClientController {
 
     public void getJSON(String jsonName) {
         String jsonTypeToURL = jsonType(jsonName);
+        String childName = "";
 
+        if (jsonName.equals("playerData.json")) {
+            childName = "collectivePlayerData.json";
+        } else if (jsonName.equals("cardSequenceRequest.json")) {
+            childName = "cardSequenceRequests.json";
+        }
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -63,10 +69,9 @@ public class ClientController {
                 throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
             }
 
-
             String responseJson = response.body();
             JsonNode jsonNode = objectMapper.readTree(responseJson);
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, childName), jsonNode);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

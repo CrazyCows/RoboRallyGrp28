@@ -47,6 +47,7 @@ public class GameController {
 
     final public Board board;
     //final private JsonPlayerBuilder jsonPlayerBuilder;
+    private boolean online;
 
     private Pit pit = new Pit();
     private RoboRally roboRally;
@@ -57,16 +58,21 @@ public class GameController {
 
     protected CardController cardController;
 
+    private Player localPlayer;
     boolean MoreAdvancedGame = true;
 
 
-    public GameController(RoboRally roboRally, Board board) {
+    public GameController(RoboRally roboRally, Board board, boolean online, Player localPlayer) {
         this.roboRally = roboRally;
         this.board = board;
         this.cardController = CardController.getInstance();
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);
         }
+        if (localPlayer != null) {
+            this.localPlayer = localPlayer;
+        }
+        this.online = online;
         setPhase(Phase.PROGRAMMING);
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this);
@@ -299,6 +305,22 @@ public class GameController {
      */
     public void finishProgrammingPhase() {
         setPhase(Phase.ACTIVATION);
+
+        if (online) {
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgram());
+            for (Player player : board.getAllPlayers()) {
+                System.out.println(player.getName());
+                if (player != localPlayer) {
+                    cardController.emptyProgram(player);
+                    ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
+                    int counter = 0;
+                    for (CommandCardField field : player.getProgram()) {
+                        field.setCard(cards.get(counter));
+                        counter += 1;
+                    }
+                }
+            }
+        }
 
         Thread commandThread = new Thread(new Runnable() {
             @Override

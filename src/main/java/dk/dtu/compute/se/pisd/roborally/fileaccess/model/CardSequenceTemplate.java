@@ -8,9 +8,9 @@ import java.util.List;
 
 public class CardSequenceTemplate {
 
-    public List<Card> programmingCards = new ArrayList<>();
+    public List<ProgrammingCard> programmingCards = new ArrayList<>();
 
-    public List<Card> getProgrammingCards() {
+    public List<ProgrammingCard> getProgrammingCards() {
         return programmingCards;
     }
 

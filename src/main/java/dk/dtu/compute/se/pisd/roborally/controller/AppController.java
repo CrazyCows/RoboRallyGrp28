@@ -72,7 +72,7 @@ public class AppController implements Observer {
     private GameController gameController;
 
     private ClientController clientController;
-    private JsonReader jsonReader;
+    private JsonInterpreter jsonInterpreter;
 
     private String animationRobotDirection;
     ArrayList<Label> usernameLabels;
@@ -123,7 +123,7 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
             assert board != null;
-            gameController = new GameController(roboRally, board);
+            gameController = new GameController(roboRally, board, false, null);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
@@ -159,7 +159,7 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
             assert board != null;
-            gameController = new GameController(roboRally, board);
+            gameController = new GameController(roboRally, board, false, null);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
@@ -251,7 +251,7 @@ public class AppController implements Observer {
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-            gameController = new GameController(roboRally, board);
+            gameController = new GameController(roboRally, board, false, null);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
         }
@@ -270,7 +270,7 @@ public class AppController implements Observer {
 
         ComboBox<String> robotComboBox = new ComboBox<>();
         robotComboBox.getItems().addAll(PLAYER_COLORS);
-        robotComboBox.getItems().removeAll(jsonReader.getColorsInUse());
+        robotComboBox.getItems().removeAll(jsonInterpreter.getColorsInUse());
         robotComboBox.getSelectionModel().selectFirst();
 
         gridPane.add(robotComboBox, 0, 0);
@@ -360,7 +360,7 @@ public class AppController implements Observer {
             board.addPlayer(localPlayer);
             localPlayer.setSpace(board.getSpace(1 % board.width, 1));
 
-            gameController = new GameController(roboRally, board);
+            gameController = new GameController(roboRally, board, true, localPlayer);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
@@ -437,13 +437,13 @@ public class AppController implements Observer {
             this.gamePassword = password;
             this.clientController = new ClientController(this.lobbyID);
 
-            jsonReader = new JsonReader();
+            jsonInterpreter = new JsonInterpreter();
             try {
                 clientController.getJSON("playerData.json");
-                if (jsonReader.gameStarted()) {
+                if (jsonInterpreter.gameStarted()) {
                     infoLabel.setText("Error: Game already started");
                 }
-                else if (jsonReader.getPlayerNames().size() > 6) {
+                else if (jsonInterpreter.getPlayerNames().size() > 6) {
                     infoLabel.setText("Game has too many players. ");
                 }
                 else {
@@ -497,22 +497,22 @@ public class AppController implements Observer {
         }
 
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
-        jsonReader = new JsonReader();
+        jsonInterpreter = new JsonInterpreter();
         System.out.println(localPlayer.getName());
         this.clientController.createJSON("sharedBoard.json");
         this.clientController.createJSON("playerData.json");
 
         this.clientController.getJSON("playerData.json");
-        localPlayer.setMaster(jsonReader.getMaster());
+        localPlayer.setMaster(jsonInterpreter.getMaster());
 
         Thread countThread = new Thread(() -> {
             while (true) {
 
                 this.clientController.getJSON("playerData.json");
-                ArrayList<String> names = jsonReader.getPlayerNames();
+                ArrayList<String> names = jsonInterpreter.getPlayerNames();
                 names.removeIf(s -> s.equals(username));
 
-                System.out.println("All ready: " + jsonReader.isAllReady());
+                System.out.println("All ready: " + jsonInterpreter.isAllReady());
 
                 Platform.runLater(() -> {
                     if (!names.isEmpty()) {
@@ -521,7 +521,7 @@ public class AppController implements Observer {
                         }
 
                         for (int i = 1; i <= names.size(); i++) {
-                            checkBoxes.get(i).setSelected(jsonReader.isReady(names.get(i - 1)));
+                            checkBoxes.get(i).setSelected(jsonInterpreter.isReady(names.get(i - 1)));
                         }
                     }
                 });
@@ -547,7 +547,7 @@ public class AppController implements Observer {
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
-                    createAllNonLocalPlayers(jsonReader, gameController.board, names);
+                    createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
 
                     Platform.runLater(dialogStage::close);
                     break;
@@ -575,14 +575,14 @@ public class AppController implements Observer {
         dialogStage.showAndWait();
     }
 
-    public void createAllNonLocalPlayers(JsonReader jsonReader, Board board, ArrayList<String> names) {
+    public void createAllNonLocalPlayers(JsonInterpreter jsonInterpreter, Board board, ArrayList<String> names) {
 
         int counter = 2;
         for (String name : names) {
-            Player player = new Player(board, jsonReader.getSimplePlayerInfo(name, "color"), name);
-            player.setInGame(Boolean.parseBoolean(jsonReader.getSimplePlayerInfo(name, "inGame")));
-            player.setReady(Boolean.parseBoolean(jsonReader.getSimplePlayerInfo(name, "readystate")));
-            player.setMasterStatus(Boolean.parseBoolean(jsonReader.getSimplePlayerInfo(name, "master")));
+            Player player = new Player(board, jsonInterpreter.getSimplePlayerInfo(name, "color"), name);
+            player.setInGame(Boolean.parseBoolean(jsonInterpreter.getSimplePlayerInfo(name, "inGame")));
+            player.setReady(Boolean.parseBoolean(jsonInterpreter.getSimplePlayerInfo(name, "readystate")));
+            player.setMasterStatus(Boolean.parseBoolean(jsonInterpreter.getSimplePlayerInfo(name, "master")));
             board.addPlayer(player);
             player.setSpace(board.getSpace(counter % board.width, counter));
             counter += 1;

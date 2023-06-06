@@ -209,6 +209,14 @@ public class Player extends Subject {
         notifyChange();
     }
 
+    public void setAllCards(ArrayList<Card> cards) {
+        int count = 0;
+        for (CommandCardField field : this.getProgram()) {
+            field.setCard(cards.get(count));
+            count += 1;
+        }
+    }
+
     public Heading getHeading() {
         return heading;
     }
