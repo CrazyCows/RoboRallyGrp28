@@ -242,6 +242,7 @@ public class CardController {
     public void fillAllPlayersProgramFromHand(Board board) {
         for (Player player : board.getAllPlayers()){
             this.fillProgramFromHand(player);
+            board.notifyChange();
         }
     }
 }

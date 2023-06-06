@@ -281,6 +281,7 @@ public class Board extends Subject {
         timer = new Timer(); //I'd like this to be a daemon but eh, doesn't matter much
         timerIsRunning = true;
         notifyChange();
+        //TODO: Notify server that timer is running.
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -297,18 +298,18 @@ public class Board extends Subject {
                     timerIsRunning = false;
                     timerSecondsCount = 0;
                     System.out.println("Time to fire event!");
-                    Platform.runLater(() -> {});
+                    //Platform.runLater(() -> {banana(gameController);});
                     notifyChange();
                     countDownLatch.countDown();
                 }
             }
         }, 0, 1000);
-/*
+
         Thread threadA = new Thread(() -> { //TODO: IS THIS DIRTY?
             try{
                 countDownLatch.await();
                 cardController.fillAllPlayersProgramFromHand(this);
-                Thread.sleep(400);
+                Thread.sleep(300);
                 gameController.finishProgrammingPhase();
             } catch (InterruptedException e) {
                 System.out.println("Something very bad with the timer implementation happened");
@@ -317,8 +318,18 @@ public class Board extends Subject {
         });
         threadA.setDaemon(false);
         threadA.start();
-        */
 
+    }
+
+    private void banana(GameController gameController) {
+        try {
+            cardController.fillAllPlayersProgramFromHand(this);
+            Thread.sleep(400);
+            gameController.finishProgrammingPhase();
+        } catch (InterruptedException e) {
+            System.out.println("Something very bad with the timer implementation happened");
+            e.printStackTrace();
+        }
     }
 
 
