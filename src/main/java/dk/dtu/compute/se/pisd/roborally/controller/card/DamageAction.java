@@ -14,6 +14,7 @@ public class DamageAction extends CardAction<DamageCard> {
 
     @Override
     public boolean doAction(GameController gameController, Player player, DamageCard card) {
+        CardController cardController = CardController.getInstance(); //Has to be inside the method for threading reasons
         switch (card.getName()){ //we are going for composition over anything else
             case "Spam":
                 System.out.println("Spamming the spams");
@@ -26,10 +27,9 @@ public class DamageAction extends CardAction<DamageCard> {
                 pit.doAction(gameController,player);
                 break;
             case "Virus":
-                CardController cardController = CardController.getInstance();
                 for (Player p : player.board.getAllPlayers()){
                     if (gameController.distanceToSpace(player.getSpace(),p.getSpace()) > 6){
-                        p.discardPile.add(cardController.virusPile.pop());
+                        cardController.drawVirusCardToDiscardPile(p);
                     }
                 }
                 break;

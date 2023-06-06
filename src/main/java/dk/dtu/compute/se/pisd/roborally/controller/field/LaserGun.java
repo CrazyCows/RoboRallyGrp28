@@ -6,14 +6,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.item.Laserbeam;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Item;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import dk.dtu.compute.se.pisd.roborally.model.card.Card;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 public class LaserGun extends FieldAction {
     private Heading heading;
@@ -31,7 +24,7 @@ public class LaserGun extends FieldAction {
         CardController cardController = CardController.getInstance();
         System.out.println("FIRING LASER");
         backgroundAnimationThread(space, space.getBackground());
-        cardController.addSpamCardToDiscardPile(space.getPlayer());
+        cardController.drawSpamCardToDiscardPile(space.getPlayer());
 
         return true;
     }

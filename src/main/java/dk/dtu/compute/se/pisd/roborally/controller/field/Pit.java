@@ -23,8 +23,8 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
     public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
         CardController cardController = CardController.getInstance();
         System.out.println(currentPlayer.getName() + " is now being rebooted");
-        cardController.addSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
-        cardController.addSpamCardToDiscardPile(currentPlayer);
+        cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
+        cardController.drawSpamCardToDiscardPile(currentPlayer);
         currentPlayer.setSpace(currentPlayer.startSpace);
         gameController.getCardController().emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
@@ -35,8 +35,8 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
         CardController cardController = CardController.getInstance();
         Player currentPlayer = space.getPlayer();
         System.out.println(currentPlayer.getName() + " is now being rebooted");
-        cardController.addSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
-        cardController.addSpamCardToDiscardPile(currentPlayer);
+        cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
+        cardController.drawSpamCardToDiscardPile(currentPlayer);
         currentPlayer.setSpace(currentPlayer.startSpace);
         gameController.getCardController().emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);

@@ -12,7 +12,7 @@ public class Laserbeam extends FieldAction {
         CardController cardController = CardController.getInstance();
         System.out.println("FIRING LASER");
         backgroundAnimationThread(space, space.getBackground());
-        cardController.addSpamCardToDiscardPile(space.getPlayer());
+        cardController.drawSpamCardToDiscardPile(space.getPlayer());
         return true;
     }
 }
