@@ -160,9 +160,6 @@
             </resource>
         </resources>
         <plugins>
-            <!-- Your existing plugins -->
-
-            <!-- Add this plugin configuration -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

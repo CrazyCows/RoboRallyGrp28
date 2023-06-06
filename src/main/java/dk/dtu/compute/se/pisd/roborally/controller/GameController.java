@@ -23,9 +23,11 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
+import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
@@ -54,15 +56,18 @@ public class GameController {
     public CardController getCardController() {
         return cardController;
     }
+    private ClientController clientController;
 
     protected CardController cardController;
 
     private Player localPlayer;
     boolean MoreAdvancedGame = true;
+    boolean firstRound;
 
 
-    public GameController(RoboRally roboRally, Board board, boolean online, Player localPlayer) {
+    public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
         this.roboRally = roboRally;
+        this.clientController = clientController;
         this.board = board;
         this.cardController = CardController.getInstance();
         for (Player player : board.getAllPlayers()) {
@@ -72,6 +77,9 @@ public class GameController {
             this.localPlayer = localPlayer;
         }
         this.online = online;
+        if (online) {
+            firstRound = true;
+        }
         setPhase(Phase.PROGRAMMING);
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
@@ -297,7 +305,26 @@ public class GameController {
         //TODO: Very much WIP
 
         if (online) {
-            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgram(), localPlayer.getName());
+            if (firstRound) {
+                cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+                clientController.createJSON("cardSequenceRequest.json");
+                firstRound = false;
+            }
+            for (Player player : board.getAllPlayers()) {
+                int count = 0;
+                for (Card card : player.currentProgram()) {
+                    if (card instanceof DamageCard) {
+                        while (card instanceof DamageCard) {
+                            card = player.drawCardFromPile();
+                        }
+                        player.getProgram().get(count).setCard(card);
+                    }
+                    count += 1;
+                }
+            }
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+            clientController.updateJSON("cardSequenceRequest.json");
+            clientController.getJSON("cardSequenceRequest.json");
             for (Player player : board.getAllPlayers()) {
                 System.out.println(player.getName());
                 if (player != localPlayer) {
@@ -365,7 +392,19 @@ public class GameController {
     public void executeProgram(List<Card> cards) {
 
         if (online) {
-            cardController.getCardLoader().sendCardSequenceRequest(cards, localPlayer.getName());
+            for (Player player : board.getAllPlayers()) {
+                int count = 0;
+                for (Card card : player.currentProgram()) {
+                    if (card instanceof DamageCard) {
+                        while (card instanceof DamageCard) {
+                            card = player.drawCardFromPile();
+                        }
+                        player.getProgram().get(count).setCard(card);
+                    }
+                    count += 1;
+                }
+            }
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
         }
 
         Thread commandThread = new Thread(new Runnable() {

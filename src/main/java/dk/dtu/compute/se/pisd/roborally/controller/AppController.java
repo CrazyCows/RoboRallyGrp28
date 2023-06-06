@@ -125,7 +125,7 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
             assert board != null;
-            gameController = new GameController(roboRally, board, false, null);
+            gameController = new GameController(roboRally, clientController, board, false, null);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
@@ -161,7 +161,7 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
             assert board != null;
-            gameController = new GameController(roboRally, board, false, null);
+            gameController = new GameController(roboRally, clientController, board, false, null);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
@@ -253,7 +253,7 @@ public class AppController implements Observer {
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-            gameController = new GameController(roboRally, board, false, null);
+            gameController = new GameController(roboRally, clientController, board, false, null);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
         }
@@ -366,7 +366,7 @@ public class AppController implements Observer {
             );
 
 
-            gameController = new GameController(roboRally, board, true, localPlayer);
+            gameController = new GameController(roboRally, clientController, board, true, localPlayer);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
