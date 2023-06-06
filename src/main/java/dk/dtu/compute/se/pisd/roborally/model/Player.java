@@ -273,7 +273,7 @@ public class Player extends Subject {
     }
 
     /**
-     * Draws the one card and inserts it into the first free CommandCardField
+     * Draws the one card and inserts it into the first free CommandCardField in the handPile
      * @param card Card to be drawn
      */
     public void drawCard(Card card) {
