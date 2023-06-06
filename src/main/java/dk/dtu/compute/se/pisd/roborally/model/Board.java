@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
+import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -296,12 +297,13 @@ public class Board extends Subject {
                     timerIsRunning = false;
                     timerSecondsCount = 0;
                     System.out.println("Time to fire event!");
+                    Platform.runLater(() -> {});
                     notifyChange();
                     countDownLatch.countDown();
                 }
             }
-        }, 0, 200);
-
+        }, 0, 1000);
+/*
         Thread threadA = new Thread(() -> { //TODO: IS THIS DIRTY?
             try{
                 countDownLatch.await();
@@ -315,7 +317,10 @@ public class Board extends Subject {
         });
         threadA.setDaemon(false);
         threadA.start();
+        */
+
     }
+
 
     public int getTimerSecondsCount() {
         return this.timerSecondsCount;
