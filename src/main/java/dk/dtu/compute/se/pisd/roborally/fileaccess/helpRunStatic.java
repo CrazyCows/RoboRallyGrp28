@@ -4,6 +4,8 @@ public class helpRunStatic {
     public static void main(String[] args) throws Exception{
         ClientController jsonConnect = new ClientController("tram");
         JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        jsonConnect.createJSON("sharedBoard.json");
+        jsonConnect.createJSON("playerData.json");
         jsonConnect.getJSON("playerData.json");
 
 
