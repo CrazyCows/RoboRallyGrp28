@@ -164,6 +164,7 @@ public class BoardView extends VBox implements ViewObserver {
             }
         }
 
+        upgradeShop.add(upgradeShopElements, 0, 0);
         board.attach(this);
         update(board);
     }
