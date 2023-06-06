@@ -11,7 +11,14 @@ public class DamageAction extends CardAction<DamageCard> {
     Pit pit = new Pit();
 
 
-
+    /**
+     * We didn't have any documentation implying otherwise, so I am assuming that all damage cards do the same,
+     * as the rules are a bit unclear on this subject matter (and the images and description don't agree)
+     * @param gameController
+     * @param player
+     * @param card
+     * @return
+     */
     @Override
     public boolean doAction(GameController gameController, Player player, DamageCard card) {
         CardController cardController = CardController.getInstance(); //Has to be inside the method for threading reasons
@@ -20,7 +27,8 @@ public class DamageAction extends CardAction<DamageCard> {
                 System.out.println("Spamming the spams");
                 break;
             case "Trojan":
-            case "Trojan Horse": //I'm assuming all cards do the same but fucking god knows
+            case "Trojan Horse": //I'm assuming all cards do the same but god knows
+                cardController.drawSpamCardToDiscardPile(player);
 
                 break;
             case "Worm":
@@ -37,8 +45,6 @@ public class DamageAction extends CardAction<DamageCard> {
                 System.out.print("Something went wrong. We might want to throw an exception: ");
                 System.out.println(card.getName());
         }
-
-
 
         // Implement the action specific to UpgradeCard
         // Use the gameController and card parameters as needed
