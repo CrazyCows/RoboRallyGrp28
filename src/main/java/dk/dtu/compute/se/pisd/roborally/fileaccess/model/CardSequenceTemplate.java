@@ -13,5 +13,8 @@ public class CardSequenceTemplate {
     public List<ProgrammingCard> getProgrammingCards() {
         return programmingCards;
     }
+    public void setProgrammingCards(List<ProgrammingCard> programmingCards) {
+        this.programmingCards = programmingCards;
+    }
 
 }

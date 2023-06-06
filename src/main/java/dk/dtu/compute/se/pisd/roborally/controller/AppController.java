@@ -64,6 +64,8 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
+    final private List<Integer> PLAYER_START_X_POSITION = Arrays.asList(0, 0, 0, 0, 0, 0);
+    final private List<Integer> PLAYER_START_Y_POSITION = Arrays.asList(1, 2, 3, 4, 5, 6);
 
     private List<String> savedBoards;
 
@@ -358,7 +360,11 @@ public class AppController implements Observer {
             }
 
             board.addPlayer(localPlayer);
-            localPlayer.setSpace(board.getSpace(1 % board.width, 1));
+            this.localPlayer.setSpace(board.getSpace(
+                    PLAYER_START_X_POSITION.get(PLAYER_COLORS.indexOf(localPlayer.getColor())),
+                    PLAYER_START_Y_POSITION.get(PLAYER_COLORS.indexOf(localPlayer.getColor())))
+            );
+
 
             gameController = new GameController(roboRally, board, true, localPlayer);
 
@@ -597,7 +603,10 @@ public class AppController implements Observer {
             player.setReady(jsonInterpreter.getSimplePlayerInfoBoolean(name, "readystate"));
             player.setMasterStatus(jsonInterpreter.getSimplePlayerInfoBoolean(name, "master"));
             board.addPlayer(player);
-            player.setSpace(board.getSpace(counter % board.width, counter));
+            player.setSpace(board.getSpace(
+                    jsonInterpreter.getSimplePlayerInfoInt(name, "posx"),
+                    jsonInterpreter.getSimplePlayerInfoInt(name, "posy")
+            ));
             counter += 1;
 
         }
