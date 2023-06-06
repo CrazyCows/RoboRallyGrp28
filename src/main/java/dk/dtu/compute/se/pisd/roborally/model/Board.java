@@ -23,6 +23,8 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -290,9 +292,12 @@ public class Board extends Subject {
                     timer.cancel();
                     timer.purge();
                     timerIsRunning = false;
-                    notifyChange();
                     timerSecondsCount = 0;
                     System.out.println("Time to fire event!");
+                    for (Player player : players){
+                        cardController.fillProgramFromHand(player);
+                    }
+                    notifyChange();
                 }
             }
         }, 0, 1000);

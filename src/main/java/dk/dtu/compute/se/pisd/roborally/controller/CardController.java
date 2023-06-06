@@ -74,6 +74,24 @@ public class CardController {
         }
     }
 
+    public void fillProgramFromHand(Player player){
+        for (CommandCardField programCommandCardField : player.getProgram()){
+            if (programCommandCardField.getCard() == null){
+                for (CommandCardField handCommandCardField :player.getHandPile()){
+                    if (handCommandCardField.getCard() != null){
+                        programCommandCardField.setCard(handCommandCardField.getCard());
+                        handCommandCardField.setCard(null);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+
+     */
+
     int getNumberOfCardsInHandPile(Player player){
         int i = 0;
         for (Card card : player.getCopyOfHandPile()){
