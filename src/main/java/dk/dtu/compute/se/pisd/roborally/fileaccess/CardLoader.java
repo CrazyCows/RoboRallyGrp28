@@ -120,10 +120,30 @@ public class CardLoader {
         System.out.println("Commandcards created");
     }
 
-    public void sendCardSequenceRequest(List<Card> programmingCardsInput, String name) {
+    public void sendCardSequenceRequest(List<ProgrammingCard> programmingCardsInput, String name) {
+        // Create a new list to hold the modified programming cards
+        List<ProgrammingCard> modifiedProgrammingCards = new ArrayList<>();
 
+        // Iterate over the programming cards input
+        for (ProgrammingCard card : programmingCardsInput) {
+            // Create a new ProgrammingCard object with the same properties, excluding the "action" field
+            ProgrammingCard modifiedCard = new ProgrammingCard(
+                    card.getName(),
+                    card.getImagePath(),
+                    card.getActionClassName(),
+                    card.getCommandName()
+            );
+
+            // Add the modified card to the new list
+            modifiedProgrammingCards.add(modifiedCard);
+        }
+
+        // Create the JSON structure with the modified programming cards
         Map<String, List<ProgrammingCard>> playerCardsMap = new HashMap<>();
-        playerCardsMap.put(name, programmingCards);
+        playerCardsMap.put("programmingCards", modifiedProgrammingCards);
+
+        Map<String, Map<String, List<ProgrammingCard>>> wrapperMap = new HashMap<>();
+        wrapperMap.put(name, playerCardsMap);
 
         String filename = DATAFOLDER + "/" + CARDSEQUENCE + "." + JSON_EXT;
 
@@ -136,7 +156,7 @@ public class CardLoader {
             // Write the JSON to file...
             fileWriter = new FileWriter(filename, false);
             writer = gson.newJsonWriter(fileWriter);
-            gson.toJson(playerCardsMap, new TypeToken<Map<String, List<ProgrammingCard>>>() {}.getType(), writer);
+            gson.toJson(wrapperMap, new TypeToken<Map<String, Map<String, List<ProgrammingCard>>>>() {}.getType(), writer);
         } catch (IOException e1) {
             System.out.println("An exception occurred while creating the FileWriter:");
             e1.printStackTrace();
@@ -153,9 +173,12 @@ public class CardLoader {
                 e2.printStackTrace();
             }
         }
+
     }
 
     public ArrayList<ProgrammingCard> loadCardSequence(String name) {
+
+        Adapter<CardAction> adapter = new Adapter<>();
 
         extractPlayerAndSaveToJson(name);
 
@@ -167,7 +190,7 @@ public class CardLoader {
 
             // In simple cases, we can create a Gson object with new Gson():
             GsonBuilder simpleBuilder = new GsonBuilder()
-                    .registerTypeAdapter(FieldAction.class, new Adapter<CardAction<ProgrammingCard>>());
+                    .registerTypeAdapter(CardAction.class, adapter);
             Gson gson = simpleBuilder.create();
 
             ArrayList<ProgrammingCard> result;

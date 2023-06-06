@@ -285,6 +285,13 @@ public class Player extends Subject {
         }
     }
 
+    public Card drawCardFromPile() {
+        Card card = drawPile.get(0);
+        drawPile.remove(card);
+        discardPile.add(card);
+        return card;
+    }
+
     /**
      * DEPRECATED
      * A bit dirty in the name and in the game. It returns the cards from each commandCardField in the handPile of the player
@@ -303,10 +310,15 @@ public class Player extends Subject {
      * if the player has a damage card
      * @return
      */
-    public ArrayList<ProgrammingCard> currentProgram2() {
+    public ArrayList<ProgrammingCard> currentProgramProgrammingCards() {
         ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.program) {
-            commandCards.add((ProgrammingCard) commandCardField.getCard());
+            try {
+                commandCards.add((ProgrammingCard) commandCardField.getCard());
+            } catch (ClassCastException e) {
+                System.out.println("Warning: A card in program was not a programmingCard");
+                e.printStackTrace();
+            }
         }
         return commandCards;
     }
