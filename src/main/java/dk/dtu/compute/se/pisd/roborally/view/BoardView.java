@@ -165,7 +165,7 @@ public class BoardView extends VBox implements ViewObserver {
                 spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
-        GridPane upgradeShopElements = new GridPane();
+
 
         // Create the upgrade shop cards
         int cardWidth = 100;
@@ -184,7 +184,7 @@ public class BoardView extends VBox implements ViewObserver {
                 ImageView cardImageView = new ImageView(cardImage);
                 cardImageView.setFitWidth(cardWidth);
                 cardImageView.setFitHeight(cardHeight);
-                upgradeShopElements.add(cardImageView, nextCCol, nextCRow);
+                upgradeShop.add(cardImageView, nextCCol, nextCRow);
 
                 nextCCol += 1;
                 if (nextCCol >= 2){
@@ -203,7 +203,7 @@ public class BoardView extends VBox implements ViewObserver {
                 ImageView cardImageView = new ImageView(cardImage);
                 cardImageView.setFitWidth(cardWidth);
                 cardImageView.setFitHeight(cardHeight);
-                upgradeShopElements.add(cardImageView, nextCCol, nextCRow);
+                upgradeShop.add(cardImageView, nextCCol, nextCRow);
 
                 nextCCol += 1;
                 if (nextCCol >= 2){
@@ -213,8 +213,7 @@ public class BoardView extends VBox implements ViewObserver {
 
             }
         }
-
-        upgradeShop.add(upgradeShopElements, 0, 0);
+        upgradeShop.add(upgradeShop, 0, 0);
         board.attach(this);
         update(board);
     }
