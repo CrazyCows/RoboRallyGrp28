@@ -293,6 +293,9 @@ public class GameController {
     public void finishProgrammingPhase() {
         setPhase(Phase.ACTIVATION);
 
+        //TODO: Check for spam and trojan cards,and replaces the card somehow?
+        //TODO: Very much WIP
+
         if (online) {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgram(), localPlayer.getName());
             for (Player player : board.getAllPlayers()) {
