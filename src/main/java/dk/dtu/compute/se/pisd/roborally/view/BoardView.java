@@ -23,11 +23,9 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Item;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -40,6 +38,9 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -134,6 +135,73 @@ public class BoardView extends VBox implements ViewObserver {
 
         upgradeShop.setClip(mask);
 
+
+
+
+
+/*
+        for (int i = 0; i < 4; i++) {
+            ColumnConstraints colConstraints = new ColumnConstraints();
+            colConstraints.setHgrow(Priority.SOMETIMES);
+            colConstraints.setMinWidth(10);
+            colConstraints.setPrefWidth(100);
+            upgradeShop.getColumnConstraints().add(colConstraints);
+        }
+
+
+        RowConstraints row1Constraints = new RowConstraints(88, 88, 129, Priority.SOMETIMES, VPos.CENTER, true);
+        RowConstraints row2Constraints = new RowConstraints(231, 231, 270, Priority.SOMETIMES, VPos.CENTER, true);
+        RowConstraints row3Constraints = new RowConstraints(30, 30, 30, Priority.SOMETIMES, VPos.CENTER, true);
+        upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
+
+
+        Text tempUpgradeText = new Text("TEMPORARY UPGRADE CARDS");
+        tempUpgradeText.setFont(Font.font("System Bold", 16));
+        tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setColumnIndex(tempUpgradeText, 2);
+        upgradeShop.getChildren().add(tempUpgradeText);
+
+        Text permUpgradeText = new Text("PERMANENT UPGRADE CARDS");
+        permUpgradeText.setFont(Font.font("System Bold", 16));
+        permUpgradeText.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setColumnIndex(permUpgradeText, 1);
+        upgradeShop.getChildren().add(permUpgradeText);
+
+
+        ImageView upgradeCardImages = new ImageView();
+        upgradeCardImages.setFitHeight(250);
+        upgradeCardImages.setFitWidth(154);
+        upgradeCardImages.setPreserveRatio(true);
+        upgradeCardImages.setPickOnBounds(true);
+        GridPane.setColumnIndex(upgradeCardImages, 1);
+        GridPane.setRowIndex(upgradeCardImages, 1);
+        upgradeShop.getChildren().add(upgradeCardImages);
+
+        ImageView tempUpgradeCardImages = new ImageView();
+        tempUpgradeCardImages.setFitHeight(250);
+        tempUpgradeCardImages.setFitWidth(154);
+        tempUpgradeCardImages.setPreserveRatio(true);
+        tempUpgradeCardImages.setPickOnBounds(true);
+        GridPane.setColumnIndex(tempUpgradeCardImages, 2);
+        GridPane.setRowIndex(tempUpgradeCardImages, 1);
+        upgradeShop.getChildren().add(tempUpgradeCardImages);
+
+        Player player = new Player();
+        Text playerName = new Text(player.getName());
+        playerName.setFont(Font.font("System Bold", 16));
+        playerName.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setColumnIndex(playerName, 3);
+        GridPane.setRowIndex(playerName, 1);
+        upgradeShop.getChildren().add(playerName);
+*/
+
+
+
+
+
+
+
+
         stackPane = new StackPane(mainBoardPane, upgradeShop);
 
         // create a GridPane and add the nodes to it
@@ -166,52 +234,6 @@ public class BoardView extends VBox implements ViewObserver {
             }
         }
 
-        // Create the upgrade shop cards
-        int cardWidth = 100;
-        int cardHeight = 150;
-        int cardGap = 20;
-        int nextCCol = 0;
-        int nextCRow = 0;
-
-
-        File permanentUpgradeCardsDirectory = new File("images/cards/upgradeCardImages");
-        File[] permanentUpgradeCards = permanentUpgradeCardsDirectory.listFiles();
-
-        if (permanentUpgradeCards != null){
-            for (int i = 0; i < permanentUpgradeCards.length; i++){
-                Image cardImage = new Image(permanentUpgradeCards[i].toURI().toString());
-                ImageView cardImageView = new ImageView(cardImage);
-                cardImageView.setFitWidth(cardWidth);
-                cardImageView.setFitHeight(cardHeight);
-                upgradeShop.add(cardImageView, nextCCol, nextCRow);
-
-                nextCCol += 1;
-                if (nextCCol >= 2){
-                    nextCCol = 0;
-                    nextCRow += 1;
-                }
-            }
-        }
-
-        File temporaryUpgradeCardsDirectory = new File("images/cards/tempUpgradeCardImages");
-        File[] temporaryUpgradeCards = temporaryUpgradeCardsDirectory.listFiles();
-
-        if (temporaryUpgradeCards != null){
-            for (int i = 0; i < temporaryUpgradeCards.length; i++){
-                Image cardImage = new Image(temporaryUpgradeCards[i].toURI().toString());
-                ImageView cardImageView = new ImageView(cardImage);
-                cardImageView.setFitWidth(cardWidth);
-                cardImageView.setFitHeight(cardHeight);
-                upgradeShop.add(cardImageView, nextCCol, nextCRow);
-
-                nextCCol += 1;
-                if (nextCCol >= 2){
-                    nextCCol = 0;
-                    nextCRow += 1;
-                }
-
-            }
-        }
         board.attach(this);
         update(board);
     }
