@@ -13,7 +13,6 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
 import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.util.*;
