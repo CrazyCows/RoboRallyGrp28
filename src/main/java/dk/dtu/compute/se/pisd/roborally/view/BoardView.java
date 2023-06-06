@@ -163,6 +163,13 @@ public class BoardView extends VBox implements ViewObserver {
                 spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
+        GridPane upgradeShopElements = new GridPane();
+
+        // Create the upgrade shop cards
+        int cardSize = 400;
+        int cardGap = 20;
+        int nextCCol = 0;
+        int nextCRow = 0;
 
         upgradeShop.add(upgradeShopElements, 0, 0);
         board.attach(this);
