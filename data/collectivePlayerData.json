@@ -1,1 +1,11 @@
-"[{\"posx\":1,\"posy\":1,\"energycubes\":0,\"color\":\"red\",\"readystate\":false,\"playerisLead\":false,\"name\":\"lassie\"},{\"posx\":1,\"posy\":1,\"energycubes\":0,\"color\":\"green\",\"readystate\":false,\"playerisLead\":false,\"name\":\"Player 2\",\"inGame\":false,\"master\":false}]"
+[ {
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 0,
+  "color" : "red",
+  "readystate" : false,
+  "playerisLead" : false,
+  "name" : "e3",
+  "inGame" : false,
+  "master" : true
+} ]
