@@ -270,8 +270,6 @@ public class Player extends Subject {
             System.out.println("Something done goofed");
             return program.get(i);
         }
-
-
     }
 
     /**
@@ -287,6 +285,11 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * DEPRECATED
+     * A bit dirty in the name and in the game. It returns the cards from each commandCardField in the handPile of the player
+     * @return An arrayList of the cards in the handPile
+     */
     public ArrayList<Card> getCopyOfHandPile() {
         ArrayList<Card>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.handPile) {
@@ -295,6 +298,11 @@ public class Player extends Subject {
         return commandCards;
     }
 
+    /**
+     * You should use getCopyOfHandPile instead. This casts all cards to ProgrammingCard, which will result in an error
+     * if the player has a damage card
+     * @return
+     */
     public ArrayList<ProgrammingCard> currentProgram2() {
         ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.program) {
@@ -303,6 +311,9 @@ public class Player extends Subject {
         return commandCards;
     }
 
+    /**
+     * @return The cards from the current program. Always 5 long, but some can be null if not filled out
+     */
     public ArrayList<Card> currentProgram() {
         ArrayList<Card>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.program) {
