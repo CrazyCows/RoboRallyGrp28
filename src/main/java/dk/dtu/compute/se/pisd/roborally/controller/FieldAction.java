@@ -20,9 +20,10 @@
  *
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
-
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * ...
@@ -32,6 +33,23 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
  */
 public abstract class FieldAction {
 
+    public void backgroundAnimationThread(Space space, List<String> background) {
+
+        Thread thread = new Thread(() -> {
+            for (int i = 1; i < background.size(); i++) {
+                System.out.println(background.get(i));
+                try {
+                    space.animate(new ArrayList<>(Arrays.asList(background.get(0), background.get(i))));
+                    Thread.sleep(1000); // Delay for half a second. 'This is not half a second' -Anton
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            space.animate(background);
+        });
+        thread.start();
+    }
+
 
     /**
      *
@@ -40,7 +58,7 @@ public abstract class FieldAction {
      * By using this implementation, any 'doAction' will be run, when a given object
      * uses its doAction - and it will find out by itself, which doAction to use (simplified)
      *
-     * Please note, that command cards that determines movement uses the EventController.
+     * Please note, that command cards that determines movement uses the CommandCardController.
      *
      *
      * @param gameController the gameController of the respective game

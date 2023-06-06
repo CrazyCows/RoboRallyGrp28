@@ -26,13 +26,24 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.*;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -53,15 +64,37 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
+    final private List<Integer> PLAYER_START_X_POSITION = Arrays.asList(0, 0, 0, 0, 0, 0);
+    final private List<Integer> PLAYER_START_Y_POSITION = Arrays.asList(1, 2, 3, 4, 5, 6);
+
     private List<String> savedBoards;
 
     final private RoboRally roboRally;
 
     private GameController gameController;
 
+    private ClientController clientController;
+    private JsonInterpreter jsonInterpreter;
+
+    private String animationRobotDirection;
+    ArrayList<Label> usernameLabels;
+    ArrayList<CheckBox> checkBoxes;
+    private Player localPlayer;
+    private String username;
+    private String lobbyID;
+    private boolean isMaster;
+    private boolean isPrivate;
+    private String gamePassword;
+    private String userColor;
+    @FXML
+    private Text winnerPlayer;
+
+
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
+
+    String ID;
 
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
@@ -86,15 +119,72 @@ public class AppController implements Observer {
             roboRally.pauseMusic();
 
             int no = result.get();
-            for (int i = 0; i < no; i++) {
+            for (int i = 1; i <= no; i++) { //TODO: Changed by Anton so players dont start on pit
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-            gameController = new GameController(board);
+            assert board != null;
+            gameController = new GameController(roboRally, clientController, board, false, null);
+
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
+
         }
+    }
+    public void newGame(int numberOfPlayers) {
+        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
+        dialog.setTitle("Player number");
+        dialog.setHeaderText("Select number of players");
+        roboRally.setMusicVolume(0.0);
+        Optional<Integer> result = numberOfPlayers == -1 ? dialog.showAndWait() : Optional.of(numberOfPlayers);
+
+        if (result.isPresent()) {
+            if (gameController != null) {
+                // The UI should not allow this, but in case this happens anyway.
+                // give the user the option to save the game or abort this operation!
+                if (!stopGame()) {
+                    return;
+                }
+            }
+
+            // XXX the board should eventually be created programmatically or loaded from a file
+            //     here we just create an empty board with the required number of players.
+            roboRally.removeStartImage();
+            Board board = LoadBoard.loadBoard(null, true);
+            roboRally.pauseMusic();
+
+            int no = result.get();
+            for (int i = 1; i <= no; i++) { //TODO: Changed by Anton so players dont start on pit
+                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                board.addPlayer(player);
+                player.setSpace(board.getSpace(i % board.width, i));
+            }
+            assert board != null;
+            gameController = new GameController(roboRally, clientController, board, false, null);
+
+            board.setCurrentPlayer(board.getPlayer(0));
+            roboRally.createBoardView(gameController);
+
+        }
+    }
+
+    // Should be deleted at some point. Proof of concept.
+
+    public void newOnlineGame() {
+        this.isMaster = true;
+        onlineGame();
+        setupRobot();
+        gameLobby();
+    }
+
+    public void joinOnlineGame() {
+        this.isMaster = false;
+
+        onlineGame();
+
+        setupRobot();
+        gameLobby();
     }
 
     public void saveGame() {
@@ -115,7 +205,7 @@ public class AppController implements Observer {
         /*if (gameController == null) {
             newGame();
         }*/
-
+        //ClientController clientController = new ClientController();
         this.savedBoards = new ArrayList<>();
 
         File folder = new File("./Save Games");
@@ -158,16 +248,370 @@ public class AppController implements Observer {
 
             int no = 2;
             for (int i = 0; i < no; i++) {
+                assert board != null;
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-            gameController = new GameController(board);
+            gameController = new GameController(roboRally, clientController, board, false, null);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
         }
 
     }
+
+    public void setupRobot() {
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Setup robot");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        ComboBox<String> robotComboBox = new ComboBox<>();
+        robotComboBox.getItems().addAll(PLAYER_COLORS);
+        robotComboBox.getItems().removeAll(jsonInterpreter.getColorsInUse());
+        robotComboBox.getSelectionModel().selectFirst();
+
+        gridPane.add(robotComboBox, 0, 0);
+
+        /*robotComboBox.setOnAction(e -> {
+            // Remove previous ImageView, if exists
+            int columnIndex = 1;
+            int rowIndex = 0;
+            ObservableList<Node> children = gridPane.getChildren();
+            children.removeIf(node -> GridPane.getColumnIndex(node) == columnIndex && GridPane.getRowIndex(node) == rowIndex);
+
+            // Add new ImageView for the selected option
+            String selectedOption = robotComboBox.getValue();
+            if (selectedOption != null) {
+                Image robotImage = new Image("images/robots/" + selectedOption + "_north_facing_robot" + ".png");
+                ImageView robotImageView = new ImageView(robotImage);
+                robotImageView.setFitWidth(100);
+                robotImageView.setFitHeight(100);
+                gridPane.add(robotImageView, columnIndex, rowIndex);
+            }
+        });*/
+
+        Button continueButton = new Button("Continue");
+
+        String[] directions = {"north", "east", "south", "west"};
+        String direction = "";
+        Thread countThread = new Thread(() -> {
+            int counter = 0;
+            while (!continueButton.isPressed()) {
+                this.animationRobotDirection = directions[counter];
+                Platform.runLater(() -> {
+                    ObservableList<Node> children = gridPane.getChildren();
+                    children.removeIf(node -> GridPane.getColumnIndex(node) == 1 && GridPane.getRowIndex(node) == 0);
+                    String selectedOption = robotComboBox.getValue();
+                    System.out.println("images/robots/" + selectedOption + "_" + this.animationRobotDirection + "_facing_robot" + ".png");
+                    Image robotImage = new Image("images/robots/" + selectedOption + "_" + this.animationRobotDirection + "_facing_robot" + ".png");
+                    ImageView robotImageView = new ImageView(robotImage);
+                    gridPane.add(robotImageView, 1, 0);
+                });
+                System.out.println(counter);
+                counter += 1;
+                if (counter == directions.length) {
+                    counter = 0;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                // Check if the stage is closed
+                if (!dialogStage.isShowing()) {
+                    break;
+                }
+            }
+            System.out.println("Animation thread has ended");
+        });
+        countThread.start();
+
+        continueButton.setOnAction(e -> {
+            String selectedRobot = robotComboBox.getValue();
+            System.out.println(selectedRobot);
+            this.userColor = selectedRobot;
+
+
+            if (gameController != null) {
+                // The UI should not allow this, but in case this happens anyway.
+                // give the user the option to save the game or abort this operation!
+                if (!stopGame()) {
+                    return;
+                }
+            }
+
+            // XXX the board should eventually be created programmatically or loaded from a file
+            //     here we just create an empty board with the required number of players.
+            roboRally.removeStartImage();
+            Board board = LoadBoard.loadBoard(null, true);
+            roboRally.pauseMusic();
+
+            assert board != null;
+
+            this.localPlayer = new Player(board, userColor, username);
+            if (this.isMaster) {
+                localPlayer.setMasterStatus(true);
+            }
+
+            board.addPlayer(localPlayer);
+            this.localPlayer.setSpace(board.getSpace(
+                    PLAYER_START_X_POSITION.get(PLAYER_COLORS.indexOf(localPlayer.getColor())),
+                    PLAYER_START_Y_POSITION.get(PLAYER_COLORS.indexOf(localPlayer.getColor())))
+            );
+
+
+            gameController = new GameController(roboRally, clientController, board, true, localPlayer);
+
+            board.setCurrentPlayer(board.getPlayer(0));
+            roboRally.createBoardView(gameController);
+
+
+            dialogStage.close();
+        });
+
+        VBox vbox = new VBox(gridPane, continueButton);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(10);
+
+        Scene dialogScene = new Scene(vbox, 300, 200);
+
+        dialogStage.setScene(dialogScene);
+        dialogStage.showAndWait();
+    }
+
+    public void onlineGame() {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Online game");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        TextField usernameField = new TextField();
+        TextField lobbyNameField = new TextField();
+        CheckBox privateGameCheckbox = new CheckBox("Private Game");
+        TextField passwordField = new TextField();
+        Label infoLabel = new Label();
+
+        gridPane.add(new Label("Username:"), 0, 0);
+        gridPane.add(usernameField, 1, 0);
+        gridPane.add(new Label("Lobby name:"), 0, 1);
+        gridPane.add(lobbyNameField, 1, 1);
+        gridPane.add(privateGameCheckbox, 0, 2, 2, 1);
+        gridPane.add(infoLabel, 1, 3);
+
+        Label passwordLabel = new Label("password");
+        gridPane.add(passwordLabel, 0, 3);
+        gridPane.add(passwordField, 1,3);
+        passwordField.setVisible(false);
+        passwordLabel.setVisible(false);
+
+        privateGameCheckbox.setOnAction(e -> {
+            if (privateGameCheckbox.isSelected()) {
+                passwordField.setVisible(true);
+                passwordLabel.setVisible(true);
+                System.out.println("Private game selected");
+            } else {
+                passwordField.setVisible(false);
+                passwordLabel.setVisible(false);
+                System.out.println("Private game not selected");
+            }
+        });
+
+        Button continueButton = new Button("Continue");
+        continueButton.setOnAction(e -> {
+            String username = usernameField.getText();
+            String lobbyName = lobbyNameField.getText();
+            String password = passwordField.getText();
+            boolean privateGame = privateGameCheckbox.isSelected();
+
+            // Perform actions with the form data
+            System.out.println("Username: " + username);
+            System.out.println("Lobby name: " + lobbyName);
+            System.out.println("Private Game: " + privateGame);
+            System.out.println("Password: " + passwordField);
+            this.username = username;
+            this.lobbyID = lobbyName;
+            this.isPrivate = privateGame;
+            this.gamePassword = password;
+            this.clientController = new ClientController(this.lobbyID);
+
+            jsonInterpreter = new JsonInterpreter();
+            try {
+                clientController.getJSON("playerData.json");
+                if (jsonInterpreter.gameStarted()) {
+                    infoLabel.setText("Error: Game already started");
+                }
+                else if (jsonInterpreter.getPlayerNames().size() > 6) {
+                    infoLabel.setText("Game has too many players. ");
+                }
+                else {
+                    dialogStage.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Game does not exist");
+                if (!isMaster) {
+                    infoLabel.setText("Error: game doesn't exist");
+                }
+                else {
+                    dialogStage.close();
+                }
+            }
+        });
+
+        VBox vbox = new VBox(gridPane, continueButton);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(10);
+
+        Scene dialogScene = new Scene(vbox, 300, 200);
+
+        dialogStage.setScene(dialogScene);
+        dialogStage.showAndWait();
+    }
+
+    public void gameLobby() {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Game lobby");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        usernameLabels = new ArrayList<>();
+        checkBoxes = new ArrayList<>();
+        usernameLabels.add(new Label(this.username));
+        checkBoxes.add(new CheckBox());
+        for (int i = 0; i < 5; i++) {
+            Label usernameLabel = new Label();
+            CheckBox checkBox = new CheckBox();
+            checkBox.setDisable(true);
+            usernameLabels.add(usernameLabel);
+            checkBoxes.add(checkBox);
+        }
+
+        for (int i = 0; i < 6; i++) {
+            gridPane.add(checkBoxes.get(i), 0, i);
+            gridPane.add(usernameLabels.get(i), 1, i);
+        }
+
+        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
+        jsonInterpreter = new JsonInterpreter();
+        System.out.println(localPlayer.getName());
+        this.clientController.createJSON("sharedBoard.json");
+        this.clientController.createJSON("playerData.json");
+
+        this.clientController.getJSON("playerData.json");
+        localPlayer.setMaster(jsonInterpreter.getMaster());
+
+        Thread countThread = new Thread(() -> {
+            while (true) {
+
+                this.clientController.getJSON("playerData.json");
+                ArrayList<String> names = jsonInterpreter.getPlayerNames();
+                names.removeIf(s -> s.equals(username));
+
+                System.out.println("All ready: " + jsonInterpreter.isAllReady());
+
+                Platform.runLater(() -> {
+                    if (!names.isEmpty()) {
+                        for (int i = 1; i <= names.size(); i++) {
+                            usernameLabels.get(i).setText(names.get(i - 1));
+                        }
+
+                        for (int i = 1; i <= names.size(); i++) {
+                            checkBoxes.get(i).setSelected(jsonInterpreter.isReady(names.get(i - 1)));
+                        }
+                    }
+                });
+
+                for (String name : names) {
+                    System.out.println(name + ": " + jsonInterpreter.isReady(name));
+                }
+
+                this.localPlayer.setReady(checkBoxes.get(0).isSelected());
+                jsonPlayerBuilder.updateDynamicPlayerData();
+                clientController.updateJSON("playerData.json");
+
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                // Check if the stage is closed
+                if (!dialogStage.isShowing()) {
+                    break;
+                }
+                else if (isMaster && checkBoxes.get(0).isSelected()) {
+                    localPlayer.setInGame(true);
+                    jsonPlayerBuilder.updateDynamicPlayerData();
+                    clientController.updateJSON("playerData.json");
+                    clientController.getJSON("playerData.json");
+
+                    createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+
+                    Platform.runLater(dialogStage::close);
+                }
+                else if (!isMaster && jsonInterpreter.isAllReady()) {
+                    localPlayer.setInGame(true);
+                    jsonPlayerBuilder.updateDynamicPlayerData();
+                    clientController.updateJSON("playerData.json");
+                    clientController.getJSON("playerData.json");
+
+                    createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+
+                    Platform.runLater(dialogStage::close);
+                }
+            }
+            System.out.println("Game lobby thread has ended");
+        });
+        countThread.start();
+
+
+
+
+        Button continueButton = new Button("Continue");
+        continueButton.setOnAction(e -> {
+            dialogStage.close();
+        });
+
+        VBox vbox = new VBox(gridPane, continueButton);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(10);
+
+        Scene dialogScene = new Scene(vbox, 300, 200);
+
+        dialogStage.setScene(dialogScene);
+        dialogStage.showAndWait();
+    }
+
+    public void createAllNonLocalPlayers(JsonInterpreter jsonInterpreter, Board board, ArrayList<String> names) {
+
+        int counter = 2;
+        for (String name : names) {
+            Player player = new Player(board, jsonInterpreter.getSimplePlayerInfoString(name, "color"), name);
+            player.setInGame(jsonInterpreter.getSimplePlayerInfoBoolean(name, "inGame"));
+            player.setReady(jsonInterpreter.getSimplePlayerInfoBoolean(name, "readystate"));
+            player.setMasterStatus(jsonInterpreter.getSimplePlayerInfoBoolean(name, "master"));
+            board.addPlayer(player);
+            player.setSpace(board.getSpace(
+                    jsonInterpreter.getSimplePlayerInfoInt(name, "posx"),
+                    jsonInterpreter.getSimplePlayerInfoInt(name, "posy")
+            ));
+            counter += 1;
+
+        }
+    }
+
 
     /**
      * Stop playing the current game, giving the user the option to save

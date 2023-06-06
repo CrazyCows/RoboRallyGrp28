@@ -12,7 +12,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Pit",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Pit",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -31,7 +31,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -50,7 +51,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -67,7 +69,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -84,7 +87,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Gear",
           "INSTANCE": {
             "heading": "NORTH",
             "direction": "right"
@@ -102,7 +105,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Gear",
           "INSTANCE": {
             "heading": "NORTH",
             "direction": "left"
@@ -120,7 +123,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -137,7 +141,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -156,7 +161,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -175,7 +181,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "SOUTH"
           }
@@ -190,11 +197,11 @@
       ],
       "background": [
         "WEST",
-        "test_field2.jpg"
+        "test_field3.png"
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt3",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -213,7 +220,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "NORTH"
           }
@@ -228,11 +236,11 @@
       ],
       "background": [
         "EAST",
-        "test_field2.jpg"
+        "test_field1.png"
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt1",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -243,7 +251,8 @@
     },
     {
       "walls": [
-        "EAST"
+        "EAST",
+        "WEST"
       ],
       "background": [
         "SOUTH",
@@ -251,7 +260,8 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+
           "INSTANCE": {
             "heading": "SOUTH"
           }
@@ -266,7 +276,7 @@
           "name": "priorityAntenna",
           "image" : "priorityAntenna.png",
           "heading" : "NORTH",
-          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.PriorityAntenna"
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.PriorityAntenna"
         }
       ],
       "x": 5,
@@ -276,13 +286,51 @@
       "items": [
         {
           "name": "checkpoint",
-          "image" : "checkpoint.png",
+          "image" : "checkpointhansi0.png",
           "heading" : "NORTH",
-          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.Checkpoint"
         }
       ],
       "x": 7,
       "y": 2
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "laserGun.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun",
+          "INSTANCE": {
+            "heading": "NORTH",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 4,
+      "y": 3
+    },
+    {
+      "walls": [],
+      "background": [
+        "SOUTH",
+        "laserGun.png",
+        "pit.jpg",
+        "navn.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun",
+          "INSTANCE": {
+            "heading": "SOUTH",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 4,
+      "y": 1
     }
   ]
 }

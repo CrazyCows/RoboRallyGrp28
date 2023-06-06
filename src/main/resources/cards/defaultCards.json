@@ -1,0 +1,422 @@
+{
+  "programmingCards": [
+    {
+      "name": "Move 1",
+      "imagePath": "images/cards/programmingCardImages/Move1.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "MOVEONE"
+    },
+    {
+      "name": "Move 2",
+      "imagePath": "images/cards/programmingCardImages/Move2.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "MOVETWO"
+    },
+    {
+      "name": "Move 3",
+      "imagePath": "images/cards/programmingCardImages/Move3.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "MOVETHREE"
+    },
+    {
+      "name": "Turn Left",
+      "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "LEFT"
+    },
+    {
+      "name": "Turn Right",
+      "imagePath": "images/cards/programmingCardImages/RightTurn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "RIGHT"
+    },
+    {
+      "name": "U-Turn",
+      "imagePath": "images/cards/programmingCardImages/U-Turn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "UTURN"
+    },
+    {
+      "name": "Again",
+      "imagePath": "images/cards/programmingCardImages/Again.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "AGAIN"
+    },
+    {
+      "name": "Back Up",
+      "imagePath": "images/cards/programmingCardImages/MoveBack.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "BACKUP"
+    },
+    {
+      "name": "Power Up",
+      "imagePath": "images/cards/programmingCardImages/PowerUp.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "POWERUP"
+    }
+  ],
+  "specialProgrammingCards": [
+    {
+      "name": "Energy Routine",
+      "effect": "Take one energy cube, and place it on your player mat.",
+      "imagePath" : "images/cards/specialProgrammingCardImages/Energy Routine.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
+    },
+    {
+      "name": "Weasel Routine",
+      "effect": "Choose one of the following actions to perform this register: Turn Left, Turn Right, U-Turn.",
+      "imagePath" : "images/cards/specialProgrammingCardImages/Weasel Routine.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
+    },
+    {
+      "name": "Spam Folder",
+      "effect": "Permanently discard one SPAM damage card from your discard pile to the SPAM damage card draw pile.",
+      "imagePath": "images/cards/specialProgrammingCardImages/Spam Folder.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
+    },
+    {
+      "name": "Sandbox Routine",
+      "effect": "Choose one of the following actions to perform this register: Move 1, 2, or 3, Back Up, Turn Left, Turn Right, U-Turn.",
+      "imagePath": "images/cards/specialProgrammingCardImages/Sandbox Routine.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
+    },
+    {
+      "name": "Speed Routine",
+      "effect": "Move your robot 3 spaces in the direction it is facing.",
+      "imagePath": "images/cards/specialProgrammingCardImages/Speed Routine.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
+    },
+    {
+      "name": "Repeat Routine",
+      "effect": "Repeat the programming in your previous register.",
+      "imagePath": "images/cards/specialPrhadddogrammingCardImages/Repeat Routine.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.SpecialProgrammingAction"
+    }
+  ],
+  "damageCards": [
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Trojan Horse",
+      "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Worm",
+      "effect": "When you program a worm damage card, you must immediately reboot your robot.",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Virus",
+      "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    }
+
+  ],
+  "upgradeCards": [
+    {
+      "name": "Admin Privilege",
+      "effect": "Once per round, you may give your robot priority for one register.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Corruption Wave",
+      "effect": "You may put SPAM damage cards you deal on top of opponents' decks.",
+      "cost": 4,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Blue Screen of Death",
+      "effect": "When you shoot or push an adjacent robot, you may give that player one worm damage card instead of one SPAM damage card.",
+      "cost": 4,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Crab Legs",
+      "effect": "When executing a Move 1 card, you may move one space forward then one space right or left, without rotating. Then move forward one additional space in the direction you are facing.",
+      "cost": 5,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Brakes",
+      "effect": "You may treat your Move 1's as Move 0's.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Deflector Shield",
+      "effect": "At the beginning of a register, you may spend one energy to negate any robot lasers that would hit you that register.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Cache Memory",
+      "effect": "You may discard cards from your hand and place them on the top of your deck. Do not draw replacement cards.",
+      "cost": 4,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Defrag Gizmo",
+      "effect": "Once during each round, you may permanently discard one damage card from your hand. Draw a replacement card from the top of your deck.",
+      "cost": 5,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Double Barrel Laser",
+      "effect": "Deal one additional SPAM damage card to any robot you shoot.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Modular Chassis",
+      "effect": "When you push another robot, give that player this card, and take one of their installed upgrades. That player keeps this card until they use it.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Firewall",
+      "effect": "Take no SPAM damage cards when rebooting.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Pressor Beam",
+      "effect": "You may push any robot you shoot one space in the direction you are shooting.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Hover Unit",
+      "effect": "Your robot can pass over, but not land on, pits. If you end your move on a pit, you fall in. You can't turn off Hover Unit, and you can't hover above another robot.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Rail Gun",
+      "effect": "You may shoot through any number of walls and/or robots. Robots in the line of fire take one SPAM damage card.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Memory Stick",
+      "effect": "Draw one additional programming card at the start of each round.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Ramming Gear",
+      "effect": "Deal one SPAM damage card when you push a robot.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Mini Howitzer",
+      "effect": "Once per register, when you shoot, you may pay one energy to deal two additional SPAM damage cards and push the attacked robot one space in the direction you are shooting.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Rear Laser",
+      "effect": "Your robot may shoot backward as well as forward.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Scrambler",
+      "effect": "If you attack a robot, that player replaces the card in their next register with the top card of their deck, unless it is the final register.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Tractor Beam",
+      "effect": "When you shoot a robot, you may pull it toward you one space. Tractor beam may not be used on adjacent robots.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Side Arms",
+      "effect": "When you push a robot, you may choose to push it to the left or right instead of the direction you are facing.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Trojan Needler",
+      "effect": "When you shoot or push a robot, target robot receives damage in the form of one Trojan horse damage card instead of one SPAM damage card.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Teleporter",
+      "effect": "You may pay one energy to ignore obstacles when moving. You cannot land on obstacles. If you move to a space with another robot, swap places with that robot.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    },
+    {
+      "name": "Virus Module",
+      "effect": "When you push a robot, give that player a virus damage card.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.UpgradeAction"
+    }
+  ],
+  "tempUpgradeCards": [
+    {
+      "name": "Boink",
+      "effect": "Move to an adjacent space. Do not change direction.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Hack",
+      "effect": "Execute the programming in your current register again. This action does not replace any existing programming.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Energy Routine",
+      "effect": "Add the Energy Routine programming card to your discard pile. It is now permanently part of your deck. This acts as a Power-Up Card in your programming deck.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Manual Sort",
+      "effect": "You may give your robot priority for this register. This card overrides Admin Privilege.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Memory Swap",
+      "effect": "Draw three cards. Then choose three from your hand to put on top of your deck.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Repeat Routine",
+      "effect": "Add the Repeat Routine programming card to your discard pile. It is now permanently part of your deck. This card acts as an extra Again card in your programming deck.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Reboot",
+      "effect": "Reboot your robot, but take no damage.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Sandbox Routine",
+      "effect": "Add the Sandbox Routine programming card to your discard pile. It is now permanently part of your deck. This allows you to choose between the following: Move 1, 2, or 3; Back Up; Turn Left; Turn Right; U-Turn.",
+      "cost": 5,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Recharge",
+      "effect": "Gain three energy.",
+      "cost": 0,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Spam blocker",
+      "effect": "Replace each SPAM damage card in your hand with a card from the top of your deck.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Recompile",
+      "effect": "Discard your entire hand. Draw a new one. You can reshuffle your discard pile.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Spam Folder Routine",
+      "effect": "Add the SPAM Folder programming card to your discard pile. It is now permanently part of your deck. It allows you to permanently discard one SPAM damage card from your discard pile.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Refresh",
+      "effect": "Change the programming in your current register to any of the following: Move 1, 2, or 3; Turn Left; Turn Right; U-Turn; Back Up; Again. If you're replacing a damage card, you may permanently discard the damage card.",
+      "cost": 2,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Speed Routine",
+      "effect": "Add the Speed Routine programming card to your discard pile. It is now permanently part of your deck. The Speed Routine programming card acts as an extra Move 3 card in your programming deck.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Weasel Routine",
+      "effect": "Add the Weasel Routine programming card to your discard pile. It is now permanently part of your deck. The Weasel Routine programming card allows you to choose one of the following actions to perform in the register where it is programmed: Turn Left, Turn Right, U-Turn.",
+      "cost": 3,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    },
+
+    {
+      "name": "Zoop",
+      "effect": "Rotate to face any direction.",
+      "cost": 1,
+      "imagePath": "navn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.TempUpgradeAction"
+    }
+  ]
+}

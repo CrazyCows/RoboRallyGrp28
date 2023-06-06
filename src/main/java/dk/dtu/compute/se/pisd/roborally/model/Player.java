@@ -22,6 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
+import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -36,26 +38,126 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  */
 public class Player extends Subject {
 
+
+    //VARIABLES
+
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
 
     final public Board board;
 
+    //TODO: Use getters instead
+    public Space startSpace;
     private String name;
     private String color;
+    private boolean ready;
+    private boolean leader;
+    private boolean isMaster;
+    private String master;
+    private boolean inGame;
 
+    //used for keeping track so the priorityAntenna doesn't wildly pick the same player 5 times in a row
+    private int usedCards;
     private Space space;
     private Heading heading = SOUTH;
 
-    private ArrayList<CommandCardField> program; //Cards selected to be the in the program
-    private ArrayList<CommandCardField> drawnCards; //Drawn cards
-    public ArrayList<Object> drawPile; //Pile of cards to draw from //TODO: Make type safe
-    public ArrayList<Object> discardPile; //Cards that have been run //TODO: Make type safe
+    //The amount of energy a player has. Starts at zero
+    private int energyCubes = 0;
 
-
+    //The last card that the player used
+    private Card lastCard = null;
     private int checkpointsCollected = 0;
     private static int handSize = 8;
     private static int programSize = 5;
+    private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
+    private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
+    public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
+    public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
+
+    //
+    //SIMPLE GETTERS AND SETTERS
+    //
+
+    public Card getLastCard() {
+        return lastCard;
+    }
+    public Space getStartSpace() {return startSpace;}
+    public void setLastCard(Card lastCard) {
+        this.lastCard = lastCard;
+    }
+    public int getUsedCards(){
+        return usedCards;
+    }
+    public void incrementUsedCards(){
+        usedCards++;
+    }
+    public int getEnergyCubes() {
+        return energyCubes;
+    }
+    public Space getSpace() {
+        return space;
+    }
+    public String getName() {
+        return name;
+    }
+    public ArrayList<CommandCardField> getProgram() {return program;}
+    public ArrayList<CommandCardField> getHandPile() {
+        return handPile;
+    }
+    public void addEnergyCubes(int energyCubesAdded) {
+        this.energyCubes += energyCubesAdded;
+    }
+    public void resetUsedCards(){ //Prevents misuse of usedCards
+        usedCards = 0;
+    }
+    public Heading getHeading() {
+        return heading;
+    }
+    public CommandCardField getCardField(int i) {
+        return handPile.get(i);
+    }
+    public int getCheckpointsCollected() {
+        return checkpointsCollected;
+    }
+    public void incrementCheckpointsCollected() {this.checkpointsCollected += 1;}
+    public int getHandSize() {
+        return handSize;
+    }
+    public int getProgramSize() {
+        return programSize;
+    }
+    public boolean isReady() {
+        return ready;
+    }
+    public void setReady(boolean state) {
+        this.ready = state;
+    }
+    public boolean isInGame() {
+        return this.inGame;
+    }
+    public void setInGame(boolean status) {
+        this.inGame = status;
+    }
+    public boolean isLeader() {
+        return leader;
+    }
+    public boolean isMaster() { return this.isMaster; }
+    public void setMasterStatus(boolean status) {
+        this.isMaster = status;
+    }
+    public String getMaster() {
+        return this.master;
+    }
+    public void setMaster(String name) {
+        this.master = name;
+    }
+    public boolean subtractEnergyCubes(int energyCubesUsed) {
+        if (this.energyCubes - energyCubesUsed < 0){
+            return false;
+        }
+        this.energyCubes -= energyCubesUsed;
+        return true;
+    }
 
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
@@ -70,14 +172,10 @@ public class Player extends Subject {
             program.add(new CommandCardField(this));
         }
 
-        drawnCards = new ArrayList<>();
+        handPile = new ArrayList<>();
         for (int i = 0; i < handSize; i++) {
-            drawnCards.add(new CommandCardField(this));
+            handPile.add(new CommandCardField(this));
         }
-    }
-
-    public String getName() {
-        return name;
     }
 
     /**
@@ -94,20 +192,13 @@ public class Player extends Subject {
         }
     }
 
-    public String getColor() {
-        return color;
-    }
-
+    public String getColor() {return color;}
     public void setColor(String color) {
         this.color = color;
         notifyChange();
         if (space != null) {
             space.playerChanged();
         }
-    }
-
-    public Space getSpace() {
-        return space;
     }
 
     public void setSpace(Space space) {
@@ -121,6 +212,10 @@ public class Player extends Subject {
             if (space != null) {
                 space.setPlayer(this);
             }
+
+            if (this.startSpace == null && space != null){ //I assume this work
+                this.startSpace = space;
+            }
             notifyChange();
         }
     }
@@ -133,8 +228,12 @@ public class Player extends Subject {
         notifyChange();
     }
 
-    public Heading getHeading() {
-        return heading;
+    public void setAllCards(ArrayList<Card> cards) {
+        int count = 0;
+        for (CommandCardField field : this.getProgram()) {
+            field.setCard(cards.get(count));
+            count += 1;
+        }
     }
 
     public void setHeading(@NotNull Heading heading) {
@@ -148,23 +247,15 @@ public class Player extends Subject {
     }
 
     public void setHeading(@NotNull String heading) {
+        Heading head = Heading.valueOf(heading);//TODO: Can't we just do this?
         switch (heading) {
-            case "NORTH":
-                this.heading = Heading.NORTH;
-                break;
-            case "EAST":
-                this.heading = Heading.EAST;
-                break;
-            case "SOUTH":
-                this.heading = Heading.SOUTH;
-                break;
-            case "WEST":
-                this.heading = Heading.WEST;
-                break;
-            default:
-                // handle error case
+            case "NORTH" -> this.heading = Heading.NORTH;
+            case "EAST" -> this.heading = Heading.EAST;
+            case "SOUTH" -> this.heading = Heading.SOUTH;
+            case "WEST" -> this.heading = Heading.WEST;
+            default -> {
+            }
         }
-
         notifyChange();
         if (space != null) {
             space.playerChanged();
@@ -172,57 +263,80 @@ public class Player extends Subject {
     }
 
     public CommandCardField getProgramField(int i) {
-        return program.get(i);
+        try{
+            return program.get(i);
+        }
+        catch (IndexOutOfBoundsException e){
+            System.out.println("Something done goofed");
+            return program.get(i);
+        }
     }
 
-    public CommandCardField getCardField(int i) {
-        return drawnCards.get(i);
+    /**
+     * Draws the one card and inserts it into the first free CommandCardField in the handPile
+     * @param card Card to be drawn
+     */
+    public void drawCard(Card card) {
+        for (int i = 0; i < handSize + 1;i++){
+            if (handPile.get(i).getCard() == null){
+                handPile.get(i).setCard(card);
+                break;
+            }
+        }
     }
 
-    public int getCheckpointsCollected() {
-        return checkpointsCollected;
+    public Card drawCardFromPile() {
+        Card card = drawPile.get(0);
+        drawPile.remove(card);
+        discardPile.add(card);
+        return card;
     }
 
-    public void setCheckpointsCollected(int checkpointsCollected) {
-        this.checkpointsCollected = checkpointsCollected;
-    }
-
-    public void setCardField(int i, Object card){
-
-    }
-
-    public void drawCard(int position, CommandCard commandCard) {
-        drawnCards.get(position).setCard(commandCard);
-        //System.out.println(cards.get(position - 1).getCard().getName());
-    }
-
-    public ArrayList<CommandCard> getDrawnCards() {
-        ArrayList<CommandCard>  commandCards = new ArrayList<>();
-        for (CommandCardField commandCardField : this.drawnCards) {
+    /**
+     * DEPRECATED
+     * A bit dirty in the name and in the game. It returns the cards from each commandCardField in the handPile of the player
+     * @return An arrayList of the cards in the handPile
+     */
+    public ArrayList<Card> getCopyOfHandPile() {
+        ArrayList<Card>  commandCards = new ArrayList<>();
+        for (CommandCardField commandCardField : this.handPile) {
             commandCards.add(commandCardField.getCard());
         }
         return commandCards;
     }
 
-    public ArrayList<CommandCard> currentProgram() {
-        ArrayList<CommandCard>  commandCards = new ArrayList<>();
+    /**
+     * You should use getCopyOfHandPile instead. This casts all cards to ProgrammingCard, which will result in an error
+     * if the player has a damage card
+     * @return
+     */
+    public ArrayList<ProgrammingCard> currentProgramProgrammingCards() {
+        ArrayList<ProgrammingCard>  commandCards = new ArrayList<>();
+        for (CommandCardField commandCardField : this.program) {
+            try {
+                commandCards.add((ProgrammingCard) commandCardField.getCard());
+            } catch (ClassCastException e) {
+                System.out.println("Warning: A card in program was not a programmingCard");
+                e.printStackTrace();
+            }
+        }
+        return commandCards;
+    }
+
+    /**
+     * @return The cards from the current program. Always 5 long, but some can be null if not filled out
+     */
+    public ArrayList<Card> currentProgram() {
+        ArrayList<Card>  commandCards = new ArrayList<>();
         for (CommandCardField commandCardField : this.program) {
             commandCards.add(commandCardField.getCard());
         }
         return commandCards;
     }
 
-    public int getHandSize() {
-        return handSize;
-    }
-
-    public int getProgramSize() {
-        return programSize;
-    }
-
     public int getNextEmptyCardField() {
-        for (int i = 0; i < drawnCards.size(); i++) {
-            if (drawnCards.get(i).getCard() == null) {
+        for (int i = 0; i < handPile.size(); i++) {
+            if (handPile.get(i).getCard() == null) {
                 return i;
             }
         }
@@ -237,5 +351,4 @@ public class Player extends Subject {
         }
         return -1;
     }
-
 }

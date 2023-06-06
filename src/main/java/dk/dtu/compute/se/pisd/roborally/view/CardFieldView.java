@@ -23,7 +23,8 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.CommandCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
+import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -47,7 +48,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     // This data format helps avoiding transfers of e.g. Strings from other
     // programs which can copy/paste Strings.
-    final public static  DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
+    final public static DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
 
     final public static int CARDFIELD_WIDTH = 65;
     final public static int CARDFIELD_HEIGHT = 100;
@@ -59,7 +60,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
     final public static Background BG_DROP = new Background(new BackgroundFill(Color.LIGHTGRAY, null, null));
 
     final public static Background BG_ACTIVE = new Background(new BackgroundFill(Color.YELLOW, null, null));
-    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW,  null, null));
+    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW, null, null));
 
     private CommandCardField field;
 
@@ -143,10 +144,20 @@ public class CardFieldView extends GridPane implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == field && subject != null) {
-            CommandCard card = field.getCard();
+            Card card = field.getCard();
             if (card != null) {
                 if (field.isVisible()) {
-                    this.setBackground(BG_ACTIVE); // set background color to yellow
+                    try {
+                        Image image = new Image(field.getImageOnCard());
+                        BackgroundImage backgroundImage = new BackgroundImage(
+                                image, BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.DEFAULT,
+                                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                        this.setBackground(new Background(backgroundImage));
+                    } catch (Exception e) {
+                        this.setBackground(BG_ACTIVE);
+                    }
                     label.setText(card.getName());
                 } else {
                     this.setBackground(BG_DONE); // set background color to green
@@ -193,7 +204,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragOverHandler detected");
+            //System.out.println("OnDragOverHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView target = (CardFieldView) t;
@@ -282,18 +293,29 @@ public class CardFieldView extends GridPane implements ViewObserver {
                         if (object instanceof String) {
                             CommandCardField source = cardFieldFromRepresentation((String) object);
                             if (source != null && gameController.moveCards(source, cardField)) {
-                                // CommandCard card = source.getCard();
+                                // ProgrammingCard card = source.getCard();
                                 // if (card != null) {
                                 // if (gameController.moveCards(source, cardField)) {
-                                    // cardField.setCard(card);
-                                    success = true;
+                                // cardField.setCard(card);
+                                success = true;
                                 // }
                             }
                         }
                     }
                 }
                 event.setDropCompleted(success);
-                target.setBackground(BG_DEFAULT);
+                try {
+                    Image image = new Image(field.getImageOnCard());
+                    BackgroundImage backgroundImage = new BackgroundImage(
+                            image, BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.DEFAULT,
+                            new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                    target.setBackground(new Background(backgroundImage));
+                } catch (Exception e) {
+                    target.setBackground(BG_DEFAULT);
+                }
+                label.setText(field.getCard().getName());
             }
             event.consume();
         }
@@ -308,15 +330,20 @@ public class CardFieldView extends GridPane implements ViewObserver {
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView source = (CardFieldView) t;
-                source.setBackground(BG_DEFAULT);
+                try {
+                    Image image = new Image(field.getImageOnCard());
+                    BackgroundImage backgroundImage = new BackgroundImage(
+                            image, BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.DEFAULT,
+                            new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                    source.setBackground(new Background(backgroundImage));
+                } catch (Exception e) {
+                    source.setBackground(BG_DEFAULT);
+                }
             }
             event.consume();
         }
 
     }
-
 }
-
-
-
-

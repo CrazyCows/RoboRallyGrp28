@@ -22,6 +22,8 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
+import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 
 /**
  * ...
@@ -31,9 +33,9 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
  */
 public class CommandCardField extends Subject {
 
-    final public Player player;
+    public Player player;
 
-    private CommandCard card;
+    private Card card;
 
     private boolean visible;
 
@@ -43,11 +45,15 @@ public class CommandCardField extends Subject {
         this.visible = true;
     }
 
-    public CommandCard getCard() {
+    public Card getCard() {
         return card;
     }
 
-    public void setCard(CommandCard card) {
+    public void setPlayer(Player player){
+        this.player = player;
+    }
+
+    public void setCard(Card card) {
         if (card != this.card) {
             this.card = card;
             notifyChange();
@@ -64,4 +70,9 @@ public class CommandCardField extends Subject {
             notifyChange();
         }
     }
+
+    public String getImageOnCard() {
+        return this.card.getImagePath();
+    }
+
 }

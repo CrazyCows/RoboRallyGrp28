@@ -1,0 +1,370 @@
+{
+  "cards": [
+    {
+      "name": "Energy Routine",
+      "effect": "Take one energy cube, and place it on your player mat.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Weasel Routine",
+      "effect": "Choose one of the following actions to perform this register: Turn Left, Turn Right, U-Turn.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Spam Folder",
+      "effect": "Permanently discard one SPAM damage card from your discard pile to the SPAM damage card draw pile.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Sandbox Routine",
+      "effect": "Choose one of the following actions to perform this register: Move 1, 2, or 3, Back Up, Turn Left, Turn Right, U-Turn.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Speed Routine",
+      "effect": "Move your robot 3 spaces in the direction it is facing.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Repeat Routine",
+      "effect": "Repeat the programming in your previous register.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+
+
+    {
+      "name": "Admin Privilege",
+      "cost": 3,
+      "effect": "Once per round, you may give your robot priority for one register.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Corruption Wave",
+      "cost": 4,
+      "effect": "You may put SPAM damage cards you deal on top of opponents' decks.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Blue Screen of Death",
+      "cost": 4,
+      "effect": "When you shoot or push an adjacent robot, you may give that player one worm damage card instead of one SPAM damage card.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Crab Legs",
+      "cost": 5,
+      "effect": "When executing a Move 1 card, you may move one space forward then one space right or left, without rotating. Then move forward one additional space in the direction you are facing.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Brakes",
+      "cost": 3,
+      "effect": "You may treat your Move 1's as Move 0's.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Deflector Shield",
+      "cost": 2,
+      "effect": "At the beginning of a register, you may spend one energy to negate any robot lasers that would hit you that register.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Cache Memory",
+      "cost": 4,
+      "effect": "You may discard cards from your hand and place them on the top of your deck. Do not draw replacement cards.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Defrag Gizmo",
+      "cost": 5,
+      "effect": "Once during each round, you may permanently discard one damage card from your hand. Draw a replacement card from the top of your deck.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Double Barrel Laser",
+      "cost": 2,
+      "effect": "Deal one additional SPAM damage card to any robot you shoot.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Modular Chassis",
+      "cost": 1,
+      "effect": "When you push another robot, give that player this card, and take one of their installed upgrades. That player keeps this card until they use it.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Firewall",
+      "cost": 3,
+      "effect": "Take no SPAM damage cards when rebooting.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Pressor Beam",
+      "cost": 3,
+      "effect": "You may push any robot you shoot one space in the direction you are shooting.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Hover Unit",
+      "cost": 1,
+      "effect": "Your robot can pass over, but not land on, pits. If you end your move on a pit, you fall in. You can't turn off Hover Unit, and you can't hover above another robot.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Rail Gun",
+      "cost": 2,
+      "effect": "You may shoot through any number of walls and/or robots. Robots in the line of fire take one SPAM damage card.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Memory Stick",
+      "cost": 3,
+      "effect": "Draw one additional programming card at the start of each round.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Ramming Gear",
+      "cost": 2,
+      "effect": "Deal one SPAM damage card when you push a robot.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Mini Howitzer",
+      "cost": 2,
+      "effect": "Once per register, when you shoot, you may pay one energy to deal two additional SPAM damage cards and push the attacked robot one space in the direction you are shooting.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Rear Laser",
+      "cost": 2,
+      "effect": "Your robot may shoot backward as well as forward.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Scrambler",
+      "cost": 3,
+      "effect": "If you attack a robot, that player replaces the card in their next register with the top card of their deck, unless it is the final register.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Tractor Beam",
+      "cost": 3,
+      "effect": "When you shoot a robot, you may pull it toward you one space. Tractor beam may not be used on adjacent robots.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Side Arms",
+      "cost": 3,
+      "effect": "When you push a robot, you may choose to push it to the left or right instead of the direction you are facing.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Trojan Needler",
+      "cost": 3,
+      "effect": "When you shoot or push a robot, target robot receives damage in the form of one Trojan horse damage card instead of one SPAM damage card.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Teleporter",
+      "cost": 3,
+      "effect": "You may pay one energy to ignore obstacles when moving. You cannot land on obstacles. If you move to a space with another robot, swap places with that robot.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Virus Module",
+      "cost": 2,
+      "effect": "When you push a robot, give that player a virus damage card.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+
+
+
+    {
+      "name": "Boink",
+      "cost": 1,
+      "effect": "Move to an adjacent space. Do not change direction.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Hack",
+      "cost": 1,
+      "effect": "Execute the programming in your current register again. This action does not replace any existing programming.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Energy Routine",
+      "cost": 3,
+      "effect": "Add the Energy Routine programming card to your discard pile. It is now permanently part of your deck. This acts as a Power-Up Card in your programming deck.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Manual Sort",
+      "cost": 1,
+      "effect": "You may give your robot priority for this register. This card overrides Admin Privilege.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Memory Swap",
+      "cost": 1,
+      "effect": "Draw three cards. Then choose three from your hand to put on top of your deck.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Repeat Routine",
+      "cost": 3,
+      "effect": "Add the Repeat Routine programming card to your discard pile. It is now permanently part of your deck. This card acts as an extra Again card in your programming deck.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Reboot",
+      "cost": 1,
+      "effect": "Reboot your robot, but take no damage.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Sandbox Routine",
+      "cost": 5,
+      "effect": "Add the Sandbox Routine programming card to your discard pile. It is now permanently part of your deck. This allows you to choose between the following: Move 1, 2, or 3; Back Up; Turn Left; Turn Right; U-Turn.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Recharge",
+      "cost": 0,
+      "effect": "Gain three energy.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Spam blocker",
+      "cost": 3,
+      "effect": "Replace each SPAM damage card in your hand with a card from the top of your deck.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Recompile",
+      "cost": 1,
+      "effect": "Discard your entire hand. Draw a new one. You can reshuffle your discard pile.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Spam Folder Routine",
+      "cost": 2,
+      "effect": "Add the SPAM Folder programming card to your discard pile. It is now permanently part of your deck. It allows you to permanently discard one SPAM damage card from your discard pile.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Refresh",
+      "cost": 2,
+      "effect": "Change the programming in your current register to any of the following: Move 1, 2, or 3; Turn Left; Turn Right; U-Turn; Back Up; Again. If you're replacing a damage card, you may permanently discard the damage card.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Speed Routine",
+      "cost": 3,
+      "effect": "Add the Speed Routine programming card to your discard pile. It is now permanently part of your deck. The Speed Routine programming card acts as an extra Move 3 card in your programming deck.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Weasel Routine",
+      "cost": 3,
+      "effect": "Add the Weasel Routine programming card to your discard pile. It is now permanently part of your deck. The Weasel Routine programming card allows you to choose one of the following actions to perform in the register where it is programmed: Turn Left, Turn Right, U-Turn.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    },
+
+    {
+      "name": "Zoop",
+      "cost": 1,
+      "effect": "Rotate to face any direction.",
+      "image" : "navn.png",
+      "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Checkpoint"
+    }
+  ]
+}

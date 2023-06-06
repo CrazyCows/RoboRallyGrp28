@@ -22,23 +22,29 @@
 package dk.dtu.compute.se.pisd.roborally;
 
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
-import dk.dtu.compute.se.pisd.roborally.controller.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.RoboRallyMenuBar;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javafx.scene.media.Media;
 import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -54,6 +60,9 @@ public class RoboRally extends Application {
     private Stage stage;
     private BorderPane boardRoot;
     private MediaPlayer mediaPlayer;
+    private AppController appController;
+    @FXML
+    private Text winnerPlayer;
 
     @Override
     public void init() throws Exception {
@@ -64,7 +73,11 @@ public class RoboRally extends Application {
     public void start(Stage primaryStage) {
         stage = primaryStage;
 
-        AppController appController = new AppController(this);
+
+        Image icon = new Image("robotIcon.png");
+        stage.getIcons().add(icon);
+
+        this.appController = new AppController(this);
 
         // create the primary scene with the a menu bar and a pane for
         // the board view (which initially is empty); it will be filled
@@ -81,20 +94,6 @@ public class RoboRally extends Application {
             mediaPlayer.play();
         }).start();
 
-
-        //ImageView imageView = new ImageView(new Image("file:bruno!.jpeg"));
-        //imageView.setFitHeight(420);
-        //imageView.setFitWidth(620);
-        //imageView.setPreserveRatio(false);
-
-        // create the green box
-        //VBox greenBox = new VBox();
-        //greenBox.setMinHeight(420);
-        //greenBox.setStyle("-fx-background-color: green;");
-
-        // add the green box to the existing vbox
-        //vbox.getChildren().add(imageView);
-
         vbox.setMinWidth(MIN_APP_WIDTH);
         Scene primaryScene = new Scene(vbox);
         stage.setScene(primaryScene);
@@ -105,12 +104,14 @@ public class RoboRally extends Application {
                     appController.exit();} );
         stage.setResizable(false);
         stage.sizeToScene();
+
         stage.show();
     }
 
     public void createBoardView(GameController gameController) {
         // if present, remove old BoardView
         boardRoot.getChildren().clear();
+
 
         if (gameController != null) {
             // create and add view for new board
@@ -170,6 +171,9 @@ public class RoboRally extends Application {
         this.mediaPlayer.pause();
     }
 
+    public Stage getStage(){
+        return stage;
+    }
 
     @Override
     public void stop() throws Exception {
@@ -179,6 +183,34 @@ public class RoboRally extends Application {
         //     but right now the only way for the user to exit the app
         //     is delegated to the exit() method in the AppController,
         //     so that the AppController can take care of that.
+    }
+
+    public void winScreen(Player currentPlayer) {
+        Stage winnerStage = new Stage();
+        winnerStage.setTitle("Winner Screen");
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/scenes/winnerScreen.fxml"));
+        try {
+            Pane parent = fxmlLoader.load();
+            Scene winnerScene = new Scene(parent);
+
+            //"Player" text gets replaced with the winning playerName.
+            Text winnerPlayerText = (Text) parent.lookup("#winnerPlayer");
+            winnerPlayerText.setText(currentPlayer.getName());
+
+            winnerStage.setScene(winnerScene);
+
+            winnerStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("The player " + currentPlayer.getName() + " has won!");
+        stage.close();
+    }
+
+    @FXML
+    public void onExitGame(ActionEvent actionEvent) {
+        System.exit(0);
     }
 
     public static void main(String[] args) {

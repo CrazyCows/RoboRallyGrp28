@@ -26,12 +26,14 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
@@ -49,14 +51,16 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    final public static int SPACE_HEIGHT = 75; // 75;
-    final public static int SPACE_WIDTH = 75; // 75;
+    final public static int SPACE_HEIGHT = 75;
+    final public static int SPACE_WIDTH = 75;
 
     public final Space space;
     private ImageView backgroundImageView;
     private ImageView overlayImageView;
     private ImageLoader imageLoader = new ImageLoader();
     private String heading;
+    private ImageView playerImageView;
+    private ColorAdjust colorAdjust;
 
 
     public SpaceView(@NotNull Space space) {
@@ -109,7 +113,6 @@ public class SpaceView extends StackPane implements ViewObserver {
         update(space);
     }
 
-
     public void setBackround(List<String> background) {
         // TODO: background is a list of ressource image strings
         // TODO: cycle through them for animations.
@@ -117,6 +120,8 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (background.size() != 0) {
             this.heading = background.get(0);
             imagePath = background.get(1);
+
+            System.out.println(imagePath + "<<<");
             this.backgroundImageView = imageLoader.getImageView(imagePath);
             switch (this.heading) {
                 case "NORTH":
@@ -179,30 +184,37 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     private void updatePlayer() {
-        // Remove the player arrow, if it exists
-        this.getChildren().removeIf(node -> node instanceof Polygon);
-        Player player = space.getPlayer();
-        if (player != null) {
-            Polygon arrow = new Polygon(0.0, 0.0,
-                    10.0, 20.0,
-                    20.0, 0.0 );
-            try {
-                arrow.setFill(Color.valueOf(player.getColor()));
-            } catch (Exception e) {
-                arrow.setFill(Color.MEDIUMPURPLE);
-            }
+        // Remove the existing player image, if it exists
+        if (playerImageView != null) {
+            this.getChildren().remove(playerImageView);
+            playerImageView = null;
+        }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
-            this.getChildren().add(arrow);
-            arrow.toFront();
+        Player player = space.getPlayer();
+
+        if (player != null) {
+            // Create an ImageView with the player image
+            playerImageView = new ImageView();
+            Image playerImage = new Image("images/robots/" + player.getColor() + "_robot.png");
+            playerImageView.setFitWidth(SPACE_WIDTH);
+            playerImageView.setFitHeight(SPACE_HEIGHT);
+            playerImageView.setImage(playerImage);
+
+            // Set the rotation of the player image
+            playerImageView.setRotate((90 * player.getHeading().ordinal()) % 360);
+
+            // Add the ImageView to the pane
+            this.getChildren().add(playerImageView);
+            playerImageView.toFront();
         }
         // Add the ImageView back again
     }
 
     @Override
     public void updateView(Subject subject) {
-        System.out.println("Space update");
+        //System.out.println("Space update");
         if (subject == this.space) {
+            setBackround(space.getBackground());
             if (!space.getItems().isEmpty()) {
                 updateOverlay(space.getItems().get(space.getItems().size() - 1).getImage());
             }
