@@ -166,7 +166,6 @@ public class BoardView extends VBox implements ViewObserver {
             }
         }
 
-
         // Create the upgrade shop cards
         int cardWidth = 100;
         int cardHeight = 150;
@@ -213,7 +212,6 @@ public class BoardView extends VBox implements ViewObserver {
 
             }
         }
-        upgradeShop.add(upgradeShop, 0, 0);
         board.attach(this);
         update(board);
     }
