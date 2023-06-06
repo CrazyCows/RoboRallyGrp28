@@ -1,21 +1,11 @@
 [ {
-  "posx" : 1,
-  "posy" : 1,
+  "posx" : 0,
+  "posy" : 2,
   "energycubes" : 0,
-  "color" : "blue",
+  "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "fdgstry",
+  "name" : "fdsagd",
   "inGame" : true,
   "master" : true
-}, {
-  "posx" : 1,
-  "posy" : 1,
-  "energycubes" : 0,
-  "color" : "red",
-  "readystate" : true,
-  "playerisLead" : false,
-  "name" : "reruyh",
-  "inGame" : false,
-  "master" : false
 } ]

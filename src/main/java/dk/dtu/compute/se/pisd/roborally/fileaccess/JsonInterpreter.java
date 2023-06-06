@@ -283,6 +283,16 @@ public class JsonInterpreter {
             return false;
         }
     }
+    public int getSimplePlayerInfoInt(String playerName, String key) {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            List<Integer> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
+            return info.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
 
 /*

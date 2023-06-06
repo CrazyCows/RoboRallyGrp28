@@ -294,7 +294,7 @@ public class GameController {
         setPhase(Phase.ACTIVATION);
 
         if (online) {
-            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgram());
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgram(), localPlayer.getName());
             for (Player player : board.getAllPlayers()) {
                 System.out.println(player.getName());
                 if (player != localPlayer) {
@@ -361,7 +361,9 @@ public class GameController {
     // Executes the commandCards
     public void executeProgram(List<Card> cards) {
 
-        cardController.getCardLoader().sendCardSequenceRequest(cards);
+        if (online) {
+            cardController.getCardLoader().sendCardSequenceRequest(cards, localPlayer.getName());
+        }
 
         Thread commandThread = new Thread(new Runnable() {
             @Override

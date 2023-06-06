@@ -20,12 +20,16 @@
  *
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
+
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
+
 import dk.dtu.compute.se.pisd.roborally.fileaccess.*;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -41,6 +45,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,11 +64,18 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
+    final private List<Integer> PLAYER_START_X_POSITION = Arrays.asList(0, 0, 0, 0, 0, 0);
+    final private List<Integer> PLAYER_START_Y_POSITION = Arrays.asList(1, 2, 3, 4, 5, 6);
+
     private List<String> savedBoards;
+
     final private RoboRally roboRally;
+
     private GameController gameController;
+
     private ClientController clientController;
     private JsonInterpreter jsonInterpreter;
+
     private String animationRobotDirection;
     ArrayList<Label> usernameLabels;
     ArrayList<CheckBox> checkBoxes;
@@ -76,18 +88,13 @@ public class AppController implements Observer {
     private String userColor;
     @FXML
     private Text winnerPlayer;
-    String ID;
 
-    public boolean isGameRunning() {
-        return gameController != null;
+
+    public AppController(@NotNull RoboRally roboRally) {
+        this.roboRally = roboRally;
     }
 
-    /**
-     * Constructor
-     */
-    public AppController(@NotNull RoboRally roboRally) {this.roboRally = roboRally;}
-
-
+    String ID;
 
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
@@ -353,7 +360,11 @@ public class AppController implements Observer {
             }
 
             board.addPlayer(localPlayer);
-            localPlayer.setSpace(board.getSpace(1 % board.width, 1));
+            this.localPlayer.setSpace(board.getSpace(
+                    PLAYER_START_X_POSITION.get(PLAYER_COLORS.indexOf(localPlayer.getColor())),
+                    PLAYER_START_Y_POSITION.get(PLAYER_COLORS.indexOf(localPlayer.getColor())))
+            );
+
 
             gameController = new GameController(roboRally, board, true, localPlayer);
 
@@ -592,7 +603,10 @@ public class AppController implements Observer {
             player.setReady(jsonInterpreter.getSimplePlayerInfoBoolean(name, "readystate"));
             player.setMasterStatus(jsonInterpreter.getSimplePlayerInfoBoolean(name, "master"));
             board.addPlayer(player);
-            player.setSpace(board.getSpace(counter % board.width, counter));
+            player.setSpace(board.getSpace(
+                    jsonInterpreter.getSimplePlayerInfoInt(name, "posx"),
+                    jsonInterpreter.getSimplePlayerInfoInt(name, "posy")
+            ));
             counter += 1;
 
         }
@@ -640,10 +654,14 @@ public class AppController implements Observer {
         }
     }
 
+    public boolean isGameRunning() {
+        return gameController != null;
+    }
+
 
     @Override
     public void update(Subject subject) {
         // XXX do nothing for now
-        //TODO: Make it do something?
     }
+
 }

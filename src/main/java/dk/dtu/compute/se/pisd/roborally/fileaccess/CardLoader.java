@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
@@ -119,44 +120,23 @@ public class CardLoader {
         System.out.println("Commandcards created");
     }
 
-    public void sendCardSequenceRequest(List<Card> cards) {
+    public void sendCardSequenceRequest(List<Card> programmingCardsInput, String name) {
 
-        CardSequenceTemplate cardSequenceTemplate = new CardSequenceTemplate();
-
-        for (ProgrammingCard card : programmingCards) {
-            if (card != null) {
-                cardSequenceTemplate.getProgrammingCards().add(card);
-            }
-        }
+        Map<String, List<ProgrammingCard>> playerCardsMap = new HashMap<>();
+        playerCardsMap.put(name, programmingCards);
 
         String filename = DATAFOLDER + "/" + CARDSEQUENCE + "." + JSON_EXT;
 
-        GsonBuilder simpleBuilder = new GsonBuilder().setPrettyPrinting();
-        simpleBuilder.addSerializationExclusionStrategy(new ExclusionStrategy() {
-            @Override
-            public boolean shouldSkipField(FieldAttributes f) {
-                return f.getName().equals("action");
-            }
-
-            @Override
-            public boolean shouldSkipClass(Class<?> clazz) {
-                return false;
-            }
-        });
-        Gson gson = simpleBuilder.create();
+        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
 
         FileWriter fileWriter = null;
         JsonWriter writer = null;
         try {
-            File directory = new File(DATAFOLDER);
-            if (!directory.exists()) {
-                directory.mkdirs(); // Create directories if they don't exist
-            }
-
-            File file = new File(filename);
-            fileWriter = new FileWriter(file, false); // Set second argument to 'true' if you want to append to an existing file
+            // Write the JSON to file...
+            fileWriter = new FileWriter(filename, false);
             writer = gson.newJsonWriter(fileWriter);
-            gson.toJson(cardSequenceTemplate, cardSequenceTemplate.getClass(), writer);
+            gson.toJson(playerCardsMap, new TypeToken<Map<String, List<ProgrammingCard>>>() {}.getType(), writer);
         } catch (IOException e1) {
             System.out.println("An exception occurred while creating the FileWriter:");
             e1.printStackTrace();
