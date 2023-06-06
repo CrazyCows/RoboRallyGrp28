@@ -274,8 +274,12 @@ public class Player extends Subject {
 
     }
 
+    /**
+     * Draws the one card and inserts it into the first free CommandCardField
+     * @param card Card to be drawn
+     */
     public void drawCard(Card card) {
-        for (int i = 0; i < 1000;i++){ //TODO: Shouldnt be 1k
+        for (int i = 0; i < handSize + 1;i++){
             if (handPile.get(i).getCard() == null){
                 handPile.get(i).setCard(card);
                 break;
