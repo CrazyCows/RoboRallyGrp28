@@ -25,14 +25,14 @@ public class DamageAction extends CardAction<DamageCard> {
         switch (card.getName()){ //we are going for composition over anything else
             case "Spam":
                 System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
-                player.setHeading("RIGHT");
+                player.setHeading("EAST");
                 break;
             case "Trojan":
             case "Trojan Horse": //I'm assuming all cards do the same but god knows
                 cardController.drawSpamCardToDiscardPile(player);
                 cardController.drawSpamCardToDiscardPile(player);
                 System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
-                player.setHeading("RIGHT");
+                player.setHeading("EAST");
                 break;
             case "Worm":
                 pit.doAction(gameController,player);
@@ -45,7 +45,7 @@ public class DamageAction extends CardAction<DamageCard> {
                     }
                 }
                 System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
-                player.setHeading("RIGHT");
+                player.setHeading("EAST");
                 break;
             default:
                 System.out.print("Something went wrong. We might want to throw an exception: ");
