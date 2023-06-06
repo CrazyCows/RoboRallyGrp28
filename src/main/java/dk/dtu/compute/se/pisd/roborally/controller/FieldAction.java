@@ -20,11 +20,7 @@
  *
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
-
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,8 +33,6 @@ import java.util.List;
  */
 public abstract class FieldAction {
 
-
-
     public void backgroundAnimationThread(Space space, List<String> background) {
 
         Thread thread = new Thread(() -> {
@@ -46,7 +40,7 @@ public abstract class FieldAction {
                 System.out.println(background.get(i));
                 try {
                     space.animate(new ArrayList<>(Arrays.asList(background.get(0), background.get(i))));
-                    Thread.sleep(1000); // Delay for half a second
+                    Thread.sleep(1000); // Delay for half a second. 'This is not half a second' -Anton
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

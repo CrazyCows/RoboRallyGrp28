@@ -11,34 +11,46 @@ public class DamageAction extends CardAction<DamageCard> {
     Pit pit = new Pit();
 
 
-
+    /**
+     * We didn't have any documentation implying otherwise, so I am assuming that all damage cards do the same,
+     * as the rules are a bit unclear on this subject matter (and the images and description don't agree)
+     * @param gameController
+     * @param player
+     * @param card
+     * @return
+     */
     @Override
     public boolean doAction(GameController gameController, Player player, DamageCard card) {
+        CardController cardController = CardController.getInstance(); //Has to be inside the method for threading reasons
         switch (card.getName()){ //we are going for composition over anything else
             case "Spam":
-                System.out.println("Spamming the spams");
+                System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
+                player.setHeading("RIGHT");
                 break;
             case "Trojan":
-            case "Trojan Horse": //I'm assuming all cards do the same but fucking god knows
-
+            case "Trojan Horse": //I'm assuming all cards do the same but god knows
+                cardController.drawSpamCardToDiscardPile(player);
+                cardController.drawSpamCardToDiscardPile(player);
+                System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
+                player.setHeading("RIGHT");
                 break;
             case "Worm":
                 pit.doAction(gameController,player);
                 break;
             case "Virus":
-                CardController cardController = CardController.getInstance();
                 for (Player p : player.board.getAllPlayers()){
                     if (gameController.distanceToSpace(player.getSpace(),p.getSpace()) > 6){
-                        p.discardPile.add(cardController.virusPile.pop());
+                        cardController.drawVirusCardToDiscardPile(p);
+                        cardController.drawSpamCardToDiscardPile(player);
                     }
                 }
+                System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
+                player.setHeading("RIGHT");
                 break;
             default:
                 System.out.print("Something went wrong. We might want to throw an exception: ");
                 System.out.println(card.getName());
         }
-
-
 
         // Implement the action specific to UpgradeCard
         // Use the gameController and card parameters as needed

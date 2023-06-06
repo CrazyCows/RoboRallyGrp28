@@ -129,10 +129,10 @@ public class BoardView extends VBox implements ViewObserver {
                 new Stop(0.82, Color.rgb(0, 0, 0, 1)),
                 new Stop(0.83, Color.rgb(0, 0, 0, 0.69)),
                 new Stop(1, Color.rgb(0, 0, 0, 0.69))));
-        //mask.setY(upgradeShopImageView.getFitHeight() / 4);
-        //mask.setHeight(upgradeShopImageView.getFitHeight() / 2);
 
         upgradeShop.setClip(mask);
+
+
 
         stackPane = new StackPane(mainBoardPane, upgradeShop);
 

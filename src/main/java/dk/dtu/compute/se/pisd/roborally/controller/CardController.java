@@ -34,11 +34,13 @@ public class CardController {
         }
         return cardController;
     }
+    public CardLoader getCardLoader() {
+        return this.cardLoader;
+    }
 
     /**
      * Singleton constuctor.
      * Creates a card pile, and shuffles them
-     * @return
      */
     private CardController() {
         this.cardLoader = CardLoader.getInstance();
@@ -47,23 +49,15 @@ public class CardController {
         this.allDamageCards.addAll(cardLoader.getDamageCards());
 
         for (DamageCard damageCard : allDamageCards){ //Sorts out the damage cards, since they all come in one pile
-            switch (damageCard.getName()){
-                case "Spam":
-                    spamPile.push(damageCard);
-                break;
-                case "Trojan":
-                case "Trojan Horse":
-                    trojanPile.push(damageCard);
-                    break;
-                case "Worm":
-                    wormPile.push(damageCard);
-                    break;
-                case "Virus":
-                    virusPile.push(damageCard);
-                    break;
-                default:
+            switch (damageCard.getName()) {
+                case "Spam" -> spamPile.push(damageCard);
+                case "Trojan", "Trojan Horse" -> trojanPile.push(damageCard);
+                case "Worm" -> wormPile.push(damageCard);
+                case "Virus" -> virusPile.push(damageCard);
+                default -> {
                     System.out.print("Something went wrong. We might want to throw an exception: ");
                     System.out.println(damageCard.getName());
+                }
             }
         }
         System.out.println("Created cardController and piles");
@@ -91,8 +85,7 @@ public class CardController {
     }
 
     /**
-     * This function is WRONG.
-     *
+     * This function is WRONG. IM NOT SURE ITS WRONG ANYMORE (06/06, 13:11)
      * @param player player who draws a card
      */
     public void drawOneCard(Player player) {
@@ -116,10 +109,6 @@ public class CardController {
      */
     void shuffleDeck(ArrayList<Card> deck){
         Collections.shuffle(deck);
-    }
-
-    public CardLoader getCardLoader() {
-        return this.cardLoader;
     }
 
     public void emptyProgram(Player player){
@@ -150,11 +139,41 @@ public class CardController {
     }
 
     /**
+     * Adds a virusCard to the discard pile of the player. If there are no more it draws a spam card.
+     * If there are none of those, then a worm card and finally a trojan card.
+     */
+    public void drawVirusCardToDiscardPile(Player player){ //Could be put into a single method which would be cleaner but not help anyone
+        if (player == null){
+            System.out.println("Null player cannot draw cards");
+            return;
+        }
+        try{
+            player.discardPile.add(virusPile.pop());
+            System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
+        } catch (EmptyStackException a){
+            try{
+                player.discardPile.add(spamPile.pop());
+                System.out.println(player.getName() + " draws a virus card and adds it to their discard pile");
+            } catch (EmptyStackException b){
+                try{
+                    player.discardPile.add(wormPile.pop());
+                    System.out.println(player.getName() + " draws a worm card and adds it to their discard pile");
+                } catch (EmptyStackException c){
+                    try{
+                        player.discardPile.add(trojanPile.pop());
+                        System.out.println(player.getName() + " draws a trojan card and adds it to their discard pile");
+                    } catch (EmptyStackException d){
+                        System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
+                    }
+                }
+            }
+        }
+    }
+    /**
      * Adds a spamCard to the discard pile of the player. If there are no more spam cards it draws a virus card.
      * If there are none of those, then a worm card and finally a trojan card.
-     * @param player
      */
-    public void addSpamCardToDiscardPile(Player player){
+    public void drawSpamCardToDiscardPile(Player player){
         if (player == null){
             System.out.println("Null player cannot draw cards");
             return;

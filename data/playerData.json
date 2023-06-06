@@ -5,7 +5,7 @@
   "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "2",
+  "name" : "Player 2",
   "inGame" : false,
-  "master" : true
+  "master" : false
 }

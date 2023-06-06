@@ -20,12 +20,10 @@ public class Checkpoint extends FieldAction {
 
 
     /**
-     *
      * See the abstract class, 'FieldAction' for more information.
-     *
      * @param gameController the gameController of the respective game
      * @param space the space this action should be executed for
-     * @return boolean
+     * @return Returns true no matter what at the moment
      */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
@@ -50,7 +48,6 @@ public class Checkpoint extends FieldAction {
         }
         return true;
     }
-
 }
 
 
