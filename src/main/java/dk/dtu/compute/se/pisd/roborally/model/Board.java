@@ -307,7 +307,7 @@ public class Board extends Subject {
     }
 
     public String getStatusMessage() {
-        return "temp STATUS MESSAGE 0";
+        return ("STATUS: "+phase);
     }
 
     public int getNumberOfItemsOnBoard(String spaceName) {
