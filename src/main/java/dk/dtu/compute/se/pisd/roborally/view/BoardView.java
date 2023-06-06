@@ -42,6 +42,8 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.InputStream;
+
 /**
  * ...
  *
@@ -110,8 +112,8 @@ public class BoardView extends VBox implements ViewObserver {
 
         upgradeShop = new GridPane();
         upgradeShop.setVisible(false);
-
-        Image upgradeShopImage = new Image("upgradeShopBackGround.png");
+        InputStream stream = getClass().getResourceAsStream("/upgradeShopBackground.png");
+        Image upgradeShopImage = new Image(stream);
         ImageView upgradeShopImageView = new ImageView(upgradeShopImage);
         upgradeShopImageView.setFitWidth(board.width * 75);
         upgradeShopImageView.setFitHeight(board.height * 75);

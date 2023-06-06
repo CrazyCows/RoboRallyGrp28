@@ -120,6 +120,8 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (background.size() != 0) {
             this.heading = background.get(0);
             imagePath = background.get(1);
+
+            System.out.println(imagePath + "<<<");
             this.backgroundImageView = imageLoader.getImageView(imagePath);
             switch (this.heading) {
                 case "NORTH":

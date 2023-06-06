@@ -298,14 +298,14 @@
       "walls": [],
       "background": [
         "NORTH",
-        "LaserGun.png"
+        "laserGun.png"
       ],
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun",
           "INSTANCE": {
             "heading": "NORTH",
-            "name": "LaserGun"
+            "name": "laserGun"
           }
         }
       ],
@@ -325,7 +325,7 @@
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun",
           "INSTANCE": {
             "heading": "SOUTH",
-            "name": "LaserGun"
+            "name": "laserGun"
           }
         }
       ],
