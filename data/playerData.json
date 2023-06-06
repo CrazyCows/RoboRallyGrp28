@@ -2,10 +2,10 @@
   "posx" : 1,
   "posy" : 1,
   "energycubes" : 0,
-  "color" : "green",
-  "readystate" : false,
+  "color" : "blue",
+  "readystate" : true,
   "playerisLead" : false,
-  "name" : "Player 2",
-  "inGame" : false,
-  "master" : false
+  "name" : "fdgstry",
+  "inGame" : true,
+  "master" : true
 }

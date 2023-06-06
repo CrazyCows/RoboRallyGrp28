@@ -526,6 +526,10 @@ public class AppController implements Observer {
                     }
                 });
 
+                for (String name : names) {
+                    System.out.println(name + ": " + jsonInterpreter.isReady(name));
+                }
+
                 this.localPlayer.setReady(checkBoxes.get(0).isSelected());
                 jsonPlayerBuilder.updateDynamicPlayerData();
                 clientController.updateJSON("playerData.json");
@@ -550,7 +554,16 @@ public class AppController implements Observer {
                     createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
 
                     Platform.runLater(dialogStage::close);
-                    break;
+                }
+                else if (!isMaster && jsonInterpreter.isAllReady()) {
+                    localPlayer.setInGame(true);
+                    jsonPlayerBuilder.updateDynamicPlayerData();
+                    clientController.updateJSON("playerData.json");
+                    clientController.getJSON("playerData.json");
+
+                    createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+
+                    Platform.runLater(dialogStage::close);
                 }
             }
             System.out.println("Game lobby thread has ended");
@@ -579,10 +592,10 @@ public class AppController implements Observer {
 
         int counter = 2;
         for (String name : names) {
-            Player player = new Player(board, jsonInterpreter.getSimplePlayerInfo(name, "color"), name);
-            player.setInGame(Boolean.parseBoolean(jsonInterpreter.getSimplePlayerInfo(name, "inGame")));
-            player.setReady(Boolean.parseBoolean(jsonInterpreter.getSimplePlayerInfo(name, "readystate")));
-            player.setMasterStatus(Boolean.parseBoolean(jsonInterpreter.getSimplePlayerInfo(name, "master")));
+            Player player = new Player(board, jsonInterpreter.getSimplePlayerInfoString(name, "color"), name);
+            player.setInGame(jsonInterpreter.getSimplePlayerInfoBoolean(name, "inGame"));
+            player.setReady(jsonInterpreter.getSimplePlayerInfoBoolean(name, "readystate"));
+            player.setMasterStatus(jsonInterpreter.getSimplePlayerInfoBoolean(name, "master"));
             board.addPlayer(player);
             player.setSpace(board.getSpace(counter % board.width, counter));
             counter += 1;

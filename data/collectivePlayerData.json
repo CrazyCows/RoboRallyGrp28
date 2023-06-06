@@ -1,1 +1,21 @@
-"[{\"posx\":1,\"posy\":1,\"energycubes\":0,\"color\":\"red\",\"readystate\":false,\"playerisLead\":false,\"name\":\"lassie\"},{\"posx\":1,\"posy\":1,\"energycubes\":0,\"color\":\"green\",\"readystate\":false,\"playerisLead\":false,\"name\":\"Player 2\",\"inGame\":false,\"master\":false}]"
+[ {
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 0,
+  "color" : "blue",
+  "readystate" : false,
+  "playerisLead" : false,
+  "name" : "fdgstry",
+  "inGame" : true,
+  "master" : true
+}, {
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 0,
+  "color" : "red",
+  "readystate" : true,
+  "playerisLead" : false,
+  "name" : "reruyh",
+  "inGame" : false,
+  "master" : false
+} ]

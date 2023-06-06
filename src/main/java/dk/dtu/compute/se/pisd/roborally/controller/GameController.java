@@ -46,7 +46,6 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.PROGRAMMING;
 public class GameController {
 
     final public Board board;
-    //final private JsonPlayerBuilder jsonPlayerBuilder;
     private boolean online;
 
     private Pit pit = new Pit();

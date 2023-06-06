@@ -262,7 +262,7 @@ public class JsonInterpreter {
         }
     }
 
-    public String getSimplePlayerInfo(String playerName, String key) {
+    public String getSimplePlayerInfoString(String playerName, String key) {
         try {
             String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
             List<String> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
@@ -270,6 +270,17 @@ public class JsonInterpreter {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean getSimplePlayerInfoBoolean(String playerName, String key) {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            List<Boolean> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
+            return info.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
