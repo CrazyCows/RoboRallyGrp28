@@ -38,18 +38,16 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  */
 public class Player extends Subject {
 
+
+    //VARIABLES
+
     final public static int NO_REGISTERS = 5;
     final public static int NO_CARDS = 8;
 
     final public Board board;
 
-    public Space getStartSpace() {
-        return startSpace;
-    }
-
     //TODO: Use getters instead
     public Space startSpace;
-
     private String name;
     private String color;
     private boolean ready;
@@ -60,65 +58,101 @@ public class Player extends Subject {
 
     //used for keeping track so the priorityAntenna doesn't wildly pick the same player 5 times in a row
     private int usedCards;
-
     private Space space;
     private Heading heading = SOUTH;
-    private int energyCubes = 0;
-    private Card lastCard = null;
 
+    //The amount of energy a player has. Starts at zero
+    private int energyCubes = 0;
+
+    //The last card that the player used
+    private Card lastCard = null;
+    private int checkpointsCollected = 0;
+    private static int handSize = 8;
+    private static int programSize = 5;
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
 
+    //
+    //SIMPLE GETTERS AND SETTERS
+    //
+
     public Card getLastCard() {
         return lastCard;
     }
-
+    public Space getStartSpace() {return startSpace;}
     public void setLastCard(Card lastCard) {
         this.lastCard = lastCard;
     }
-
-    //The last card that the player used
-
-    public void addEnergyCubes(int energyCubesAdded) {
-        this.energyCubes += energyCubesAdded;
-    }
-
     public int getUsedCards(){
         return usedCards;
     }
     public void incrementUsedCards(){
         usedCards++;
     }
-    public void resetUsedCards(){ //Prevents misuse of usedCards
-        usedCards = 0;
-    }
-
-
-
     public int getEnergyCubes() {
         return energyCubes;
     }
-
-    //The amount of energy a player has. Starts at zero
-
-    public ArrayList<CommandCardField> getProgram() {
-        return program;
+    public Space getSpace() {
+        return space;
     }
-
+    public String getName() {
+        return name;
+    }
+    public ArrayList<CommandCardField> getProgram() {return program;}
     public ArrayList<CommandCardField> getHandPile() {
         return handPile;
     }
-
-
-    //This is used to keep track of how many checkpoints are collected. Each time a checkpoint is reached,
-    //checkpointsCollected is to be incremented by one. Once it reaches the magic number, the player wins
-    private int checkpointsCollected = 0;
-    private static int handSize = 8;
-    private static int programSize = 5;
-
-
+    public void addEnergyCubes(int energyCubesAdded) {
+        this.energyCubes += energyCubesAdded;
+    }
+    public void resetUsedCards(){ //Prevents misuse of usedCards
+        usedCards = 0;
+    }
+    public Heading getHeading() {
+        return heading;
+    }
+    public CommandCardField getCardField(int i) {
+        return handPile.get(i);
+    }
+    public int getCheckpointsCollected() {
+        return checkpointsCollected;
+    }
+    public void incrementCheckpointsCollected() { //TODO: check if player has won
+        this.checkpointsCollected += 1;
+    }
+    public int getHandSize() {
+        return handSize;
+    }
+    public int getProgramSize() {
+        return programSize;
+    }
+    public boolean isReady() {
+        return ready;
+    }
+    public void setReady(boolean state) {
+        this.ready = state;
+    }
+    public boolean isInGame() {
+        return this.inGame;
+    }
+    public void setInGame(boolean status) {
+        this.inGame = status;
+    }
+    public boolean isLeader() {
+        return leader;
+    }
+    public boolean isMaster() { return this.isMaster; }
+    public void setMasterStatus(boolean status) {
+        this.isMaster = status;
+    }
+    public String getMaster() {
+        return this.master;
+    }
+    public void setMaster(String name) {
+        this.master = name;
+    }
     public boolean subtractEnergyCubes(int energyCubesUsed) {
         if (this.energyCubes - energyCubesUsed < 0){
             return false;
@@ -126,6 +160,7 @@ public class Player extends Subject {
         this.energyCubes -= energyCubesUsed;
         return true;
     }
+
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -143,10 +178,6 @@ public class Player extends Subject {
         for (int i = 0; i < handSize; i++) {
             handPile.add(new CommandCardField(this));
         }
-    }
-
-    public String getName() {
-        return name;
     }
 
     /**
@@ -175,13 +206,6 @@ public class Player extends Subject {
         }
     }
 
-    public Space getSpace() {
-        return space;
-    }
-
-/*
-* I think this is where players gets pushed?
- */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
         if (space != oldSpace &&
@@ -217,10 +241,6 @@ public class Player extends Subject {
         }
     }
 
-    public Heading getHeading() {
-        return heading;
-    }
-
     public void setHeading(@NotNull Heading heading) {
         if (heading != this.heading) {
             this.heading = heading;
@@ -234,20 +254,12 @@ public class Player extends Subject {
     public void setHeading(@NotNull String heading) {
         Heading head = Heading.valueOf(heading);//TODO: Can't we just do this?
         switch (heading) {
-            case "NORTH":
-                this.heading = Heading.NORTH;
-                break;
-            case "EAST":
-                this.heading = Heading.EAST;
-                break;
-            case "SOUTH":
-                this.heading = Heading.SOUTH;
-                break;
-            case "WEST":
-                this.heading = Heading.WEST;
-                break;
-            default:
-
+            case "NORTH" -> this.heading = Heading.NORTH;
+            case "EAST" -> this.heading = Heading.EAST;
+            case "SOUTH" -> this.heading = Heading.SOUTH;
+            case "WEST" -> this.heading = Heading.WEST;
+            default -> {
+            }
         }
         notifyChange();
         if (space != null) {
@@ -267,24 +279,7 @@ public class Player extends Subject {
 
     }
 
-    public CommandCardField getCardField(int i) {
-        return handPile.get(i);
-    }
-
-    public int getCheckpointsCollected() {
-        return checkpointsCollected;
-    }
-
-    public void incrementCheckpointsCollected() { //TODO: check if player has won
-        this.checkpointsCollected += 1;
-    }
-
-    public void setCardField(int i, Object card){
-
-    }
-
     public void drawCard(Card card) {
-        //ProgrammingCard c = (ProgrammingCard) card; //TODO: Will this not break with damage cards?
         for (int i = 0; i < 1000;i++){ //TODO: Shouldnt be 1k
             if (handPile.get(i).getCard() == null){
                 handPile.get(i).setCard(card);
@@ -317,14 +312,6 @@ public class Player extends Subject {
         return commandCards;
     }
 
-    public int getHandSize() {
-        return handSize;
-    }
-
-    public int getProgramSize() {
-        return programSize;
-    }
-
     public int getNextEmptyCardField() {
         for (int i = 0; i < handPile.size(); i++) {
             if (handPile.get(i).getCard() == null) {
@@ -342,34 +329,4 @@ public class Player extends Subject {
         }
         return -1;
     }
-
-    public boolean isReady() {
-        return ready;
-    }
-    public void setReady(boolean state) {
-        this.ready = state;
-    }
-
-    public boolean isInGame() {
-        return this.inGame;
-    }
-
-    public void setInGame(boolean status) {
-        this.inGame = status;
-    }
-
-    public boolean isLeader() {
-        return leader;
-    }
-    public boolean isMaster() { return this.isMaster; }
-    public void setMasterStatus(boolean status) {
-        this.isMaster = status;
-    }
-    public String getMaster() {
-        return this.master;
-    }
-    public void setMaster(String name) {
-        this.master = name;
-    }
-
 }
