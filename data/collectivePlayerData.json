@@ -2,10 +2,20 @@
   "posx" : 1,
   "posy" : 1,
   "energycubes" : 0,
-  "color" : "red",
+  "color" : "blue",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "e3",
-  "inGame" : false,
+  "name" : "fdgstry",
+  "inGame" : true,
   "master" : true
+}, {
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 0,
+  "color" : "red",
+  "readystate" : true,
+  "playerisLead" : false,
+  "name" : "reruyh",
+  "inGame" : false,
+  "master" : false
 } ]
