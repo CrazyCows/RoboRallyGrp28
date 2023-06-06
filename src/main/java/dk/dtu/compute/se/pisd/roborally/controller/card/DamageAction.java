@@ -24,12 +24,15 @@ public class DamageAction extends CardAction<DamageCard> {
         CardController cardController = CardController.getInstance(); //Has to be inside the method for threading reasons
         switch (card.getName()){ //we are going for composition over anything else
             case "Spam":
-                System.out.println("Spamming the spams");
+                System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
+                player.setHeading("RIGHT");
                 break;
             case "Trojan":
             case "Trojan Horse": //I'm assuming all cards do the same but god knows
                 cardController.drawSpamCardToDiscardPile(player);
-
+                cardController.drawSpamCardToDiscardPile(player);
+                System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
+                player.setHeading("RIGHT");
                 break;
             case "Worm":
                 pit.doAction(gameController,player);
@@ -38,8 +41,11 @@ public class DamageAction extends CardAction<DamageCard> {
                 for (Player p : player.board.getAllPlayers()){
                     if (gameController.distanceToSpace(player.getSpace(),p.getSpace()) > 6){
                         cardController.drawVirusCardToDiscardPile(p);
+                        cardController.drawSpamCardToDiscardPile(player);
                     }
                 }
+                System.out.println("TEMPORARY PLACEHOLDER FEATURE: TURNING PLAYER RIGHT AS SPAM");
+                player.setHeading("RIGHT");
                 break;
             default:
                 System.out.print("Something went wrong. We might want to throw an exception: ");
