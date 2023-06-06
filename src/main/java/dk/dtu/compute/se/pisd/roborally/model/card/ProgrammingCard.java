@@ -75,4 +75,12 @@ public class ProgrammingCard extends Card {
         return this.command;
     }
 
+    public String getCommandName() {
+        return this.commandName;
+    }
+
+    public String getActionClassName() {
+        return this.actionClassName;
+    }
+
 }
