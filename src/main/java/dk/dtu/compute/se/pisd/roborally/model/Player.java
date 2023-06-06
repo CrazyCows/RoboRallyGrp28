@@ -119,9 +119,7 @@ public class Player extends Subject {
     public int getCheckpointsCollected() {
         return checkpointsCollected;
     }
-    public void incrementCheckpointsCollected() { //TODO: check if player has won
-        this.checkpointsCollected += 1;
-    }
+    public void incrementCheckpointsCollected() {this.checkpointsCollected += 1;}
     public int getHandSize() {
         return handSize;
     }
@@ -194,10 +192,7 @@ public class Player extends Subject {
         }
     }
 
-    public String getColor() {
-        return color;
-    }
-
+    public String getColor() {return color;}
     public void setColor(String color) {
         this.color = color;
         notifyChange();
