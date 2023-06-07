@@ -38,8 +38,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.PROGRAMMING;
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.*;
 
 //import java.util.*;
 
@@ -301,6 +300,7 @@ public class GameController {
         board.setPhase(phase);
     }
 
+
     public void startTimer() {
         timer = new Timer();
         board.setTimerIsRunning(true);
@@ -317,6 +317,7 @@ public class GameController {
                     board.setTimerIsRunning(false);
                     board.setTimerSecondsCount(0);
                     System.out.println("Time to fire event!");
+                    countDownLatch.countDown();
                 }
             }
         }, 0, 1000);
@@ -325,6 +326,7 @@ public class GameController {
         Thread threadA = new Thread(() -> { //TODO: IS THIS DIRTY?
             try{
                 countDownLatch.await();
+                setPhase(ACTIVATION);
                 cardController.fillAllPlayersProgramFromHand(board);
                 Thread.sleep(300);
                 finishProgrammingPhase();

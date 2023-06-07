@@ -241,6 +241,7 @@ public class CardController {
 
     public void fillAllPlayersProgramFromHand(Board board) {
         for (Player player : board.getAllPlayers()){
+            board.setCurrentPlayer(player);
             this.fillProgramFromHand(player);
             board.notifyChange();
         }
