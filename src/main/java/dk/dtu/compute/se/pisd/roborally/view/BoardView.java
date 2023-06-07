@@ -169,6 +169,7 @@ public class BoardView extends VBox implements ViewObserver {
         permUpgradeText.setUnderline(true);
         permUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(permUpgradeText, 1);
+        GridPane.setRowIndex(permUpgradeText, 0);
         upgradeShop.getChildren().add(permUpgradeText);
 
 
@@ -193,7 +194,7 @@ public class BoardView extends VBox implements ViewObserver {
         Player player = board.getCurrentPlayer();
 
         Text playerName = new Text(player.getName());
-        playerName.setFont(Font.font("System Bold Underline",  16));
+        playerName.setFont(Font.font("System Bold",  16));
         playerName.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(playerName, 3);
         GridPane.setRowIndex(playerName, 0);
@@ -205,6 +206,13 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setColumnIndex(currency, 3);
         GridPane.setRowIndex(currency, 0);
         upgradeShop.getChildren().add(currency);
+
+        Text title = new Text("❖ UPGRADE SHOP ❖");
+        title.setFont(Font.font("System Bold", 40));
+        title.setTextAlignment(TextAlignment.RIGHT);
+        GridPane.setColumnIndex(title, 2);
+        GridPane.setRowIndex(title, 0);
+        upgradeShop.getChildren().add(title);
 
 
 
