@@ -52,7 +52,7 @@ public class ConveyorBelt2 extends FieldAction {
         Space newSpace = gameController.board.getNeighbour(space,heading,false); //We dont check for walls, as this is already getting done in moveInDirection.
         for (FieldAction fieldAction : newSpace.getActions()){
             if (fieldAction instanceof ConveyorBelt2){
-                gameController.moveInDirection(player, 1, heading);
+                gameController.moveInDirection(player, 1, ((ConveyorBelt2)newSpace.getActions().get(0)).getHeading());
                 break; //break theoretically speeds up code, but mostly makes it nicer to run through in debugger
             }
         }
