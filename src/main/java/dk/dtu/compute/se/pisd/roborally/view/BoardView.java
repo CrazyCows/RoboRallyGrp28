@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -210,13 +211,19 @@ public class BoardView extends VBox implements ViewObserver {
 
         Button permButton = new Button("NEXT");
         permButton.setFont(Font.font("System", 14));
-        permButton.setTextAlignment(TextAlignment.CENTER);
-        GridPane.setColumnIndex(permButton, 1);
-        GridPane.setRowIndex(permButton, 1);
-        upgradeShop.getChildren().add(permButton);
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getChildren().add(permButton);
+        double width = anchorPane.getWidth();
+        AnchorPane.setRightAnchor(permButton, 0.7 * width);
+        GridPane.setConstraints(anchorPane, 0, 1);
+        upgradeShop.getChildren().add(anchorPane);
 
         Button tempButton = new Button("NEXT");
         tempButton.setFont(Font.font("System", 14));
+        tempButton.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setColumnIndex(tempButton, 3);
+        GridPane.setRowIndex(tempButton, 1);
+        upgradeShop.getChildren().add(tempButton);
 
 
 
