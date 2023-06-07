@@ -188,16 +188,16 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(tempUpgradeCardImages, 1);
         upgradeShop.getChildren().add(tempUpgradeCardImages);
 
-        Player player = gameController.
+        Player player = board.getCurrentPlayer();
 
-        Text playerName = new Text("Player");
+        Text playerName = new Text(player.getName());
         playerName.setFont(Font.font("System Bold", 16));
         playerName.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(playerName, 3);
         GridPane.setRowIndex(playerName, 0);
         upgradeShop.getChildren().add(playerName);
 
-        Text currency = new Text("\nEnergy Cubes: " +  + "❖");
+        Text currency = new Text("\n\nEnergy Cubes: " + player.getEnergyCubes() + " ❖");
         currency.setFont(Font.font("System Bold", 16));
         currency.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(currency, 3);
