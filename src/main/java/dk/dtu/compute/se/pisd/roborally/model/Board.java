@@ -287,6 +287,7 @@ public class Board extends Subject {
 
     public void setTimerIsRunning(boolean status) {
         this.timerIsRunning = status;
+        this.notifyChange();
     }
 
     public boolean getTimerIsRunning() {
