@@ -572,6 +572,8 @@ public class AppController implements Observer {
                     Platform.runLater(dialogStage::close);
                 }
             }
+
+            gameController.setupOnline();
             System.out.println("Game lobby thread has ended");
         });
         countThread.start();

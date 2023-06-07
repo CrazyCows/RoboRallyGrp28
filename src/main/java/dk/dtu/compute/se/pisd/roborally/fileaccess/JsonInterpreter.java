@@ -252,6 +252,15 @@ public class JsonInterpreter {
         }
     }
 
+    public Boolean isAnyReady (ArrayList<String> playerNames) {
+        for (String name : playerNames) {
+            if (isReady(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public ArrayList<String> getColorsInUse() {
         try {
             String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));

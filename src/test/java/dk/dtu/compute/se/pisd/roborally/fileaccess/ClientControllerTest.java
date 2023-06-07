@@ -31,4 +31,10 @@ class ClientControllerTest {
     @Test
     void deleteJSON() {
     }
+
+    @Test
+    void updateReadyStatusForPlayer() {
+
+    }
+
 }

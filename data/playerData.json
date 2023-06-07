@@ -1,11 +1,11 @@
 {
   "posx" : 0,
-  "posy" : 2,
+  "posy" : 1,
   "energycubes" : 0,
-  "color" : "green",
+  "color" : "red",
   "readystate" : true,
   "playerisLead" : false,
-  "name" : "afd",
+  "name" : "fdgsgfdsre",
   "inGame" : true,
-  "master" : true
+  "master" : false
 }

@@ -1,21 +1,9 @@
 {
-  "dsf" : {
+  "fdgsgfdsre" : {
     "programmingCards" : [ {
-      "commandName" : "MOVETWO",
-      "name" : "Move 2",
-      "imagePath" : "images/cards/programmingCardImages/Move2.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "MOVEONE",
-      "name" : "Move 1",
-      "imagePath" : "images/cards/programmingCardImages/Move1.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "AGAIN",
-      "name" : "Again",
-      "imagePath" : "images/cards/programmingCardImages/Again.png",
+      "commandName" : "RIGHT",
+      "name" : "Turn Right",
+      "imagePath" : "images/cards/programmingCardImages/RightTurn.png",
       "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "observers" : [ ]
     }, {
@@ -25,9 +13,21 @@
       "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "observers" : [ ]
     }, {
-      "commandName" : "RIGHT",
-      "name" : "Turn Right",
-      "imagePath" : "images/cards/programmingCardImages/RightTurn.png",
+      "commandName" : "BACKUP",
+      "name" : "Back Up",
+      "imagePath" : "images/cards/programmingCardImages/MoveBack.png",
+      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "observers" : [ ]
+    }, {
+      "commandName" : "POWERUP",
+      "name" : "Power Up",
+      "imagePath" : "images/cards/programmingCardImages/PowerUp.png",
+      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "observers" : [ ]
+    }, {
+      "commandName" : "UTURN",
+      "name" : "U-Turn",
+      "imagePath" : "images/cards/programmingCardImages/U-Turn.png",
       "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "observers" : [ ]
     } ]

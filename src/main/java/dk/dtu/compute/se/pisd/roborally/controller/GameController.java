@@ -30,6 +30,12 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -82,15 +88,55 @@ public class GameController {
         setPhase(Phase.PROGRAMMING);
         jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
-
         if (online) {
             this.localPlayer = localPlayer;
             firstRound = true;
             localPlayer.setReady(false);
-            jsonPlayerBuilder.updateDynamicPlayerData();
-            clientController.updateJSON("playerData.json");
         }
 
+    }
+
+    public void setupOnline() {
+        localPlayer.setReady(false);
+        jsonPlayerBuilder.updateDynamicPlayerData();
+        clientController.updateJSON("playerData.json");
+        clientController.getJSON("playerData.json");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        while (jsonInterpreter.isAnyReady(jsonInterpreter.getPlayerNames())) {
+            try {
+                clientController.getJSON("playerData.json");
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        Thread countThread = new Thread(() -> {
+            ArrayList<String> playerNames = new ArrayList<>();
+            for (Player player: board.getAllPlayers()) {
+                if (player != localPlayer) {
+                    playerNames.add(player.getName());
+                }
+            }
+            while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
+                try {
+                    System.out.println("Updating");
+                    clientController.getJSON("playerData.json");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!localPlayer.isReady()) {
+                startTimer();
+            }
+        });
+        countThread.start();
     }
 
 
@@ -350,6 +396,7 @@ public class GameController {
         clientController.getJSON("playerData.json");
 
         int getReadyTries = 0;
+        System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady());
         while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
             try {
                 clientController.getJSON("playerData.json");
