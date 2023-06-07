@@ -214,16 +214,18 @@ public class BoardView extends VBox implements ViewObserver {
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().add(permButton);
         double width = anchorPane.getWidth();
-        AnchorPane.setRightAnchor(permButton, 0.7 * width);
+        AnchorPane.setRightAnchor(permButton, 0.30 * width);
         GridPane.setConstraints(anchorPane, 0, 1);
         upgradeShop.getChildren().add(anchorPane);
 
         Button tempButton = new Button("NEXT");
         tempButton.setFont(Font.font("System", 14));
-        tempButton.setTextAlignment(TextAlignment.CENTER);
-        GridPane.setColumnIndex(tempButton, 3);
-        GridPane.setRowIndex(tempButton, 1);
-        upgradeShop.getChildren().add(tempButton);
+        AnchorPane anchorPane2 = new AnchorPane();
+        anchorPane2.getChildren().add(tempButton);
+        double width2 = anchorPane2.getWidth();
+        AnchorPane.setLeftAnchor(tempButton, 0.30 * width2);
+        GridPane.setConstraints(anchorPane2, 3, 1);
+        upgradeShop.getChildren().add(anchorPane2);
 
 
 
