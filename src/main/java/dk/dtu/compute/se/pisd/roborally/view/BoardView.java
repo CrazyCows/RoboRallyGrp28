@@ -23,11 +23,9 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Item;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -40,9 +38,12 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.InputStream;
+import java.io.File;
 
 /**
  * ...
@@ -112,8 +113,8 @@ public class BoardView extends VBox implements ViewObserver {
 
         upgradeShop = new GridPane();
         upgradeShop.setVisible(false);
-        InputStream stream = getClass().getResourceAsStream("/upgradeShopBackground.png");
-        Image upgradeShopImage = new Image(stream);
+
+        Image upgradeShopImage = new Image("upgradeShopBackGround.png");
         ImageView upgradeShopImageView = new ImageView(upgradeShopImage);
         upgradeShopImageView.setFitWidth(board.width * 75);
         upgradeShopImageView.setFitHeight(board.height * 75);
@@ -121,6 +122,7 @@ public class BoardView extends VBox implements ViewObserver {
         System.out.println(board.height * 75);
         System.out.println(board.width * 75);
 
+/*
         mask = new Rectangle(board.width * 75, board.height * 75);
         mask.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, Color.rgb(0, 0, 0, 0.69)),
@@ -129,8 +131,87 @@ public class BoardView extends VBox implements ViewObserver {
                 new Stop(0.82, Color.rgb(0, 0, 0, 1)),
                 new Stop(0.83, Color.rgb(0, 0, 0, 0.69)),
                 new Stop(1, Color.rgb(0, 0, 0, 0.69))));
+        mask.setY(upgradeShopImageView.getFitHeight());
+        mask.setHeight(upgradeShopImageView.getFitHeight());
+*/
 
-        upgradeShop.setClip(mask);
+
+
+
+
+
+
+
+        for (int i = 0; i < 4; i++) {
+            ColumnConstraints colConstraints = new ColumnConstraints();
+            colConstraints.setHgrow(Priority.SOMETIMES);
+            colConstraints.setMinWidth(10);
+            colConstraints.setPrefWidth(100);
+            upgradeShop.getColumnConstraints().add(colConstraints);
+        }
+
+
+        RowConstraints row1Constraints = new RowConstraints(88, 88, 129, Priority.SOMETIMES, VPos.CENTER, true);
+        RowConstraints row2Constraints = new RowConstraints(231, 231, 270, Priority.SOMETIMES, VPos.CENTER, true);
+        RowConstraints row3Constraints = new RowConstraints(30, 30, 30, Priority.SOMETIMES, VPos.CENTER, true);
+        upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
+
+
+        Text tempUpgradeText = new Text("TEMPORARY");
+        tempUpgradeText.setFont(Font.font("System Bold", 16));
+        tempUpgradeText.setUnderline(true);
+        tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setColumnIndex(tempUpgradeText, 2);
+        upgradeShop.getChildren().add(tempUpgradeText);
+
+        Text permUpgradeText = new Text("PERMANENT");
+        permUpgradeText.setFont(Font.font("System Bold", 16));
+        permUpgradeText.setUnderline(true);
+        permUpgradeText.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setColumnIndex(permUpgradeText, 1);
+        upgradeShop.getChildren().add(permUpgradeText);
+
+
+        ImageView upgradeCardImages = new ImageView();
+        upgradeCardImages.setFitHeight(250);
+        upgradeCardImages.setFitWidth(154);
+        upgradeCardImages.setPreserveRatio(true);
+        upgradeCardImages.setPickOnBounds(true);
+        GridPane.setColumnIndex(upgradeCardImages, 1);
+        GridPane.setRowIndex(upgradeCardImages, 1);
+        upgradeShop.getChildren().add(upgradeCardImages);
+
+        ImageView tempUpgradeCardImages = new ImageView();
+        tempUpgradeCardImages.setFitHeight(250);
+        tempUpgradeCardImages.setFitWidth(154);
+        tempUpgradeCardImages.setPreserveRatio(true);
+        tempUpgradeCardImages.setPickOnBounds(true);
+        GridPane.setColumnIndex(tempUpgradeCardImages, 2);
+        GridPane.setRowIndex(tempUpgradeCardImages, 1);
+        upgradeShop.getChildren().add(tempUpgradeCardImages);
+
+        Player player = board.getCurrentPlayer();
+
+        Text playerName = new Text(player.getName());
+        playerName.setFont(Font.font("System Bold Underline",  16));
+        playerName.setTextAlignment(TextAlignment.LEFT);
+        GridPane.setColumnIndex(playerName, 3);
+        GridPane.setRowIndex(playerName, 0);
+        upgradeShop.getChildren().add(playerName);
+
+        Text currency = new Text("\n\nEnergy Cubes: " + player.getEnergyCubes() + " ❖");
+        currency.setFont(Font.font("System Bold", 16));
+        currency.setTextAlignment(TextAlignment.LEFT);
+        GridPane.setColumnIndex(currency, 3);
+        GridPane.setRowIndex(currency, 0);
+        upgradeShop.getChildren().add(currency);
+
+
+
+
+
+
+
 
 
 
