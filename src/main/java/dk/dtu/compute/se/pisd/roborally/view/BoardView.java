@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Item;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,6 +42,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
+
 
 import java.io.InputStream;
 
@@ -69,6 +71,8 @@ public class BoardView extends VBox implements ViewObserver {
     GridPane upgradeShop;
     StackPane stackPane;
     Rectangle mask;
+    Button timerButton;
+    Button upgradeShopButton;
 
     private SpaceEventHandler spaceEventHandler;
     private ArrowKeyEventHandler arrowKeyEventHandler;
@@ -87,7 +91,6 @@ public class BoardView extends VBox implements ViewObserver {
         statusLabel = new Label("<no status>");
         ImageView imageView = new ImageView(new Image("checkpoint.png"));
 
-        timerSecondsCount = 0;
         timers = new Image[7];
 
         timers[0] = new Image("hourglass0.png");
@@ -99,10 +102,10 @@ public class BoardView extends VBox implements ViewObserver {
         timers[6] = new Image("hourglass6.png");
         timerView = new ImageView(timers[0]);
 
-        Button timerButton = new Button("Start timer");
-        timerButton.setOnAction( e -> board.startTimer());
+        timerButton = new Button("Start timer");
+        timerButton.setOnAction( e -> gameController.startTimer());
 
-        Button upgradeShopButton = new Button("Upgrade Shop");
+        upgradeShopButton = new Button("Upgrade Shop");
         upgradeShopButton.setOnAction( e -> displayUpgradeShop());
 
         GridPane timerGridPane = new GridPane();
@@ -170,6 +173,30 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
     }
 
+    public void InterationRestrictor(Phase phase) {
+        switch (phase) {
+            case INITIALISATION -> {
+                timerButton.setDisable(true);
+                upgradeShopButton.setDisable(true);
+            }
+            case UPGRADE -> {
+                timerButton.setDisable(true);
+                upgradeShopButton.setDisable(false);
+            }
+            case PROGRAMMING -> {
+                timerButton.setDisable(false);
+                upgradeShopButton.setDisable(true);
+            }
+            case ACTIVATION -> {
+                timerButton.setDisable(true);
+                upgradeShopButton.setDisable(true);
+            }
+            default -> {
+                System.out.println("Something went wrong: Phase not defined");
+            }
+        }
+    }
+
     private void displayUpgradeShop() {
         System.out.println("upgrade shop is no longer displayed");
         if (upgradeShop.isVisible()) {
@@ -182,9 +209,12 @@ public class BoardView extends VBox implements ViewObserver {
     }
 
     private void nextTimer() {
+
         if (board.getTimerIsRunning()) {
-            nextTimerInt += 1;
-            if (timers.length < nextTimerInt - 1) {
+            if (board.getTimerSecondsCount() % 5 == 0) {
+                nextTimerInt += 1;
+            }
+            if (timers.length - 1 < nextTimerInt) {
                 nextTimerInt = 0;
             }
             this.timerView.setImage(timers[nextTimerInt]);
@@ -201,6 +231,7 @@ public class BoardView extends VBox implements ViewObserver {
         System.out.println("Board update");
         if (subject == board) {
             Phase phase = board.getPhase();
+            InterationRestrictor(phase);
             statusLabel.setText(board.getStatusMessage());
             nextTimer();
         }

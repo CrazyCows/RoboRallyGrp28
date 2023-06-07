@@ -29,12 +29,15 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.*;
+
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.PROGRAMMING;
 
 //import java.util.*;
@@ -63,6 +66,8 @@ public class GameController {
     private Player localPlayer;
     boolean MoreAdvancedGame = true;
     boolean firstRound;
+
+    private Timer timer;
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -295,11 +300,33 @@ public class GameController {
         board.setPhase(phase);
     }
 
+    public void startTimer() {
+        timer = new Timer();
+        board.setTimerIsRunning(true);
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                board.setTimerSecondsCount(board.getTimerSecondsCount() + 1);
+                System.out.println("timer: " + board.getTimerSecondsCount());
+                if (board.getTimerSecondsCount() >= 30) {
+                    timer.cancel();
+                    timer.purge();
+                    board.setTimerIsRunning(false);
+                    board.setTimerSecondsCount(0);
+                    System.out.println("Time to fire event!");
+                }
+            }
+        }, 0, 1000);
+        board.setTimerSecondsCount(0);
+    }
+
     /**
      * 'Used in the single player version only, afaik' -Anton
      */
     public void finishProgrammingPhase() {
         setPhase(Phase.ACTIVATION);
+
 
         //TODO: Check for spam and trojan cards,and replaces the card somehow?
         //TODO: Very much WIP

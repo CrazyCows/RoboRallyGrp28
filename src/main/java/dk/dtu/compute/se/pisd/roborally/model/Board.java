@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
+import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -57,7 +58,6 @@ public class Board extends Subject {
     private boolean stepMode;
 
     CardController cardController = CardController.getInstance();
-    private Timer timer;
     private int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
@@ -271,35 +271,18 @@ public class Board extends Subject {
 
 
 
-
-    // TODO: I forgot why this is places here??? (but it works though)
-    public void startTimer() {
-        timer = new Timer();
-        timerIsRunning = true;
-        notifyChange();
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                timerSecondsCount += 1;
-                System.out.println("timer: " + timerSecondsCount);
-                if (timerSecondsCount % 6 == 0) {
-                    notifyChange();
-                }
-                if (timerSecondsCount >= 30) {
-                    timer.cancel();
-                    timer.purge();
-                    timerIsRunning = false;
-                    notifyChange();
-                    timerSecondsCount = 0;
-                    System.out.println("Time to fire event!");
-                }
-            }
-        }, 0, 1000);
-    }
-
     public int getTimerSecondsCount() {
         return this.timerSecondsCount;
+    }
+
+    public void setTimerSecondsCount(int seconds) {
+        Platform.runLater(this::notifyChange);
+
+        this.timerSecondsCount = seconds;
+    }
+
+    public void setTimerIsRunning(boolean status) {
+        this.timerIsRunning = status;
     }
 
     public boolean getTimerIsRunning() {
