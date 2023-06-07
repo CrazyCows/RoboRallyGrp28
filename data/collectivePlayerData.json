@@ -3,9 +3,9 @@
   "posy" : 2,
   "energycubes" : 0,
   "color" : "green",
-  "readystate" : true,
+  "readystate" : false,
   "playerisLead" : false,
-  "name" : "ds",
+  "name" : "afd",
   "inGame" : true,
   "master" : true
 } ]

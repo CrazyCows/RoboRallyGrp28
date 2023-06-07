@@ -187,6 +187,10 @@ public class BoardView extends VBox implements ViewObserver {
                 timerButton.setDisable(false);
                 upgradeShopButton.setDisable(true);
             }
+            case SYNCHRONIZATION -> {
+                timerButton.setDisable(true);
+                upgradeShopButton.setDisable(true);
+            }
             case ACTIVATION -> {
                 timerButton.setDisable(true);
                 upgradeShopButton.setDisable(true);

@@ -76,16 +76,18 @@ public class GameController {
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);
         }
-        if (localPlayer != null) {
-            this.localPlayer = localPlayer;
-        }
         this.online = online;
-        if (online) {
-            firstRound = true;
-        }
         setPhase(Phase.PROGRAMMING);
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
+
+        if (online) {
+            this.localPlayer = localPlayer;
+            firstRound = true;
+            localPlayer.setReady(false);
+            jsonPlayerBuilder.updateDynamicPlayerData();
+            clientController.updateJSON("playerData.json");
+        }
 
     }
 
@@ -322,11 +324,12 @@ public class GameController {
     public void synchronize() {
         setPhase(SYNCHRONIZATION);
         int getReadyTries = 0;
-        while (!jsonInterpreter.isAllReady()) {
+        while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
             try {
+                System.out.println("Info: All local timers should have ended. ");
                 Thread.sleep(1000);
                 getReadyTries += 1;
-                if (getReadyTries > 60) {
+                if (getReadyTries > 30) {
                     for (Player player : board.getAllPlayers()) {
                         if (!jsonInterpreter.isReady(player.getName())) {
                             board.removePlayer(player);
@@ -334,9 +337,7 @@ public class GameController {
                             System.out.println("Warning: May cause unexpected behavior. ");
                         }
                     }
-                }
-                else if (getReadyTries > 30) {
-                    System.out.println("Info: All local timers should have ended. ");
+                    break;
                 }
             } catch (InterruptedException e) {
                 System.out.println("Error: Unexpected synchronization behavior. ");
