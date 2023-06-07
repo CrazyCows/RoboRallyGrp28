@@ -61,6 +61,7 @@ public class GameController {
     private JsonInterpreter jsonInterpreter;
 
     private Player localPlayer;
+    JsonPlayerBuilder jsonPlayerBuilder;
     boolean MoreAdvancedGame = true;
     boolean firstRound;
 
@@ -78,7 +79,7 @@ public class GameController {
         }
         this.online = online;
         setPhase(Phase.PROGRAMMING);
-        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
+        jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
 
         if (online) {
@@ -323,9 +324,16 @@ public class GameController {
 
     public void synchronize() {
         setPhase(SYNCHRONIZATION);
+
+        localPlayer.setReady(true);
+        jsonPlayerBuilder.updateDynamicPlayerData();
+        clientController.updateJSON("playerData.json");
+        clientController.getJSON("playerData.json");
+
         int getReadyTries = 0;
         while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
             try {
+                clientController.getJSON("playerData.json");
                 System.out.println("Info: All local timers should have ended. ");
                 Thread.sleep(1000);
                 getReadyTries += 1;
