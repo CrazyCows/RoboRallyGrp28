@@ -152,14 +152,14 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
 
 
-        Text tempUpgradeText = new Text("\n\n" + "TEMPORARY");
+        Text tempUpgradeText = new Text( "\n\n\nTEMPORARY");
         tempUpgradeText.setFont(Font.font("System Bold", 16));
         tempUpgradeText.setUnderline(true);
         tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(tempUpgradeText, 2);
         upgradeShop.getChildren().add(tempUpgradeText);
 
-        Text permUpgradeText = new Text("\n\n" + "PERMANENT");
+        Text permUpgradeText = new Text("\n\n\nPERMANENT");
         permUpgradeText.setFont(Font.font("System Bold", 16));
         permUpgradeText.setUnderline(true);
         permUpgradeText.setTextAlignment(TextAlignment.CENTER);
@@ -202,10 +202,10 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(currency, 0);
         upgradeShop.getChildren().add(currency);
 
-        Text title = new Text("❖ UPGRADE SHOP ❖");
+        Text title = new Text("                ❖ UPGRADE SHOP ❖");
         title.setFont(Font.font("System Bold", 30));
-        title.setTextAlignment(TextAlignment.CENTER);
-        GridPane.setColumnIndex(title, 1);
+        title.setTextAlignment(TextAlignment.LEFT);
+        GridPane.setColumnIndex(title, 0);
         upgradeShop.getChildren().add(title);
 
         Button button = new Button("Click me!");
