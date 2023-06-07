@@ -191,7 +191,7 @@ public class BoardView extends VBox implements ViewObserver {
         Player player = board.getCurrentPlayer();
 
         Text playerName = new Text(player.getName());
-        playerName.setFont(Font.font("System Bold", 16));
+        playerName.setFont(Font.font("System Bold Underline",  16));
         playerName.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(playerName, 3);
         GridPane.setRowIndex(playerName, 0);
