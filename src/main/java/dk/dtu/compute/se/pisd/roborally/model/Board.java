@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
+import javafx.application.Platform;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import javafx.application.Platform;
@@ -61,7 +62,6 @@ public class Board extends Subject {
     private boolean stepMode;
 
     CardController cardController = CardController.getInstance();
-    private Timer timer;
     private int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
@@ -275,66 +275,18 @@ public class Board extends Subject {
 
 
 
-
-    // TODO: I forgot why this is places here??? (but it works though)
-    public void startTimer(GameController gameController) {
-        timer = new Timer(); //I'd like this to be a daemon but eh, doesn't matter much
-        timerIsRunning = true;
-        notifyChange();
-        //TODO: Notify server that timer is running.
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                timerSecondsCount += 1;
-                System.out.println("timer: " + timerSecondsCount);
-                if (timerSecondsCount % 6 == 0) {
-                    notifyChange();
-                }
-                if (timerSecondsCount >= 30) {
-                    timer.cancel();
-                    timer.purge();
-                    timerIsRunning = false;
-                    timerSecondsCount = 0;
-                    System.out.println("Time to fire event!");
-                    //Platform.runLater(() -> {banana(gameController);});
-                    notifyChange();
-                    countDownLatch.countDown();
-                }
-            }
-        }, 0, 1000);
-
-        Thread threadA = new Thread(() -> { //TODO: IS THIS DIRTY?
-            try{
-                countDownLatch.await();
-                cardController.fillAllPlayersProgramFromHand(this);
-                Thread.sleep(300);
-                gameController.finishProgrammingPhase();
-            } catch (InterruptedException e) {
-                System.out.println("Something very bad with the timer implementation happened");
-                e.printStackTrace();
-            }
-        });
-        threadA.setDaemon(false);
-        threadA.start();
-
-    }
-
-    private void banana(GameController gameController) {
-        try {
-            cardController.fillAllPlayersProgramFromHand(this);
-            Thread.sleep(400);
-            gameController.finishProgrammingPhase();
-        } catch (InterruptedException e) {
-            System.out.println("Something very bad with the timer implementation happened");
-            e.printStackTrace();
-        }
-    }
-
-
     public int getTimerSecondsCount() {
         return this.timerSecondsCount;
+    }
+
+    public void setTimerSecondsCount(int seconds) {
+        Platform.runLater(this::notifyChange);
+
+        this.timerSecondsCount = seconds;
+    }
+
+    public void setTimerIsRunning(boolean status) {
+        this.timerIsRunning = status;
     }
 
     public boolean getTimerIsRunning() {
