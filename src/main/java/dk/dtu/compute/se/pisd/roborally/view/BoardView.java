@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -168,7 +169,7 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(permUpgradeText, 0);
         upgradeShop.getChildren().add(permUpgradeText);
 
-
+/*
         ImageView upgradeCardImages = new ImageView();
         upgradeCardImages.setFitHeight(250);
         upgradeCardImages.setFitWidth(154);
@@ -186,6 +187,7 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setColumnIndex(tempUpgradeCardImages, 2);
         GridPane.setRowIndex(tempUpgradeCardImages, 1);
         upgradeShop.getChildren().add(tempUpgradeCardImages);
+*/
 
         Player player = board.getCurrentPlayer();
 
@@ -207,6 +209,7 @@ public class BoardView extends VBox implements ViewObserver {
         title.setFont(Font.font("System Bold", 30));
         title.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(title, 0);
+        GridPane.setMargin(title, new Insets(-100, 0, 0, 0));
         upgradeShop.getChildren().add(title);
 
         Button permButton = new Button("NEXT");
