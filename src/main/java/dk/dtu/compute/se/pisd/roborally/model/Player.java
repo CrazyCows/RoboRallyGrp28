@@ -42,7 +42,7 @@ public class Player extends Subject {
     //VARIABLES
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 8;
+    final public static int NO_CARDS = 9;
 
     final public Board board;
 
@@ -67,7 +67,9 @@ public class Player extends Subject {
     //The last card that the player used
     private Card lastCard = null;
     private int checkpointsCollected = 0;
-    private static int handSize = 8;
+
+    //TODO: These are already defined, duplicates are stoopid
+    private static int handSize = 9;
     private static int programSize = 5;
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
