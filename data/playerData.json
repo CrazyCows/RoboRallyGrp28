@@ -1,8 +1,8 @@
 {
-  "posx" : 3,
-  "posy" : 3,
+  "posx" : 4,
+  "posy" : 4,
   "energycubes" : 0,
-  "color" : "green",
+  "color" : "blue",
   "readystate" : true,
   "playerisLead" : false,
   "name" : "leader",
