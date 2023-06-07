@@ -122,6 +122,7 @@ public class BoardView extends VBox implements ViewObserver {
         System.out.println(board.height * 75);
         System.out.println(board.width * 75);
 
+/*
         mask = new Rectangle(board.width * 75, board.height * 75);
         mask.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, Color.rgb(0, 0, 0, 0.69)),
@@ -130,16 +131,17 @@ public class BoardView extends VBox implements ViewObserver {
                 new Stop(0.82, Color.rgb(0, 0, 0, 1)),
                 new Stop(0.83, Color.rgb(0, 0, 0, 0.69)),
                 new Stop(1, Color.rgb(0, 0, 0, 0.69))));
-        //mask.setY(upgradeShopImageView.getFitHeight() / 4);
-        //mask.setHeight(upgradeShopImageView.getFitHeight() / 2);
-
-        upgradeShop.setClip(mask);
-
+        mask.setY(upgradeShopImageView.getFitHeight());
+        mask.setHeight(upgradeShopImageView.getFitHeight());
+*/
 
 
 
 
-/*
+
+
+
+
         for (int i = 0; i < 4; i++) {
             ColumnConstraints colConstraints = new ColumnConstraints();
             colConstraints.setHgrow(Priority.SOMETIMES);
@@ -155,13 +157,13 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
 
 
-        Text tempUpgradeText = new Text("TEMPORARY UPGRADE CARDS");
+        Text tempUpgradeText = new Text("TEMPORARY");
         tempUpgradeText.setFont(Font.font("System Bold", 16));
         tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(tempUpgradeText, 2);
         upgradeShop.getChildren().add(tempUpgradeText);
 
-        Text permUpgradeText = new Text("PERMANENT UPGRADE CARDS");
+        Text permUpgradeText = new Text("PERMANENT");
         permUpgradeText.setFont(Font.font("System Bold", 16));
         permUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(permUpgradeText, 1);
@@ -186,14 +188,23 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(tempUpgradeCardImages, 1);
         upgradeShop.getChildren().add(tempUpgradeCardImages);
 
-        Player player = new Player();
-        Text playerName = new Text(player.getName());
+        Player player = gameController.
+
+        Text playerName = new Text("Player");
         playerName.setFont(Font.font("System Bold", 16));
-        playerName.setTextAlignment(TextAlignment.CENTER);
+        playerName.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(playerName, 3);
-        GridPane.setRowIndex(playerName, 1);
+        GridPane.setRowIndex(playerName, 0);
         upgradeShop.getChildren().add(playerName);
-*/
+
+        Text currency = new Text("\nEnergy Cubes: " +  + "❖");
+        currency.setFont(Font.font("System Bold", 16));
+        currency.setTextAlignment(TextAlignment.LEFT);
+        GridPane.setColumnIndex(currency, 3);
+        GridPane.setRowIndex(currency, 0);
+        upgradeShop.getChildren().add(currency);
+
+
 
 
 
