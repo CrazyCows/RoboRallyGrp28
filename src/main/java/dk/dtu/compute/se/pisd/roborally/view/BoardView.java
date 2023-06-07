@@ -115,7 +115,7 @@ public class BoardView extends VBox implements ViewObserver {
         timerGridPane.addRow(2, upgradeShopButton);
 
         upgradeShop = new GridPane();
-       // upgradeShop.setStyle("-fx-background-color: SKYBLUE");
+        upgradeShop.setStyle("-fx-background-color: SKYBLUE");
         upgradeShop.setVisible(false);
 
         Image upgradeShopImage = new Image("upgradeShopBackGround.png");
@@ -138,6 +138,7 @@ public class BoardView extends VBox implements ViewObserver {
         mask.setY(upgradeShopImageView.getFitHeight());
         mask.setHeight(upgradeShopImageView.getFitHeight());
 */
+
 
 
         for (int i = 0; i < 4; i++) {
