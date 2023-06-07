@@ -211,6 +211,9 @@ public class Board extends Subject {
     public List<Player> getAllPlayers() {
         return players;
     }
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
 
     /**
      * Returns the neighbour of the given space of the board in the given heading.

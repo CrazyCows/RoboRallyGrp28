@@ -24,21 +24,17 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.*;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.PROGRAMMING;
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.*;
 
 //import java.util.*;
 
@@ -62,6 +58,7 @@ public class GameController {
     private ClientController clientController;
 
     protected CardController cardController;
+    private JsonInterpreter jsonInterpreter;
 
     private Player localPlayer;
     boolean MoreAdvancedGame = true;
@@ -75,6 +72,7 @@ public class GameController {
         this.clientController = clientController;
         this.board = board;
         this.cardController = CardController.getInstance();
+        this.jsonInterpreter = new JsonInterpreter();
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);
         }
@@ -321,50 +319,80 @@ public class GameController {
         board.setTimerSecondsCount(0);
     }
 
-    /**
-     * 'Used in the single player version only, afaik' -Anton
-     */
-    public void finishProgrammingPhase() {
-        setPhase(Phase.ACTIVATION);
+    public void synchronize() {
+        setPhase(SYNCHRONIZATION);
+        int getReadyTries = 0;
+        while (!jsonInterpreter.isAllReady()) {
+            try {
+                Thread.sleep(1000);
+                getReadyTries += 1;
+                if (getReadyTries > 60) {
+                    for (Player player : board.getAllPlayers()) {
+                        if (!jsonInterpreter.isReady(player.getName())) {
+                            board.removePlayer(player);
+                            System.out.println(player.getName() + " has been removed from game due to unavailability");
+                            System.out.println("Warning: May cause unexpected behavior. ");
+                        }
+                    }
+                }
+                else if (getReadyTries > 30) {
+                    System.out.println("Info: All local timers should have ended. ");
+                }
+            } catch (InterruptedException e) {
+                System.out.println("Error: Unexpected synchronization behavior. ");
+                e.printStackTrace();
+                break;
+            }
+        }
 
+
+        if (firstRound) {
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+            clientController.createJSON("cardSequenceRequest.json");
+            firstRound = false;
+        }
+
+        for (Player player : board.getAllPlayers()) {
+            int count = 0;
+            for (Card card : player.currentProgram()) {
+                if (card instanceof DamageCard) {
+                    while (card instanceof DamageCard) {
+                        card = player.drawCardFromPile();
+                    }
+                    player.getProgram().get(count).setCard(card);
+                }
+                count += 1;
+            }
+        }
+
+        cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+        clientController.updateJSON("cardSequenceRequest.json");
+        clientController.getJSON("cardSequenceRequest.json");
+        for (Player player : board.getAllPlayers()) {
+            System.out.println(player.getName());
+            if (player != localPlayer) {
+                cardController.emptyProgram(player);
+                ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
+                int counter = 0;
+                for (CommandCardField field : player.getProgram()) {
+                    field.setCard(cards.get(counter));
+                    counter += 1;
+                }
+            }
+        }
+    }
+
+
+    public void finishProgrammingPhase() {
 
         //TODO: Check for spam and trojan cards,and replaces the card somehow?
         //TODO: Very much WIP
 
         if (online) {
-            if (firstRound) {
-                cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
-                clientController.createJSON("cardSequenceRequest.json");
-                firstRound = false;
-            }
-            for (Player player : board.getAllPlayers()) {
-                int count = 0;
-                for (Card card : player.currentProgram()) {
-                    if (card instanceof DamageCard) {
-                        while (card instanceof DamageCard) {
-                            card = player.drawCardFromPile();
-                        }
-                        player.getProgram().get(count).setCard(card);
-                    }
-                    count += 1;
-                }
-            }
-            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
-            clientController.updateJSON("cardSequenceRequest.json");
-            clientController.getJSON("cardSequenceRequest.json");
-            for (Player player : board.getAllPlayers()) {
-                System.out.println(player.getName());
-                if (player != localPlayer) {
-                    cardController.emptyProgram(player);
-                    ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
-                    int counter = 0;
-                    for (CommandCardField field : player.getProgram()) {
-                        field.setCard(cards.get(counter));
-                        counter += 1;
-                    }
-                }
-            }
+            synchronize();
         }
+
+        setPhase(Phase.ACTIVATION);
 
         Thread commandThread = new Thread(new Runnable() {
             @Override
