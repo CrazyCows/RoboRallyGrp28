@@ -79,6 +79,10 @@ public class Board extends Subject {
                 spaces[x][y] = space;
             }
         }
+        if (priorityAntennaSpace == null) {
+            System.out.println("ERROR: NO PRIORITY ANTENNA");
+            //TODO: IDK why this error is here. PriorityAntenna still works somehow
+        }
         this.stepMode = false;
         this.timerSecondsCount = 0;
         this.timerIsRunning = false;
@@ -91,14 +95,12 @@ public class Board extends Subject {
                     if (!space.getItems().isEmpty()) {
                         if (space.getItems().get(0).getName().equals("priorityAntenna")) {
                             priorityAntennaSpace = space;
-                            return priorityAntennaSpace;
                         }
                     }
                 }
             }
         }
-        System.out.println("ERROR: NO PRIORITY ANTENNA");
-        return null;
+        return priorityAntennaSpace;
     }
 
     public Integer getGameId() {
