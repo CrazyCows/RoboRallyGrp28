@@ -37,4 +37,11 @@ class JsonInterpreterTest {
         assertNotEquals(readyStates.size(), 0);
     }
 
+    @Test
+    void isAnyReady() {
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        ArrayList<String> names = jsonInterpreter.getPlayerNames();
+        System.out.println(jsonInterpreter.isAnyReady(names));
+    }
+
 }

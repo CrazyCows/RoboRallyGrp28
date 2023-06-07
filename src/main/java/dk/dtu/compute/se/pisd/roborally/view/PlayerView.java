@@ -164,16 +164,20 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
 
-            if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
+            if (player.board.getPhase() != Phase.PLAYER_INTERACTION) { // We never use PLAYER_INTERACTION (always true)
                 if (!programPane.getChildren().contains(buttonPanel)) {
                     programPane.getChildren().remove(playerInteractionPanel);
                     programPane.add(buttonPanel, Player.NO_REGISTERS, 0);
                 }
                 switch (player.board.getPhase()) {
                     case INITIALISATION:
+                        finishButton.setDisable(true);
+                        executeButton.setDisable(true);
+                        stepButton.setDisable(true);
+                        break;
+
+                    case UPGRADE:
                         finishButton.setDisable(false);
-                        // XXX just to make sure that there is a way for the player to get
-                        //     from the initialization phase to the programming phase somehow!
                         executeButton.setDisable(false);
                         stepButton.setDisable(false);
                         break;
@@ -184,10 +188,16 @@ public class PlayerView extends Tab implements ViewObserver {
                         stepButton.setDisable(false);
                         break;
 
+                    case SYNCHRONIZATION:
+                        finishButton.setDisable(true);
+                        executeButton.setDisable(true);
+                        stepButton.setDisable(true);
+                        break;
+
                     case ACTIVATION:
-                        finishButton.setDisable(false);
-                        executeButton.setDisable(false);
-                        stepButton.setDisable(false);
+                        finishButton.setDisable(true);
+                        executeButton.setDisable(true);
+                        stepButton.setDisable(true);
                         break;
 
                     default:

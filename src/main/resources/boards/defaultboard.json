@@ -197,11 +197,11 @@
       ],
       "background": [
         "WEST",
-        "test_field3.png"
+        "test_field2.png"
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt3",
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
           "INSTANCE": {
             "heading": "WEST"
           }

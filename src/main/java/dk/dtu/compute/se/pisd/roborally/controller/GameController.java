@@ -24,18 +24,24 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.*;
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.PROGRAMMING;
+import java.util.concurrent.CountDownLatch;
+
+import static dk.dtu.compute.se.pisd.roborally.model.Phase.*;
 
 //import java.util.*;
 
@@ -59,10 +65,14 @@ public class GameController {
     private ClientController clientController;
 
     protected CardController cardController;
+    private JsonInterpreter jsonInterpreter;
 
     private Player localPlayer;
+    JsonPlayerBuilder jsonPlayerBuilder;
     boolean MoreAdvancedGame = true;
     boolean firstRound;
+
+    private Timer timer;
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -70,20 +80,74 @@ public class GameController {
         this.clientController = clientController;
         this.board = board;
         this.cardController = CardController.getInstance();
+        this.jsonInterpreter = new JsonInterpreter();
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);
         }
-        if (localPlayer != null) {
-            this.localPlayer = localPlayer;
-        }
         this.online = online;
+        setPhase(Phase.PROGRAMMING);
+        jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
+        //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
         if (online) {
+            this.localPlayer = localPlayer;
             firstRound = true;
         }
-        setPhase(Phase.PROGRAMMING);
-        JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
-        //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
 
+    }
+
+    public void setupOnline() {
+
+        localPlayer.setReady(true);
+        jsonPlayerBuilder.updateDynamicPlayerData();
+        clientController.updateJSON("playerData.json");
+        clientController.getJSON("playerData.json");
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        localPlayer.setReady(false);
+        jsonPlayerBuilder.updateDynamicPlayerData();
+        clientController.updateJSON("playerData.json");
+        clientController.getJSON("playerData.json");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        while (jsonInterpreter.isAnyReady(jsonInterpreter.getPlayerNames())) {
+            try {
+                clientController.getJSON("playerData.json");
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        Thread countThread = new Thread(() -> {
+            ArrayList<String> playerNames = new ArrayList<>();
+            for (Player player: board.getAllPlayers()) {
+                if (player != localPlayer) {
+                    playerNames.add(player.getName());
+                }
+            }
+            while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
+                try {
+                    System.out.println("Updating");
+                    clientController.getJSON("playerData.json");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!localPlayer.isReady()) {
+                startTimer();
+            }
+        });
+        countThread.start();
     }
 
 
@@ -128,14 +192,14 @@ public class GameController {
 
         if (cond1 || cond2){
             System.out.println(originalPlayer.getName() + " hit a wall");
-            Player nextPlayer = getNextPlayer(originalPlayer);
+            Player nextPlayer = getNextPlayer();
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
 
         if (OGTargetIsNull){
             pit.doAction(this,originalPlayer.getSpace());
-            Player nextPlayer = getNextPlayer(originalPlayer);
+            Player nextPlayer = getNextPlayer();
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
@@ -172,7 +236,7 @@ public class GameController {
         Player currentPlayer = board.getCurrentPlayer();
         currentPlayer.setSpace(space);
 
-        Player nextPlayer = getNextPlayer(currentPlayer);
+        Player nextPlayer = getNextPlayer();
         board.setCurrentPlayer(nextPlayer);
         if (!space.getItems().isEmpty()) {
             for (Item item : space.getItems()) {
@@ -223,10 +287,10 @@ public class GameController {
     *
      */
     // returns the player who is closest to the Priority antenna
-    public Player getNextPlayer(Player currentPlayer){
+    public Player getNextPlayer(){
 
         Space priorityAntenna = board.getPriorityAntennaSpace();
-        Player closestPlayerToAntenna = currentPlayer;
+        Player closestPlayerToAntenna = null;
 
         int usedCards = Integer.MAX_VALUE;
         for (Player player : board.getAllPlayers()){
@@ -253,7 +317,8 @@ public class GameController {
                 closestPlayerToAntenna = player;
             }
         }
-        System.out.println("closest player to antenna: " + closestPlayerToAntenna.getColor());
+        assert closestPlayerToAntenna != null;
+        System.out.println("closest player to antenna: " + closestPlayerToAntenna.getName());
         //return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
         return closestPlayerToAntenna;
 
@@ -295,61 +360,172 @@ public class GameController {
         board.setPhase(phase);
     }
 
-    /**
-     * 'Used in the single player version only, afaik' -Anton
-     */
-    public void finishProgrammingPhase() {
-        setPhase(Phase.ACTIVATION);
 
+    public void startTimer() {
+        timer = new Timer();
+        board.setTimerIsRunning(true);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (localPlayer.isReady()) {
+                    board.setTimerSecondsCount(0);
+                    timer.cancel();
+                    timer.purge();
+                    return;
+                }
+                board.setTimerSecondsCount(board.getTimerSecondsCount() + 1);
+                System.out.println("timer: " + board.getTimerSecondsCount());
+                if (board.getTimerSecondsCount() >= 30) {
+                    timer.cancel();
+                    timer.purge();
+                    board.setTimerIsRunning(false);
+                    board.setTimerSecondsCount(0);
+                    System.out.println("Time to fire event!");
+                    countDownLatch.countDown();
+                    return;
+                }
+            }
+        }, 0, 1000);
+        board.setTimerSecondsCount(0);
+
+        Thread threadA = new Thread(() -> { //TODO: IS THIS DIRTY?
+            try{
+                countDownLatch.await();
+                setPhase(ACTIVATION);
+                cardController.fillAllPlayersProgramFromHandOnline(localPlayer);
+                Thread.sleep(300);
+                finishProgrammingPhase();
+            } catch (InterruptedException e) {
+                System.out.println("Something very bad with the timer implementation happened");
+                e.printStackTrace();
+            }
+        });
+        threadA.setDaemon(false);
+        threadA.start();
+    }
+
+    public void synchronize() {
+
+        System.out.println("______________SYNC_______________");
+        setPhase(SYNCHRONIZATION);
+
+        localPlayer.setReady(true);
+        jsonPlayerBuilder.updateDynamicPlayerData();
+        clientController.updateJSON("playerData.json");
+        clientController.getJSON("playerData.json");
+
+        if (firstRound) {
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+            clientController.createJSON("cardSequenceRequest.json");
+            clientController.getJSON("cardSequenceRequest.json");
+        }
+
+        cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+        clientController.updateJSON("cardSequenceRequest.json");
+        clientController.getJSON("cardSequenceRequest.json");
+
+        int getReadyTries = 0;
+        System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady());
+        while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
+            try {
+                clientController.getJSON("playerData.json");
+                System.out.println("Info: All local timers should have ended. ");
+                Thread.sleep(1000);
+                getReadyTries += 1;
+                if (getReadyTries > 30) {
+                    for (Player player : board.getAllPlayers()) {
+                        if (!jsonInterpreter.isReady(player.getName())) {
+                            board.removePlayer(player);
+                            System.out.println(player.getName() + " has been removed from game due to unavailability");
+                            System.out.println("Warning: May cause unexpected behavior. ");
+                        }
+                    }
+                    break;
+                }
+            } catch (InterruptedException e) {
+                System.out.println("Error: Unexpected synchronization behavior. ");
+                e.printStackTrace();
+                break;
+            }
+        }
+
+        for (Player player : board.getAllPlayers()) {
+            int count = 0;
+            for (Card card : player.currentProgram()) {
+                if (card instanceof DamageCard) {
+                    while (card instanceof DamageCard) {
+                        card = player.drawCardFromPile();
+                    }
+                    player.getProgram().get(count).setCard(card);
+                }
+                count += 1;
+            }
+        }
+
+        cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+        clientController.updateJSON("cardSequenceRequest.json");
+        clientController.getJSON("cardSequenceRequest.json");
+        for (Player player : board.getAllPlayers()) {
+            System.out.println(player.getName());
+            if (player != localPlayer) {
+                cardController.emptyProgram(player);
+                ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
+                int counter = 0;
+                for (CommandCardField field : player.getProgram()) {
+                    field.setCard(cards.get(counter));
+                    counter += 1;
+                }
+            }
+        }
+    }
+
+
+    // TODO: BUG: AGAIN card makes weird stuff if played as first card!!!!
+
+    public void finishProgrammingPhase() {
         //TODO: Check for spam and trojan cards,and replaces the card somehow?
         //TODO: Very much WIP
 
         if (online) {
-            if (firstRound) {
-                cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
-                clientController.createJSON("cardSequenceRequest.json");
-                firstRound = false;
-            }
-            for (Player player : board.getAllPlayers()) {
-                int count = 0;
-                for (Card card : player.currentProgram()) {
-                    if (card instanceof DamageCard) {
-                        while (card instanceof DamageCard) {
-                            card = player.drawCardFromPile();
-                        }
-                        player.getProgram().get(count).setCard(card);
-                    }
-                    count += 1;
-                }
-            }
-            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
-            clientController.updateJSON("cardSequenceRequest.json");
-            clientController.getJSON("cardSequenceRequest.json");
-            for (Player player : board.getAllPlayers()) {
-                System.out.println(player.getName());
-                if (player != localPlayer) {
-                    cardController.emptyProgram(player);
-                    ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
-                    int counter = 0;
-                    for (CommandCardField field : player.getProgram()) {
-                        field.setCard(cards.get(counter));
-                        counter += 1;
-                    }
-                }
-            }
+            synchronize();
         }
+
+        System.out.println("______________FINISH PROGRAMMING___________________");
+
+        setPhase(Phase.ACTIVATION);
 
         Thread commandThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                board.getCurrentPlayer().currentProgram();
-                Player currentPlayer = board.getCurrentPlayer();
+                Player currentPlayer = null;
                 while (true){
                     try {
+                        currentPlayer = getNextPlayer();
+                        board.setCurrentPlayer(currentPlayer);
+
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
-                        card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
-                        Thread.sleep(420); //Generify?
+                        if (card == null) {
+                            currentPlayer.incrementUsedCards();
+                            Thread.sleep(1000);
+                        }
+                        else {
+                            System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
+                            card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
+                            List<FieldAction> fieldActions = currentPlayer.getSpace().getActions();
+                            for (FieldAction fieldAction : fieldActions) {
+                                Thread.sleep(500); //Generify?
+                                fieldAction.doAction(GameController.this, currentPlayer.getSpace());
+                            }
+                            List<Item> items = currentPlayer.getSpace().getItems();
+                            for (Item item : items) {
+                                Thread.sleep(500); //Generify?
+                                item.getEvent().doAction(GameController.this, currentPlayer.getSpace());
+                            }
+                            currentPlayer.incrementUsedCards();
+                            Thread.sleep(500); //Generify?
+                        }
                     }
                     catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");
@@ -360,9 +536,7 @@ public class GameController {
                     catch (IndexOutOfBoundsException e){
                         System.out.println("Trying to get a card that was removed from the hand");
                     }
-                    currentPlayer.incrementUsedCards();
-                    currentPlayer = getNextPlayer(currentPlayer);
-                    board.setCurrentPlayer(currentPlayer);
+
                     boolean toBreak = true;
                     for (Player player : board.getAllPlayers()){
                         if (player.getUsedCards() < Player.NO_REGISTERS && !(player.currentProgram().size() == 0)){
@@ -382,10 +556,25 @@ public class GameController {
                         cardController.clearhand(player);
                     }
                 }
+
+                if (online) {
+                    localPlayer.setReady(false);
+                    jsonPlayerBuilder.updateDynamicPlayerData();
+                    clientController.updateJSON("playerData.json");
+                    clientController.getJSON("playerData.json");
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 setPhase(Phase.PROGRAMMING);
             }
         });
         commandThread.start();
+
     }
 
     // Executes the commandCards
