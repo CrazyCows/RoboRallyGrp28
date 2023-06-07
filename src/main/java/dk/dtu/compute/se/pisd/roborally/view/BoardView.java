@@ -114,6 +114,7 @@ public class BoardView extends VBox implements ViewObserver {
         timerGridPane.addRow(2, upgradeShopButton);
 
         upgradeShop = new GridPane();
+       // upgradeShop.setStyle("-fx-background-color: SKYBLUE");
         upgradeShop.setVisible(false);
 
         Image upgradeShopImage = new Image("upgradeShopBackGround.png");
@@ -153,14 +154,14 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
 
 
-        Text tempUpgradeText = new Text( "\n\n\n   TEMPORARY");
+        Text tempUpgradeText = new Text( "\n\n\n       TEMPORARY");
         tempUpgradeText.setFont(Font.font("System Bold", 16));
         tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(tempUpgradeText, 2);
         GridPane.setRowIndex(tempUpgradeText, 0);
         upgradeShop.getChildren().add(tempUpgradeText);
 
-        Text permUpgradeText = new Text("\n\n\n   PERMANENT");
+        Text permUpgradeText = new Text("\n\n\n       PERMANENT");
         permUpgradeText.setFont(Font.font("System Bold", 16));
         permUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(permUpgradeText, 1);
@@ -202,7 +203,7 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(currency, 0);
         upgradeShop.getChildren().add(currency);
 
-        Text title = new Text("                ❖ UPGRADE SHOP ❖");
+        Text title = new Text("                   ❖ UPGRADE SHOP ❖");
         title.setFont(Font.font("System Bold", 30));
         title.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(title, 0);
