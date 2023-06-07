@@ -169,7 +169,7 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(permUpgradeText, 0);
         upgradeShop.getChildren().add(permUpgradeText);
 
-/*
+
         ImageView upgradeCardImages = new ImageView();
         upgradeCardImages.setFitHeight(250);
         upgradeCardImages.setFitWidth(154);
@@ -187,7 +187,7 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setColumnIndex(tempUpgradeCardImages, 2);
         GridPane.setRowIndex(tempUpgradeCardImages, 1);
         upgradeShop.getChildren().add(tempUpgradeCardImages);
-*/
+
 
         Player player = board.getCurrentPlayer();
 
