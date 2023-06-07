@@ -159,12 +159,14 @@ public class BoardView extends VBox implements ViewObserver {
 
         Text tempUpgradeText = new Text("TEMPORARY");
         tempUpgradeText.setFont(Font.font("System Bold", 16));
+        tempUpgradeText.setUnderline(true);
         tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(tempUpgradeText, 2);
         upgradeShop.getChildren().add(tempUpgradeText);
 
         Text permUpgradeText = new Text("PERMANENT");
         permUpgradeText.setFont(Font.font("System Bold", 16));
+        permUpgradeText.setUnderline(true);
         permUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(permUpgradeText, 1);
         upgradeShop.getChildren().add(permUpgradeText);
