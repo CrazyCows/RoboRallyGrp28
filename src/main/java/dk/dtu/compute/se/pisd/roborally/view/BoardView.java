@@ -175,24 +175,24 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeCardImages.setPreserveRatio(true);
         upgradeCardImages.setPickOnBounds(true);
         pane.getChildren().add(upgradeCardImages);
-        pane.setStyle("-fx-border-color: BLACK; -fx-border-width: 1");
+        pane.setStyle("-fx-border-color: #230909; -fx-border-width: 2");
         GridPane.setColumnIndex(pane, 1);
         GridPane.setRowIndex(pane, 1);
         pane.setMaxSize(200,240);
         GridPane.setMargin(pane, new Insets(-60, 0, 0, 0));
-
-
-
         upgradeShop.getChildren().add(pane);
 
         ImageView tempUpgradeCardImages = new ImageView();
-        tempUpgradeCardImages.setFitHeight(250);
-        tempUpgradeCardImages.setFitWidth(154);
+        Pane pane2 = new Pane();
         tempUpgradeCardImages.setPreserveRatio(true);
         tempUpgradeCardImages.setPickOnBounds(true);
-        GridPane.setColumnIndex(tempUpgradeCardImages, 2);
-        GridPane.setRowIndex(tempUpgradeCardImages, 1);
-        upgradeShop.getChildren().add(tempUpgradeCardImages);
+        pane2.getChildren().add(tempUpgradeCardImages);
+        pane2.setStyle("-fx-border-color: #230909; -fx-border-width: 2");
+        GridPane.setColumnIndex(pane2, 2);
+        GridPane.setRowIndex(pane2, 1);
+        pane2.setMaxSize(200,240);
+        GridPane.setMargin(pane2, new Insets(-60, 0, 0, -3));
+        upgradeShop.getChildren().add(pane2);
 
 
         Player player = board.getCurrentPlayer();
