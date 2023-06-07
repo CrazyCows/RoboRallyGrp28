@@ -482,6 +482,8 @@ public class GameController {
     }
 
 
+    // TODO: BUG: AGAIN card makes weird stuff if played as first card!!!!
+
     public void finishProgrammingPhase() {
         //TODO: Check for spam and trojan cards,and replaces the card somehow?
         //TODO: Very much WIP
@@ -511,8 +513,18 @@ public class GameController {
                         else {
                             System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
                             card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
+                            List<FieldAction> fieldActions = currentPlayer.getSpace().getActions();
+                            for (FieldAction fieldAction : fieldActions) {
+                                Thread.sleep(500); //Generify?
+                                fieldAction.doAction(GameController.this, currentPlayer.getSpace());
+                            }
+                            List<Item> items = currentPlayer.getSpace().getItems();
+                            for (Item item : items) {
+                                Thread.sleep(500); //Generify?
+                                item.getEvent().doAction(GameController.this, currentPlayer.getSpace());
+                            }
                             currentPlayer.incrementUsedCards();
-                            Thread.sleep(1000); //Generify?
+                            Thread.sleep(500); //Generify?
                         }
                     }
                     catch (NullPointerException e) {
@@ -544,10 +556,25 @@ public class GameController {
                         cardController.clearhand(player);
                     }
                 }
+
+                if (online) {
+                    localPlayer.setReady(false);
+                    jsonPlayerBuilder.updateDynamicPlayerData();
+                    clientController.updateJSON("playerData.json");
+                    clientController.getJSON("playerData.json");
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 setPhase(Phase.PROGRAMMING);
             }
         });
         commandThread.start();
+
     }
 
     // Executes the commandCards

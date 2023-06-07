@@ -1,15 +1,15 @@
 [ {
-  "posx" : 4,
+  "posx" : 3,
   "posy" : 4,
   "energycubes" : 0,
-  "color" : "blue",
+  "color" : "green",
   "readystate" : true,
   "playerisLead" : false,
   "name" : "leader",
   "inGame" : true,
   "master" : true
 }, {
-  "posx" : 4,
+  "posx" : 3,
   "posy" : 2,
   "energycubes" : 0,
   "color" : "red",

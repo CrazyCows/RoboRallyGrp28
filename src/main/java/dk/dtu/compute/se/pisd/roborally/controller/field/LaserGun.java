@@ -19,13 +19,11 @@ public class LaserGun extends FieldAction {
     }
 
 
-    @Override //Maybe this code should be moved to the gamecontroller? Doesnt really make sense that a lasergun controls this
+    @Override
     public boolean doAction(GameController gameController, Space space) {
-        CardController cardController = CardController.getInstance();
         System.out.println("FIRING LASER");
         backgroundAnimationThread(space, space.getBackground());
-        cardController.drawSpamCardToDiscardPile(space.getPlayer());
-
+        gameController.getCardController().drawSpamCardToDiscardPile(space.getPlayer());
         return true;
     }
 
