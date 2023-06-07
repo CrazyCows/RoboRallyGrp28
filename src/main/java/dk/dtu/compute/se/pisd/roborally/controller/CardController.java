@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.CardLoader;
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
@@ -73,6 +74,29 @@ public class CardController {
             drawOneCard(player);
         }
     }
+
+    public void fillProgramFromHand(Player player){
+        for (CommandCardField programCommandCardField : player.getProgram()){
+            if (programCommandCardField.getCard() == null){
+                for (CommandCardField handCommandCardField :player.getHandPile()){
+                    if (handCommandCardField.getCard() != null){
+                        programCommandCardField.setCard(handCommandCardField.getCard());
+                        handCommandCardField.setCard(null);
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+
+     */
 
     int getNumberOfCardsInHandPile(Player player){
         int i = 0;
@@ -212,6 +236,14 @@ public class CardController {
     public void clearhand(Player player) {
         for (CommandCardField commandCardField : player.getHandPile()){
             commandCardField.setCard(null);
+        }
+    }
+
+    public void fillAllPlayersProgramFromHand(Board board) {
+        for (Player player : board.getAllPlayers()){
+            board.setCurrentPlayer(player);
+            this.fillProgramFromHand(player);
+            board.notifyChange();
         }
     }
 }

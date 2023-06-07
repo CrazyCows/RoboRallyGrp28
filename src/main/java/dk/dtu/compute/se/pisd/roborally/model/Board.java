@@ -24,6 +24,9 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
 import javafx.application.Platform;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
+import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -286,6 +289,7 @@ public class Board extends Subject {
 
     public void setTimerIsRunning(boolean status) {
         this.timerIsRunning = status;
+        this.notifyChange();
     }
 
     public boolean getTimerIsRunning() {

@@ -33,6 +33,7 @@ import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.*;
 
@@ -301,9 +302,11 @@ public class GameController {
         board.setPhase(phase);
     }
 
+
     public void startTimer() {
         timer = new Timer();
         board.setTimerIsRunning(true);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -316,10 +319,26 @@ public class GameController {
                     board.setTimerIsRunning(false);
                     board.setTimerSecondsCount(0);
                     System.out.println("Time to fire event!");
+                    countDownLatch.countDown();
                 }
             }
         }, 0, 1000);
         board.setTimerSecondsCount(0);
+
+        Thread threadA = new Thread(() -> { //TODO: IS THIS DIRTY?
+            try{
+                countDownLatch.await();
+                setPhase(ACTIVATION);
+                cardController.fillAllPlayersProgramFromHand(board);
+                Thread.sleep(300);
+                finishProgrammingPhase();
+            } catch (InterruptedException e) {
+                System.out.println("Something very bad with the timer implementation happened");
+                e.printStackTrace();
+            }
+        });
+        threadA.setDaemon(false);
+        threadA.start();
     }
 
     public void synchronize() {

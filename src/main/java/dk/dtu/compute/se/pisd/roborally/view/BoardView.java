@@ -237,7 +237,9 @@ public class BoardView extends VBox implements ViewObserver {
             Phase phase = board.getPhase();
             InterationRestrictor(phase);
             statusLabel.setText(board.getStatusMessage());
-            nextTimer();
+            if (board.getTimerIsRunning()){
+                nextTimer();
+            }
         }
     }
 
