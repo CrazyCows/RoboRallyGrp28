@@ -10,6 +10,8 @@ class ClientControllerTest {
         ClientController jsonConnect = new ClientController("kkkkkkkkkkkk");
         JsonInterpreter jsonInterpreter = new JsonInterpreter();
         jsonConnect.getJSON("cardSequenceRequest.json");
+        jsonConnect.updateJSON("cardSequenceRequest.json");
+        jsonConnect.getJSON("cardSequenceRequest.json");
     }
 
 

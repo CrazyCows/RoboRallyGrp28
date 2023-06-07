@@ -246,4 +246,11 @@ public class CardController {
             board.notifyChange();
         }
     }
+
+    public void fillAllPlayersProgramFromHandOnline(Player player) {
+        player.board.setCurrentPlayer(player);
+        this.fillProgramFromHand(player);
+        player.board.notifyChange();
+    }
+
 }

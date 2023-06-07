@@ -357,6 +357,13 @@ public class GameController {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                if (localPlayer.isReady()) {
+                    board.setTimerSecondsCount(0);
+                    timer.cancel();
+                    timer.purge();
+                    countDownLatch.countDown();
+                    return;
+                }
                 board.setTimerSecondsCount(board.getTimerSecondsCount() + 1);
                 System.out.println("timer: " + board.getTimerSecondsCount());
                 if (board.getTimerSecondsCount() >= 30) {
@@ -366,6 +373,7 @@ public class GameController {
                     board.setTimerSecondsCount(0);
                     System.out.println("Time to fire event!");
                     countDownLatch.countDown();
+                    return;
                 }
             }
         }, 0, 1000);
@@ -375,7 +383,7 @@ public class GameController {
             try{
                 countDownLatch.await();
                 setPhase(ACTIVATION);
-                cardController.fillAllPlayersProgramFromHand(board);
+                cardController.fillAllPlayersProgramFromHandOnline(localPlayer);
                 Thread.sleep(300);
                 finishProgrammingPhase();
             } catch (InterruptedException e) {
@@ -394,6 +402,10 @@ public class GameController {
         jsonPlayerBuilder.updateDynamicPlayerData();
         clientController.updateJSON("playerData.json");
         clientController.getJSON("playerData.json");
+
+        cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+        clientController.updateJSON("cardSequenceRequest.json");
+        clientController.getJSON("cardSequenceRequest.json");
 
         int getReadyTries = 0;
         System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady());
