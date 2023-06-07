@@ -115,14 +115,16 @@ public class BoardView extends VBox implements ViewObserver {
         timerGridPane.addRow(2, upgradeShopButton);
 
         upgradeShop = new GridPane();
-        upgradeShop.setStyle("-fx-background-color: SKYBLUE");
+        GridPane shop = new GridPane(); //TODO - TESTER
+        GridPane background = new GridPane(); //TODO - TESTER
+
         upgradeShop.setVisible(false);
 
         Image upgradeShopImage = new Image("upgradeShopBackGround.png");
         ImageView upgradeShopImageView = new ImageView(upgradeShopImage);
         upgradeShopImageView.setFitWidth(board.width * 75);
         upgradeShopImageView.setFitHeight(board.height * 75);
-        upgradeShop.getChildren().add(upgradeShopImageView);
+        shop.getChildren().add(upgradeShopImageView);
         System.out.println(board.height * 75);
         System.out.println(board.width * 75);
 
@@ -146,14 +148,14 @@ public class BoardView extends VBox implements ViewObserver {
             colConstraints.setHgrow(Priority.SOMETIMES);
             colConstraints.setMinWidth(10);
             colConstraints.setPrefWidth(100);
-            upgradeShop.getColumnConstraints().add(colConstraints);
+            shop.getColumnConstraints().add(colConstraints);
         }
 
 
         RowConstraints row1Constraints = new RowConstraints(88, 88, 129, Priority.SOMETIMES, VPos.CENTER, true);
         RowConstraints row2Constraints = new RowConstraints(231, 231, 270, Priority.SOMETIMES, VPos.CENTER, true);
         RowConstraints row3Constraints = new RowConstraints(30, 30, 30, Priority.SOMETIMES, VPos.CENTER, true);
-        upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
+        shop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
 
 
         Text tempUpgradeText = new Text( "\n\n\n       TEMPORARY");
@@ -161,14 +163,14 @@ public class BoardView extends VBox implements ViewObserver {
         tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(tempUpgradeText, 2);
         GridPane.setRowIndex(tempUpgradeText, 0);
-        upgradeShop.getChildren().add(tempUpgradeText);
+        shop.getChildren().add(tempUpgradeText);
 
         Text permUpgradeText = new Text("\n\n\n       PERMANENT");
         permUpgradeText.setFont(Font.font("System Bold", 16));
         permUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(permUpgradeText, 1);
         GridPane.setRowIndex(permUpgradeText, 0);
-        upgradeShop.getChildren().add(permUpgradeText);
+        shop.getChildren().add(permUpgradeText);
 
 
         ImageView upgradeCardImages = new ImageView();
@@ -181,7 +183,7 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(pane, 1);
         pane.setMaxSize(200,240);
         GridPane.setMargin(pane, new Insets(-60, 0, 0, 0));
-        upgradeShop.getChildren().add(pane);
+        shop.getChildren().add(pane);
 
         ImageView tempUpgradeCardImages = new ImageView();
         Pane pane2 = new Pane();
@@ -193,7 +195,7 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(pane2, 1);
         pane2.setMaxSize(200,240);
         GridPane.setMargin(pane2, new Insets(-60, 0, 0, -3));
-        upgradeShop.getChildren().add(pane2);
+        shop.getChildren().add(pane2);
 
 
         Player player = board.getCurrentPlayer();
@@ -203,21 +205,21 @@ public class BoardView extends VBox implements ViewObserver {
         playerName.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(playerName, 3);
         GridPane.setRowIndex(playerName, 0);
-        upgradeShop.getChildren().add(playerName);
+        shop.getChildren().add(playerName);
 
         Text currency = new Text("\n\n\nEnergy Cubes: " + player.getEnergyCubes() + " ◈");
         currency.setFont(Font.font("System Bold", 16));
         currency.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(currency, 3);
         GridPane.setRowIndex(currency, 0);
-        upgradeShop.getChildren().add(currency);
+        shop.getChildren().add(currency);
 
         Text title = new Text("                   ❖ UPGRADE SHOP ❖");
         title.setFont(Font.font("System Bold", 30));
         title.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(title, 0);
         GridPane.setMargin(title, new Insets(-100, 0, 0, 0));
-        upgradeShop.getChildren().add(title);
+        shop.getChildren().add(title);
 
         Button permButton = new Button("NEXT");
         permButton.setFont(Font.font("System", 14));
@@ -226,7 +228,7 @@ public class BoardView extends VBox implements ViewObserver {
         double width = anchorPane.getWidth();
         AnchorPane.setRightAnchor(permButton, 0.30 * width);
         GridPane.setConstraints(anchorPane, 0, 1);
-        upgradeShop.getChildren().add(anchorPane);
+        shop.getChildren().add(anchorPane);
 
         Button tempButton = new Button("NEXT");
         tempButton.setFont(Font.font("System", 14));
@@ -235,9 +237,22 @@ public class BoardView extends VBox implements ViewObserver {
         double width2 = anchorPane2.getWidth();
         AnchorPane.setLeftAnchor(tempButton, 0.30 * width2);
         GridPane.setConstraints(anchorPane2, 3, 1);
-        upgradeShop.getChildren().add(anchorPane2);
+        shop.getChildren().add(anchorPane2);
 
+        upgradeShop.getChildren().add(shop); //TODO - TESTER (else: delete shop and replace it with upgradeShop everywhere)
 
+/*
+        ImageView hansiView = new ImageView(new Image("hansi.png"));
+        hansiView.setStyle("-fx-opacity: 0.5");
+
+        upgradeShop.getChildren().add(background);
+        GridPane top = new GridPane();
+        top.add(hansiView,0,0);
+        top.add(shop,0,1);
+        upgradeShop.getChildren().add(top);
+        background.setStyle("-fx-background-color: PURPLE; -fx-opacity: 0.5");
+        background.setPrefSize(600,600);
+*/
 
 
 
