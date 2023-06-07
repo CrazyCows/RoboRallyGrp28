@@ -137,12 +137,6 @@ public class BoardView extends VBox implements ViewObserver {
 */
 
 
-
-
-
-
-
-
         for (int i = 0; i < 4; i++) {
             ColumnConstraints colConstraints = new ColumnConstraints();
             colConstraints.setHgrow(Priority.SOMETIMES);
@@ -272,7 +266,7 @@ public class BoardView extends VBox implements ViewObserver {
             }
             case PROGRAMMING -> {
                 timerButton.setDisable(false);
-                upgradeShopButton.setDisable(true);
+                upgradeShopButton.setDisable(false); // SHOULD BE DISABLED
             }
             case SYNCHRONIZATION -> {
                 timerButton.setDisable(true);
