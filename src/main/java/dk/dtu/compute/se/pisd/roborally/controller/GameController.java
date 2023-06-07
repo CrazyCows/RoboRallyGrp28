@@ -181,14 +181,14 @@ public class GameController {
 
         if (cond1 || cond2){
             System.out.println(originalPlayer.getName() + " hit a wall");
-            Player nextPlayer = getNextPlayer(originalPlayer);
+            Player nextPlayer = getNextPlayer();
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
 
         if (OGTargetIsNull){
             pit.doAction(this,originalPlayer.getSpace());
-            Player nextPlayer = getNextPlayer(originalPlayer);
+            Player nextPlayer = getNextPlayer();
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
@@ -225,7 +225,7 @@ public class GameController {
         Player currentPlayer = board.getCurrentPlayer();
         currentPlayer.setSpace(space);
 
-        Player nextPlayer = getNextPlayer(currentPlayer);
+        Player nextPlayer = getNextPlayer();
         board.setCurrentPlayer(nextPlayer);
         if (!space.getItems().isEmpty()) {
             for (Item item : space.getItems()) {
@@ -276,10 +276,10 @@ public class GameController {
     *
      */
     // returns the player who is closest to the Priority antenna
-    public Player getNextPlayer(Player currentPlayer){
+    public Player getNextPlayer(){
 
         Space priorityAntenna = board.getPriorityAntennaSpace();
-        Player closestPlayerToAntenna = currentPlayer;
+        Player closestPlayerToAntenna = board.getCurrentPlayer();
 
         int usedCards = Integer.MAX_VALUE;
         for (Player player : board.getAllPlayers()){
@@ -486,6 +486,7 @@ public class GameController {
             public void run() {
                 board.getCurrentPlayer().currentProgram();
                 Player currentPlayer = board.getCurrentPlayer();
+                currentPlayer = getNextPlayer();
                 while (true){
                     try {
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
@@ -503,7 +504,7 @@ public class GameController {
                         System.out.println("Trying to get a card that was removed from the hand");
                     }
                     currentPlayer.incrementUsedCards();
-                    currentPlayer = getNextPlayer(currentPlayer);
+                    currentPlayer = getNextPlayer();
                     board.setCurrentPlayer(currentPlayer);
                     boolean toBreak = true;
                     for (Player player : board.getAllPlayers()){
