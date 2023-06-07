@@ -91,23 +91,12 @@ public class GameController {
         if (online) {
             this.localPlayer = localPlayer;
             firstRound = true;
+            localPlayer.setReady(false);
         }
 
     }
 
     public void setupOnline() {
-
-        localPlayer.setReady(true);
-        jsonPlayerBuilder.updateDynamicPlayerData();
-        clientController.updateJSON("playerData.json");
-        clientController.getJSON("playerData.json");
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         localPlayer.setReady(false);
         jsonPlayerBuilder.updateDynamicPlayerData();
         clientController.updateJSON("playerData.json");
@@ -504,16 +493,10 @@ public class GameController {
                         board.setCurrentPlayer(currentPlayer);
 
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        if (card == null) {
-                            currentPlayer.incrementUsedCards();
-                            Thread.sleep(1000);
-                        }
-                        else {
-                            System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
-                            card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
-                            currentPlayer.incrementUsedCards();
-                            Thread.sleep(1000); //Generify?
-                        }
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
+                        card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
+                        currentPlayer.incrementUsedCards();
+                        Thread.sleep(5000); //Generify?
                     }
                     catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");
