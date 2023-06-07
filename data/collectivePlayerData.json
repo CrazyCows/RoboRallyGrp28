@@ -1,21 +1,21 @@
 [ {
-  "posx" : 0,
+  "posx" : 3,
   "posy" : 3,
   "energycubes" : 0,
-  "color" : "blue",
+  "color" : "green",
   "readystate" : true,
   "playerisLead" : false,
   "name" : "leader",
   "inGame" : true,
   "master" : true
 }, {
-  "posx" : 0,
-  "posy" : 1,
+  "posx" : 2,
+  "posy" : 2,
   "energycubes" : 0,
   "color" : "red",
   "readystate" : true,
   "playerisLead" : false,
-  "name" : "sfdgsdhfg",
+  "name" : "otherPlayer",
   "inGame" : true,
   "master" : false
 } ]

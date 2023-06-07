@@ -64,8 +64,8 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
-    final private List<Integer> PLAYER_START_X_POSITION = Arrays.asList(0, 0, 0, 0, 0, 0);
-    final private List<Integer> PLAYER_START_Y_POSITION = Arrays.asList(1, 2, 3, 4, 5, 6);
+    final private List<Integer> PLAYER_START_X_POSITION = Arrays.asList(2, 3, 4, 5, 6, 7);
+    final private List<Integer> PLAYER_START_Y_POSITION = Arrays.asList(2, 3, 4, 5, 6, 7);
 
     private List<String> savedBoards;
 
@@ -349,7 +349,7 @@ public class AppController implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(null, true);
+            Board board = LoadBoard.loadBoard("emptyTestBoard", true);
             roboRally.pauseMusic();
 
             assert board != null;

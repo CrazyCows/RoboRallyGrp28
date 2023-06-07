@@ -29,7 +29,8 @@ public class ClientController {
 
     public ClientController(String ID) {
         this.client = HttpClient.newHttpClient();
-        this.baseUrl = "http://20.86.101.206:80";
+        //this.baseUrl = "http://20.86.101.206:80";
+        this.baseUrl = "http://localhost:8080";
         this.objectMapper = new ObjectMapper();
         this.path = "data";
         this.ID = ID;

@@ -279,7 +279,7 @@ public class GameController {
     public Player getNextPlayer(){
 
         Space priorityAntenna = board.getPriorityAntennaSpace();
-        Player closestPlayerToAntenna = board.getCurrentPlayer();
+        Player closestPlayerToAntenna = null;
 
         int usedCards = Integer.MAX_VALUE;
         for (Player player : board.getAllPlayers()){
@@ -306,7 +306,8 @@ public class GameController {
                 closestPlayerToAntenna = player;
             }
         }
-        System.out.println("closest player to antenna: " + closestPlayerToAntenna.getColor());
+        assert closestPlayerToAntenna != null;
+        System.out.println("closest player to antenna: " + closestPlayerToAntenna.getName());
         //return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
         return closestPlayerToAntenna;
 
@@ -361,7 +362,6 @@ public class GameController {
                     board.setTimerSecondsCount(0);
                     timer.cancel();
                     timer.purge();
-                    countDownLatch.countDown();
                     return;
                 }
                 board.setTimerSecondsCount(board.getTimerSecondsCount() + 1);
@@ -396,12 +396,20 @@ public class GameController {
     }
 
     public void synchronize() {
+
+        System.out.println("______________SYNC_______________");
         setPhase(SYNCHRONIZATION);
 
         localPlayer.setReady(true);
         jsonPlayerBuilder.updateDynamicPlayerData();
         clientController.updateJSON("playerData.json");
         clientController.getJSON("playerData.json");
+
+        if (firstRound) {
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+            clientController.createJSON("cardSequenceRequest.json");
+            clientController.getJSON("cardSequenceRequest.json");
+        }
 
         cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
         clientController.updateJSON("cardSequenceRequest.json");
@@ -430,13 +438,6 @@ public class GameController {
                 e.printStackTrace();
                 break;
             }
-        }
-
-
-        if (firstRound) {
-            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
-            clientController.createJSON("cardSequenceRequest.json");
-            firstRound = false;
         }
 
         for (Player player : board.getAllPlayers()) {
@@ -471,7 +472,6 @@ public class GameController {
 
 
     public void finishProgrammingPhase() {
-
         //TODO: Check for spam and trojan cards,and replaces the card somehow?
         //TODO: Very much WIP
 
@@ -479,20 +479,24 @@ public class GameController {
             synchronize();
         }
 
+        System.out.println("______________FINISH PROGRAMMING___________________");
+
         setPhase(Phase.ACTIVATION);
 
         Thread commandThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                board.getCurrentPlayer().currentProgram();
-                Player currentPlayer = board.getCurrentPlayer();
-                currentPlayer = getNextPlayer();
+                Player currentPlayer = null;
                 while (true){
                     try {
+                        currentPlayer = getNextPlayer();
+                        board.setCurrentPlayer(currentPlayer);
+
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
                         System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
                         card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
-                        Thread.sleep(420); //Generify?
+                        currentPlayer.incrementUsedCards();
+                        Thread.sleep(5000); //Generify?
                     }
                     catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");
@@ -503,9 +507,7 @@ public class GameController {
                     catch (IndexOutOfBoundsException e){
                         System.out.println("Trying to get a card that was removed from the hand");
                     }
-                    currentPlayer.incrementUsedCards();
-                    currentPlayer = getNextPlayer();
-                    board.setCurrentPlayer(currentPlayer);
+
                     boolean toBreak = true;
                     for (Player player : board.getAllPlayers()){
                         if (player.getUsedCards() < Player.NO_REGISTERS && !(player.currentProgram().size() == 0)){
