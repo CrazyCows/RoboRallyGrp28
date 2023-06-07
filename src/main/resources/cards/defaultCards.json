@@ -7,6 +7,24 @@
       "commandName": "MOVEONE"
     },
     {
+      "name": "Move 1",
+      "imagePath": "images/cards/programmingCardImages/Move1.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "MOVEONE"
+    },
+    {
+      "name": "Move 1",
+      "imagePath": "images/cards/programmingCardImages/Move1.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "MOVEONE"
+    },
+    {
+      "name": "Move 2",
+      "imagePath": "images/cards/programmingCardImages/Move2.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "MOVETWO"
+    },
+    {
       "name": "Move 2",
       "imagePath": "images/cards/programmingCardImages/Move2.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
@@ -19,10 +37,40 @@
       "commandName": "MOVETHREE"
     },
     {
+      "name": "Move 3",
+      "imagePath": "images/cards/programmingCardImages/Move3.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "MOVETHREE"
+    },
+    {
       "name": "Turn Left",
       "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "LEFT"
+    },
+    {
+      "name": "Turn Left",
+      "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "LEFT"
+    },
+    {
+      "name": "Turn Left",
+      "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "LEFT"
+    },
+    {
+      "name": "Turn Right",
+      "imagePath": "images/cards/programmingCardImages/RightTurn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "RIGHT"
+    },
+    {
+      "name": "Turn Right",
+      "imagePath": "images/cards/programmingCardImages/RightTurn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "RIGHT"
     },
     {
       "name": "Turn Right",
@@ -43,10 +91,28 @@
       "commandName": "AGAIN"
     },
     {
+      "name": "Again",
+      "imagePath": "images/cards/programmingCardImages/Again.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "AGAIN"
+    },
+    {
       "name": "Back Up",
       "imagePath": "images/cards/programmingCardImages/MoveBack.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "commandName": "BACKUP"
+    },
+    {
+      "name": "Back Up",
+      "imagePath": "images/cards/programmingCardImages/MoveBack.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "BACKUP"
+    },
+    {
+      "name": "Power Up",
+      "imagePath": "images/cards/programmingCardImages/PowerUp.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "POWERUP"
     },
     {
       "name": "Power Up",
@@ -101,9 +167,387 @@
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
     },
     {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Spam",
+      "effect": "This is the simplest form of damage. Robots must take a SPAM damage card when they are shot by a board or robot laser.",
+      "imagePath": "images/cards/damageCardImages/SPAM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
       "name": "Trojan Horse",
       "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
       "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Trojan Horse",
+      "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Trojan Horse",
+      "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Trojan Horse",
+      "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Trojan Horse",
+      "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Trojan Horse",
+      "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Trojan Horse",
+      "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Trojan Horse",
+      "effect": "When you program a Trojan horse damage card, you must immediately take two SPAM damage cards.",
+      "imagePath": "images/cards/damageCardImages/TrojanHorse.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Worm",
+      "effect": "When you program a worm damage card, you must immediately reboot your robot.",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Worm",
+      "effect": "When you program a worm damage card, you must immediately reboot your robot.",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Worm",
+      "effect": "When you program a worm damage card, you must immediately reboot your robot.",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Worm",
+      "effect": "When you program a worm damage card, you must immediately reboot your robot.",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Worm",
+      "effect": "When you program a worm damage card, you must immediately reboot your robot.",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Worm",
+      "effect": "When you program a worm damage card, you must immediately reboot your robot.",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Worm",
+      "effect": "When you program a worm damage card, you must immediately reboot your robot.",
+      "imagePath": "images/cards/damageCardImages/WORM.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
     },
     {
@@ -117,8 +561,49 @@
       "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
       "imagePath": "images/cards/damageCardImages/VIRUS.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Virus",
+      "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Virus",
+      "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Virus",
+      "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Virus",
+      "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Virus",
+      "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Virus",
+      "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
+    },
+    {
+      "name": "Virus",
+      "effect": "When you program a virus damage card, any robot on the board within a six-space radius of you must immediately take a virus card from the draw pile.",
+      "imagePath": "images/cards/damageCardImages/VIRUS.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.DamageAction"
     }
-
   ],
   "upgradeCards": [
     {
