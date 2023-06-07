@@ -152,14 +152,14 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
 
 
-        Text tempUpgradeText = new Text("TEMPORARY");
+        Text tempUpgradeText = new Text("\n\n" + "TEMPORARY");
         tempUpgradeText.setFont(Font.font("System Bold", 16));
         tempUpgradeText.setUnderline(true);
         tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(tempUpgradeText, 2);
         upgradeShop.getChildren().add(tempUpgradeText);
 
-        Text permUpgradeText = new Text("PERMANENT");
+        Text permUpgradeText = new Text("\n\n" + "PERMANENT");
         permUpgradeText.setFont(Font.font("System Bold", 16));
         permUpgradeText.setUnderline(true);
         permUpgradeText.setTextAlignment(TextAlignment.CENTER);
@@ -188,14 +188,14 @@ public class BoardView extends VBox implements ViewObserver {
 
         Player player = board.getCurrentPlayer();
 
-        Text playerName = new Text(player.getName());
+        Text playerName = new Text("\n" + player.getName());
         playerName.setFont(Font.font("System Bold",  16));
         playerName.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(playerName, 3);
         GridPane.setRowIndex(playerName, 0);
         upgradeShop.getChildren().add(playerName);
 
-        Text currency = new Text("\n\nEnergy Cubes: " + player.getEnergyCubes() + " ❖");
+        Text currency = new Text("\n\n\nEnergy Cubes: " + player.getEnergyCubes() + " ◈");
         currency.setFont(Font.font("System Bold", 16));
         currency.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(currency, 3);
@@ -203,11 +203,12 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShop.getChildren().add(currency);
 
         Text title = new Text("❖ UPGRADE SHOP ❖");
-        title.setFont(Font.font("System Bold", 40));
-        title.setTextAlignment(TextAlignment.RIGHT);
-        GridPane.setColumnIndex(title, 2);
-        GridPane.setRowIndex(title, 0);
+        title.setFont(Font.font("System Bold", 30));
+        title.setTextAlignment(TextAlignment.CENTER);
+        GridPane.setColumnIndex(title, 1);
         upgradeShop.getChildren().add(title);
+
+        Button button = new Button("Click me!");
 
 
 
