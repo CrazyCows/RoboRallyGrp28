@@ -30,7 +30,6 @@ import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
