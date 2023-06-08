@@ -500,32 +500,29 @@ public class GameController {
             @Override
             public void run() {
                 Player currentPlayer = null;
+                currentPlayer = getNextPlayer();
+                board.setCurrentPlayer(currentPlayer);
                 while (true){
                     try {
-                        currentPlayer = getNextPlayer();
-                        board.setCurrentPlayer(currentPlayer);
+                        Thread.sleep(200);
 
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        if (card == null) {
-                            currentPlayer.incrementUsedCards();
-                            Thread.sleep(1000);
-                        }
-                        else {
-                            System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
-                            card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
-                            List<FieldAction> fieldActions = currentPlayer.getSpace().getActions();
-                            for (FieldAction fieldAction : fieldActions) {
-                                Thread.sleep(500); //Generify?
-                                fieldAction.doAction(GameController.this, currentPlayer.getSpace());
-                            }
-                            List<Item> items = currentPlayer.getSpace().getItems();
-                            for (Item item : items) {
-                                Thread.sleep(500); //Generify?
-                                item.getEvent().doAction(GameController.this, currentPlayer.getSpace());
-                            }
-                            currentPlayer.incrementUsedCards();
+                        System.out.println(card.getName());
+
+                        System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
+                        card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
+                        List<FieldAction> fieldActions = currentPlayer.getSpace().getActions();
+                        for (FieldAction fieldAction : fieldActions) {
                             Thread.sleep(500); //Generify?
+                            fieldAction.doAction(GameController.this, currentPlayer.getSpace());
                         }
+                        List<Item> items = currentPlayer.getSpace().getItems();
+                        for (Item item : items) {
+                            Thread.sleep(500); //Generify?
+                            item.getEvent().doAction(GameController.this, currentPlayer.getSpace());
+                        }
+                        Thread.sleep(500); //Generify?
+
                     }
                     catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");
@@ -537,6 +534,9 @@ public class GameController {
                         System.out.println("Trying to get a card that was removed from the hand");
                     }
 
+                    currentPlayer = getNextPlayer();
+                    board.setCurrentPlayer(currentPlayer);
+                    currentPlayer.incrementUsedCards();
                     boolean toBreak = true;
                     for (Player player : board.getAllPlayers()){
                         if (player.getUsedCards() < Player.NO_REGISTERS && !(player.currentProgram().size() == 0)){

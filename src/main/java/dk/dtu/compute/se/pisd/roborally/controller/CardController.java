@@ -154,6 +154,7 @@ public class CardController {
             }
         }
         clearProgram(player);
+        player.setLastCard(null);
     }
 
     private void clearProgram(Player player) {
