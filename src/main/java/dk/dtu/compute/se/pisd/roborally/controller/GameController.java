@@ -27,15 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.card.Card;
-import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
-import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import dk.dtu.compute.se.pisd.roborally.model.card.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -66,6 +58,7 @@ public class GameController {
     private ChatController chatController;
 
     protected CardController cardController;
+    protected UpgradeShop upgradeShop;
     private JsonInterpreter jsonInterpreter;
 
     private Player localPlayer;
@@ -81,6 +74,10 @@ public class GameController {
         this.clientController = clientController;
         this.board = board;
         this.cardController = CardController.getInstance();
+        ArrayList<UpgradeCard> permanentUpgradeCards = this.cardController.getCardLoader().getPermUpgradeCards();
+        ArrayList<TempUpgradeCard> temporaryUpgradeCards = this.cardController.getCardLoader().getTempUpgradeCards();
+        this.board.getUpgradeShop().setPermanentUpgradeDeck(permanentUpgradeCards);
+        this.board.getUpgradeShop().setTemporaryUpgradeDeck(temporaryUpgradeCards);
         this.jsonInterpreter = new JsonInterpreter();
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);
@@ -662,6 +659,14 @@ public class GameController {
 
     public void win(Player currentPlayer) {
         roboRally.winScreen(currentPlayer);
+    }
+
+    public void nextPermanentUpgradeCard() {
+        board.getUpgradeShop().nextPermanentCard();
+    }
+
+    public void nextTemporaryUpgradeCard() {
+        board.getUpgradeShop().nextTemporaryCard();
     }
 
 
