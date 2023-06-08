@@ -48,7 +48,7 @@ public class ConveyorBelt1 extends FieldAction { //Composition over inheritance
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         gameController.moveInDirection(space.getPlayer(), 1, heading);
-        System.out.println("CONVEYOR");
+        System.out.println("CONVEYOR: Conveying robots and emotions alike");
         return false;
     }
 }
