@@ -4,16 +4,9 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.card.CardAction;
-import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Item;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
-import org.apache.tomcat.util.json.JSONParser;
 
 import java.io.*;
 import java.util.*;
@@ -25,7 +18,7 @@ public class CardLoader {
     ArrayList<ProgrammingCard> programmingCards;
     ArrayList<SpecialProgrammingCard> specialProgrammingCards;
     ArrayList<DamageCard> damageCards;
-    ArrayList<UpgradeCard> upgradeCards;
+    ArrayList<UpgradeCard> permUpgradeCards;
     ArrayList<TempUpgradeCard> tempUpgradeCards;
 
 
@@ -88,8 +81,8 @@ public class CardLoader {
             }
 
             // Extract and create upgrade cards
-            this.upgradeCards = new ArrayList<>(cardData.getUpgradeCards());
-            for (UpgradeCard card : upgradeCards) {
+            this.permUpgradeCards = new ArrayList<>(cardData.getUpgradeCards());
+            for (UpgradeCard card : permUpgradeCards) {
                 card.createAction();
             }
 
@@ -264,8 +257,8 @@ public class CardLoader {
         return damageCards;
     }
 
-    public ArrayList<UpgradeCard> getUpgradeCards() {
-        return upgradeCards;
+    public ArrayList<UpgradeCard> getPermUpgradeCards() {
+        return permUpgradeCards;
     }
 
     public ArrayList<TempUpgradeCard> getTempUpgradeCards() {

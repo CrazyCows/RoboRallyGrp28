@@ -39,4 +39,8 @@ public class TempUpgradeCard extends Card {
         return this.action;
     }
 
+    public int getCost() {
+        return this.cost;
+    }
+
 }
