@@ -38,6 +38,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.ls.LSOutput;
 
 /**
  * ...
@@ -73,6 +74,7 @@ public class BoardView extends VBox implements ViewObserver {
 
     private SpaceEventHandler spaceEventHandler;
     private ArrowKeyEventHandler arrowKeyEventHandler;
+    private GameController gameController;
     int timerSecondsCount;
 
     public SpaceView[][] getSpaces(){
@@ -81,6 +83,7 @@ public class BoardView extends VBox implements ViewObserver {
 
 
     public BoardView(@NotNull GameController gameController) {
+        this.gameController = gameController;
         board = gameController.board;
         upgradeShop = board.getUpgradeShop();
 
@@ -206,12 +209,14 @@ public class BoardView extends VBox implements ViewObserver {
         Button permButton = new Button();
         permButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
         permButton.setGraphic(right_arrow);
+        permButton.setOnAction(e -> gameController.nextTemporaryUpgradeCard());
 
 
         ImageView left_arrow = new ImageView(new Image("/images/left_arrow.png"));
         Button tempButton = new Button();
         tempButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
         tempButton.setGraphic(left_arrow);
+        tempButton.setOnAction(e -> gameController.nextPermanentUpgradeCard());
 
         Label tempLabel = new Label("Temporary");
         Label permLabel = new Label("Permanent");
@@ -370,7 +375,6 @@ public class BoardView extends VBox implements ViewObserver {
 
     @Override
     public void updateView(Subject subject) {
-        System.out.println("Board update");
         if (subject == board) {
             Phase phase = board.getPhase();
             InterationRestrictor(phase);
@@ -380,7 +384,6 @@ public class BoardView extends VBox implements ViewObserver {
             }
         }
         if (subject == upgradeShop) {
-            System.out.println("SUBJECT IS upgradeShop");
             this.permUpgradeCardImage.setImage(new Image(upgradeShop.getSelectedPermanentCardImage()));
             this.tempUpgradeCardImage.setImage(new Image(upgradeShop.getSelectedTemporaryCardImage()));
         }
