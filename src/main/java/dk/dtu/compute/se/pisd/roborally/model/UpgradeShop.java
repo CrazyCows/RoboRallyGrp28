@@ -82,12 +82,14 @@ public class UpgradeShop extends Subject {
     public void removePermanentUpgradeCard(UpgradeCard card) {
         permanentCards.remove(card);
         currentPermanentCardCounter = 0;
+        this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
         notifyChange();
     }
 
     public void removeTemporaryUpgradeCard(TempUpgradeCard card) {
         temporaryCards.remove(card);
         currentTemporaryCardCounter = 0;
+        this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
         notifyChange();
     }
 
