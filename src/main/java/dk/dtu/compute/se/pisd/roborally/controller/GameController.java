@@ -658,6 +658,14 @@ public class GameController {
         roboRally.winScreen(currentPlayer);
     }
 
+    public void nextPermanentUpgradeCard() {
+        board.getUpgradeShop().nextPermanentCard();
+    }
+
+    public void nextTemporaryUpgradeCard() {
+        board.getUpgradeShop().nextTemporaryCard();
+    }
+
 
     class ImpossibleMoveException extends Exception {
 
