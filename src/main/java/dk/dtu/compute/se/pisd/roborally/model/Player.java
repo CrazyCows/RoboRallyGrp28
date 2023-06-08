@@ -149,6 +149,11 @@ public class Player extends Subject {
         this.inGame = status;
         notifyChange();
     }
+
+    public int getAmountAllUpgradeCards() {
+        return permUpgradeCards.size() + tempUpgradeCards.size();
+    }
+
     public boolean isLeader() {
         return leader;
     }

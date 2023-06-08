@@ -676,7 +676,7 @@ public class GameController {
 
     public void purchaseTemporaryUpgradeCard(Player player) {
         TempUpgradeCard card = board.getUpgradeShop().getSelectedTemporaryCard();
-        if (player.getEnergyCubes() >= card.getCost()) {
+        if (player.getEnergyCubes() >= card.getCost() || player.getAmountAllUpgradeCards() >= 3) {
             board.getUpgradeShop().removeTemporaryUpgradeCard(card);
             player.addTemporaryUpgradeCard(card);
             player.addEnergyCubes(-card.getCost());
@@ -685,7 +685,7 @@ public class GameController {
 
     public void purchasePermanentUpgradeCard(Player player) {
         UpgradeCard card = board.getUpgradeShop().getSelectedPermanentCard();
-        if (player.getEnergyCubes() >= card.getCost()) {
+        if (player.getEnergyCubes() >= card.getCost() || player.getAmountAllUpgradeCards() >= 3) {
             board.getUpgradeShop().removePermanentUpgradeCard(card);
             player.addPermanentUpgradeCard(card);
             player.addEnergyCubes(-card.getCost());
