@@ -25,7 +25,9 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -68,7 +70,8 @@ public class BoardView extends VBox implements ViewObserver {
     private Image currentTimerImage;
     ImageView timerView;
     GridPane gridPane;
-    GridPane upgradeShop;
+    VBox upgradeShop;
+    Pane upgradeShopBlurBackground;
     StackPane stackPane;
     Rectangle mask;
     Button timerButton;
@@ -113,118 +116,9 @@ public class BoardView extends VBox implements ViewObserver {
         timerGridPane.addRow(1, timerButton);
         timerGridPane.addRow(2, upgradeShopButton);
 
-        upgradeShop = new GridPane();
-        upgradeShop.setVisible(false);
+        setupUpgradeShop();
 
-        Image upgradeShopImage = new Image("upgradeShopBackground.png");
-        ImageView upgradeShopImageView = new ImageView(upgradeShopImage);
-        upgradeShopImageView.setFitWidth(board.width * 75);
-        upgradeShopImageView.setFitHeight(board.height * 75);
-        upgradeShop.getChildren().add(upgradeShopImageView);
-        System.out.println(board.height * 75);
-        System.out.println(board.width * 75);
-
-
-
-
-
-/*
-        mask = new Rectangle(board.width * 75, board.height * 75);
-        mask.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
-                new Stop(0, Color.rgb(0, 0, 0, 0.69)),
-                new Stop(0.18, Color.rgb(0, 0, 0, 0.69)),
-                new Stop(0.19, Color.rgb(0, 0, 0, 1)),
-                new Stop(0.82, Color.rgb(0, 0, 0, 1)),
-                new Stop(0.83, Color.rgb(0, 0, 0, 0.69)),
-                new Stop(1, Color.rgb(0, 0, 0, 0.69))));
-        mask.setY(upgradeShopImageView.getFitHeight());
-        mask.setHeight(upgradeShopImageView.getFitHeight());
-*/
-
-
-        for (int i = 0; i < 4; i++) {
-            ColumnConstraints colConstraints = new ColumnConstraints();
-            colConstraints.setHgrow(Priority.SOMETIMES);
-            colConstraints.setMinWidth(10);
-            colConstraints.setPrefWidth(100);
-            upgradeShop.getColumnConstraints().add(colConstraints);
-        }
-
-
-        RowConstraints row1Constraints = new RowConstraints(88, 88, 129, Priority.SOMETIMES, VPos.CENTER, true);
-        RowConstraints row2Constraints = new RowConstraints(231, 231, 270, Priority.SOMETIMES, VPos.CENTER, true);
-        RowConstraints row3Constraints = new RowConstraints(30, 30, 30, Priority.SOMETIMES, VPos.CENTER, true);
-        upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
-
-
-        Text tempUpgradeText = new Text("TEMPORARY");
-        tempUpgradeText.setFont(Font.font("System Bold", 16));
-        tempUpgradeText.setUnderline(true);
-        tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
-        GridPane.setColumnIndex(tempUpgradeText, 2);
-        upgradeShop.getChildren().add(tempUpgradeText);
-
-        Text permUpgradeText = new Text("PERMANENT");
-        permUpgradeText.setFont(Font.font("System Bold", 16));
-        permUpgradeText.setUnderline(true);
-        permUpgradeText.setTextAlignment(TextAlignment.CENTER);
-        GridPane.setColumnIndex(permUpgradeText, 1);
-        GridPane.setRowIndex(permUpgradeText, 0);
-        upgradeShop.getChildren().add(permUpgradeText);
-
-
-        ImageView upgradeCardImages = new ImageView();
-        upgradeCardImages.setFitHeight(250);
-        upgradeCardImages.setFitWidth(154);
-        upgradeCardImages.setPreserveRatio(true);
-        upgradeCardImages.setPickOnBounds(true);
-        GridPane.setColumnIndex(upgradeCardImages, 1);
-        GridPane.setRowIndex(upgradeCardImages, 1);
-        upgradeShop.getChildren().add(upgradeCardImages);
-
-        ImageView tempUpgradeCardImages = new ImageView();
-        tempUpgradeCardImages.setFitHeight(250);
-        tempUpgradeCardImages.setFitWidth(154);
-        tempUpgradeCardImages.setPreserveRatio(true);
-        tempUpgradeCardImages.setPickOnBounds(true);
-        GridPane.setColumnIndex(tempUpgradeCardImages, 2);
-        GridPane.setRowIndex(tempUpgradeCardImages, 1);
-        upgradeShop.getChildren().add(tempUpgradeCardImages);
-
-        Player player = board.getCurrentPlayer();
-
-        Text playerName = new Text(player.getName());
-        playerName.setFont(Font.font("System Bold",  16));
-        playerName.setTextAlignment(TextAlignment.LEFT);
-        GridPane.setColumnIndex(playerName, 3);
-        GridPane.setRowIndex(playerName, 0);
-        upgradeShop.getChildren().add(playerName);
-
-        Text currency = new Text("\n\nEnergy Cubes: " + player.getEnergyCubes() + " ❖");
-        currency.setFont(Font.font("System Bold", 16));
-        currency.setTextAlignment(TextAlignment.LEFT);
-        GridPane.setColumnIndex(currency, 3);
-        GridPane.setRowIndex(currency, 0);
-        upgradeShop.getChildren().add(currency);
-
-        Text title = new Text("          ❖ UPGRADE SHOP ❖");
-        title.setFont(Font.font("System Bold", 40));
-        title.setTextAlignment(TextAlignment.RIGHT);
-        GridPane.setColumnIndex(title, 0);
-        GridPane.setRowIndex(title, 0);
-        GridPane.setMargin(title, new Insets(-100, 0, 0, 0));
-        upgradeShop.getChildren().add(title);
-
-
-
-
-
-
-
-
-
-
-        stackPane = new StackPane(mainBoardPane, upgradeShop);
+        stackPane = new StackPane(mainBoardPane, upgradeShopBlurBackground, this.upgradeShop);
 
         // create a GridPane and add the nodes to it
         gridPane = new GridPane();
@@ -260,6 +154,163 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
     }
 
+    private void setupUpgradeShop() {
+
+        upgradeShopBlurBackground = new Pane();
+        upgradeShopBlurBackground.setStyle("-fx-background-color: rgba(128, 128, 128, 0.9);");
+        upgradeShopBlurBackground.setVisible(false);
+
+        upgradeShop = new VBox();
+        upgradeShop.setFillWidth(true); // Allow the VBox to stretch horizontally
+
+        upgradeShop.setVisible(false);
+
+        Text tempUpgradeText = new Text( "\n\n\n       TEMPORARY");
+        tempUpgradeText.setFont(Font.font("System Bold", 16));
+        tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
+
+        Text permUpgradeText = new Text("\n\n\n       PERMANENT");
+        permUpgradeText.setFont(Font.font("System Bold", 16));
+        permUpgradeText.setTextAlignment(TextAlignment.CENTER);
+
+
+        ImageView upgradeCardImages = new ImageView();
+
+        upgradeCardImages.setPreserveRatio(true);
+        upgradeCardImages.setPickOnBounds(true);
+
+        ImageView tempUpgradeCardImages = new ImageView(new Image("images/cards/tempUpgradeCardImages/Boink.png"));
+        tempUpgradeCardImages.setPreserveRatio(true);
+        tempUpgradeCardImages.setPickOnBounds(true);
+        tempUpgradeCardImages.setFitWidth(180);
+
+        ImageView permUpgradeCardImages = new ImageView(new Image("images/cards/upgradeCardImages/Blue Screen Of Death.png"));
+        permUpgradeCardImages.setPreserveRatio(true);
+        permUpgradeCardImages.setPickOnBounds(true);
+        permUpgradeCardImages.setFitWidth(180);
+
+        Player player = board.getCurrentPlayer();
+
+        Text playerName = new Text("\n" + player.getName());
+        playerName.setFont(Font.font("System Bold",  16));
+        playerName.setTextAlignment(TextAlignment.LEFT);
+
+
+        Label energyLabel = new Label("\n\n\nEnergy Cubes: " + player.getEnergyCubes() + " ◈");
+        energyLabel.setFont(Font.font("System Bold", 16));
+        energyLabel.setTextAlignment(TextAlignment.LEFT);
+
+        Label title = new Label("UPGRADE SHOP");
+        title.setFont(Font.font("System Bold", 30));
+        title.setTextAlignment(TextAlignment.CENTER);
+
+        ImageView right_arrow = new ImageView(new Image("/images/right_arrow.png"));
+        Button permButton = new Button();
+        permButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+        permButton.setGraphic(right_arrow);
+
+
+        ImageView left_arrow = new ImageView(new Image("/images/left_arrow.png"));
+        Button tempButton = new Button();
+        tempButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+        tempButton.setGraphic(left_arrow);
+
+        Label tempLabel = new Label("Temporary");
+        Label permLabel = new Label("Permanent");
+
+        Label energyAmount = new Label("9");
+        energyAmount.setFont(Font.font("System Bold", 30));
+        energyAmount.setTextAlignment(TextAlignment.CENTER);
+
+        ImageView energyImage = new ImageView(new Image("images/energy.png"));
+        energyImage.setPreserveRatio(true);
+        energyImage.setPickOnBounds(true);
+        energyImage.setFitWidth(55);
+
+        Label emptyLabel = new Label("              ");
+
+        Label priceTempLabel = new Label("    Price: 3 energy");
+        Label pricePermLabel = new Label("    Price: 5 energy");
+
+        Button purchaseTempButton = new Button("Purchase");
+        Button purchasePermButton = new Button("Purchase");
+
+
+        // ENERGY
+        GridPane energyPane = new GridPane();
+        energyPane.add(emptyLabel, 0, 0);
+        energyPane.add(energyImage, 1, 0);
+        energyPane.add(energyAmount, 2, 0);
+        energyPane.setAlignment(Pos.CENTER_RIGHT);
+
+        // TOP
+        GridPane topGridPane = new GridPane();
+        topGridPane.setAlignment(Pos.CENTER);
+        topGridPane.add(title, 0, 0);
+        topGridPane.add(energyPane, 1, 0);
+
+
+        // PURCHASE
+        GridPane purchaseTempGridPane = new GridPane();
+        purchaseTempGridPane.add(purchaseTempButton, 0, 0);
+        purchaseTempGridPane.add(priceTempLabel, 1, 0);
+
+        // PURCHASE
+        GridPane purchasePermGridPane = new GridPane();
+        purchasePermGridPane.add(purchasePermButton, 0, 0);
+        purchasePermGridPane.add(pricePermLabel, 1, 0);
+
+        // LEFT
+        GridPane leftGridPane = new GridPane();
+        leftGridPane.setAlignment(Pos.CENTER);
+        // Configure leftGridPane as needed
+        leftGridPane.add(tempButton, 0, 1);
+        leftGridPane.add(tempLabel, 1, 0);
+        leftGridPane.add(tempUpgradeCardImages, 1, 1);
+        leftGridPane.add(purchaseTempGridPane, 1, 2);
+
+        // RIGHT
+        GridPane rightGridPane = new GridPane();
+        rightGridPane.setAlignment(Pos.CENTER);
+        // Configure rightGridPane as needed
+        rightGridPane.add(permButton, 1, 1);
+        rightGridPane.add(permLabel, 0,0);
+        rightGridPane.add(permUpgradeCardImages, 0, 1);
+        rightGridPane.add(purchasePermGridPane, 0, 2);
+
+        // CONTAINER (LEFT - RIGHT) - mainGridPane
+        GridPane mainGridPane = new GridPane();
+        mainGridPane.setAlignment(Pos.CENTER);
+
+        // Add all to the mainGridPane
+        GridPane.setConstraints(mainGridPane, 0, 0, 2, 1); // 2 columns, 1 row
+        GridPane.setConstraints(topGridPane, 0, 0, 2, 1); // 2 columns, 1 row
+        mainGridPane.getChildren().add(topGridPane);
+
+        GridPane.setConstraints(leftGridPane, 0, 1);
+        mainGridPane.getChildren().add(leftGridPane);
+
+        GridPane.setConstraints(rightGridPane, 1, 1);
+        mainGridPane.getChildren().add(rightGridPane);
+
+
+        // Set alignment and style of upgradeShop
+        this.upgradeShop.setStyle("-fx-background-color: #8f9295;");
+        this.upgradeShop.setAlignment(Pos.CENTER);
+
+        // Add mainGridPane to UpgradeShop
+        this.upgradeShop.getChildren().add(mainGridPane);
+
+        // Set the VBox (upgradeShop) to stretch horizontally and vertically
+        VBox.setVgrow(upgradeShop, Priority.ALWAYS);
+        upgradeShop.setMaxWidth(Double.MAX_VALUE);
+        upgradeShop.setMaxHeight(Double.MAX_VALUE);
+        upgradeShop.setAlignment(Pos.CENTER);
+        upgradeShop.setMaxHeight(400);
+
+    }
+
+
     public void InterationRestrictor(Phase phase) {
         switch (phase) {
             case INITIALISATION -> {
@@ -289,12 +340,14 @@ public class BoardView extends VBox implements ViewObserver {
     }
 
     private void displayUpgradeShop() {
-        System.out.println("upgrade shop is no longer displayed");
         if (upgradeShop.isVisible()) {
+            System.out.println("upgrade shop is no longer displayed");
+            upgradeShopBlurBackground.setVisible(false);
             upgradeShop.setVisible(false);
         }
         else {
             System.out.println("upgrade shop is displayed");
+            upgradeShopBlurBackground.setVisible(true);
             upgradeShop.setVisible(true);
         }
     }
