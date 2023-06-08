@@ -15,25 +15,38 @@ public class UpgradeShop extends Subject {
     int currentPermanentCardCounter;
     int currentTemporaryCardCounter;
 
-    public UpgradeShop(ArrayList<UpgradeCard> permanentCards, ArrayList<TempUpgradeCard> temporaryCards) {
-        this.permanentCards = permanentCards;
-        this.temporaryCards = temporaryCards;
-        this.selectedPermanentCard = permanentCards.get(0);
-        this.selectedTemporaryCard = temporaryCards.get(0);
+    public UpgradeShop() {
         currentPermanentCardCounter = 0;
         currentTemporaryCardCounter = 0;
+        UpgradeCard placeHolderPermanentCard = new UpgradeCard("PlaceHolder", "", 0, "hansi.png", "");
+        TempUpgradeCard placeHolderTemporaryCard = new TempUpgradeCard("PlaceHolder", "", 0, "hansi.png", "");
+        this.selectedPermanentCard = placeHolderPermanentCard;
+        this.selectedTemporaryCard = placeHolderTemporaryCard;
+
+    }
+
+    public void setPermanentUpgradeDeck(ArrayList<UpgradeCard> cards) {
+        this.permanentCards = cards;
+        this.selectedPermanentCard = permanentCards.get(0);
+        notifyChange();
+    }
+
+    public void setTemporaryUpgradeDeck(ArrayList<TempUpgradeCard> cards) {
+        this.temporaryCards = cards;
+        this.selectedTemporaryCard = temporaryCards.get(0);
+        notifyChange();
     }
 
     public UpgradeCard nextPermanentCard() {
-        currentPermanentCardCounter += 1;
         this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
+        currentPermanentCardCounter += 1;
         notifyChange();
         return this.selectedPermanentCard;
     }
 
-    public UpgradeCard nextTemporaryCard() {
-        currentTemporaryCardCounter += 1;
+    public TempUpgradeCard nextTemporaryCard() {
         this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
+        currentTemporaryCardCounter += 1;
         notifyChange();
         return this.selectedTemporaryCard;
     }
@@ -42,8 +55,26 @@ public class UpgradeShop extends Subject {
         return this.selectedPermanentCard;
     }
 
-    public UpgradeCard getSelectedTemporaryCard() {
+    public TempUpgradeCard getSelectedTemporaryCard() {
         return this.selectedTemporaryCard;
     }
+
+    public String getSelectedPermanentCardImage() {
+        return this.selectedPermanentCard.getImagePath();
+    }
+
+    public String getSelectedTemporaryCardImage() {
+        return this.selectedTemporaryCard.getImagePath();
+    }
+
+    public int getSelectedPermanentCost() {
+        return this.selectedPermanentCard.getCost();
+    }
+
+    public int getSelectedTemporaryCardCost() {
+        return this.selectedTemporaryCard.getCost();
+    }
+
+
 
 }

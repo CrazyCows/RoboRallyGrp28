@@ -28,12 +28,6 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -81,7 +75,8 @@ public class GameController {
         this.cardController = CardController.getInstance();
         ArrayList<UpgradeCard> permanentUpgradeCards = this.cardController.getCardLoader().getPermUpgradeCards();
         ArrayList<TempUpgradeCard> temporaryUpgradeCards = this.cardController.getCardLoader().getTempUpgradeCards();
-        this.upgradeShop = new UpgradeShop(permanentUpgradeCards, temporaryUpgradeCards);
+        this.board.getUpgradeShop().setPermanentUpgradeDeck(permanentUpgradeCards);
+        this.board.getUpgradeShop().setTemporaryUpgradeDeck(temporaryUpgradeCards);
         this.jsonInterpreter = new JsonInterpreter();
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);

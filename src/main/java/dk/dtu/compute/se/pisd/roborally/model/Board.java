@@ -64,12 +64,15 @@ public class Board extends Subject {
     private int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
+    private UpgradeShop upgradeShop;
 
     private int numberOfCheckpoints = 0;
 
     private ArrayList<Space> laserSpaces = new ArrayList<>();
 
     public Board(int width, int height) {
+        this.upgradeShop = new UpgradeShop();
+
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
@@ -315,6 +318,10 @@ public class Board extends Subject {
             numberOfCheckpoints = counter;
         }
         return numberOfCheckpoints;
+    }
+
+    public UpgradeShop getUpgradeShop() {
+        return this.upgradeShop;
     }
 
     public ArrayList<Space> getLaserSpaces(){ //Distinguish between types of lasers

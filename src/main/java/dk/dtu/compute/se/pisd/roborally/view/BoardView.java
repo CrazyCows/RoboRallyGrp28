@@ -25,10 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -36,17 +33,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
-import java.io.File;
-import java.io.InputStream;
 
 /**
  * ...
@@ -70,12 +61,15 @@ public class BoardView extends VBox implements ViewObserver {
     private Image currentTimerImage;
     ImageView timerView;
     GridPane gridPane;
-    VBox upgradeShop;
+    VBox upgradeShopVBox;
     Pane upgradeShopBlurBackground;
     StackPane stackPane;
     Rectangle mask;
     Button timerButton;
     Button upgradeShopButton;
+    UpgradeShop upgradeShop;
+    ImageView permUpgradeCardImage;
+    ImageView tempUpgradeCardImage;
 
     private SpaceEventHandler spaceEventHandler;
     private ArrowKeyEventHandler arrowKeyEventHandler;
@@ -88,6 +82,8 @@ public class BoardView extends VBox implements ViewObserver {
 
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
+        upgradeShop = board.getUpgradeShop();
+
 
         mainBoardPane = new GridPane();
         playersView = new PlayersView(gameController);
@@ -118,7 +114,7 @@ public class BoardView extends VBox implements ViewObserver {
 
         setupUpgradeShop();
 
-        stackPane = new StackPane(mainBoardPane, upgradeShopBlurBackground, this.upgradeShop);
+        stackPane = new StackPane(mainBoardPane, upgradeShopBlurBackground, this.upgradeShopVBox);
 
         // create a GridPane and add the nodes to it
         gridPane = new GridPane();
@@ -151,7 +147,9 @@ public class BoardView extends VBox implements ViewObserver {
         }
 
         board.attach(this);
+        upgradeShop.attach(this);
         update(board);
+        update(upgradeShop);
     }
 
     private void setupUpgradeShop() {
@@ -160,10 +158,10 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShopBlurBackground.setStyle("-fx-background-color: rgba(128, 128, 128, 0.9);");
         upgradeShopBlurBackground.setVisible(false);
 
-        upgradeShop = new VBox();
-        upgradeShop.setFillWidth(true); // Allow the VBox to stretch horizontally
+        upgradeShopVBox = new VBox();
+        upgradeShopVBox.setFillWidth(true); // Allow the VBox to stretch horizontally
 
-        upgradeShop.setVisible(false);
+        upgradeShopVBox.setVisible(false);
 
         Text tempUpgradeText = new Text( "\n\n\n       TEMPORARY");
         tempUpgradeText.setFont(Font.font("System Bold", 16));
@@ -179,15 +177,15 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeCardImages.setPreserveRatio(true);
         upgradeCardImages.setPickOnBounds(true);
 
-        ImageView tempUpgradeCardImages = new ImageView(new Image("images/cards/tempUpgradeCardImages/Boink.png"));
-        tempUpgradeCardImages.setPreserveRatio(true);
-        tempUpgradeCardImages.setPickOnBounds(true);
-        tempUpgradeCardImages.setFitWidth(180);
+        tempUpgradeCardImage = new ImageView(new Image(upgradeShop.getSelectedTemporaryCardImage()));
+        tempUpgradeCardImage.setPreserveRatio(true);
+        tempUpgradeCardImage.setPickOnBounds(true);
+        tempUpgradeCardImage.setFitWidth(180);
 
-        ImageView permUpgradeCardImages = new ImageView(new Image("images/cards/upgradeCardImages/Blue Screen Of Death.png"));
-        permUpgradeCardImages.setPreserveRatio(true);
-        permUpgradeCardImages.setPickOnBounds(true);
-        permUpgradeCardImages.setFitWidth(180);
+        permUpgradeCardImage = new ImageView(new Image(upgradeShop.getSelectedPermanentCardImage()));
+        permUpgradeCardImage.setPreserveRatio(true);
+        permUpgradeCardImage.setPickOnBounds(true);
+        permUpgradeCardImage.setFitWidth(180);
 
         Player player = board.getCurrentPlayer();
 
@@ -266,7 +264,7 @@ public class BoardView extends VBox implements ViewObserver {
         // Configure leftGridPane as needed
         leftGridPane.add(tempButton, 0, 1);
         leftGridPane.add(tempLabel, 1, 0);
-        leftGridPane.add(tempUpgradeCardImages, 1, 1);
+        leftGridPane.add(tempUpgradeCardImage, 1, 1);
         leftGridPane.add(purchaseTempGridPane, 1, 2);
 
         // RIGHT
@@ -275,7 +273,7 @@ public class BoardView extends VBox implements ViewObserver {
         // Configure rightGridPane as needed
         rightGridPane.add(permButton, 1, 1);
         rightGridPane.add(permLabel, 0,0);
-        rightGridPane.add(permUpgradeCardImages, 0, 1);
+        rightGridPane.add(permUpgradeCardImage, 0, 1);
         rightGridPane.add(purchasePermGridPane, 0, 2);
 
         // CONTAINER (LEFT - RIGHT) - mainGridPane
@@ -295,18 +293,18 @@ public class BoardView extends VBox implements ViewObserver {
 
 
         // Set alignment and style of upgradeShop
-        this.upgradeShop.setStyle("-fx-background-color: #8f9295;");
-        this.upgradeShop.setAlignment(Pos.CENTER);
+        this.upgradeShopVBox.setStyle("-fx-background-color: #8f9295;");
+        this.upgradeShopVBox.setAlignment(Pos.CENTER);
 
         // Add mainGridPane to UpgradeShop
-        this.upgradeShop.getChildren().add(mainGridPane);
+        this.upgradeShopVBox.getChildren().add(mainGridPane);
 
         // Set the VBox (upgradeShop) to stretch horizontally and vertically
-        VBox.setVgrow(upgradeShop, Priority.ALWAYS);
-        upgradeShop.setMaxWidth(Double.MAX_VALUE);
-        upgradeShop.setMaxHeight(Double.MAX_VALUE);
-        upgradeShop.setAlignment(Pos.CENTER);
-        upgradeShop.setMaxHeight(400);
+        VBox.setVgrow(upgradeShopVBox, Priority.ALWAYS);
+        upgradeShopVBox.setMaxWidth(Double.MAX_VALUE);
+        upgradeShopVBox.setMaxHeight(Double.MAX_VALUE);
+        upgradeShopVBox.setAlignment(Pos.CENTER);
+        upgradeShopVBox.setMaxHeight(400);
 
     }
 
@@ -340,15 +338,15 @@ public class BoardView extends VBox implements ViewObserver {
     }
 
     private void displayUpgradeShop() {
-        if (upgradeShop.isVisible()) {
+        if (upgradeShopVBox.isVisible()) {
             System.out.println("upgrade shop is no longer displayed");
             upgradeShopBlurBackground.setVisible(false);
-            upgradeShop.setVisible(false);
+            upgradeShopVBox.setVisible(false);
         }
         else {
             System.out.println("upgrade shop is displayed");
             upgradeShopBlurBackground.setVisible(true);
-            upgradeShop.setVisible(true);
+            upgradeShopVBox.setVisible(true);
         }
     }
 
@@ -380,6 +378,11 @@ public class BoardView extends VBox implements ViewObserver {
             if (board.getTimerIsRunning()){
                 nextTimer();
             }
+        }
+        if (subject == upgradeShop) {
+            System.out.println("SUBJECT IS upgradeShop");
+            this.permUpgradeCardImage.setImage(new Image(upgradeShop.getSelectedPermanentCardImage()));
+            this.tempUpgradeCardImage.setImage(new Image(upgradeShop.getSelectedTemporaryCardImage()));
         }
     }
 
