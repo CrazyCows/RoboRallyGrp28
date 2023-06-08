@@ -22,11 +22,14 @@ public class EnergySpace extends FieldAction {
 
     @Override
     public boolean doAction(GameController gameController, Space space) {
+        Player player = space.getPlayer();
         if (this.energyCubes > 0){ //TODO: Update view to show this
             this.energyCubes--;
-            Player player = space.getPlayer();
             player.addEnergyCubes(1);
             System.out.println(player.getName() + " draws an energy cube from the Energy Space they landed on, and now have " + player.getEnergyCubes() + " energy cubes, leaving the energy space with " + this.energyCubes + " energy cubes");
+        }
+        else{
+            System.out.println(player.getName() + " landed on an energy field, but there is no more energy to collect!");
         }
         if (this.energyCubes == 0){
             space.notifyChange();
