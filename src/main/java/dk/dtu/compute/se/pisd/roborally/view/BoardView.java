@@ -39,10 +39,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.ls.LSOutput;
-import java.io.File;
-import java.io.InputStream;
-import java.util.Collections;
 
 /**
  * ...
@@ -75,6 +71,7 @@ public class BoardView extends VBox implements ViewObserver {
     UpgradeShop upgradeShop;
     ImageView permUpgradeCardImage;
     ImageView tempUpgradeCardImage;
+    Label energyAmount;
 
     private SpaceEventHandler spaceEventHandler;
     private ArrowKeyEventHandler arrowKeyEventHandler;
@@ -112,7 +109,15 @@ public class BoardView extends VBox implements ViewObserver {
         timerButton.setOnAction( e -> gameController.startTimer());
 
         upgradeShopButton = new Button("Upgrade Shop");
-        upgradeShopButton.setOnAction( e -> displayUpgradeShop());
+        upgradeShopButton.setOnAction( e -> {
+            if (gameController.getLocalPlayer() != null) {
+                setEnergyLabel(gameController.getLocalPlayer().getEnergyCubes());
+            }
+            else {
+                setEnergyLabel(board.getCurrentPlayer().getEnergyCubes());
+            }
+            displayUpgradeShop();
+        });
 
         GridPane timerGridPane = new GridPane();
         timerGridPane.addRow(0, timerView);
@@ -157,6 +162,10 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShop.attach(this);
         update(board);
         update(upgradeShop);
+    }
+
+    private void setEnergyLabel(int energyCubes) {
+        energyAmount.setText(String.valueOf(energyCubes));
     }
 
     private void setupUpgradeShop() {
@@ -213,19 +222,19 @@ public class BoardView extends VBox implements ViewObserver {
         Button permButton = new Button();
         permButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
         permButton.setGraphic(right_arrow);
-        permButton.setOnAction(e -> gameController.nextTemporaryUpgradeCard());
+        permButton.setOnAction(e -> gameController.nextPermanentUpgradeCard());
 
 
         ImageView left_arrow = new ImageView(new Image("/images/left_arrow.png"));
         Button tempButton = new Button();
         tempButton.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
         tempButton.setGraphic(left_arrow);
-        tempButton.setOnAction(e -> gameController.nextPermanentUpgradeCard());
+        tempButton.setOnAction(e -> gameController.nextTemporaryUpgradeCard());
 
         Label tempLabel = new Label("Temporary");
         Label permLabel = new Label("Permanent");
 
-        Label energyAmount = new Label("9");
+        energyAmount = new Label("9");
         energyAmount.setFont(Font.font("System Bold", 30));
         energyAmount.setTextAlignment(TextAlignment.CENTER);
 
@@ -241,6 +250,14 @@ public class BoardView extends VBox implements ViewObserver {
 
         Button purchaseTempButton = new Button("Purchase");
         Button purchasePermButton = new Button("Purchase");
+
+        purchaseTempButton.setOnAction(e -> {
+            gameController.purchaseTemporaryUpgradeCard(board.getCurrentPlayer());
+            energyAmount.setText(String.valueOf(board.getCurrentPlayer().getEnergyCubes()));
+        });
+        purchasePermButton.setOnAction(e -> {
+            gameController.purchasePermanentUpgradeCard(board.getCurrentPlayer());
+            energyAmount.setText(String.valueOf(board.getCurrentPlayer().getEnergyCubes()));});
 
 
         // ENERGY
@@ -390,6 +407,7 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == upgradeShop) {
             this.permUpgradeCardImage.setImage(new Image(upgradeShop.getSelectedPermanentCardImage()));
             this.tempUpgradeCardImage.setImage(new Image(upgradeShop.getSelectedTemporaryCardImage()));
+            energyAmount.setText(String.valueOf(board.getCurrentPlayer().getEnergyCubes()));
         }
     }
 

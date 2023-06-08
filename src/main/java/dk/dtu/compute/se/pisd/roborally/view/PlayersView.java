@@ -57,6 +57,13 @@ public class PlayersView extends TabPane implements ViewObserver {
         }
         board.attach(this);
         update(board);
+
+        this.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            Player selectedPlayer = board.getPlayer(this.getTabs().get(newValue.intValue()).getText());
+            System.out.println("Tab selected: " + selectedPlayer.getName());
+            board.setCurrentPlayer(selectedPlayer);
+        });
+
     }
 
     @Override

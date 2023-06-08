@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.TempUpgradeCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.UpgradeCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -76,6 +78,8 @@ public class Player extends Subject {
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
     public String message;
+    public ArrayList<UpgradeCard> permUpgradeCards;
+    public ArrayList<TempUpgradeCard> tempUpgradeCards;
 
     //
     //SIMPLE GETTERS AND SETTERS
@@ -96,6 +100,9 @@ public class Player extends Subject {
     }
     public int getEnergyCubes() {
         return energyCubes;
+    }
+    public void setEnergyCubes(int amount) {
+        this.energyCubes = amount;
     }
     public Space getSpace() {
         return space;
@@ -181,6 +188,8 @@ public class Player extends Subject {
         this.message = "";
 
         this.space = null;
+        this.permUpgradeCards = new ArrayList<>();
+        this.tempUpgradeCards = new ArrayList<>();
 
         program = new ArrayList<>();
         for (int i = 0; i < programSize ; i++) {
@@ -337,6 +346,53 @@ public class Player extends Subject {
         }
         return commandCards;
     }
+
+    public void addPermanentUpgradeCard(UpgradeCard permanentUpgradeCard) {
+        this.permUpgradeCards.add(permanentUpgradeCard);
+    }
+    public void removePermanentUpgradeCard(UpgradeCard permanentUpgradeCard) {
+        this.permUpgradeCards.remove(permanentUpgradeCard);
+    }
+    public void removePermanentUpgradeCard(String name) {
+        for (int i = 0; i < permUpgradeCards.size(); i++) {
+            if (permUpgradeCards.get(i).getName().equals(name)) {
+                permUpgradeCards.remove(i);
+                break;
+            }
+        }
+    }
+    public ArrayList<UpgradeCard> getPermanentUpgradeCards() {
+        return this.permUpgradeCards;
+    }
+
+    public UpgradeCard getPermanentUpgradeCard(int atPosition) {
+        return this.permUpgradeCards.get(atPosition);
+    }
+
+    public void addTemporaryUpgradeCard(TempUpgradeCard temporaryUpgradeCard) {
+        this.tempUpgradeCards.add(temporaryUpgradeCard);
+    }
+    public void removeTemporaryUpgradeCard(TempUpgradeCard temporaryUpgradeCard) {
+        this.tempUpgradeCards.remove(temporaryUpgradeCard);
+    }
+    public void removeTemporaryUpgradeCard(String name) {
+        for (int i = 0; i < tempUpgradeCards.size(); i++) {
+            if (tempUpgradeCards.get(i).getName().equals(name)) {
+                tempUpgradeCards.remove(i);
+                break;
+            }
+        }
+    }
+    public ArrayList<TempUpgradeCard> getTemporaryUpgradeCards() {
+        return this.tempUpgradeCards;
+    }
+
+    public TempUpgradeCard getTemporaryUpgradeCard(int atPosition) {
+        return this.tempUpgradeCards.get(atPosition);
+    }
+
+
+
 
     /**
      * @return The cards from the current program. Always 5 long, but some can be null if not filled out

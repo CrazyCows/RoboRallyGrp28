@@ -1,12 +1,11 @@
 {
-  "posx" : 3,
-  "posy" : 3,
-  "energycubes" : 0,
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 100,
   "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "Antin",
-  "inGame" : true,
-  "message" : "ja",
-  "master" : true
+  "name" : "Player 2",
+  "inGame" : false,
+  "master" : false
 }

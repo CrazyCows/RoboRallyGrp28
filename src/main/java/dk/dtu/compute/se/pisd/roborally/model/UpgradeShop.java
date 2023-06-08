@@ -79,6 +79,18 @@ public class UpgradeShop extends Subject {
         return this.selectedTemporaryCard.getCost();
     }
 
+    public void removePermanentUpgradeCard(UpgradeCard card) {
+        permanentCards.remove(card);
+        currentPermanentCardCounter = 0;
+        notifyChange();
+    }
+
+    public void removeTemporaryUpgradeCard(TempUpgradeCard card) {
+        temporaryCards.remove(card);
+        currentTemporaryCardCounter = 0;
+        notifyChange();
+    }
+
 
 
 }

@@ -73,6 +73,10 @@ public class GameController {
         this.roboRally = roboRally;
         this.clientController = clientController;
         this.board = board;
+
+        for (Player player : board.getAllPlayers()) {
+            player.addEnergyCubes(100);
+        }
         this.cardController = CardController.getInstance();
         ArrayList<UpgradeCard> permanentUpgradeCards = this.cardController.getCardLoader().getPermUpgradeCards();
         ArrayList<TempUpgradeCard> temporaryUpgradeCards = this.cardController.getCardLoader().getTempUpgradeCards();
@@ -667,6 +671,24 @@ public class GameController {
 
     public void nextTemporaryUpgradeCard() {
         board.getUpgradeShop().nextTemporaryCard();
+    }
+
+    public void purchaseTemporaryUpgradeCard(Player player) {
+        TempUpgradeCard card = board.getUpgradeShop().getSelectedTemporaryCard();
+        if (player.getEnergyCubes() >= card.getCost()) {
+            board.getUpgradeShop().removeTemporaryUpgradeCard(card);
+            player.addTemporaryUpgradeCard(card);
+            player.addEnergyCubes(-card.getCost());
+        }
+    }
+
+    public void purchasePermanentUpgradeCard(Player player) {
+        UpgradeCard card = board.getUpgradeShop().getSelectedPermanentCard();
+        if (player.getEnergyCubes() >= card.getCost()) {
+            board.getUpgradeShop().removePermanentUpgradeCard(card);
+            player.addPermanentUpgradeCard(card);
+            player.addEnergyCubes(-card.getCost());
+        }
     }
 
 
