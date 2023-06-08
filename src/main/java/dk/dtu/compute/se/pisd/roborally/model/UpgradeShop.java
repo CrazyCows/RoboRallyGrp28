@@ -14,12 +14,14 @@ public class UpgradeShop extends Subject {
     TempUpgradeCard selectedTemporaryCard;
     int currentPermanentCardCounter;
     int currentTemporaryCardCounter;
+    UpgradeCard placeHolderPermanentCard;
+    TempUpgradeCard placeHolderTemporaryCard;
 
     public UpgradeShop() {
         currentPermanentCardCounter = 0;
         currentTemporaryCardCounter = 0;
-        UpgradeCard placeHolderPermanentCard = new UpgradeCard("PlaceHolder", "", 0, "hansi.png", "");
-        TempUpgradeCard placeHolderTemporaryCard = new TempUpgradeCard("PlaceHolder", "", 0, "hansi.png", "");
+        placeHolderPermanentCard = new UpgradeCard("PlaceHolder", "", 0, "hansi.png", "");
+        placeHolderTemporaryCard = new TempUpgradeCard("PlaceHolder", "", 0, "hansi.png", "");
         this.selectedPermanentCard = placeHolderPermanentCard;
         this.selectedTemporaryCard = placeHolderTemporaryCard;
 
@@ -42,7 +44,9 @@ public class UpgradeShop extends Subject {
         if (currentPermanentCardCounter == permanentCards.size()) {
             currentPermanentCardCounter = 0;
         }
-        this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
+        if (permanentCards.size() != 0) {
+            this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
+        }
         notifyChange();
     }
 
@@ -51,15 +55,23 @@ public class UpgradeShop extends Subject {
         if (currentTemporaryCardCounter == temporaryCards.size()) {
             currentTemporaryCardCounter = 0;
         }
-        this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
-        notifyChange();
+        if (permanentCards.size() != 0) {
+            this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
+            notifyChange();
+        }
     }
 
     public UpgradeCard getSelectedPermanentCard() {
+        if (this.permanentCards.size() == 0) {
+            return placeHolderPermanentCard;
+        }
         return this.selectedPermanentCard;
     }
 
     public TempUpgradeCard getSelectedTemporaryCard() {
+        if (this.temporaryCards.size() == 0) {
+            return placeHolderTemporaryCard;
+        }
         return this.selectedTemporaryCard;
     }
 
@@ -81,15 +93,25 @@ public class UpgradeShop extends Subject {
 
     public void removePermanentUpgradeCard(UpgradeCard card) {
         permanentCards.remove(card);
-        currentPermanentCardCounter = 0;
-        this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
+        if (permanentCards.size() == 0) {
+            this.selectedPermanentCard = placeHolderPermanentCard;
+        }
+        else {
+            currentPermanentCardCounter = 0;
+            this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
+        }
         notifyChange();
     }
 
     public void removeTemporaryUpgradeCard(TempUpgradeCard card) {
         temporaryCards.remove(card);
-        currentTemporaryCardCounter = 0;
-        this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
+        if (this.temporaryCards.size() == 0) {
+            this.selectedTemporaryCard = placeHolderTemporaryCard;
+        }
+        else {
+            currentTemporaryCardCounter = 0;
+            this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
+        }
         notifyChange();
     }
 
