@@ -75,6 +75,7 @@ public class Player extends Subject {
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
+    public String message;
 
     //
     //SIMPLE GETTERS AND SETTERS
@@ -139,6 +140,7 @@ public class Player extends Subject {
     }
     public void setInGame(boolean status) {
         this.inGame = status;
+        notifyChange();
     }
     public boolean isLeader() {
         return leader;
@@ -161,11 +163,22 @@ public class Player extends Subject {
         return true;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+        notifyChange();
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
         this.color = color;
+        this.message = "";
 
         this.space = null;
 

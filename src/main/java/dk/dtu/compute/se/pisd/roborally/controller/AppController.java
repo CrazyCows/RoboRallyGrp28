@@ -47,6 +47,8 @@ import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -542,7 +544,7 @@ public class AppController implements Observer {
 
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -552,22 +554,22 @@ public class AppController implements Observer {
                     break;
                 }
                 else if (isMaster && checkBoxes.get(0).isSelected()) {
-                    localPlayer.setInGame(true);
                     jsonPlayerBuilder.updateDynamicPlayerData();
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
                     createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+                    localPlayer.setInGame(true);
 
                     Platform.runLater(dialogStage::close);
                 }
                 else if (!isMaster && jsonInterpreter.isAllReady()) {
-                    localPlayer.setInGame(true);
                     jsonPlayerBuilder.updateDynamicPlayerData();
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
                     createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+                    localPlayer.setInGame(true);
 
                     Platform.runLater(dialogStage::close);
                 }

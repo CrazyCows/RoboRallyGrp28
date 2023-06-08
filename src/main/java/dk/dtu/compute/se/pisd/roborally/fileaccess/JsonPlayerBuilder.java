@@ -57,6 +57,7 @@ public class JsonPlayerBuilder {
             playerData.put("master", player.isMaster());
             playerData.put("inGame", player.isInGame());
             playerData.put("color", player.getColor());
+            playerData.put("message", player.getMessage());
         }
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, playerData);
