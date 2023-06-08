@@ -533,10 +533,10 @@ public class GameController {
                     catch (IndexOutOfBoundsException e){
                         System.out.println("Trying to get a card that was removed from the hand");
                     }
-
+                    currentPlayer.incrementUsedCards();
                     currentPlayer = getNextPlayer();
                     board.setCurrentPlayer(currentPlayer);
-                    currentPlayer.incrementUsedCards();
+
                     boolean toBreak = true;
                     for (Player player : board.getAllPlayers()){
                         if (player.getUsedCards() < Player.NO_REGISTERS && !(player.currentProgram().size() == 0)){
