@@ -1,11 +1,23 @@
 [ {
-  "posx" : 5,
-  "posy" : 4,
+  "posx" : 3,
+  "posy" : 3,
   "energycubes" : 0,
-  "color" : "blue",
+  "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "fdsa",
+  "name" : "Antin",
   "inGame" : true,
+  "message" : "ja",
   "master" : true
+}, {
+  "posx" : 2,
+  "posy" : 2,
+  "energycubes" : 0,
+  "color" : "red",
+  "readystate" : false,
+  "playerisLead" : false,
+  "name" : "Benjamin",
+  "inGame" : true,
+  "message" : "er du til fødder?",
+  "master" : false
 } ]

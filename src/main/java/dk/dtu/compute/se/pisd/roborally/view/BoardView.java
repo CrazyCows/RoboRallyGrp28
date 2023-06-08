@@ -115,7 +115,7 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShop = new GridPane();
         upgradeShop.setVisible(false);
 
-        Image upgradeShopImage = new Image("upgradeShopBackGround.png");
+        Image upgradeShopImage = new Image("upgradeShopBackground.png");
         ImageView upgradeShopImageView = new ImageView(upgradeShopImage);
         upgradeShopImageView.setFitWidth(board.width * 75);
         upgradeShopImageView.setFitHeight(board.height * 75);
@@ -123,7 +123,7 @@ public class BoardView extends VBox implements ViewObserver {
         System.out.println(board.height * 75);
         System.out.println(board.width * 75);
 
-/*
+
         mask = new Rectangle(board.width * 75, board.height * 75);
         mask.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, Color.rgb(0, 0, 0, 0.69)),
@@ -134,10 +134,10 @@ public class BoardView extends VBox implements ViewObserver {
                 new Stop(1, Color.rgb(0, 0, 0, 0.69))));
         mask.setY(upgradeShopImageView.getFitHeight());
         mask.setHeight(upgradeShopImageView.getFitHeight());
-*/
 
 
-        for (int i = 0; i < 4; i++) {
+
+        /*for (int i = 0; i < 4; i++) {
             ColumnConstraints colConstraints = new ColumnConstraints();
             colConstraints.setHgrow(Priority.SOMETIMES);
             colConstraints.setMinWidth(10);
@@ -208,6 +208,7 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setColumnIndex(title, 2);
         GridPane.setRowIndex(title, 0);
         upgradeShop.getChildren().add(title);
+        */
 
 
 
