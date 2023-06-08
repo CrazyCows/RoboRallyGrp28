@@ -26,10 +26,12 @@ public class ChatController {
         Thread chatThread = new Thread(() -> {
             String message;
             while (true) {
+                System.out.println("I spy, with my little controller...");
                 clientController.getJSON("playerData.json");
                 for (String name : names) {
                     message = jsonInterpreter.getMessage(name);
                     if (!message.equals(this.newestReceivedMessages.get(name))) {
+                        System.out.println("NEW MESSAGE");
                         this.newestReceivedMessages.put(name, message);
                         Player player = gameController.board.getPlayer(name);
                         player.setMessage(message);

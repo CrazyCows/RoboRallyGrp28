@@ -104,7 +104,7 @@ public class GameController {
         clientController.getJSON("playerData.json");
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -687,6 +687,8 @@ public class GameController {
         return true;
     }
 
+
+    // Note: Anti-spam - You can't send the same message twice in a row!
     public void sendMessage(String message) {
         localPlayer.setMessage(message);
         jsonPlayerBuilder.updateDynamicPlayerData();

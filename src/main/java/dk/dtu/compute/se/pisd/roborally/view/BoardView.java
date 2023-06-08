@@ -115,7 +115,7 @@ public class BoardView extends VBox implements ViewObserver {
         upgradeShop = new GridPane();
         upgradeShop.setVisible(false);
 
-        Image upgradeShopImage = new Image("upgradeShopBackGround.png");
+        Image upgradeShopImage = new Image("upgradeShopBackground.png");
         ImageView upgradeShopImageView = new ImageView(upgradeShopImage);
         upgradeShopImageView.setFitWidth(board.width * 75);
         upgradeShopImageView.setFitHeight(board.height * 75);

@@ -544,7 +544,7 @@ public class AppController implements Observer {
 
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -554,22 +554,22 @@ public class AppController implements Observer {
                     break;
                 }
                 else if (isMaster && checkBoxes.get(0).isSelected()) {
-                    localPlayer.setInGame(true);
                     jsonPlayerBuilder.updateDynamicPlayerData();
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
                     createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+                    localPlayer.setInGame(true);
 
                     Platform.runLater(dialogStage::close);
                 }
                 else if (!isMaster && jsonInterpreter.isAllReady()) {
-                    localPlayer.setInGame(true);
                     jsonPlayerBuilder.updateDynamicPlayerData();
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
                     createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+                    localPlayer.setInGame(true);
 
                     Platform.runLater(dialogStage::close);
                 }

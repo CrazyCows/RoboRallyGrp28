@@ -5,9 +5,9 @@
   "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "afrgdtgs",
-  "inGame" : false,
-  "message" : "",
+  "name" : "fadsgfs",
+  "inGame" : true,
+  "message" : "Hej!",
   "master" : true
 }, {
   "posx" : 2,
@@ -16,8 +16,8 @@
   "color" : "red",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "sfwetrytryt",
-  "inGame" : false,
-  "message" : "",
+  "name" : "dsgfdhtjdf",
+  "inGame" : true,
+  "message" : "Hva så?",
   "master" : false
 } ]

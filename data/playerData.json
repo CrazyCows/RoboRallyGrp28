@@ -5,8 +5,8 @@
   "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "afrgdtgs",
-  "inGame" : false,
-  "message" : "",
+  "name" : "fadsgfs",
+  "inGame" : true,
+  "message" : "Hej!",
   "master" : true
 }

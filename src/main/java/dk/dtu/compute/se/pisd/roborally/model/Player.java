@@ -140,6 +140,7 @@ public class Player extends Subject {
     }
     public void setInGame(boolean status) {
         this.inGame = status;
+        notifyChange();
     }
     public boolean isLeader() {
         return leader;
