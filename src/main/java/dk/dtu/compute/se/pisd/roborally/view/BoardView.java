@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -126,6 +127,10 @@ public class BoardView extends VBox implements ViewObserver {
         System.out.println(board.width * 75);
 
 
+
+
+
+/*
         mask = new Rectangle(board.width * 75, board.height * 75);
         mask.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, Color.rgb(0, 0, 0, 0.69)),
@@ -136,10 +141,10 @@ public class BoardView extends VBox implements ViewObserver {
                 new Stop(1, Color.rgb(0, 0, 0, 0.69))));
         mask.setY(upgradeShopImageView.getFitHeight());
         mask.setHeight(upgradeShopImageView.getFitHeight());
+*/
 
 
-
-        /*for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             ColumnConstraints colConstraints = new ColumnConstraints();
             colConstraints.setHgrow(Priority.SOMETIMES);
             colConstraints.setMinWidth(10);
@@ -204,13 +209,13 @@ public class BoardView extends VBox implements ViewObserver {
         GridPane.setRowIndex(currency, 0);
         upgradeShop.getChildren().add(currency);
 
-        Text title = new Text("❖ UPGRADE SHOP ❖");
+        Text title = new Text("          ❖ UPGRADE SHOP ❖");
         title.setFont(Font.font("System Bold", 40));
         title.setTextAlignment(TextAlignment.RIGHT);
-        GridPane.setColumnIndex(title, 2);
+        GridPane.setColumnIndex(title, 0);
         GridPane.setRowIndex(title, 0);
+        GridPane.setMargin(title, new Insets(-100, 0, 0, 0));
         upgradeShop.getChildren().add(title);
-        */
 
 
 
