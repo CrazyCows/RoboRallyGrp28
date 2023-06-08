@@ -5,9 +5,9 @@
   "color" : "green",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "fadsgfs",
+  "name" : "Antin",
   "inGame" : true,
-  "message" : "Hej!",
+  "message" : "ja",
   "master" : true
 }, {
   "posx" : 2,
@@ -16,8 +16,8 @@
   "color" : "red",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "dsgfdhtjdf",
+  "name" : "Benjamin",
   "inGame" : true,
-  "message" : "Hva så?",
+  "message" : "er du til fødder?",
   "master" : false
 } ]

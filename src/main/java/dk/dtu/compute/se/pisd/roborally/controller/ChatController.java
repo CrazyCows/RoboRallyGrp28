@@ -26,7 +26,6 @@ public class ChatController {
         Thread chatThread = new Thread(() -> {
             String message;
             while (true) {
-                System.out.println("I spy, with my little controller...");
                 clientController.getJSON("playerData.json");
                 for (String name : names) {
                     message = jsonInterpreter.getMessage(name);
