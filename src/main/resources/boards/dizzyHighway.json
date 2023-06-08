@@ -753,6 +753,114 @@
       ],
       "x": 8,
       "y": 3
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "hansi.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace",
+          "INSTANCE": {
+            "heading": "EAST",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 12,
+      "y": 0
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "hansi.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace",
+          "INSTANCE": {
+            "heading": "EAST",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 3,
+      "y": 9
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "hansi.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace",
+          "INSTANCE": {
+            "heading": "EAST",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 5,
+      "y": 2
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "hansi.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace",
+          "INSTANCE": {
+            "heading": "EAST",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 7,
+      "y": 5
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "hansi.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace",
+          "INSTANCE": {
+            "heading": "EAST",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 8,
+      "y": 4
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "hansi.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace",
+          "INSTANCE": {
+            "heading": "EAST",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 10,
+      "y": 7
     }
   ]
 }
