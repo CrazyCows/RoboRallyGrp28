@@ -129,6 +129,10 @@ public class Space extends Subject {
         return background;
     }
 
+    public void setBackground(List<String> backgrounds){
+        background = backgrounds;
+    }
+
     public void animate(List<String> image) {
         this.background = image;
         notifyChange();

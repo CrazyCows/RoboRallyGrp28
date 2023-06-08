@@ -22,8 +22,11 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.effect.ColorAdjust;
@@ -32,8 +35,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
@@ -212,8 +218,21 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     @Override
     public void updateView(Subject subject) {
-        //System.out.println("Space update");
+
         if (subject == this.space) {
+
+              Space sp8z = (Space)subject;
+            List<FieldAction> b = sp8z.getActions();
+            if (b.size() > 0 && space.board.getPhase() == Phase.ACTIVATION){
+                FieldAction a = b.get(0);
+                if (a instanceof EnergySpace && ((EnergySpace) a).getEnergyCubes() == 0){ //I DONT KNOW WHAT IM DOING
+                    ArrayList<String> h = new ArrayList();
+                    h.add(0,"NORTH"); h.add(1,"gear_left.jpg");
+                    space.setBackground(h);
+                }
+            } //This might be the single most ghetto solution, but it currently seems to work. Should probably test a tiny bit more for the sake of Lucas sanity
+
+
             setBackround(space.getBackground());
             if (!space.getItems().isEmpty()) {
                 updateOverlay(space.getItems().get(space.getItems().size() - 1).getImage());

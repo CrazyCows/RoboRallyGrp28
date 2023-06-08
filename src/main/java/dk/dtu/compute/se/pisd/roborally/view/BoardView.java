@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
 import javafx.geometry.VPos;
@@ -44,6 +45,7 @@ import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Collections;
 
 /**
  * ...
