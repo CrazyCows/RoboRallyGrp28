@@ -72,6 +72,8 @@ public class BoardView extends VBox implements ViewObserver {
     ImageView permUpgradeCardImage;
     ImageView tempUpgradeCardImage;
     Label energyAmount;
+    Label priceTempLabel;
+    Label pricePermLabel;
 
     private SpaceEventHandler spaceEventHandler;
     private ArrowKeyEventHandler arrowKeyEventHandler;
@@ -245,8 +247,8 @@ public class BoardView extends VBox implements ViewObserver {
 
         Label emptyLabel = new Label("              ");
 
-        Label priceTempLabel = new Label("    Price: 3 energy");
-        Label pricePermLabel = new Label("    Price: 5 energy");
+        priceTempLabel = new Label("    Price: " + upgradeShop.getSelectedTemporaryCard().getCost() + " energy");
+        pricePermLabel = new Label("    Price: " + upgradeShop.getSelectedPermanentCard().getCost() + " energy");
 
         Button purchaseTempButton = new Button("Purchase");
         Button purchasePermButton = new Button("Purchase");
@@ -407,6 +409,8 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == upgradeShop) {
             this.permUpgradeCardImage.setImage(new Image(upgradeShop.getSelectedPermanentCardImage()));
             this.tempUpgradeCardImage.setImage(new Image(upgradeShop.getSelectedTemporaryCardImage()));
+            this.pricePermLabel.setText("    Price: " + String.valueOf(upgradeShop.getSelectedPermanentCard().getCost()) + " energy");
+            this.priceTempLabel.setText("    Price: " + String.valueOf(upgradeShop.getSelectedTemporaryCard().getCost()) + " energy");
             energyAmount.setText(String.valueOf(board.getCurrentPlayer().getEnergyCubes()));
         }
     }
