@@ -37,18 +37,22 @@ public class UpgradeShop extends Subject {
         notifyChange();
     }
 
-    public UpgradeCard nextPermanentCard() {
-        this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
+    public void nextPermanentCard() {
         currentPermanentCardCounter += 1;
+        if (currentPermanentCardCounter == permanentCards.size()) {
+            currentPermanentCardCounter = 0;
+        }
+        this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
         notifyChange();
-        return this.selectedPermanentCard;
     }
 
-    public TempUpgradeCard nextTemporaryCard() {
-        this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
+    public void nextTemporaryCard() {
         currentTemporaryCardCounter += 1;
+        if (currentTemporaryCardCounter == temporaryCards.size()) {
+            currentTemporaryCardCounter = 0;
+        }
+        this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
         notifyChange();
-        return this.selectedTemporaryCard;
     }
 
     public UpgradeCard getSelectedPermanentCard() {
