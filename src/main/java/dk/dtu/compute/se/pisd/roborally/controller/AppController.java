@@ -46,13 +46,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * ...
@@ -76,6 +75,7 @@ public class AppController implements Observer {
     private GameController gameController;
 
     private ClientController clientController;
+    private String chosenBoard;
     private JsonInterpreter jsonInterpreter;
 
     private String animationRobotDirection;
@@ -114,46 +114,17 @@ public class AppController implements Observer {
                 }
             }
 
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-            roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(null, true);
-            roboRally.pauseMusic();
-
-            int no = result.get();
-            for (int i = 1; i <= no; i++) { //TODO: Changed by Anton so players dont start on pit
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
-            }
-            assert board != null;
-            gameController = new GameController(roboRally, clientController, board, false, null);
-
-            board.setCurrentPlayer(board.getPlayer(0));
-            roboRally.createBoardView(gameController);
-
-        }
-    }
-    public void newGame(int numberOfPlayers) {
-        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
-        dialog.setTitle("Player number");
-        dialog.setHeaderText("Select number of players");
-        roboRally.setMusicVolume(0.0);
-        Optional<Integer> result = numberOfPlayers == -1 ? dialog.showAndWait() : Optional.of(numberOfPlayers);
-
-        if (result.isPresent()) {
-            if (gameController != null) {
-                // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
-                if (!stopGame()) {
-                    return;
-                }
-            }
+            ArrayList<String> boards = new ArrayList<>(getBoards());
+            ChoiceDialog<String> boardDialog = new ChoiceDialog<>(boards.get(0), boards);
+            boardDialog.setTitle("Select board");
+            boardDialog.setHeaderText("Select a board");
+            Optional<String> boardResult = (boardDialog.showAndWait().isPresent()) ? Optional.of(boardDialog.getSelectedItem()) : Optional.empty();
+            boardResult.ifPresent(s -> chosenBoard = s);
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(null, true);
+            Board board = LoadBoard.loadBoard(chosenBoard, true);
             roboRally.pauseMusic();
 
             int no = result.get();
@@ -202,12 +173,7 @@ public class AppController implements Observer {
     }
 
     public void loadGame() {
-        // XXX needs to be implememged eventually
-        // for now, we just create a new game
-        /*if (gameController == null) {
-            newGame();
-        }*/
-        //ClientController clientController = new ClientController();
+
         this.savedBoards = new ArrayList<>();
 
         File folder = new File("./Save Games");
@@ -351,7 +317,7 @@ public class AppController implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(null, true);
+            Board board = LoadBoard.loadBoard(this.chosenBoard, true);
             roboRally.pauseMusic();
 
             assert board != null;
@@ -415,6 +381,16 @@ public class AppController implements Observer {
         passwordField.setVisible(false);
         passwordLabel.setVisible(false);
 
+        if (isMaster) {
+            Label boardsLabel = new Label("Boards");
+            ComboBox<String> boards = new ComboBox<String>();
+            boards.getItems().addAll(getBoards());
+            gridPane.add(boardsLabel, 0, 4);
+            gridPane.add(boards, 1, 4);
+
+            boards.setOnAction(e -> chosenBoard = boards.getSelectionModel().getSelectedItem());
+        }
+
         privateGameCheckbox.setOnAction(e -> {
             if (privateGameCheckbox.isSelected()) {
                 passwordField.setVisible(true);
@@ -428,6 +404,7 @@ public class AppController implements Observer {
         });
 
         Button continueButton = new Button("Continue");
+        gridPane.add(continueButton,0, 5);
         continueButton.setOnAction(e -> {
             String username = usernameField.getText();
             String lobbyName = lobbyNameField.getText();
@@ -468,14 +445,43 @@ public class AppController implements Observer {
             }
         });
 
-        VBox vbox = new VBox(gridPane, continueButton);
+        VBox vbox = new VBox(gridPane);
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(10);
 
-        Scene dialogScene = new Scene(vbox, 300, 200);
+        Scene dialogScene = new Scene(vbox, 300, 230);
 
         dialogStage.setScene(dialogScene);
         dialogStage.showAndWait();
+    }
+
+    private ArrayList<String> getBoards() {
+
+        ArrayList<String> boards = new ArrayList<>();
+
+        ClassLoader classLoader = AppController.class.getClassLoader();
+        URL folderUrl = Objects.requireNonNull(classLoader.getResource("boards"));
+
+        try {
+            File folder = new File(folderUrl.toURI());
+
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    String name = file.getName();
+                    String[] substring = name.split("\\.");
+                    for (String sub : substring) {
+                        if (sub.equals("json")) {
+                            boards.add(substring[0]);
+                        }
+                    }
+                }
+            }
+        } catch (URISyntaxException e) {
+            System.out.println("Problem occurred when retrieving boards from ressources. ");
+            e.printStackTrace();
+        }
+        return boards;
     }
 
     public void gameLobby() {
