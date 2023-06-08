@@ -39,6 +39,7 @@ public class PlayersView extends TabPane implements ViewObserver {
     private Board board;
 
     private PlayerView[] playerViews;
+    private ChatView chat;
 
     public PlayersView(GameController gameController) {
         board = gameController.board;
@@ -49,6 +50,10 @@ public class PlayersView extends TabPane implements ViewObserver {
         for (int i = 0; i < board.getPlayersNumber();  i++) {
             playerViews[i] = new PlayerView(gameController, board.getPlayer(i));
             this.getTabs().add(playerViews[i]);
+        }
+        if (gameController.getLocalPlayer() != null) {
+            chat = new ChatView(gameController, gameController.getLocalPlayer());
+            this.getTabs().add(chat);
         }
         board.attach(this);
         update(board);

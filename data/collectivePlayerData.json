@@ -1,11 +1,12 @@
 [ {
-  "posx" : 5,
+  "posx" : 4,
   "posy" : 4,
   "energycubes" : 0,
   "color" : "blue",
   "readystate" : false,
   "playerisLead" : false,
-  "name" : "fdsa",
+  "name" : "asdfffgdfsd",
   "inGame" : true,
+  "message" : "",
   "master" : true
 } ]

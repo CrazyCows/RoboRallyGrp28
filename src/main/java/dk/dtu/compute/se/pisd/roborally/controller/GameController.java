@@ -63,6 +63,7 @@ public class GameController {
         return cardController;
     }
     private ClientController clientController;
+    private ChatController chatController;
 
     protected CardController cardController;
     private JsonInterpreter jsonInterpreter;
@@ -107,6 +108,8 @@ public class GameController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        chatController = new ChatController(this, clientController);
 
         localPlayer.setReady(false);
         jsonPlayerBuilder.updateDynamicPlayerData();
@@ -684,6 +687,12 @@ public class GameController {
         return true;
     }
 
+    public void sendMessage(String message) {
+        localPlayer.setMessage(message);
+        jsonPlayerBuilder.updateDynamicPlayerData();
+        clientController.updateJSON("playerData.json");
+    }
+
     // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         Card sourceCard =  source.getCard();
@@ -697,4 +706,12 @@ public class GameController {
             return false;
         }
     }
+
+    public Player getLocalPlayer() {
+        if (this.localPlayer != null) {
+            return this.localPlayer;
+        }
+        else return null;
+    }
+
 }

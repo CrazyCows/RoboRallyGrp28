@@ -155,6 +155,15 @@ public class Board extends Subject {
         }
     }
 
+    public Player getPlayer(String name) {
+        for (Player player : players) {
+            if (player.getName().equals(name)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
     public Player getCurrentPlayer() {
         return current;
     }

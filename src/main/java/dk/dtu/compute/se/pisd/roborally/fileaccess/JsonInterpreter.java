@@ -303,6 +303,16 @@ public class JsonInterpreter {
         }
     }
 
+    public String getMessage(String playerName) {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
+            List<String> message = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].message");
+            return message.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
 /*
     public List<String> getValuesFromBoard(String jsonFileName, @Nullable Integer x,@Nullable Integer y, String... keys){

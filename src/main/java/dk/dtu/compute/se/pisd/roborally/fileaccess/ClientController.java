@@ -43,6 +43,9 @@ public class ClientController {
         } else if (jsonName.equals("cardSequenceRequest.json")){
             return "/jsonCardSequence?ID=";  // TODO: JEG HAR LAVET NOGET OM HER
         }
+        else if (jsonName.equals("playerMessage.json")) {
+            return "/jsonChat?ID=";
+        }
          else {
             return "/jsonHandler?ID=";
         }
@@ -56,6 +59,9 @@ public class ClientController {
             childName = "collectivePlayerData.json";
         } else if (jsonName.equals("cardSequenceRequest.json")) {
             childName = "cardSequenceRequests.json";
+        }
+        if (jsonName.equals("playerMessage.json")) {
+            childName = "collectivePlayerMessages.json";
         }
 
         try {
