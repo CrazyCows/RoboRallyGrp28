@@ -25,7 +25,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -115,18 +114,19 @@ public class BoardView extends VBox implements ViewObserver {
         timerGridPane.addRow(2, upgradeShopButton);
 
         upgradeShop = new GridPane();
-        GridPane shop = new GridPane(); //TODO - TESTER
-        GridPane background = new GridPane(); //TODO - TESTER
-
         upgradeShop.setVisible(false);
 
-        Image upgradeShopImage = new Image("upgradeShopBackGround.png");
+        Image upgradeShopImage = new Image("upgradeShopBackground.png");
         ImageView upgradeShopImageView = new ImageView(upgradeShopImage);
         upgradeShopImageView.setFitWidth(board.width * 75);
         upgradeShopImageView.setFitHeight(board.height * 75);
-        shop.getChildren().add(upgradeShopImageView);
+        upgradeShop.getChildren().add(upgradeShopImageView);
         System.out.println(board.height * 75);
         System.out.println(board.width * 75);
+
+
+
+
 
 /*
         mask = new Rectangle(board.width * 75, board.height * 75);
@@ -142,117 +142,81 @@ public class BoardView extends VBox implements ViewObserver {
 */
 
 
-
         for (int i = 0; i < 4; i++) {
             ColumnConstraints colConstraints = new ColumnConstraints();
             colConstraints.setHgrow(Priority.SOMETIMES);
             colConstraints.setMinWidth(10);
             colConstraints.setPrefWidth(100);
-            shop.getColumnConstraints().add(colConstraints);
+            upgradeShop.getColumnConstraints().add(colConstraints);
         }
 
 
         RowConstraints row1Constraints = new RowConstraints(88, 88, 129, Priority.SOMETIMES, VPos.CENTER, true);
         RowConstraints row2Constraints = new RowConstraints(231, 231, 270, Priority.SOMETIMES, VPos.CENTER, true);
         RowConstraints row3Constraints = new RowConstraints(30, 30, 30, Priority.SOMETIMES, VPos.CENTER, true);
-        shop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
+        upgradeShop.getRowConstraints().addAll(row1Constraints, row2Constraints, row3Constraints);
 
 
-        Text tempUpgradeText = new Text( "\n\n\n       TEMPORARY");
+        Text tempUpgradeText = new Text("TEMPORARY");
         tempUpgradeText.setFont(Font.font("System Bold", 16));
+        tempUpgradeText.setUnderline(true);
         tempUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(tempUpgradeText, 2);
-        GridPane.setRowIndex(tempUpgradeText, 0);
-        shop.getChildren().add(tempUpgradeText);
+        upgradeShop.getChildren().add(tempUpgradeText);
 
-        Text permUpgradeText = new Text("\n\n\n       PERMANENT");
+        Text permUpgradeText = new Text("PERMANENT");
         permUpgradeText.setFont(Font.font("System Bold", 16));
+        permUpgradeText.setUnderline(true);
         permUpgradeText.setTextAlignment(TextAlignment.CENTER);
         GridPane.setColumnIndex(permUpgradeText, 1);
         GridPane.setRowIndex(permUpgradeText, 0);
-        shop.getChildren().add(permUpgradeText);
+        upgradeShop.getChildren().add(permUpgradeText);
 
 
         ImageView upgradeCardImages = new ImageView();
-        Pane pane = new Pane();
+        upgradeCardImages.setFitHeight(250);
+        upgradeCardImages.setFitWidth(154);
         upgradeCardImages.setPreserveRatio(true);
         upgradeCardImages.setPickOnBounds(true);
-        pane.getChildren().add(upgradeCardImages);
-        pane.setStyle("-fx-border-color: #230909; -fx-border-width: 2");
-        GridPane.setColumnIndex(pane, 1);
-        GridPane.setRowIndex(pane, 1);
-        pane.setMaxSize(200,240);
-        GridPane.setMargin(pane, new Insets(-60, 0, 0, 0));
-        shop.getChildren().add(pane);
+        GridPane.setColumnIndex(upgradeCardImages, 1);
+        GridPane.setRowIndex(upgradeCardImages, 1);
+        upgradeShop.getChildren().add(upgradeCardImages);
 
         ImageView tempUpgradeCardImages = new ImageView();
-        Pane pane2 = new Pane();
+        tempUpgradeCardImages.setFitHeight(250);
+        tempUpgradeCardImages.setFitWidth(154);
         tempUpgradeCardImages.setPreserveRatio(true);
         tempUpgradeCardImages.setPickOnBounds(true);
-        pane2.getChildren().add(tempUpgradeCardImages);
-        pane2.setStyle("-fx-border-color: #230909; -fx-border-width: 2");
-        GridPane.setColumnIndex(pane2, 2);
-        GridPane.setRowIndex(pane2, 1);
-        pane2.setMaxSize(200,240);
-        GridPane.setMargin(pane2, new Insets(-60, 0, 0, -3));
-        shop.getChildren().add(pane2);
-
+        GridPane.setColumnIndex(tempUpgradeCardImages, 2);
+        GridPane.setRowIndex(tempUpgradeCardImages, 1);
+        upgradeShop.getChildren().add(tempUpgradeCardImages);
 
         Player player = board.getCurrentPlayer();
 
-        Text playerName = new Text("\n" + player.getName());
+        Text playerName = new Text(player.getName());
         playerName.setFont(Font.font("System Bold",  16));
         playerName.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(playerName, 3);
         GridPane.setRowIndex(playerName, 0);
-        shop.getChildren().add(playerName);
+        upgradeShop.getChildren().add(playerName);
 
-        Text currency = new Text("\n\n\nEnergy Cubes: " + player.getEnergyCubes() + " ◈");
+        Text currency = new Text("\n\nEnergy Cubes: " + player.getEnergyCubes() + " ❖");
         currency.setFont(Font.font("System Bold", 16));
         currency.setTextAlignment(TextAlignment.LEFT);
         GridPane.setColumnIndex(currency, 3);
         GridPane.setRowIndex(currency, 0);
-        shop.getChildren().add(currency);
+        upgradeShop.getChildren().add(currency);
 
-        Text title = new Text("                   ❖ UPGRADE SHOP ❖");
-        title.setFont(Font.font("System Bold", 30));
-        title.setTextAlignment(TextAlignment.LEFT);
+        Text title = new Text("          ❖ UPGRADE SHOP ❖");
+        title.setFont(Font.font("System Bold", 40));
+        title.setTextAlignment(TextAlignment.RIGHT);
         GridPane.setColumnIndex(title, 0);
+        GridPane.setRowIndex(title, 0);
         GridPane.setMargin(title, new Insets(-100, 0, 0, 0));
-        shop.getChildren().add(title);
+        upgradeShop.getChildren().add(title);
 
-        Button permButton = new Button("NEXT");
-        permButton.setFont(Font.font("System", 14));
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(permButton);
-        double width = anchorPane.getWidth();
-        AnchorPane.setRightAnchor(permButton, 0.30 * width);
-        GridPane.setConstraints(anchorPane, 0, 1);
-        shop.getChildren().add(anchorPane);
 
-        Button tempButton = new Button("NEXT");
-        tempButton.setFont(Font.font("System", 14));
-        AnchorPane anchorPane2 = new AnchorPane();
-        anchorPane2.getChildren().add(tempButton);
-        double width2 = anchorPane2.getWidth();
-        AnchorPane.setLeftAnchor(tempButton, 0.30 * width2);
-        GridPane.setConstraints(anchorPane2, 3, 1);
-        shop.getChildren().add(anchorPane2);
 
-        upgradeShop.getChildren().add(shop); //TODO - TESTER (else: delete shop and replace it with upgradeShop everywhere)
-
-/*
-        ImageView hansiView = new ImageView(new Image("hansi.png"));
-        hansiView.setStyle("-fx-opacity: 0.5");
-
-        upgradeShop.getChildren().add(background);
-        GridPane top = new GridPane();
-        top.add(hansiView,0,0);
-        top.add(shop,0,1);
-        upgradeShop.getChildren().add(top);
-        background.setStyle("-fx-background-color: PURPLE; -fx-opacity: 0.5");
-        background.setPrefSize(600,600);
-*/
 
 
 
