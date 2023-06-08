@@ -354,7 +354,10 @@ public class GameController {
         int dy = y - otherY;
         return Math.sqrt(dx*dx + dy*dy);
     }
-
+    /**
+     * Sets the phase. If the phase is programming, cards are automatically drawn from drawpile to hand
+     * @param phase
+     */
     void setPhase(Phase phase){
         if (phase == PROGRAMMING){
             for (Player player : board.getAllPlayers()){
@@ -485,8 +488,6 @@ public class GameController {
         }
     }
 
-
-    // TODO: BUG: AGAIN card makes weird stuff if played as first card!!!!
 
     public void finishProgrammingPhase() {
         //TODO: Check for spam and trojan cards,and replaces the card somehow?

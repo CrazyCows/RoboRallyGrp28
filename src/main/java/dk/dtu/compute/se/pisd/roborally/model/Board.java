@@ -182,10 +182,7 @@ public class Board extends Subject {
         return phase;
     }
 
-    /**
-     * Sets the phase. If the phase is programming, cards are automatically drawn from drawpile to hand
-     * @param phase
-     */
+
     public void setPhase(Phase phase) {
         if (phase != this.phase) {
             this.phase = phase;
