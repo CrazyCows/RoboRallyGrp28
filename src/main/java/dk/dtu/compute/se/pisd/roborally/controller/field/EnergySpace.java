@@ -20,7 +20,7 @@ public class EnergySpace extends FieldAction {
 
     @Override
     public boolean doAction(GameController gameController, Space space) {
-        if (this.energyCubes > 0){
+        if (this.energyCubes > 0){ //TODO: Update view to show this
             this.energyCubes--;
             Player player = space.getPlayer();
             player.addEnergyCubes(1);
