@@ -60,6 +60,8 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_HEIGHT = 75;
     final public static int SPACE_WIDTH = 75;
 
+    final private static String emptyEnergySpace = "navn.png";
+
     public final Space space;
     private ImageView backgroundImageView;
     private ImageView overlayImageView;
@@ -214,24 +216,30 @@ public class SpaceView extends StackPane implements ViewObserver {
             playerImageView.toFront();
         }
         // Add the ImageView back again
+    }   
+
+    private boolean energyFieldUpdater(Subject subject){
+        Space sp8z = (Space)subject;
+        List<FieldAction> sp8zActions = sp8z.getActions();
+        if (sp8zActions.size() > 0 && space.board.getPhase() == Phase.ACTIVATION){
+            FieldAction fieldAction = sp8zActions.get(0);
+            if (fieldAction instanceof EnergySpace && ((EnergySpace) fieldAction).getEnergyCubes() == 0){ //I DONT KNOW WHAT IM DOING
+                ArrayList<String> h = new ArrayList();
+                h.add(0,"NORTH"); h.add(1,emptyEnergySpace);
+                space.setBackground(h);
+                return true;
+            }
+        } //This might be the single most ghetto solution, but it currently seems to work. Should probably test a tiny bit more for the sake of Lucas sanity
+        return false;
     }
 
     @Override
     public void updateView(Subject subject) {
 
         if (subject == this.space) {
-
-              Space sp8z = (Space)subject;
-            List<FieldAction> b = sp8z.getActions();
-            if (b.size() > 0 && space.board.getPhase() == Phase.ACTIVATION){
-                FieldAction a = b.get(0);
-                if (a instanceof EnergySpace && ((EnergySpace) a).getEnergyCubes() == 0){ //I DONT KNOW WHAT IM DOING
-                    ArrayList<String> h = new ArrayList();
-                    h.add(0,"NORTH"); h.add(1,"gear_left.jpg");
-                    space.setBackground(h);
-                }
-            } //This might be the single most ghetto solution, but it currently seems to work. Should probably test a tiny bit more for the sake of Lucas sanity
-
+            if (energyFieldUpdater(subject)){
+                System.out.println("Updated an energy space image");
+            }
 
             setBackround(space.getBackground());
             if (!space.getItems().isEmpty()) {
