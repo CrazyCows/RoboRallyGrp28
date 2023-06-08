@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.controller.field;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,9 +47,44 @@ public class ConveyorBelt1 extends FieldAction { //Composition over inheritance
     }
 
     @Override
-    public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+    public boolean doAction(@NotNull GameController gameController, @NotNull Space originalSpace) {
+        //MOVING FROM THE ORIGINAL SPACE TO THE FIRST SPACE
+        System.out.println("CONVEYOR: Conveying robots and emotions alike");
+        Player player = originalSpace.getPlayer();
+        Heading originalHeading = this.heading;
+        gameController.moveInDirection(player, 1, heading);
+        Space firstDestinationSpace = player.getSpace();
+        if (originalSpace == firstDestinationSpace){
+            System.out.println("Player got conveyed into a wall");
+            return false;
+        }
+        //Space firstDestinationSpace = gameController.board.getNeighbour(originalSpace,heading,false); //We dont check for walls, as this is already getting done in moveInDirection.
+        Heading firstDestinationHeading = null;
+        for (FieldAction fieldAction : firstDestinationSpace.getActions()){
+            if (fieldAction instanceof ConveyorBelt2) {
+                firstDestinationHeading = ((ConveyorBelt2) fieldAction).getHeading(); //Assumes theres ony
+                break;
+            }
+        }
+
+        //You may ask why prev() and next() are mixed like this.
+        if (originalHeading == firstDestinationHeading.next()){ //turning one way
+            player.setHeading(player.getHeading().prev());
+        }
+        if (originalHeading == firstDestinationHeading.prev()){//turning one way
+            player.setHeading(player.getHeading().next());
+        }
+        if (originalHeading == firstDestinationHeading.next().next()){//180-degree turn. Rules don't specify what would happen in this case
+            player.setHeading(player.getHeading().next().next());
+        }
+        return true;
+
+        /*
         gameController.moveInDirection(space.getPlayer(), 1, heading);
         System.out.println("CONVEYOR: Conveying robots and emotions alike");
         return false;
+
+         */
+
     }
 }
