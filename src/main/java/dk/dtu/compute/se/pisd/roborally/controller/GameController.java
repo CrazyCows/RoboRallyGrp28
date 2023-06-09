@@ -154,6 +154,7 @@ public class GameController {
                 startTimer();
             }
         });
+        countThread.setDaemon(true);
         countThread.start();
     }
 
