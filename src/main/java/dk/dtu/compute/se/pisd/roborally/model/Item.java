@@ -63,6 +63,9 @@ public class Item {
     // to an actual event. This method should only be used once
     // when the items are created in the LoadBoard class
     public void createEvent() {
+        if (this.event != null) {
+            return;
+        }
         try {
             Class<?> eventClass = Class.forName(this.eventClassName);
             this.event = (FieldAction) eventClass.getDeclaredConstructor().newInstance();

@@ -47,8 +47,6 @@ import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.net.Socket;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
@@ -114,7 +112,7 @@ public class AppController implements Observer {
                 }
             }
 
-            ArrayList<String> boards = new ArrayList<>(getBoards());
+            ArrayList<String> boards = new ArrayList<>(getBoardNames());
             ChoiceDialog<String> boardDialog = new ChoiceDialog<>(boards.get(0), boards);
             boardDialog.setTitle("Select board");
             boardDialog.setHeaderText("Select a board");
@@ -168,6 +166,21 @@ public class AppController implements Observer {
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             String saveName = result.get();
+
+            File folder = new File("Save Games");
+            File[] gameFolders = folder.listFiles();
+
+            for (File gameFolder : gameFolders) {
+                if (gameFolder.isDirectory() && gameFolder.getName().equals(saveName)) {
+                    String message = "Please save the game under a different name. " ;
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Game already exists. ");
+                    alert.setHeaderText(null);
+                    alert.setContentText(message);
+                    alert.showAndWait();
+                }
+            }
+
             LoadBoard.saveBoard(gameController.board, saveName);
         }
     }
@@ -176,21 +189,29 @@ public class AppController implements Observer {
 
         this.savedBoards = new ArrayList<>();
 
-        File folder = new File("./Save Games");
-        File[] listJsonFiles = folder.listFiles();
+        File folder = new File("Save Games");
+        File[] gameFolders = folder.listFiles();
 
-        if (listJsonFiles == null) {
-            ChoiceDialog<String> dialog = new ChoiceDialog<>("OK");
-            dialog.setTitle("Load Game");
-            dialog.setHeaderText("There are no saved games");
-            roboRally.setMusicVolume(0.0);
-            //Optional<String> result = dialog.showAndWait();
-        }
-        for (File file : listJsonFiles) {
-            if (file.isFile() && file.getName().endsWith("_board.json")) {
-                savedBoards.add(file.getName());
+        for (File gameFolder : gameFolders) {
+            if (gameFolder.isDirectory()) {
+                File[] files = gameFolder.listFiles();
+                for (File file : files) {
+                    if (file.isFile() && file.getName().endsWith("board.json")) {
+                        savedBoards.add(gameFolder.getName());
+                    }
+                }
             }
         }
+
+        if (savedBoards.size() == 0) {
+            String message = "There are no boards to load. ";
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("No saved games");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
+
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>(this.savedBoards.get(0), this.savedBoards);
         dialog.setTitle("Load Game");
@@ -204,7 +225,14 @@ public class AppController implements Observer {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
                 // give the user the option to save the game or abort this operation!
+
                 if (!stopGame()) {
+                    String message = "Are you retarded? ";  // we should probably remove this.
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("No saved games");
+                    alert.setHeaderText(null);
+                    alert.setContentText(message);
+                    alert.showAndWait();
                     return;
                 }
             }
@@ -244,24 +272,6 @@ public class AppController implements Observer {
         robotComboBox.getSelectionModel().selectFirst();
 
         gridPane.add(robotComboBox, 0, 0);
-
-        /*robotComboBox.setOnAction(e -> {
-            // Remove previous ImageView, if exists
-            int columnIndex = 1;
-            int rowIndex = 0;
-            ObservableList<Node> children = gridPane.getChildren();
-            children.removeIf(node -> GridPane.getColumnIndex(node) == columnIndex && GridPane.getRowIndex(node) == rowIndex);
-
-            // Add new ImageView for the selected option
-            String selectedOption = robotComboBox.getValue();
-            if (selectedOption != null) {
-                Image robotImage = new Image("images/robots/" + selectedOption + "_north_facing_robot" + ".png");
-                ImageView robotImageView = new ImageView(robotImage);
-                robotImageView.setFitWidth(100);
-                robotImageView.setFitHeight(100);
-                gridPane.add(robotImageView, columnIndex, rowIndex);
-            }
-        });*/
 
         Button continueButton = new Button("Continue");
 
@@ -384,7 +394,7 @@ public class AppController implements Observer {
         if (isMaster) {
             Label boardsLabel = new Label("Boards");
             ComboBox<String> boards = new ComboBox<String>();
-            boards.getItems().addAll(getBoards());
+            boards.getItems().addAll(getBoardNames());
             gridPane.add(boardsLabel, 0, 4);
             gridPane.add(boards, 1, 4);
 
@@ -455,7 +465,7 @@ public class AppController implements Observer {
         dialogStage.showAndWait();
     }
 
-    private ArrayList<String> getBoards() {
+    private ArrayList<String> getBoardNames() {
 
         ArrayList<String> boards = new ArrayList<>();
 

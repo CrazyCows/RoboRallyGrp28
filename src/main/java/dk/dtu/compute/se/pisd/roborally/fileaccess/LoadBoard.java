@@ -52,10 +52,10 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
-    public static Board loadBoard(String boardname, boolean newGame) {
-        if (boardname == null) {
-            boardname = DEFAULTBOARD;
-        } else if (boardname.equals("empty")) {
+    public static Board loadBoard(String name, boolean newGame) {
+        if (name == null) {
+            name = DEFAULTBOARD;
+        } else if (name.equals("empty")) {
             return new Board(8, 8);
         }
 
@@ -66,9 +66,9 @@ public class LoadBoard {
         try {
             if (newGame) {
                 classLoader = LoadBoard.class.getClassLoader();
-                inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+                inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + name + "." + JSON_EXT);
             } else {
-                inputStream = new FileInputStream("Save Games/" + boardname);
+                inputStream = new FileInputStream("Save Games/" + name + "/board.json");
             }
 
             if (inputStream == null) {
@@ -102,6 +102,7 @@ public class LoadBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                     space.getBackground().addAll(spaceTemplate.background);
                     space.getItems().addAll(spaceTemplate.items);
+
                     if (!space.getItems().isEmpty()) {
                         for (Item item : space.getItems()) {
                             item.createEvent();
@@ -169,12 +170,12 @@ public class LoadBoard {
             }
         }
 
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        // TODO: this is not very defensive, and will result in a NullPointerException
-        //       when the folder "resources" does not exist! But, it does not need
-        //       the file "simpleCards.json" to exist!
-        String filename =
-                classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
+        File folder = new File("Save Games/" + name);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        String filename = "Save Games" + "/" + name + "/"  + "board" + "." + JSON_EXT;
 
         // In simple cases, we can create a Gson object with new:
         //
