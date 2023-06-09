@@ -19,7 +19,6 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
 
 
 
-    //Implement generics instead of overloading?
     public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
         CardController cardController = CardController.getInstance();
         cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards

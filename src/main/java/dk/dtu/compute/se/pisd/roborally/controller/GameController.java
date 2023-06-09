@@ -202,7 +202,7 @@ public class GameController {
         }
 
         if (OGTargetIsNull){
-            pit.doAction(this,originalPlayer.getSpace());
+            pit.doAction(this,originalPlayer);
             Player nextPlayer = getNextPlayer();
             board.setCurrentPlayer(nextPlayer);
             return false;
@@ -264,7 +264,7 @@ public class GameController {
                 if (moveToSpace(player, nextSpace, heading)){ //Moves the player and basically checks if they fell in a pit
                     for (FieldAction fieldAction : nextSpace.getActions()){
                         if (fieldAction instanceof Pit){
-                            fieldAction.doAction(this,nextSpace);
+                            ((Pit)fieldAction).doAction(this,player);
                             break;
                         }
                     }
