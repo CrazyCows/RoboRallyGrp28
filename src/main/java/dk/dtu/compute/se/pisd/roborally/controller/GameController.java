@@ -207,16 +207,17 @@ public class GameController {
 
         if (OGTargetIsNull){
             pit.doAction(this,originalPlayer);
-            Player nextPlayer = getNextPlayer();
+            Player nextPlayer = getNextPlayer(); //TODO: This really shouldnt be done here. It can *probably* just be removed, but test it first
             board.setCurrentPlayer(nextPlayer);
-            return false;
+            return true;
         }
+        boolean otherPlayerMoved = true;
         //jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
         assert board.getNeighbour(originalPlayer.getSpace(), heading,true) == originalTarget; // make sure the move to here is possible in principle
         Player other = originalTarget.getPlayer();
-        if (other != null){ //If player needs to be pushed
+        if (other != null){ //If a player needs to be pushed
             Space newTarget = board.getNeighbour(originalTarget, heading,true);
-            return(moveToSpace(other,newTarget,heading));
+            otherPlayerMoved = (moveToSpace(other,newTarget,heading));
         }
 
         for (FieldAction fieldAction : originalTarget.getActions()){
@@ -225,8 +226,9 @@ public class GameController {
                 break;
             }
         }
-
-        originalPlayer.setSpace(originalTarget);// I don't understand this.... Lucas? - Crazy
+        if (otherPlayerMoved){
+            originalPlayer.setSpace(originalTarget);// I don't understand this.... Lucas? - Crazy
+        }
         return true;
     }
 
@@ -318,8 +320,16 @@ public class GameController {
 
         double closeness;
         for (Player player : possiblePlayers) {//Determines the closest of the eligible players
-            int playerX = player.getSpace().getPosition()[0];
-            int playerY = player.getSpace().getPosition()[1];
+            int playerX;
+            int playerY;
+            if (player.getSpace() == null){
+                playerX = Integer.MAX_VALUE; //TODO: This is not a very pretty solution, but it somewhat fixes the issue by simply not all
+                playerY = Integer.MAX_VALUE;
+            }else {
+                playerX = player.getSpace().getPosition()[0];
+                playerY = player.getSpace().getPosition()[1];
+            }
+
             closeness = distanceToSpace(priorityAntenna, playerX, playerY);
             if (closeness < closest) {
                 closest = closeness;
