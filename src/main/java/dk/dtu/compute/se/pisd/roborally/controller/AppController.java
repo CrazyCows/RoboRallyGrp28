@@ -207,8 +207,6 @@ public class AppController implements Observer {
 
     }
 
-    // Should be deleted at some point. Proof of concept.
-
     public void newOnlineGame() {
         this.online = true;
         this.isMaster = true;
