@@ -90,6 +90,7 @@ public class AppController implements Observer {
     private boolean autoSave;
     private int amountOfPlayers;
     private boolean online;
+    private ArrayList<JsonPlayerBuilder> collectivePlayerJsonBuilder;
 
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -192,6 +193,21 @@ public class AppController implements Observer {
         board.setCurrentPlayer(board.getPlayer(0));
         roboRally.createBoardView(gameController);
 
+        clientController = new ClientController(gameID);
+        collectivePlayerJsonBuilder = new ArrayList<>();
+        clientController.createJSON("sharedBoard.json");
+        for (Player player : gameController.board.getAllPlayers()) {
+            JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+            collectivePlayerJsonBuilder.add(jsonPlayerBuilder);
+            clientController.updateJSON("playerData.json");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     // Should be deleted at some point. Proof of concept.
@@ -217,8 +233,8 @@ public class AppController implements Observer {
     public void saveGame() {
 
         if (!online) {
-            for (Player player : gameController.board.getAllPlayers()) {
-                JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+            for (JsonPlayerBuilder jsonPlayerBuilder : collectivePlayerJsonBuilder) {
+                jsonPlayerBuilder.updateDynamicPlayerData();
                 clientController.updateJSON("playerData.json");
                 try {
                     Thread.sleep(500);
@@ -238,7 +254,103 @@ public class AppController implements Observer {
 
     }
 
+    private static String padString(String input, int length) {
+        int paddingLength = length - input.length();
+        int leftPadding = paddingLength / 2;
+        int rightPadding = paddingLength - leftPadding;
+
+        String paddedString = String.format("%" + leftPadding + "s%s%" + rightPadding + "s", "", input, "");
+        return paddedString;
+    }
+
     public void loadGame() {
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Load Game");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+
+        TextArea textArea = new TextArea();
+        textArea.setWrapText(true);
+        textArea.setPrefWidth(370);
+        textArea.setPrefHeight(300);
+        textArea.setEditable(false);
+        textArea.setStyle("-fx-font-size: 18px; -fx-font-family: 'Courier New';");
+
+        ScrollPane scrollPane = new ScrollPane(textArea);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefHeight(300);
+
+        gridPane.add(scrollPane, 0, 0);
+
+        textArea.setOnMouseClicked(event -> {
+            System.out.println("touched!");
+            if (textArea.getCaretPosition() >= textArea.getText().length()) {
+                return;
+            }
+            System.out.println(textArea.getCaretPosition());
+            int position = textArea.getCaretPosition();
+            int from = position;
+            int to = position;
+            while (!textArea.getText(to, to+1).equals(" ") && !textArea.getText(to, to+1).equals("-")) {
+                to += 1;
+            }
+            while (!textArea.getText(from-1, from).equals(" ") && !textArea.getText(from-1, from).equals("-")) {
+                from -= 1;
+            }
+            String clickedGameName;
+            while (!textArea.getText(to, to+1).equals("-")) {
+                to += 1;
+            }
+            while (!textArea.getText(from-1, from).equals("-")) {
+                from -= 1;
+            }
+            textArea.selectRange(from, to);
+
+        });
+
+        textArea.appendText("------------------------------\n");
+        textArea.appendText(padString("hello", 30));
+        textArea.appendText("\n------------------------------\n");
+        textArea.appendText(padString("hello", 30));
+        textArea.appendText("\n------------------------------\n");
+        textArea.appendText(padString("HI", 30));
+        textArea.appendText("\n------------------------------\n");
+        textArea.appendText(padString("hello", 30));
+        textArea.appendText("\n------------------------------\n");
+        textArea.appendText(padString("hello", 30));
+        textArea.appendText("\n------------------------------");
+
+        Button continueButton = new Button("Continue");
+        gridPane.add(continueButton,0, 1);
+        continueButton.setOnAction(e -> {
+        });
+
+        VBox vbox = new VBox(gridPane);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(10);
+
+        Scene dialogScene = new Scene(vbox, 500, 460);
+
+        dialogStage.setScene(dialogScene);
+        dialogStage.showAndWait();
+
+
+
+
+
+
+
+
+
+
+
+
+        clientController = new ClientController("");
 
         List<String> savedBoards = new ArrayList<>();
 
