@@ -101,6 +101,12 @@ public class Player extends Subject {
     public int getEnergyCubes() {
         return energyCubes;
     }
+    public ArrayList<Card> getDrawPile() {
+        return this.drawPile;
+    }
+    public ArrayList<Card> getDiscardPile() {
+        return this.discardPile;
+    }
     public void setEnergyCubes(int amount) {
         this.energyCubes = amount;
     }

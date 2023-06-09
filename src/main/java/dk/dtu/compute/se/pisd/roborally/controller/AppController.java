@@ -230,6 +230,7 @@ public class AppController implements Observer {
         if (!online) {
             for (Player player : gameController.board.getAllPlayers()) {
                 JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+                jsonPlayerBuilder.createPlayerJSON(this.gameController);
                 clientController.updateJSON("playerData.json");
                 try {
                     Thread.sleep(500);
