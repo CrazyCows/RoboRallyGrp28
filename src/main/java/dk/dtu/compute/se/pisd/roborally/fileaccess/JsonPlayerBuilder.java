@@ -7,9 +7,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCardField;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.card.Card;
-import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
-import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,11 +92,25 @@ public class JsonPlayerBuilder {
                 object.put("actionClassName", programmingCard.getActionClassName());
                 object.put("commandName", programmingCard.getCommandName());
             }
-            if (card instanceof DamageCard damageCard) {
+            else if (card instanceof DamageCard damageCard) {
                 object.put("name", damageCard.getName());
                 object.put("effect", damageCard.getEffect());
                 object.put("imagePath", damageCard.getImagePath());
                 object.put("actionClassName", damageCard.getActionClassName());
+            }
+            else if (card instanceof UpgradeCard permanentUpgradeCard) {
+                object.put("name", permanentUpgradeCard.getName());
+                object.put("effect", permanentUpgradeCard.getEffect());
+                object.put("cost", permanentUpgradeCard.getCost());
+                object.put("imagePath", permanentUpgradeCard.getImagePath());
+                object.put("actionClassName", permanentUpgradeCard.getActionClassName());
+            }
+            else if (card instanceof TempUpgradeCard temporaryUpgradeCard) {
+                object.put("name", temporaryUpgradeCard.getName());
+                object.put("effect", temporaryUpgradeCard.getEffect());
+                object.put("cost", temporaryUpgradeCard.getCost());
+                object.put("imagePath", temporaryUpgradeCard.getImagePath());
+                object.put("actionClassName", temporaryUpgradeCard.getActionClassName());
             }
             objects.put(count, object);
             count += 1;
