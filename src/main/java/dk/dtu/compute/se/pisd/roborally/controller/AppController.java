@@ -141,7 +141,7 @@ public class AppController implements Observer {
             try {
                 clientController.getJSON("playerData.json");
                 if (jsonInterpreter.gameStarted()) {
-                    infoLabel.setText("Error: " + gameID + "already exists. ");
+                    infoLabel.setText("Error: " + gameID + " already exists. ");
                 }
                 else {
                     dialogStage.close();
