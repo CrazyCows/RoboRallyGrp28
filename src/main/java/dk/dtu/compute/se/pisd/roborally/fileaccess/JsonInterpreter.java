@@ -314,6 +314,17 @@ public class JsonInterpreter {
         }
     }
 
+    public ArrayList<String> getAllGames() {
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("data/retrievedGames.json")));
+            return JsonPath.read(json, "$.[*]");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 /*
     public List<String> getValuesFromBoard(String jsonFileName, @Nullable Integer x,@Nullable Integer y, String... keys){
         try {

@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
+import javafx.scene.image.WritableImage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -60,6 +61,7 @@ public class GameController {
     protected CardController cardController;
     protected UpgradeShop upgradeShop;
     private JsonInterpreter jsonInterpreter;
+    private String gamePath;
 
     private Player localPlayer;
     JsonPlayerBuilder jsonPlayerBuilder;
@@ -73,6 +75,7 @@ public class GameController {
         this.roboRally = roboRally;
         this.clientController = clientController;
         this.board = board;
+        this.gamePath = gamePath;
 
         for (Player player : board.getAllPlayers()) {
             player.addEnergyCubes(100);
@@ -415,6 +418,7 @@ public class GameController {
 
     public void synchronize() {
 
+
         System.out.println("______________SYNC_______________");
         setPhase(SYNCHRONIZATION);
 
@@ -736,6 +740,8 @@ public class GameController {
             return false;
         }
     }
+
+
 
     public Player getLocalPlayer() {
         if (this.localPlayer != null) {
