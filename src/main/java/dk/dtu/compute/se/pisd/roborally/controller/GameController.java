@@ -78,7 +78,7 @@ public class GameController {
         this.gamePath = gamePath;
 
         for (Player player : board.getAllPlayers()) {
-            player.addEnergyCubes(100);
+            player.addEnergyCubes(5);
         }
         this.cardController = CardController.getInstance();
         ArrayList<UpgradeCard> permanentUpgradeCards = this.cardController.getCardLoader().getPermUpgradeCards();
