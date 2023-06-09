@@ -243,6 +243,7 @@ public class AppController implements Observer {
                 }
             }
             LoadBoard.saveBoard(gameController.board);
+            clientController.updateJSON("sharedBoard.json");
 
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Save Game");
@@ -263,13 +264,7 @@ public class AppController implements Observer {
         return paddedString;
     }
 
-    public void loadGame() {
-
-        clientController = new ClientController();
-        clientController.availableGamesJSON();
-        JsonInterpreter jsonInterpreter = new JsonInterpreter();
-        ArrayList<String> availableGames = jsonInterpreter.getAllGames();
-
+    public void loadGameForm(ArrayList<String> availableGames) {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Load Game");
 
@@ -307,7 +302,8 @@ public class AppController implements Observer {
             while (!textArea.getText(from-1, from).equals(" ") && !textArea.getText(from-1, from).equals("-")) {
                 from -= 1;
             }
-            String clickedGameName;
+            gameID = textArea.getText(from, to);
+            System.out.println("Clicked on: " + gameID);
             while (!textArea.getText(to, to+1).equals("-")) {
                 to += 1;
             }
@@ -329,6 +325,7 @@ public class AppController implements Observer {
         Button continueButton = new Button("Continue");
         gridPane.add(continueButton,0, 1);
         continueButton.setOnAction(e -> {
+            dialogStage.close();
         });
 
         VBox vbox = new VBox(gridPane);
@@ -339,55 +336,20 @@ public class AppController implements Observer {
 
         dialogStage.setScene(dialogScene);
         dialogStage.showAndWait();
+    }
+
+    public void loadGame() {
+
+        clientController = new ClientController();
+        clientController.availableGamesJSON();
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        ArrayList<String> availableGames = jsonInterpreter.getAllGames();
+
+        loadGameForm(availableGames);
 
 
 
-
-
-
-
-
-
-
-
-
-        clientController = new ClientController("");
-
-        List<String> savedBoards = new ArrayList<>();
-
-        File folder = new File("Save Games");
-        File[] gameFolders = folder.listFiles();
-
-        for (File gameFolder : gameFolders) {
-            if (gameFolder.isDirectory()) {
-                File[] files = gameFolder.listFiles();
-                for (File file : files) {
-                    if (file.isFile() && file.getName().endsWith("board.json")) {
-                        savedBoards.add(gameFolder.getName());
-                    }
-                }
-            }
-        }
-
-        if (savedBoards.size() == 0) {
-            String message = "There are no boards to load. ";
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("No saved games");
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        }
-
-
-        ChoiceDialog<String> dialog = new ChoiceDialog<>(savedBoards.get(0), savedBoards);
-        dialog.setTitle("Load Game");
-        dialog.setHeaderText("Select a game to load");
-        roboRally.setMusicVolume(0.0);
-        Optional<String> result = dialog.showAndWait();
-
-        System.out.println(result);
-
-        if (result.isPresent()) {
+        if (gameID != null) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
                 // give the user the option to save the game or abort this operation!
@@ -403,10 +365,16 @@ public class AppController implements Observer {
                 }
             }
 
-            gamePath = result.get();
-
             roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(result.get(), false);
+
+            clientController = new ClientController(gameID);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            clientController.getJSON("sharedBoard.json");
+            Board board = LoadBoard.loadBoard("sharedBoard.json", false);
             roboRally.pauseMusic();
 
             int no = 2;

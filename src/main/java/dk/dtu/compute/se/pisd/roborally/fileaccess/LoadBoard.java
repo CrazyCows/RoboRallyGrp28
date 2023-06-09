@@ -68,7 +68,7 @@ public class LoadBoard {
                 classLoader = LoadBoard.class.getClassLoader();
                 inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + name + "." + JSON_EXT);
             } else {
-                inputStream = new FileInputStream("Save Games/" + name + "/board.json");
+                inputStream = new FileInputStream("data/sharedBoard.json");
             }
 
             if (inputStream == null) {

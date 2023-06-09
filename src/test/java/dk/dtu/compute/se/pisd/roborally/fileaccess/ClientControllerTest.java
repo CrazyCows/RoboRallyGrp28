@@ -25,6 +25,19 @@ class ClientControllerTest {
     }
 
     @Test
+    void createAndGetBoard() {
+        ClientController jsonConnect = new ClientController("hejeje");
+
+        jsonConnect.createJSON("sharedBoard.json");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        jsonConnect.getJSON("sharedBoard.json");
+    }
+
+    @Test
     void updateJSON() {
         ClientController jsonConnect = new ClientController("kkkkkkkkkkkk");
         JsonInterpreter jsonInterpreter = new JsonInterpreter();

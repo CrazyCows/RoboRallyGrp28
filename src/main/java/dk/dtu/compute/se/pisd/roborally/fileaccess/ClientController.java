@@ -71,6 +71,9 @@ public class ClientController {
         if (jsonName.equals("playerMessage.json")) {
             childName = "collectivePlayerMessages.json";
         }
+        if  (jsonName.equals("sharedBoard.json")) {
+            childName = "sharedBoard.json";
+        }
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
