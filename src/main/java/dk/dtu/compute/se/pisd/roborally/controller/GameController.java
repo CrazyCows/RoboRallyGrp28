@@ -520,7 +520,7 @@ public class GameController {
                         System.out.println(card.getName());
 
                         System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
-                        card.getAction().doAction(GameController.this, board.getCurrentPlayer(), card); //I hate this implementation
+                        card.getAction().doAction(GameController.this, currentPlayer, card); //I hate this implementation
                         List<FieldAction> fieldActions = currentPlayer.getSpace().getActions();
                         for (FieldAction fieldAction : fieldActions) {
                             Thread.sleep(500); //Generify?
