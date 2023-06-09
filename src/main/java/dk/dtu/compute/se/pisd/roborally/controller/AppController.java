@@ -265,6 +265,11 @@ public class AppController implements Observer {
 
     public void loadGame() {
 
+        clientController = new ClientController();
+        clientController.availableGamesJSON();
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        ArrayList<String> availableGames = jsonInterpreter.getAllGames();
+
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Load Game");
 
@@ -313,17 +318,13 @@ public class AppController implements Observer {
 
         });
 
-        textArea.appendText("------------------------------\n");
-        textArea.appendText(padString("hello", 30));
-        textArea.appendText("\n------------------------------\n");
-        textArea.appendText(padString("hello", 30));
-        textArea.appendText("\n------------------------------\n");
-        textArea.appendText(padString("HI", 30));
-        textArea.appendText("\n------------------------------\n");
-        textArea.appendText(padString("hello", 30));
-        textArea.appendText("\n------------------------------\n");
-        textArea.appendText(padString("hello", 30));
-        textArea.appendText("\n------------------------------");
+        textArea.appendText("-----------------------------\n");
+        for (String availableGame : availableGames) {
+            textArea.appendText(padString(availableGame, 30));
+            textArea.appendText("-----------------------------\n");
+        }
+        textArea.appendText("\n-----------------------------");
+
 
         Button continueButton = new Button("Continue");
         gridPane.add(continueButton,0, 1);
@@ -334,7 +335,7 @@ public class AppController implements Observer {
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(10);
 
-        Scene dialogScene = new Scene(vbox, 500, 460);
+        Scene dialogScene = new Scene(vbox, 420, 520);
 
         dialogStage.setScene(dialogScene);
         dialogStage.showAndWait();

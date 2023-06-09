@@ -2,6 +2,8 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 class ClientControllerTest {
 
 
@@ -28,6 +30,17 @@ class ClientControllerTest {
         JsonInterpreter jsonInterpreter = new JsonInterpreter();
         jsonConnect.updateJSON("cardSequenceRequest.json");
 
+    }
+
+    @Test
+    void getAllAvailableGames() {
+        ClientController jsonConnect = new ClientController("kkkkkkkkkkkk");
+        jsonConnect.availableGamesJSON();
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        ArrayList<String> games = jsonInterpreter.getAllGames();
+        for (String game : games) {
+            System.out.println(game);
+        }
     }
 
     @Test

@@ -36,6 +36,14 @@ public class ClientController {
         this.ID = ID;
     }
 
+    public ClientController() {
+        this.client = HttpClient.newHttpClient();
+        //this.baseUrl = "http://20.86.101.206:80";
+        this.baseUrl = "http://localhost:8080";
+        this.objectMapper = new ObjectMapper();
+        this.path = "data";
+    }
+
 
     public String jsonType(String jsonName){
         if (jsonName.equals("playerData.json")){
@@ -197,4 +205,30 @@ public class ClientController {
             System.out.println("An error occurred while sending the request: " + e.getMessage());
         }
     }
+
+    public void availableGamesJSON() {;
+        String jsonTypeToURL = "/jsonGames";
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + jsonTypeToURL))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
+            }
+
+            String responseJson = response.body();
+            JsonNode jsonNode = objectMapper.readTree(responseJson);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "/retrievedGames.json" ), jsonNode);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
