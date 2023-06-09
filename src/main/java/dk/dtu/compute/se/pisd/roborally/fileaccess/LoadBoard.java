@@ -149,7 +149,7 @@ public class LoadBoard {
         return null;
     }
 
-    public static void saveBoard(Board board, String name) {
+    public static void saveBoard(Board board) {
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
@@ -170,12 +170,13 @@ public class LoadBoard {
             }
         }
 
-        File folder = new File("Save Games/" + name);
+        File folder = new File("data");
         if (!folder.exists()) {
             folder.mkdirs();
+            System.out.println("Error: No data folder found! Unexpected save behavior. How did you get this far anyway?");
         }
 
-        String filename = "Save Games" + "/" + name + "/"  + "board" + "." + JSON_EXT;
+        String filename = "data" + "/" + "sharedBoard" + "." + JSON_EXT;
 
         // In simple cases, we can create a Gson object with new:
         //

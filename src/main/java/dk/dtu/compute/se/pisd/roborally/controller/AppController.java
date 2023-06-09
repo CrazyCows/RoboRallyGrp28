@@ -66,8 +66,6 @@ public class AppController implements Observer {
     final private List<Integer> PLAYER_START_X_POSITION = Arrays.asList(2, 3, 4, 5, 6, 7);
     final private List<Integer> PLAYER_START_Y_POSITION = Arrays.asList(2, 3, 4, 5, 6, 7);
 
-    private List<String> savedBoards;
-
     final private RoboRally roboRally;
 
     private GameController gameController;
@@ -91,6 +89,7 @@ public class AppController implements Observer {
     private Text winnerPlayer;
     private boolean autoSave;
     private int amountOfPlayers;
+    private boolean online;
 
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -164,6 +163,8 @@ public class AppController implements Observer {
     }
 
     public void newGame() {
+        this.online = false;
+
         newGameForm();
         roboRally.setMusicVolume(0.0);
 
@@ -186,7 +187,7 @@ public class AppController implements Observer {
             player.setSpace(board.getSpace(i % board.width, i));
         }
         assert board != null;
-        gameController = new GameController(roboRally, clientController, board, false, null);
+        gameController = new GameController(roboRally, clientController, board, this.online, null);
 
         board.setCurrentPlayer(board.getPlayer(0));
         roboRally.createBoardView(gameController);
@@ -196,6 +197,7 @@ public class AppController implements Observer {
     // Should be deleted at some point. Proof of concept.
 
     public void newOnlineGame() {
+        this.online = true;
         this.isMaster = true;
         onlineGame();
         setupRobot();
@@ -203,6 +205,7 @@ public class AppController implements Observer {
     }
 
     public void joinOnlineGame() {
+        this.online = true;
         this.isMaster = false;
 
         onlineGame();
@@ -213,38 +216,31 @@ public class AppController implements Observer {
 
     public void saveGame() {
 
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Save Game");
-        dialog.setHeaderText("Name the save file");
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            String saveName = result.get();
-
-            File folder = new File("Save Games");
-            File[] gameFolders = folder.listFiles();
-
-            for (File gameFolder : gameFolders) {
-                if (gameFolder.isDirectory() && gameFolder.getName().equals(saveName)) {
-                    String message = "Please save the game under a different name. " ;
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Game already exists. ");
-                    alert.setHeaderText(null);
-                    alert.setContentText(message);
-                    alert.showAndWait();
-                }
-            }
-
-            LoadBoard.saveBoard(gameController.board, saveName);
+        if (!online) {
             for (Player player : gameController.board.getAllPlayers()) {
                 JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
-                jsonPlayerBuilder.updateDynamicPlayerData();
+                clientController.updateJSON("playerData.json");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+            LoadBoard.saveBoard(gameController.board);
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Save Game");
+            String message = "Game has been saved. " ;
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
         }
+
     }
 
     public void loadGame() {
 
-        this.savedBoards = new ArrayList<>();
+        List<String> savedBoards = new ArrayList<>();
 
         File folder = new File("Save Games");
         File[] gameFolders = folder.listFiles();
@@ -270,7 +266,7 @@ public class AppController implements Observer {
         }
 
 
-        ChoiceDialog<String> dialog = new ChoiceDialog<>(this.savedBoards.get(0), this.savedBoards);
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(savedBoards.get(0), savedBoards);
         dialog.setTitle("Load Game");
         dialog.setHeaderText("Select a game to load");
         roboRally.setMusicVolume(0.0);
@@ -307,7 +303,7 @@ public class AppController implements Observer {
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-            gameController = new GameController(roboRally, clientController, board, false, null);
+            gameController = new GameController(roboRally, clientController, board, this.online, null);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
         }
@@ -402,7 +398,7 @@ public class AppController implements Observer {
             );
 
 
-            gameController = new GameController(roboRally, clientController, board, true, localPlayer);
+            gameController = new GameController(roboRally, clientController, board, this.online, localPlayer);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
