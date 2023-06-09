@@ -582,6 +582,7 @@ public class GameController {
                 setPhase(Phase.PROGRAMMING);
             }
         });
+        commandThread.setDaemon(true);
         commandThread.start();
 
     }
