@@ -98,6 +98,7 @@ public class ClientController {
 
 
     public void createJSON(String jsonName) {
+        System.out.println("Loading. Please wait.");
         String jsonTypeToURL = jsonType(jsonName);
         try {
             File file = new File(path, jsonName);
