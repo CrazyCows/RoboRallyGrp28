@@ -90,7 +90,6 @@ public class AppController implements Observer {
     private boolean autoSave;
     private int amountOfPlayers;
     private boolean online;
-    private ArrayList<JsonPlayerBuilder> collectivePlayerJsonBuilder;
 
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -194,12 +193,10 @@ public class AppController implements Observer {
         roboRally.createBoardView(gameController);
 
         clientController = new ClientController(gameID);
-        collectivePlayerJsonBuilder = new ArrayList<>();
         clientController.createJSON("sharedBoard.json");
         for (Player player : gameController.board.getAllPlayers()) {
             JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
-            collectivePlayerJsonBuilder.add(jsonPlayerBuilder);
-            clientController.updateJSON("playerData.json");
+            clientController.createJSON("playerData.json");
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -233,8 +230,8 @@ public class AppController implements Observer {
     public void saveGame() {
 
         if (!online) {
-            for (JsonPlayerBuilder jsonPlayerBuilder : collectivePlayerJsonBuilder) {
-                jsonPlayerBuilder.updateDynamicPlayerData();
+            for (Player player : gameController.board.getAllPlayers()) {
+                JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
                 clientController.updateJSON("playerData.json");
                 try {
                     Thread.sleep(500);
@@ -373,17 +370,21 @@ public class AppController implements Observer {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            clientController.getJSON("playerData.json");
             clientController.getJSON("sharedBoard.json");
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
             Board board = LoadBoard.loadBoard("sharedBoard.json", false);
             roboRally.pauseMusic();
 
-            int no = 2;
-            for (int i = 0; i < no; i++) {
-                assert board != null;
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
-            }
+            createPlayersFromLoad(jsonInterpreter, board, jsonInterpreter.getPlayerNames());
+
+            assert board != null;
             gameController = new GameController(roboRally, clientController, board, this.online, null);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
@@ -710,7 +711,7 @@ public class AppController implements Observer {
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
-                    createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+                    createPlayersFromLoad(jsonInterpreter, gameController.board, names);
                     localPlayer.setInGame(true);
 
                     Platform.runLater(dialogStage::close);
@@ -720,7 +721,7 @@ public class AppController implements Observer {
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
-                    createAllNonLocalPlayers(jsonInterpreter, gameController.board, names);
+                    createPlayersFromLoad(jsonInterpreter, gameController.board, names);
                     localPlayer.setInGame(true);
 
                     Platform.runLater(dialogStage::close);
@@ -750,7 +751,7 @@ public class AppController implements Observer {
         dialogStage.showAndWait();
     }
 
-    public void createAllNonLocalPlayers(JsonInterpreter jsonInterpreter, Board board, ArrayList<String> names) {
+    public void createPlayersFromLoad(JsonInterpreter jsonInterpreter, Board board, ArrayList<String> names) {
 
         int counter = 2;
         for (String name : names) {
