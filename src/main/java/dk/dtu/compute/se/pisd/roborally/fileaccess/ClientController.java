@@ -81,6 +81,7 @@ public class ClientController {
                     .GET()
                     .build();
 
+            //TODO: Catch ConnectException and stuff
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
