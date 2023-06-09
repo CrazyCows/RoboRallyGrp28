@@ -53,7 +53,7 @@ public class ConveyorBelt2 extends FieldAction {
         Heading originalHeading = this.heading;
         gameController.moveInDirection(player, 1, heading);
         Space firstDestinationSpace = player.getSpace();
-        if (originalSpace == firstDestinationSpace){
+        if (originalSpace == firstDestinationSpace){ //A bit unnecessary
             System.out.println("Player got conveyed into a wall");
             return false;
         }
