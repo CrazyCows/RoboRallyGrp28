@@ -78,7 +78,7 @@ public class ProgrammingAction extends CardAction<ProgrammingCard> {
                 if (oldCard instanceof SpecialProgrammingCard){
                     System.out.println("AGAIN on special programming card");
                     ((SpecialProgrammingCard) oldCard).getAction().doAction(gameController,player, (SpecialProgrammingCard) oldCard);
-                } else{
+                } else if (oldCard instanceof ProgrammingCard){
                     if (((ProgrammingCard) oldCard).getCommand() == AGAIN){
                         System.out.println("Don't recurse me daddy");
                         return false;

@@ -253,7 +253,8 @@ public class GameController {
         }
     }
 
-    public void moveInDirection(@NotNull Player player, int amount, @NotNull Heading heading) {
+    //TODO: int amount should always be 1, so it could be removed and the code simplified
+    public void moveInDirection(@NotNull Player player, int amount, @NotNull Heading heading) { //Ideally this should return a boolean
         Space space = player.getSpace();
         int[] spacePosition = space.getPosition();
         for (int i = 0; i < amount; i++) {
