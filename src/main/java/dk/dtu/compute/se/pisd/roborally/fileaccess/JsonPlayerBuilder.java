@@ -163,6 +163,12 @@ public class JsonPlayerBuilder {
         cards = new ArrayList<>(player.getTemporaryUpgradeCards());
         playerData.put("temporaryUpgradeCards", playableCardsSetup(cards));
 
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, playerData);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     // TODO: Cards that players have will be removed from the upgradeshop
