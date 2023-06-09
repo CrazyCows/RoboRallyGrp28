@@ -203,13 +203,13 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (player != null) {
             // Create an ImageView with the player image
             playerImageView = new ImageView();
-            Image playerImage = new Image("images/robots/" + player.getColor() + "_robot.png");
+            Image playerImage = new Image("images/robots/" + player.getColor() + "_" + player.getHeading().toString().toLowerCase() + "_facing_robot.png");
             playerImageView.setFitWidth(SPACE_WIDTH);
             playerImageView.setFitHeight(SPACE_HEIGHT);
             playerImageView.setImage(playerImage);
 
             // Set the rotation of the player image
-            playerImageView.setRotate((90 * player.getHeading().ordinal()) % 360);
+            //playerImageView.setRotate((90 * player.getHeading().ordinal()) % 360);    // old 1 image per robot code
 
             // Add the ImageView to the pane
             this.getChildren().add(playerImageView);
