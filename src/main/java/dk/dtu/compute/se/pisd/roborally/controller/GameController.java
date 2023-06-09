@@ -200,7 +200,7 @@ public class GameController {
 
         if (cond1 || cond2){
             System.out.println(originalPlayer.getName() + " hit a wall");
-            Player nextPlayer = getNextPlayer();
+            Player nextPlayer = getNextPlayer(); //TODO: This really shouldnt be done here. It can *probably* just be removed, but test it first
             board.setCurrentPlayer(nextPlayer);
             return false;
         }
