@@ -74,6 +74,7 @@ public class AppController implements Observer {
 
     private ClientController clientController;
     private String chosenBoard;
+    private String gamePath;
     private JsonInterpreter jsonInterpreter;
 
     private String animationRobotDirection;
@@ -81,63 +82,115 @@ public class AppController implements Observer {
     ArrayList<CheckBox> checkBoxes;
     private Player localPlayer;
     private String username;
-    private String lobbyID;
+    private String gameID;
     private boolean isMaster;
     private boolean isPrivate;
     private String gamePassword;
     private String userColor;
     @FXML
     private Text winnerPlayer;
+    private boolean autoSave;
+    private int amountOfPlayers;
 
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
-    String ID;
+    public void newGameForm() {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Online game");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        TextField gameNameField = new TextField();
+        ComboBox<Integer> amountOfPlayersField = new ComboBox<>();
+        amountOfPlayersField.getItems().addAll(PLAYER_NUMBER_OPTIONS);
+        CheckBox autoSaveCheckBox = new CheckBox("Auto Save");
+        Label infoLabel = new Label();
+
+        gridPane.add(new Label("Game name:"), 0, 0);
+        gridPane.add(gameNameField, 1, 0);
+        gridPane.add(new Label("Number of players:"), 0, 1);
+        gridPane.add(amountOfPlayersField, 1, 1);
+        gridPane.add(autoSaveCheckBox, 0, 2, 2, 1);
+        gridPane.add(infoLabel, 1, 3);
+
+        Label boardsLabel = new Label("Boards");
+        ComboBox<String> boards = new ComboBox<String>();
+        boards.getItems().addAll(getBoardNames());
+        gridPane.add(boardsLabel, 0, 4);
+        gridPane.add(boards, 1, 4);
+
+        Button continueButton = new Button("Continue");
+        gridPane.add(continueButton,0, 5);
+        continueButton.setOnAction(e -> {
+            this.amountOfPlayers = amountOfPlayersField.getSelectionModel().getSelectedItem();
+            this.autoSave = autoSaveCheckBox.isSelected();
+            this.gameID = gameNameField.getText();
+            this.chosenBoard = boards.getSelectionModel().getSelectedItem();
+            this.clientController = new ClientController(this.gameID);
+
+            System.out.println("gameName: " + gameID);
+            System.out.println("amountOfPlayers: " + amountOfPlayers);
+            System.out.println("autoSave: " + autoSave);
+
+            jsonInterpreter = new JsonInterpreter();
+            try {
+                clientController.getJSON("playerData.json");
+                if (jsonInterpreter.gameStarted()) {
+                    infoLabel.setText("Error: " + gameID + "already exists. ");
+                }
+                else {
+                    dialogStage.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Game does not exist");
+                dialogStage.close();
+            }
+        });
+
+        VBox vbox = new VBox(gridPane);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(10);
+
+        Scene dialogScene = new Scene(vbox, 300, 230);
+
+        dialogStage.setScene(dialogScene);
+        dialogStage.showAndWait();
+    }
 
     public void newGame() {
-        ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
-        dialog.setTitle("Player number");
-        dialog.setHeaderText("Select number of players");
+        newGameForm();
         roboRally.setMusicVolume(0.0);
-        Optional<Integer> result = dialog.showAndWait();
 
-        if (result.isPresent()) {
-            if (gameController != null) {
-                // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
-                if (!stopGame()) {
-                    return;
-                }
+        if (gameController != null) {
+            // The UI should not allow this, but in case this happens anyway.
+            // give the user the option to save the game or abort this operation!
+            if (!stopGame()) {
+                return;
             }
-
-            ArrayList<String> boards = new ArrayList<>(getBoardNames());
-            ChoiceDialog<String> boardDialog = new ChoiceDialog<>(boards.get(0), boards);
-            boardDialog.setTitle("Select board");
-            boardDialog.setHeaderText("Select a board");
-            Optional<String> boardResult = (boardDialog.showAndWait().isPresent()) ? Optional.of(boardDialog.getSelectedItem()) : Optional.empty();
-            boardResult.ifPresent(s -> chosenBoard = s);
-
-            // XXX the board should eventually be created programmatically or loaded from a file
-            //     here we just create an empty board with the required number of players.
-            roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(chosenBoard, true);
-            roboRally.pauseMusic();
-
-            int no = result.get();
-            for (int i = 1; i <= no; i++) { //TODO: Changed by Anton so players dont start on pit
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
-            }
-            assert board != null;
-            gameController = new GameController(roboRally, clientController, board, false, null);
-
-            board.setCurrentPlayer(board.getPlayer(0));
-            roboRally.createBoardView(gameController);
-
         }
+
+        roboRally.removeStartImage();
+        Board board = LoadBoard.loadBoard(chosenBoard, true);
+        roboRally.pauseMusic();
+
+
+        for (int i = 1; i <= this.amountOfPlayers; i++) { //TODO: Changed by Anton so players dont start on pit
+            Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+            board.addPlayer(player);
+            player.setSpace(board.getSpace(i % board.width, i));
+        }
+        assert board != null;
+        gameController = new GameController(roboRally, clientController, board, false, null);
+
+        board.setCurrentPlayer(board.getPlayer(0));
+        roboRally.createBoardView(gameController);
+
     }
 
     // Should be deleted at some point. Proof of concept.
@@ -182,6 +235,10 @@ public class AppController implements Observer {
             }
 
             LoadBoard.saveBoard(gameController.board, saveName);
+            for (Player player : gameController.board.getAllPlayers()) {
+                JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+                jsonPlayerBuilder.updateDynamicPlayerData();
+            }
         }
     }
 
@@ -237,9 +294,10 @@ public class AppController implements Observer {
                 }
             }
 
+            gamePath = result.get();
 
             roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(result.orElse(""), false);
+            Board board = LoadBoard.loadBoard(result.get(), false);
             roboRally.pauseMusic();
 
             int no = 2;
@@ -427,10 +485,11 @@ public class AppController implements Observer {
             System.out.println("Private Game: " + privateGame);
             System.out.println("Password: " + passwordField);
             this.username = username;
-            this.lobbyID = lobbyName;
+            this.gameID = lobbyName;
             this.isPrivate = privateGame;
             this.gamePassword = password;
-            this.clientController = new ClientController(this.lobbyID);
+            this.clientController = new ClientController(this.gameID);
+            gamePath = "data/playerdata.json";
 
             jsonInterpreter = new JsonInterpreter();
             try {

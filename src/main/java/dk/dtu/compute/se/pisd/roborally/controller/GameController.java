@@ -60,6 +60,7 @@ public class GameController {
     protected CardController cardController;
     protected UpgradeShop upgradeShop;
     private JsonInterpreter jsonInterpreter;
+    private String gamePath;
 
     private Player localPlayer;
     JsonPlayerBuilder jsonPlayerBuilder;
@@ -73,6 +74,7 @@ public class GameController {
         this.roboRally = roboRally;
         this.clientController = clientController;
         this.board = board;
+        this.gamePath = gamePath;
 
         for (Player player : board.getAllPlayers()) {
             player.addEnergyCubes(100);
