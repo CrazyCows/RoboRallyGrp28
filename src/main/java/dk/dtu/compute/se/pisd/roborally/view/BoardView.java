@@ -31,6 +31,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
@@ -39,6 +41,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
+
+import javax.imageio.ImageIO;
+import java.io.*;
 
 /**
  * ...
@@ -366,6 +371,7 @@ public class BoardView extends VBox implements ViewObserver {
     }
 
     private void displayUpgradeShop() {
+
         if (upgradeShopVBox.isVisible()) {
             System.out.println("upgrade shop is no longer displayed");
             upgradeShopBlurBackground.setVisible(false);
@@ -399,6 +405,8 @@ public class BoardView extends VBox implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
+
+
             Phase phase = board.getPhase();
             InterationRestrictor(phase);
             statusLabel.setText(board.getStatusMessage());

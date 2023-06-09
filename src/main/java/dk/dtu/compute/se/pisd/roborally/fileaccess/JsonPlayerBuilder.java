@@ -37,7 +37,7 @@ public class JsonPlayerBuilder {
         playerData.put("startplace", player.getStartSpace());
         playerData.put("heading", player.getHeading());
          */
-        file = new File("data", "playerData.json");
+        file = new File("data" + "/playerData.json");
 
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, playerData);
