@@ -194,21 +194,21 @@ public class GameController {
         //There is already checks for walls somewhere else, but because this is called recursively I cant use that
 
         boolean OGTargetIsNull = (originalTarget == null);
-        boolean cond1 = originalPlayer.getSpace().getWalls().contains(heading);//Checks whether theres a wall in the way on the start field
-        boolean cond2 = false;
-        if (!OGTargetIsNull) {cond2 = originalTarget.getWalls().contains(heading.next().next());} //Checks whether theres a wall on the destination field, facing the start field
+        boolean isWall1 = originalPlayer.getSpace().getWalls().contains(heading);//Checks whether theres a wall in the way on the start field
+        boolean isWall2 = false;
+        if (!OGTargetIsNull) {isWall2 = originalTarget.getWalls().contains(heading.next().next());} //Checks whether theres a wall on the destination field, facing the start field
 
-        if (cond1 || cond2){
+        if (isWall1 || isWall2){
             System.out.println(originalPlayer.getName() + " hit a wall");
-            Player nextPlayer = getNextPlayer(); //TODO: This really shouldnt be done here. It can *probably* just be removed, but test it first
-            board.setCurrentPlayer(nextPlayer);
+            //Player nextPlayer = getNextPlayer(); //TODO: This really shouldnt be done here. It can *probably* just be removed, but test it first
+            //board.setCurrentPlayer(nextPlayer);
             return false;
         }
 
         if (OGTargetIsNull){
             pit.doAction(this,originalPlayer);
-            Player nextPlayer = getNextPlayer(); //TODO: This really shouldnt be done here. It can *probably* just be removed, but test it first
-            board.setCurrentPlayer(nextPlayer);
+            Player nextPlayer = getNextPlayer();
+            board.setCurrentPlayer(nextPlayer);//TODO: This really shouldnt be done here. But falling into a pit breaks if it isnt, for some reason
             return true;
         }
         boolean otherPlayerMoved = true;
