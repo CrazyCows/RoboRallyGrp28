@@ -523,9 +523,10 @@ public class GameController {
                 Player currentPlayer = null;
                 currentPlayer = getNextPlayer();
                 board.setCurrentPlayer(currentPlayer);
+                int sleep = 200; //Id like to make this dynamically decrease, so that plays accelerate. Not done for now though
                 while (true){
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(sleep);
 
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
                         System.out.println(card.getName());
