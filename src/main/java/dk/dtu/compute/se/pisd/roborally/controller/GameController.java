@@ -528,10 +528,10 @@ public class GameController {
                         }
                         List<Item> items = currentPlayer.getSpace().getItems();
                         for (Item item : items) {
-                            Thread.sleep(500); //Generify?
+                            Thread.sleep(500);
                             item.getEvent().doAction(GameController.this, currentPlayer.getSpace());
                         }
-                        Thread.sleep(500); //Generify?
+                        Thread.sleep(500);
 
                     }
                     catch (NullPointerException e) {
