@@ -653,7 +653,7 @@ public class GameController {
     }
 
 
-    /**
+    /** //TODO: Det her skal fjernes
      * A method called when no corresponding controller operation is implemented yet.
      * This method should eventually be removed.
      */

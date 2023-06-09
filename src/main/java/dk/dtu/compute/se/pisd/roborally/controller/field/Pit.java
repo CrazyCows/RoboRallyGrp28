@@ -26,10 +26,10 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
         cardController.drawSpamCardToDiscardPile(currentPlayer);
         System.out.println(currentPlayer.getName() + " is now being rebooted");
         currentPlayer.setSpace(currentPlayer.startSpace);
-        gameController.getCardController().emptyProgram(currentPlayer);
+        cardController.emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
         return false;
-    }
+    } //TODO: Remove the overloading
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         CardController cardController = CardController.getInstance();
@@ -38,7 +38,7 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
         cardController.drawSpamCardToDiscardPile(currentPlayer);
         System.out.println(currentPlayer.getName() + " is now being rebooted");
         currentPlayer.setSpace(currentPlayer.startSpace);
-        gameController.getCardController().emptyProgram(currentPlayer);
+        cardController.emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
 
 
