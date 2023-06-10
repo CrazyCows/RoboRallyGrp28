@@ -116,5 +116,38 @@ public class UpgradeShop extends Subject {
     }
 
 
+    public void removePermanentUpgradeCardByName(String cardName) {
+        permanentCards.removeIf(card -> card.getName().equals(cardName));
+        if (permanentCards.size() == 0) {
+            this.selectedPermanentCard = placeHolderPermanentCard;
+        }
+        else {
+            currentPermanentCardCounter = 0;
+            this.selectedPermanentCard = permanentCards.get(currentPermanentCardCounter);
+        }
+        notifyChange();
+    }
+
+    public void removeTemporaryUpgradeCardByName(String cardName) {
+        temporaryCards.removeIf(card -> card.getName().equals(cardName));
+        if (this.temporaryCards.size() == 0) {
+            this.selectedTemporaryCard = placeHolderTemporaryCard;
+        }
+        else {
+            currentTemporaryCardCounter = 0;
+            this.selectedTemporaryCard = temporaryCards.get(currentTemporaryCardCounter);
+        }
+        notifyChange();
+    }
+
+
+    public ArrayList<UpgradeCard> getAllPermanentUpgradeCards() {
+        return this.permanentCards;
+    }
+
+    public ArrayList<TempUpgradeCard> getAllTemporaryUpgradeCards() {
+        return this.temporaryCards;
+    }
+
 
 }

@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
 import javafx.scene.image.WritableImage;
+import org.apache.tomcat.util.http.parser.Upgrade;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -59,7 +60,6 @@ public class GameController {
     private ChatController chatController;
 
     protected CardController cardController;
-    protected UpgradeShop upgradeShop;
     private JsonInterpreter jsonInterpreter;
     private String gamePath;
 
@@ -75,7 +75,6 @@ public class GameController {
         this.roboRally = roboRally;
         this.clientController = clientController;
         this.board = board;
-        this.gamePath = gamePath;
 
         for (Player player : board.getAllPlayers()) {
             player.addEnergyCubes(5);
@@ -88,6 +87,12 @@ public class GameController {
         this.jsonInterpreter = new JsonInterpreter();
         for (Player player : board.getAllPlayers()) {
             cardController.copyOverUniversalDeck(player);
+            for (Card card : player.getPermanentUpgradeCards()) {
+                board.getUpgradeShop().removePermanentUpgradeCardByName(card.getName());
+            }
+            for (Card card : player.getTemporaryUpgradeCards()) {
+                board.getUpgradeShop().removeTemporaryUpgradeCardByName(card.getName());
+            }
         }
         this.online = online;
         setPhase(Phase.PROGRAMMING);
@@ -697,7 +702,7 @@ public class GameController {
 
     public void purchaseTemporaryUpgradeCard(Player player) {
         TempUpgradeCard card = board.getUpgradeShop().getSelectedTemporaryCard();
-        if (player.getEnergyCubes() >= card.getCost() || player.getAmountAllUpgradeCards() >= 3) {
+        if (player.getEnergyCubes() >= card.getCost() && player.getAmountAllUpgradeCards() >= 3) {
             board.getUpgradeShop().removeTemporaryUpgradeCard(card);
             player.addTemporaryUpgradeCard(card);
             player.addEnergyCubes(-card.getCost());
@@ -706,7 +711,7 @@ public class GameController {
 
     public void purchasePermanentUpgradeCard(Player player) {
         UpgradeCard card = board.getUpgradeShop().getSelectedPermanentCard();
-        if (player.getEnergyCubes() >= card.getCost() || player.getAmountAllUpgradeCards() >= 3) {
+        if (player.getEnergyCubes() >= card.getCost() && player.getAmountAllUpgradeCards() >= 3) {
             board.getUpgradeShop().removePermanentUpgradeCard(card);
             player.addPermanentUpgradeCard(card);
             player.addEnergyCubes(-card.getCost());
