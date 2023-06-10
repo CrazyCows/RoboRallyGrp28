@@ -28,8 +28,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -137,28 +137,39 @@ public class PlayerView extends Tab implements ViewObserver {
         }
     }
 
-    @Override
-    public void updateView(Subject subject) {
+    @Override                                                                               //Comments by Anton
+    public void updateView(Subject subject) {                                               //Incredibly icky if you dont understand it
         //System.out.println("PlayerView has been run");
-        if (subject == player.board) {
+        if (subject == player.board) {             //Does nothing if the board isnt the right board.
+
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
-                CardFieldView cardFieldView = programCardViews[i];
-                if (cardFieldView != null) {
-                    if (player.board.getPhase() == Phase.PROGRAMMING ) {
-                        cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
+                CardFieldView cardFieldView = programCardViews[i];//Iterates over the registers. Note: Player is NOT the current player
+                if (cardFieldView != null) {                    //Makes sure the view exists
+                    if (cardFieldView.getField().getCard() != null){
+                            Image image = new Image(cardFieldView.getField().getImageOnCard());
+                            BackgroundImage backgroundImage = new BackgroundImage(
+                                    image, BackgroundRepeat.NO_REPEAT,
+                                    BackgroundRepeat.NO_REPEAT,
+                                    BackgroundPosition.DEFAULT,
+                                    new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                            cardFieldView.setBackground(new Background(backgroundImage));
+                    }
+
+                    if (player.board.getPhase() == Phase.PROGRAMMING) {
+                        //cardFieldView.setBackground(CardFieldView.BG_TEST);
                     } else {
                         if (i < player.board.getStep()) {
-                            cardFieldView.setBackground(CardFieldView.BG_DONE);
+                            //cardFieldView.setBackground(CardFieldView.BG_DONE);
                         } else if (i == player.board.getStep()) {
                             if (player.board.getCurrentPlayer() == player) {
-                                cardFieldView.setBackground(CardFieldView.BG_ACTIVE);
+                                //cardFieldView.setBackground(CardFieldView.BG_ACTIVE);
                             } else if (player.board.getPlayerNumber(player.board.getCurrentPlayer()) > player.board.getPlayerNumber(player)) {
-                                cardFieldView.setBackground(CardFieldView.BG_DONE);
+                                //cardFieldView.setBackground(CardFieldView.BG_DONE);
                             } else {
-                                cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
+                                //cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                             }
                         } else {
-                            cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
+                            //cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                         }
                     }
                 }
