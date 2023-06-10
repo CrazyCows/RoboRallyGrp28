@@ -197,7 +197,7 @@ public class JsonPlayerBuilder {
             int iterator = 0;
             if (!handPileCards.isEmpty()) {
                 for (CommandCardField commandCardField : player.getHandPile()) {
-                    if (handPileCards.get(iterator) != null) {
+                    if (handPileCards.size() > iterator) {
                         commandCardField.setCard(handPileCards.get(iterator));
                     }
                     iterator += 1;
@@ -205,13 +205,12 @@ public class JsonPlayerBuilder {
             }
 
             ArrayList<Card> programCards = jsonInterpreter.getAllCardsFromPlayer(name, "program");
-            iterator = 0;
             if (!programCards.isEmpty()) {
-                for (CommandCardField commandCardField : player.getProgram()) {
-                    if (programCards.get(iterator) != null) {
+                for (CommandCardField commandCardField : player.getHandPile()) {
+                    if (programCards.size() > iterator) {
                         commandCardField.setCard(programCards.get(iterator));
-                        iterator += 1;
                     }
+                    iterator += 1;
                 }
             }
 
