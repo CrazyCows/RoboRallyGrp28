@@ -172,8 +172,11 @@ public class GameController {
     public boolean moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
+            if (space == null){
+                System.out.println("Bug #115");; //TODO: Fix this. Bug #115
+            }
             Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading,false);
+            Space target = board.getNeighbour(space, heading,false); //TODO: Bug occurs here, when space is null
             try {
                 return (moveToSpace(player, target, heading));
             } catch (ImpossibleMoveException e) {
