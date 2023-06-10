@@ -307,6 +307,16 @@
       "y": 4
     },
     {
+      "walls": [
+        "NORTH",
+        "SOUTH",
+        "EAST",
+        "WEST"
+      ],
+      "x": 0,
+      "y": 4
+    },
+    {
       "items": [
         {
           "name": "priorityAntenna",
