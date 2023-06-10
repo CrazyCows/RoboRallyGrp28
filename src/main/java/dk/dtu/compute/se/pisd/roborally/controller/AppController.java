@@ -49,6 +49,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -72,7 +75,6 @@ public class AppController implements Observer {
 
     private ClientController clientController;
     private String chosenBoard;
-    private String gamePath;
     private JsonInterpreter jsonInterpreter;
 
     private String animationRobotDirection;
@@ -94,6 +96,23 @@ public class AppController implements Observer {
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
+    }
+
+    public void abortSetupProcess() {
+        gameController = null;
+        clientController = null;
+        chosenBoard = null;
+        jsonInterpreter = null;
+        localPlayer = null;
+        username = null;
+        gameID = null;
+        isMaster = false;
+        isPrivate = false;
+        gamePassword = null;
+        userColor = null;
+        winnerPlayer = null;
+        autoSave = false;
+        online = false;
     }
 
     public void newGameForm() {
@@ -567,7 +586,6 @@ public class AppController implements Observer {
             this.isPrivate = privateGame;
             this.gamePassword = password;
             this.clientController = new ClientController(this.gameID);
-            gamePath = "data/playerdata.json";
 
             jsonInterpreter = new JsonInterpreter();
             try {
@@ -606,28 +624,33 @@ public class AppController implements Observer {
 
         ArrayList<String> boards = new ArrayList<>();
 
-        ClassLoader classLoader = AppController.class.getClassLoader();
-        URL folderUrl = Objects.requireNonNull(classLoader.getResource("boards"));
-
+        // Attempt to retrieve board names from resources
         try {
-            File folder = new File(folderUrl.toURI());
+            ClassLoader classLoader = AppController.class.getClassLoader();
+            File resourceFolder = new File(Objects.requireNonNull(classLoader.getResource("boards")).getFile());
 
-            File[] files = folder.listFiles();
+            File[] files = resourceFolder.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    String name = file.getName();
-                    String[] substring = name.split("\\.");
-                    for (String sub : substring) {
-                        if (sub.equals("json")) {
-                            boards.add(substring[0]);
-                        }
+                    if (file.isFile() && file.getName().endsWith(".json")) {
+                        String boardName = file.getName().substring(0, file.getName().lastIndexOf('.'));
+                        boards.add(boardName);
                     }
                 }
             }
-        } catch (URISyntaxException e) {
-            System.out.println("Problem occurred when retrieving boards from ressources. ");
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println("Resource 'boards' not found in the resources folder. Attempting to read from local 'boards' folder...");
         }
+
+
+        if (boards.isEmpty()) {
+            boards.add("defaultBoard");
+            boards.add("dizzyHighway");
+            boards.add("emptyTestBoard");
+            boards.add("twister");
+
+        }
+
         return boards;
     }
 
