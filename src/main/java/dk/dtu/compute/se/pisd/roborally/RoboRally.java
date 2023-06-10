@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.RoboRallyMenuBar;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -124,7 +125,7 @@ public class RoboRally extends Application {
 
     private void addImageToWindow() {
         // create an ImageView object for the image
-        ImageView imageView = new ImageView(new Image("file:Bruno!.jpeg"));
+        ImageView imageView = new ImageView(new Image("frontpage.jpg"));
 
         // set the size and position of the image
         imageView.setFitHeight(420);
@@ -186,26 +187,32 @@ public class RoboRally extends Application {
     }
 
     public void winScreen(Player currentPlayer) {
-        Stage winnerStage = new Stage();
-        winnerStage.setTitle("Winner Screen");
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/scenes/winnerScreen.fxml"));
-        try {
-            Pane parent = fxmlLoader.load();
-            Scene winnerScene = new Scene(parent);
+        Platform.runLater(new Runnable() { //TODO: Lucas said he wanted to redo this. It works now though -Anton, 10/06 01:32
+            @Override
+            public void run() {
+                Stage winnerStage = new Stage();
+                winnerStage.setTitle("Winner Screen");
 
-            //"Player" text gets replaced with the winning playerName.
-            Text winnerPlayerText = (Text) parent.lookup("#winnerPlayer");
-            winnerPlayerText.setText(currentPlayer.getName());
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/scenes/winnerScreen.fxml"));
+                try {
+                    Pane parent = fxmlLoader.load();
+                    Scene winnerScene = new Scene(parent);
 
-            winnerStage.setScene(winnerScene);
+                    //"Player" text gets replaced with the winning playerName.
+                    Text winnerPlayerText = (Text) parent.lookup("#winnerPlayer");
+                    winnerPlayerText.setText(currentPlayer.getName());
 
-            winnerStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("The player " + currentPlayer.getName() + " has won!");
-        stage.close();
+                    winnerStage.setScene(winnerScene);
+
+                    winnerStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("The player " + currentPlayer.getName() + " has won!");
+                stage.close();
+            }
+        });
     }
 
     @FXML

@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import javafx.scene.control.TabPane;
 
@@ -38,6 +39,7 @@ public class PlayersView extends TabPane implements ViewObserver {
     private Board board;
 
     private PlayerView[] playerViews;
+    private ChatView chat;
 
     public PlayersView(GameController gameController) {
         board = gameController.board;
@@ -49,15 +51,28 @@ public class PlayersView extends TabPane implements ViewObserver {
             playerViews[i] = new PlayerView(gameController, board.getPlayer(i));
             this.getTabs().add(playerViews[i]);
         }
+        if (gameController.getLocalPlayer() != null) {
+            chat = new ChatView(gameController, gameController.getLocalPlayer());
+            this.getTabs().add(chat);
+        }
         board.attach(this);
         update(board);
+
+        this.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            Player selectedPlayer = board.getPlayer(this.getTabs().get(newValue.intValue()).getText());
+            System.out.println("Tab selected: " + selectedPlayer.getName());
+            board.setCurrentPlayer(selectedPlayer);
+        });
+
     }
 
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
-            Player current = board.getCurrentPlayer();
-            this.getSelectionModel().select(board.getPlayerNumber(current));
+            if (board.getPhase() == Phase.ACTIVATION) {
+                Player current = board.getCurrentPlayer();
+                this.getSelectionModel().select(board.getPlayerNumber(current));
+            }
 
         }
     }

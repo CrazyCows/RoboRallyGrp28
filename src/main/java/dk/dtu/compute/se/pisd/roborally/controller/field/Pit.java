@@ -19,14 +19,13 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
 
 
 
-    //Implement generics instead of overloading?
     public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
         CardController cardController = CardController.getInstance();
-        System.out.println(currentPlayer.getName() + " is now being rebooted");
         cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
         cardController.drawSpamCardToDiscardPile(currentPlayer);
+        System.out.println(currentPlayer.getName() + " is now being rebooted");
         currentPlayer.setSpace(currentPlayer.startSpace);
-        gameController.getCardController().emptyProgram(currentPlayer);
+        cardController.emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
         return false;
     }
@@ -34,11 +33,11 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         CardController cardController = CardController.getInstance();
         Player currentPlayer = space.getPlayer();
-        System.out.println(currentPlayer.getName() + " is now being rebooted");
         cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
         cardController.drawSpamCardToDiscardPile(currentPlayer);
+        System.out.println(currentPlayer.getName() + " is now being rebooted");
         currentPlayer.setSpace(currentPlayer.startSpace);
-        gameController.getCardController().emptyProgram(currentPlayer);
+        cardController.emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
 
 

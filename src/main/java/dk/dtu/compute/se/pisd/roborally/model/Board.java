@@ -23,6 +23,10 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
+import javafx.application.Platform;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.card.Card;
+import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -57,16 +61,18 @@ public class Board extends Subject {
     private boolean stepMode;
 
     CardController cardController = CardController.getInstance();
-    private Timer timer;
     private int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
+    private UpgradeShop upgradeShop;
 
     private int numberOfCheckpoints = 0;
 
     private ArrayList<Space> laserSpaces = new ArrayList<>();
 
     public Board(int width, int height) {
+        this.upgradeShop = new UpgradeShop();
+
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
@@ -152,6 +158,15 @@ public class Board extends Subject {
         }
     }
 
+    public Player getPlayer(String name) {
+        for (Player player : players) {
+            if (player.getName().equals(name)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
     public Player getCurrentPlayer() {
         return current;
     }
@@ -167,10 +182,7 @@ public class Board extends Subject {
         return phase;
     }
 
-    /**
-     * Sets the phase. If the phase is programming, cards are automatically drawn from drawpile to hand
-     * @param phase
-     */
+
     public void setPhase(Phase phase) {
         if (phase != this.phase) {
             this.phase = phase;
@@ -210,6 +222,9 @@ public class Board extends Subject {
 
     public List<Player> getAllPlayers() {
         return players;
+    }
+    public void removePlayer(Player player) {
+        players.remove(player);
     }
 
     /**
@@ -271,35 +286,19 @@ public class Board extends Subject {
 
 
 
-
-    // TODO: I forgot why this is places here??? (but it works though)
-    public void startTimer() {
-        timer = new Timer();
-        timerIsRunning = true;
-        notifyChange();
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                timerSecondsCount += 1;
-                System.out.println("timer: " + timerSecondsCount);
-                if (timerSecondsCount % 6 == 0) {
-                    notifyChange();
-                }
-                if (timerSecondsCount >= 30) {
-                    timer.cancel();
-                    timer.purge();
-                    timerIsRunning = false;
-                    notifyChange();
-                    timerSecondsCount = 0;
-                    System.out.println("Time to fire event!");
-                }
-            }
-        }, 0, 1000);
-    }
-
     public int getTimerSecondsCount() {
         return this.timerSecondsCount;
+    }
+
+    public void setTimerSecondsCount(int seconds) {
+        Platform.runLater(this::notifyChange);
+
+        this.timerSecondsCount = seconds;
+    }
+
+    public void setTimerIsRunning(boolean status) {
+        this.timerIsRunning = status;
+        this.notifyChange();
     }
 
     public boolean getTimerIsRunning() {
@@ -307,7 +306,7 @@ public class Board extends Subject {
     }
 
     public String getStatusMessage() {
-        return "temp STATUS MESSAGE 0";
+        return ("STATUS: "+phase);
     }
 
     public int getNumberOfItemsOnBoard(String spaceName) {
@@ -325,6 +324,10 @@ public class Board extends Subject {
             numberOfCheckpoints = counter;
         }
         return numberOfCheckpoints;
+    }
+
+    public UpgradeShop getUpgradeShop() {
+        return this.upgradeShop;
     }
 
     public ArrayList<Space> getLaserSpaces(){ //Distinguish between types of lasers

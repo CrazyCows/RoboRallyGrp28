@@ -49,13 +49,13 @@ import java.io.*;
 public class LoadBoard {
 
     private static final String BOARDSFOLDER = "boards";
-    private static final String DEFAULTBOARD = "defaultboard";
+    private static final String DEFAULTBOARD = "dizzyHighway";
     private static final String JSON_EXT = "json";
 
-    public static Board loadBoard(String boardname, boolean newGame) {
-        if (boardname == null) {
-            boardname = DEFAULTBOARD;
-        } else if (boardname.equals("empty")) {
+    public static Board loadBoard(String name, boolean newGame) {
+        if (name == null) {
+            name = DEFAULTBOARD;
+        } else if (name.equals("empty")) {
             return new Board(8, 8);
         }
 
@@ -66,9 +66,9 @@ public class LoadBoard {
         try {
             if (newGame) {
                 classLoader = LoadBoard.class.getClassLoader();
-                inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+                inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + name + "." + JSON_EXT);
             } else {
-                inputStream = new FileInputStream("Save Games/" + boardname);
+                inputStream = new FileInputStream("data/sharedBoard.json");
             }
 
             if (inputStream == null) {
@@ -102,6 +102,7 @@ public class LoadBoard {
                     space.getWalls().addAll(spaceTemplate.walls);
                     space.getBackground().addAll(spaceTemplate.background);
                     space.getItems().addAll(spaceTemplate.items);
+
                     if (!space.getItems().isEmpty()) {
                         for (Item item : space.getItems()) {
                             item.createEvent();
@@ -148,7 +149,7 @@ public class LoadBoard {
         return null;
     }
 
-    public static void saveBoard(Board board, String name) {
+    public static void saveBoard(Board board) {
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
@@ -169,12 +170,13 @@ public class LoadBoard {
             }
         }
 
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        // TODO: this is not very defensive, and will result in a NullPointerException
-        //       when the folder "resources" does not exist! But, it does not need
-        //       the file "simpleCards.json" to exist!
-        String filename =
-                classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
+        File folder = new File("data");
+        if (!folder.exists()) {
+            folder.mkdirs();
+            System.out.println("Error: No data folder found! Unexpected save behavior. How did you get this far anyway?");
+        }
+
+        String filename = "data" + "/" + "sharedBoard" + "." + JSON_EXT;
 
         // In simple cases, we can create a Gson object with new:
         //

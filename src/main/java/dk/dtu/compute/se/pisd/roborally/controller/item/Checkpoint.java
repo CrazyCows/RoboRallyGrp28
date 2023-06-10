@@ -36,15 +36,17 @@ public class Checkpoint extends FieldAction {
         }
         String clean = s.replaceAll("\\D+",""); //Uses regex to remove all non-numbers from string
         int number = Integer.parseInt(clean);
-
-        System.out.println("THE CHECKPOINT");
-        Board board = gameController.board;
         Player currentPlayer = space.getPlayer();
+        System.out.print(currentPlayer.getName() + " has landed on checkpoint #" + (number+1));
+        Board board = gameController.board;
         if (currentPlayer.getCheckpointsCollected() == number){
             currentPlayer.incrementCheckpointsCollected();
+            System.out.println(". They collect the checkpoint, are one point closer to winning");
             if (currentPlayer.getCheckpointsCollected() == board.getNumberOfItemsOnBoard("checkpoint")){
                 gameController.win(currentPlayer);
             }
+        }else{
+            System.out.println(". Sadly they're on the lookout for #" + (currentPlayer.getCheckpointsCollected()+1) + ", so they are no closer to winning");
         }
         return true;
     }

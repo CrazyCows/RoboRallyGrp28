@@ -29,10 +29,19 @@ public class ClientController {
 
     public ClientController(String ID) {
         this.client = HttpClient.newHttpClient();
-        this.baseUrl = "http://20.86.101.206:80";
+        //this.baseUrl = "http://20.86.101.206:80";
+        this.baseUrl = "http://localhost:8080";
         this.objectMapper = new ObjectMapper();
         this.path = "data";
         this.ID = ID;
+    }
+
+    public ClientController() {
+        this.client = HttpClient.newHttpClient();
+        //this.baseUrl = "http://20.86.101.206:80";
+        this.baseUrl = "http://localhost:8080";
+        this.objectMapper = new ObjectMapper();
+        this.path = "data";
     }
 
 
@@ -41,6 +50,9 @@ public class ClientController {
             return "/jsonPlayer?ID=";
         } else if (jsonName.equals("cardSequenceRequest.json")){
             return "/jsonCardSequence?ID=";  // TODO: JEG HAR LAVET NOGET OM HER
+        }
+        else if (jsonName.equals("playerMessage.json")) {
+            return "/jsonChat?ID=";
         }
          else {
             return "/jsonHandler?ID=";
@@ -56,6 +68,12 @@ public class ClientController {
         } else if (jsonName.equals("cardSequenceRequest.json")) {
             childName = "cardSequenceRequests.json";
         }
+        if (jsonName.equals("playerMessage.json")) {
+            childName = "collectivePlayerMessages.json";
+        }
+        if  (jsonName.equals("sharedBoard.json")) {
+            childName = "sharedBoard.json";
+        }
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -63,6 +81,7 @@ public class ClientController {
                     .GET()
                     .build();
 
+            //TODO: Catch ConnectException and stuff
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
@@ -79,6 +98,7 @@ public class ClientController {
 
 
     public void createJSON(String jsonName) {
+        System.out.println("Loading. Please wait.");
         String jsonTypeToURL = jsonType(jsonName);
         try {
             File file = new File(path, jsonName);
@@ -190,4 +210,30 @@ public class ClientController {
             System.out.println("An error occurred while sending the request: " + e.getMessage());
         }
     }
+
+    public void availableGamesJSON() {;
+        String jsonTypeToURL = "/jsonGames";
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + jsonTypeToURL))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
+            }
+
+            String responseJson = response.body();
+            JsonNode jsonNode = objectMapper.readTree(responseJson);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "/retrievedGames.json" ), jsonNode);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }

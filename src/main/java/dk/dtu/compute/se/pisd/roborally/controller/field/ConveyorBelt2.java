@@ -45,17 +45,66 @@ public class ConveyorBelt2 extends FieldAction {
     }
 
     @Override //Issue: Player is pushed two away from conveyorbelt. This should only happen if the player is on a continuous conveyor
-    public boolean doAction(@NotNull GameController gameController, @NotNull Space space){
-        System.out.println("CONVEYOR");
-        Player player = space.getPlayer();
+    public boolean doAction(@NotNull GameController gameController, @NotNull Space originalSpace){
+
+        //MOVING FROM THE ORIGINAL SPACE TO THE FIRST SPACE
+        System.out.println("CONVEYOR: Conveying robots and emotions alike");
+        Player player = originalSpace.getPlayer();
+        Heading originalHeading = this.heading;
         gameController.moveInDirection(player, 1, heading);
-        Space newSpace = gameController.board.getNeighbour(space,heading,false); //We dont check for walls, as this is already getting done in moveInDirection.
-        for (FieldAction fieldAction : newSpace.getActions()){
-            if (fieldAction instanceof ConveyorBelt2){
-                gameController.moveInDirection(player, 1, heading);
-                break; //break theoretically speeds up code, but mostly makes it nicer to run through in debugger
+        Space firstDestinationSpace = player.getSpace();
+        if (originalSpace == firstDestinationSpace){ //A bit unnecessary
+            System.out.println("Player got conveyed into a wall");
+            return false;
+        }
+        //Space firstDestinationSpace = gameController.board.getNeighbour(originalSpace,heading,false); //We dont check for walls, as this is already getting done in moveInDirection.
+        Heading firstDestinationHeading = null;
+        for (FieldAction fieldAction : firstDestinationSpace.getActions()){
+            if (fieldAction instanceof ConveyorBelt2) {
+                firstDestinationHeading = ((ConveyorBelt2) fieldAction).getHeading(); //Assumes theres ony
+                break;
             }
         }
+
+        //You may ask why prev() and next() are mixed like this.
+        if (originalHeading == firstDestinationHeading.next()){ //turning one way
+            player.setHeading(player.getHeading().prev());
+        }
+        if (originalHeading == firstDestinationHeading.prev()){//turning one way
+            player.setHeading(player.getHeading().next());
+        }
+        if (originalHeading == firstDestinationHeading.next().next()){//180-degree turn. Rules don't specify what would happen in this case
+            player.setHeading(player.getHeading().next().next());
+        }
+
+
+        //MOVING FROM THE FIRST SPACE TO THE SECOND
+
+        gameController.moveInDirection(player, 1, firstDestinationHeading);
+        Space secondDestinationSpace = player.getSpace();
+        if (firstDestinationSpace == secondDestinationSpace){
+            System.out.println("Player got conveyed into a wall");
+            return false; //I think this works for if the player hits a wall
+        }
+        Heading secondDestinationHeading = null;
+        for (FieldAction fieldAction : secondDestinationSpace.getActions()){
+            if (fieldAction instanceof ConveyorBelt2) {
+                secondDestinationHeading = ((ConveyorBelt2) fieldAction).getHeading();
+                break;
+            }
+        }
+        if (firstDestinationHeading == secondDestinationHeading.next()){ //turning one way
+            player.setHeading(player.getHeading().prev());
+        }
+        if (firstDestinationHeading == secondDestinationHeading.prev()){//turning one way
+            player.setHeading(player.getHeading().prev());
+        }
+        if (firstDestinationHeading == secondDestinationHeading.next().next()){//180-degree turn. Rules don't specify what would happen in this case
+            player.setHeading(player.getHeading().next().next());
+        }
+
+
+
         return true;
     }
 

@@ -8,7 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 public class DamageAction extends CardAction<DamageCard> {
-    Pit pit = new Pit();
+    private Pit pit = new Pit();
 
 
     /**

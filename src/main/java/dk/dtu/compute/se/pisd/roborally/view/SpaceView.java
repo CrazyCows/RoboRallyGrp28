@@ -22,8 +22,11 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.effect.ColorAdjust;
@@ -32,8 +35,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.*;
@@ -53,6 +59,8 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     final public static int SPACE_HEIGHT = 75;
     final public static int SPACE_WIDTH = 75;
+
+    final private static String emptyEnergySpace = "navn.png";
 
     public final Space space;
     private ImageView backgroundImageView;
@@ -195,25 +203,44 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (player != null) {
             // Create an ImageView with the player image
             playerImageView = new ImageView();
-            Image playerImage = new Image("images/robots/" + player.getColor() + "_robot.png");
+            Image playerImage = new Image("images/robots/" + player.getColor() + "_" + player.getHeading().toString().toLowerCase() + "_facing_robot.png");
             playerImageView.setFitWidth(SPACE_WIDTH);
             playerImageView.setFitHeight(SPACE_HEIGHT);
             playerImageView.setImage(playerImage);
 
             // Set the rotation of the player image
-            playerImageView.setRotate((90 * player.getHeading().ordinal()) % 360);
+            //playerImageView.setRotate((90 * player.getHeading().ordinal()) % 360);    // old 1 image per robot code
 
             // Add the ImageView to the pane
             this.getChildren().add(playerImageView);
             playerImageView.toFront();
         }
         // Add the ImageView back again
+    }   
+
+    private boolean energyFieldUpdater(Subject subject){
+        Space sp8z = (Space)subject;
+        List<FieldAction> sp8zActions = sp8z.getActions();
+        if (sp8zActions.size() > 0 && space.board.getPhase() == Phase.ACTIVATION){
+            FieldAction fieldAction = sp8zActions.get(0);
+            if (fieldAction instanceof EnergySpace && ((EnergySpace) fieldAction).getEnergyCubes() == 0){ //I DONT KNOW WHAT IM DOING
+                ArrayList<String> h = new ArrayList();
+                h.add(0,"NORTH"); h.add(1,emptyEnergySpace);
+                space.setBackground(h);
+                return true;
+            }
+        } //This might be the single most ghetto solution, but it currently seems to work. Should probably test a tiny bit more for the sake of Lucas sanity
+        return false;
     }
 
     @Override
     public void updateView(Subject subject) {
-        //System.out.println("Space update");
+
         if (subject == this.space) {
+            if (energyFieldUpdater(subject)){
+                System.out.println("Updated an energy space image");
+            }
+
             setBackround(space.getBackground());
             if (!space.getItems().isEmpty()) {
                 updateOverlay(space.getItems().get(space.getItems().size() - 1).getImage());
@@ -226,5 +253,4 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
         updatePlayer();
     }
-
 }

@@ -24,6 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.TempUpgradeCard;
+import dk.dtu.compute.se.pisd.roborally.model.card.UpgradeCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class Player extends Subject {
     //VARIABLES
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 8;
+    final public static int NO_CARDS = 9;
 
     final public Board board;
 
@@ -67,12 +69,17 @@ public class Player extends Subject {
     //The last card that the player used
     private Card lastCard = null;
     private int checkpointsCollected = 0;
-    private static int handSize = 8;
+
+    //TODO: These are already defined, duplicates are stoopid
+    private static int handSize = 9;
     private static int programSize = 5;
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
+    public String message;
+    public ArrayList<Card> permUpgradeCards;
+    public ArrayList<Card> tempUpgradeCards;
 
     //
     //SIMPLE GETTERS AND SETTERS
@@ -93,6 +100,15 @@ public class Player extends Subject {
     }
     public int getEnergyCubes() {
         return energyCubes;
+    }
+    public ArrayList<Card> getDrawPile() {
+        return this.drawPile;
+    }
+    public ArrayList<Card> getDiscardPile() {
+        return this.discardPile;
+    }
+    public void setEnergyCubes(int amount) {
+        this.energyCubes = amount;
     }
     public Space getSpace() {
         return space;
@@ -119,6 +135,9 @@ public class Player extends Subject {
     public int getCheckpointsCollected() {
         return checkpointsCollected;
     }
+    public void setCheckpointsCollected(int amount) {
+        this.checkpointsCollected = amount;
+    }
     public void incrementCheckpointsCollected() {this.checkpointsCollected += 1;}
     public int getHandSize() {
         return handSize;
@@ -137,7 +156,13 @@ public class Player extends Subject {
     }
     public void setInGame(boolean status) {
         this.inGame = status;
+        notifyChange();
     }
+
+    public int getAmountAllUpgradeCards() {
+        return permUpgradeCards.size() + tempUpgradeCards.size();
+    }
+
     public boolean isLeader() {
         return leader;
     }
@@ -159,13 +184,26 @@ public class Player extends Subject {
         return true;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+        notifyChange();
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+
 
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
         this.color = color;
+        this.message = "";
 
         this.space = null;
+        this.permUpgradeCards = new ArrayList<>();
+        this.tempUpgradeCards = new ArrayList<>();
 
         program = new ArrayList<>();
         for (int i = 0; i < programSize ; i++) {
@@ -322,6 +360,53 @@ public class Player extends Subject {
         }
         return commandCards;
     }
+
+    public void addPermanentUpgradeCard(UpgradeCard permanentUpgradeCard) {
+        this.permUpgradeCards.add(permanentUpgradeCard);
+    }
+    public void removePermanentUpgradeCard(UpgradeCard permanentUpgradeCard) {
+        this.permUpgradeCards.remove(permanentUpgradeCard);
+    }
+    public void removePermanentUpgradeCard(String name) {
+        for (int i = 0; i < permUpgradeCards.size(); i++) {
+            if (permUpgradeCards.get(i).getName().equals(name)) {
+                permUpgradeCards.remove(i);
+                break;
+            }
+        }
+    }
+    public ArrayList<Card> getPermanentUpgradeCards() {
+        return this.permUpgradeCards;
+    }
+
+    public Card getPermanentUpgradeCard(int atPosition) {
+        return this.permUpgradeCards.get(atPosition);
+    }
+
+    public void addTemporaryUpgradeCard(TempUpgradeCard temporaryUpgradeCard) {
+        this.tempUpgradeCards.add(temporaryUpgradeCard);
+    }
+    public void removeTemporaryUpgradeCard(TempUpgradeCard temporaryUpgradeCard) {
+        this.tempUpgradeCards.remove(temporaryUpgradeCard);
+    }
+    public void removeTemporaryUpgradeCard(String name) {
+        for (int i = 0; i < tempUpgradeCards.size(); i++) {
+            if (tempUpgradeCards.get(i).getName().equals(name)) {
+                tempUpgradeCards.remove(i);
+                break;
+            }
+        }
+    }
+    public ArrayList<Card> getTemporaryUpgradeCards() {
+        return this.tempUpgradeCards;
+    }
+
+    public Card getTemporaryUpgradeCard(int atPosition) {
+        return this.tempUpgradeCards.get(atPosition);
+    }
+
+
+
 
     /**
      * @return The cards from the current program. Always 5 long, but some can be null if not filled out
