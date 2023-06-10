@@ -37,4 +37,12 @@ public class DamageCard extends Card {
         return this.action;
     }
 
+    public String getEffect() {
+        return this.effect;
+    }
+
+    public String getActionClassName() {
+        return this.actionClassName;
+    }
+
 }

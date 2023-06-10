@@ -43,5 +43,13 @@ public class UpgradeCard extends Card {
         return this.cost;
     }
 
+    public String getEffect() {
+        return this.effect;
+    }
+
+    public String getActionClassName() {
+        return this.actionClassName;
+    }
+
 
 }

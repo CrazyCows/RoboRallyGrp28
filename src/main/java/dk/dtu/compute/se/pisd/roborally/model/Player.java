@@ -78,8 +78,8 @@ public class Player extends Subject {
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
     public ArrayList<Card> discardPile = new ArrayList<>(); //Cards that have been run
     public String message;
-    public ArrayList<UpgradeCard> permUpgradeCards;
-    public ArrayList<TempUpgradeCard> tempUpgradeCards;
+    public ArrayList<Card> permUpgradeCards;
+    public ArrayList<Card> tempUpgradeCards;
 
     //
     //SIMPLE GETTERS AND SETTERS
@@ -100,6 +100,12 @@ public class Player extends Subject {
     }
     public int getEnergyCubes() {
         return energyCubes;
+    }
+    public ArrayList<Card> getDrawPile() {
+        return this.drawPile;
+    }
+    public ArrayList<Card> getDiscardPile() {
+        return this.discardPile;
     }
     public void setEnergyCubes(int amount) {
         this.energyCubes = amount;
@@ -128,6 +134,9 @@ public class Player extends Subject {
     }
     public int getCheckpointsCollected() {
         return checkpointsCollected;
+    }
+    public void setCheckpointsCollected(int amount) {
+        this.checkpointsCollected = amount;
     }
     public void incrementCheckpointsCollected() {this.checkpointsCollected += 1;}
     public int getHandSize() {
@@ -366,11 +375,11 @@ public class Player extends Subject {
             }
         }
     }
-    public ArrayList<UpgradeCard> getPermanentUpgradeCards() {
+    public ArrayList<Card> getPermanentUpgradeCards() {
         return this.permUpgradeCards;
     }
 
-    public UpgradeCard getPermanentUpgradeCard(int atPosition) {
+    public Card getPermanentUpgradeCard(int atPosition) {
         return this.permUpgradeCards.get(atPosition);
     }
 
@@ -388,11 +397,11 @@ public class Player extends Subject {
             }
         }
     }
-    public ArrayList<TempUpgradeCard> getTemporaryUpgradeCards() {
+    public ArrayList<Card> getTemporaryUpgradeCards() {
         return this.tempUpgradeCards;
     }
 
-    public TempUpgradeCard getTemporaryUpgradeCard(int atPosition) {
+    public Card getTemporaryUpgradeCard(int atPosition) {
         return this.tempUpgradeCards.get(atPosition);
     }
 

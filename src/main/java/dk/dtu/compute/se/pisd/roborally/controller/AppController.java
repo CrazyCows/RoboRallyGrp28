@@ -230,6 +230,7 @@ public class AppController implements Observer {
         if (!online) {
             for (Player player : gameController.board.getAllPlayers()) {
                 JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+                jsonPlayerBuilder.createPlayerJSON(this.gameController);
                 clientController.updateJSON("playerData.json");
                 try {
                     Thread.sleep(500);
@@ -237,6 +238,7 @@ public class AppController implements Observer {
                     e.printStackTrace();
                 }
             }
+            clientController.getJSON("playerData.json");
             LoadBoard.saveBoard(gameController.board);
             clientController.updateJSON("sharedBoard.json");
 
@@ -380,7 +382,7 @@ public class AppController implements Observer {
             Board board = LoadBoard.loadBoard("sharedBoard.json", false);
             roboRally.pauseMusic();
 
-            createPlayersFromLoad(jsonInterpreter, board, jsonInterpreter.getPlayerNames());
+            JsonPlayerBuilder.createPlayersFromLoad(board, jsonInterpreter.getPlayerNames());
 
             assert board != null;
             gameController = new GameController(roboRally, clientController, board, this.online, null);
@@ -709,7 +711,7 @@ public class AppController implements Observer {
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
-                    createPlayersFromLoad(jsonInterpreter, gameController.board, names);
+                    JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
 
                     Platform.runLater(dialogStage::close);
@@ -719,7 +721,7 @@ public class AppController implements Observer {
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
-                    createPlayersFromLoad(jsonInterpreter, gameController.board, names);
+                    JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
 
                     Platform.runLater(dialogStage::close);
@@ -747,24 +749,6 @@ public class AppController implements Observer {
 
         dialogStage.setScene(dialogScene);
         dialogStage.showAndWait();
-    }
-
-    public void createPlayersFromLoad(JsonInterpreter jsonInterpreter, Board board, ArrayList<String> names) {
-
-        int counter = 2;
-        for (String name : names) {
-            Player player = new Player(board, jsonInterpreter.getSimplePlayerInfoString(name, "color"), name);
-            player.setInGame(jsonInterpreter.getSimplePlayerInfoBoolean(name, "inGame"));
-            player.setReady(jsonInterpreter.getSimplePlayerInfoBoolean(name, "readystate"));
-            player.setMasterStatus(jsonInterpreter.getSimplePlayerInfoBoolean(name, "master"));
-            board.addPlayer(player);
-            player.setSpace(board.getSpace(
-                    jsonInterpreter.getSimplePlayerInfoInt(name, "posx"),
-                    jsonInterpreter.getSimplePlayerInfoInt(name, "posy")
-            ));
-            counter += 1;
-
-        }
     }
 
 

@@ -44,4 +44,11 @@ class JsonInterpreterTest {
         System.out.println(jsonInterpreter.isAnyReady(names));
     }
 
+    @Test
+    void getAllCardsFromPlayer() {
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        ArrayList<String> names = jsonInterpreter.getPlayerNames();
+        jsonInterpreter.getAllCardsFromPlayer("Player 1", "handPile");
+    }
+
 }
