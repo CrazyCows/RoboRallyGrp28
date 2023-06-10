@@ -385,18 +385,9 @@ public class BoardView extends VBox implements ViewObserver {
     }
 
     private void nextTimer() {
-
-        if (board.getTimerIsRunning()) {
-            if (board.getTimerSecondsCount() % 5 == 0) {
-                nextTimerInt += 1;
-            }
-            if (timers.length - 1 < nextTimerInt) {
-                nextTimerInt = 0;
-            }
-            this.timerView.setImage(timers[nextTimerInt]);
-        }
-        else {
-            nextTimerInt = 0;
+        int k = (int) Math.floor(((float)board.getTimerSecondsCount())/5) + 1; //I hope this maths the math
+        this.timerView.setImage(timers[k]);
+        if (board.getTimerSecondsCount() >= 29){
             this.timerView.setImage(timers[0]);
         }
     }
@@ -405,7 +396,6 @@ public class BoardView extends VBox implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
-
 
             Phase phase = board.getPhase();
             InterationRestrictor(phase);

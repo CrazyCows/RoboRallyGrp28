@@ -21,7 +21,7 @@ public class CardController {
     //Since these cards are simpler, we can just use a stack. Makes operations slightly simpler
 
     /**
-     * ONLY TO BE USED DURING INITIAL LOADING
+     * ONLY TO BE USED DURING INITIAL LOADING. We should probably move it to the model
      */
     ArrayList<DamageCard> allDamageCards = new ArrayList<>();
     public Stack<DamageCard> virusPile = new Stack<>(); //Pile of cards to draw from
@@ -243,12 +243,12 @@ public class CardController {
     public void fillAllPlayersProgramFromHand(Board board) {
         for (Player player : board.getAllPlayers()){
             board.setCurrentPlayer(player);
-            this.fillProgramFromHand(player);
             board.notifyChange();
+            this.fillProgramFromHand(player);
         }
     }
 
-    public void fillAllPlayersProgramFromHandOnline(Player player) {
+    public void fillPlayersProgramFromHandOnline(Player player) {
         player.board.setCurrentPlayer(player);
         this.fillProgramFromHand(player);
         player.board.notifyChange();
