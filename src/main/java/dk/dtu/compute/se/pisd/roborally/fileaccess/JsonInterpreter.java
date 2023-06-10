@@ -331,25 +331,24 @@ public class JsonInterpreter {
             int current = 0;
 
             for (int i = 0; i < cardsAmount; i++) {
-                if (cardsToGet.equals("permanentUpgradeCards") || cardsToGet.equals("temporaryUpgradeCards")) {
-                    /*ArrayList<String> cardTypeDeterminer = JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "commandName");
-                    if (cardTypeDeterminer.size() == 0) {
-                        DamageCard damageCard = new DamageCard(
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "name")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "effect")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "imagePath")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "actionClassName")).get(0)
-                        );
-                        cards.add(damageCard);
-                    } else {
-                        ProgrammingCard programmingCard = new ProgrammingCard(
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "name")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "imagePath")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "actionClassName")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".[" + current + "]." + "commandName")).get(0)
-                        );
-                        cards.add(programmingCard);
-                    }*/
+                if (cardsToGet.equals("permanentUpgradeCards")) {
+                    DamageCard damageCard = new DamageCard(
+                            (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "name")).get(0),
+                            (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "effect")).get(0),
+                            (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "imagePath")).get(0),
+                            (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "actionClassName")).get(0)
+                    );
+                    cards.add(damageCard);
+                    }
+                else if (cardsToGet.equals("permanentCards")) {
+
+                    ProgrammingCard programmingCard = new ProgrammingCard(
+                            (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "name")).get(0),
+                            (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "imagePath")).get(0),
+                            (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "actionClassName")).get(0),
+                            (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "commandName")).get(0)
+                    );
+                    cards.add(programmingCard);
 
                 }
                 else {

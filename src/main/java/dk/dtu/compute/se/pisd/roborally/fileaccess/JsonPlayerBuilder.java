@@ -219,6 +219,10 @@ public class JsonPlayerBuilder {
 
             player.getDrawPile().addAll(jsonInterpreter.getAllCardsFromPlayer(name, "discardPile"));
 
+            player.getPermanentUpgradeCards().addAll(jsonInterpreter.getAllCardsFromPlayer(name, "permanentUpgradeCards"));
+
+            player.getTemporaryUpgradeCards().addAll(jsonInterpreter.getAllCardsFromPlayer(name, "temporaryUpgradeCards"));
+
         }
     }
 
