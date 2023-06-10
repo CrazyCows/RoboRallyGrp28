@@ -212,7 +212,7 @@ public class JsonInterpreter {
     public String getMaster() {
         try {
             String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<String> master = JsonPath.read(json, "$.[?(@.master == true)].name");
+            List<String> master = JsonPath.read(json, "$.[?(@.isMaster == true)].name");
             return master.get(0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -223,7 +223,7 @@ public class JsonInterpreter {
     public boolean gameStarted() {
         try {
             String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.master == true)].inGame")).get(0);
+            return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.isMaster == true)].inGame")).get(0);
         } catch (IOException e) {
             e.printStackTrace();
             return true;
