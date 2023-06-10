@@ -135,6 +135,9 @@ public class Player extends Subject {
     public int getCheckpointsCollected() {
         return checkpointsCollected;
     }
+    public void setCheckpointsCollected(int amount) {
+        this.checkpointsCollected = amount;
+    }
     public void incrementCheckpointsCollected() {this.checkpointsCollected += 1;}
     public int getHandSize() {
         return handSize;

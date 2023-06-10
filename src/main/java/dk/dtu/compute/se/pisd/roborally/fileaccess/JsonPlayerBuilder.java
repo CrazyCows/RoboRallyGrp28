@@ -37,14 +37,13 @@ public class JsonPlayerBuilder {
         playerData.put("name", player.getName());
         playerData.put("color", player.getColor());
         playerData.put("readystate", player.isReady());
-        playerData.put("playerisLead", player.isLeader());
         playerData.put("posx", player.getSpace().getPosition()[0]);
         playerData.put("posy", player.getSpace().getPosition()[1]);
-        playerData.put("energycubes",player.getEnergyCubes()); //TODO: Does this work?
-        playerData.put("master", player.isMaster());
+        playerData.put("energyCubes",player.getEnergyCubes());
+        playerData.put("isMaster", player.isMaster());
         playerData.put("inGame", player.isInGame());
         playerData.put("heading", player.getHeading());
-        playerData.put("isMaster", player.isMaster());
+        playerData.put("master", player.getMaster());
         playerData.put("checkpointsCollected", player.getCheckpointsCollected());
 
         /*
@@ -68,10 +67,12 @@ public class JsonPlayerBuilder {
             playerData.put("posx", player.getSpace().getPosition()[0]);
             playerData.put("posy", player.getSpace().getPosition()[1]);
             playerData.put("readystate", player.isReady());
-            playerData.put("master", player.isMaster());
+            playerData.put("isMaster", player.isMaster());
+            playerData.put("master", player.getMaster());
             playerData.put("inGame", player.isInGame());
             playerData.put("color", player.getColor());
             playerData.put("message", player.getMessage());
+            playerData.put("checkpointsCollected", player.getCheckpointsCollected());
         }
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, playerData);
@@ -83,9 +84,10 @@ public class JsonPlayerBuilder {
     // setup for piles, decks or CommandCardFields containing Damage cards and / or Programming cards
     public HashMap<Integer, HashMap<String, Object>> playableCardsSetup(ArrayList<Card> cards) {
         HashMap<Integer, HashMap<String, Object>> objects = new HashMap<>();
-        HashMap<String, Object> object = new HashMap<>();
+        HashMap<String, Object> object;
         int count = 0;
         for (Card card : cards) {
+            object = new HashMap<>();
             if (card instanceof ProgrammingCard programmingCard) {
                 object.put("name", programmingCard.getName());
                 object.put("imagePath", programmingCard.getImagePath());
@@ -128,10 +130,9 @@ public class JsonPlayerBuilder {
         playerData.put("name", player.getName());
         playerData.put("color", player.getColor());
         playerData.put("readystate", player.isReady());
-        playerData.put("playerisLead", player.isLeader());
         playerData.put("posx", player.getSpace().getPosition()[0]);
         playerData.put("posy", player.getSpace().getPosition()[1]);
-        playerData.put("energycubes",player.getEnergyCubes());
+        playerData.put("energyCubes",player.getEnergyCubes());
         playerData.put("master", player.getMaster());
         playerData.put("inGame", player.isInGame());
         playerData.put("heading", player.getHeading());
@@ -169,6 +170,56 @@ public class JsonPlayerBuilder {
             e.printStackTrace();
         }
 
+    }
+
+
+    public static void createPlayersFromLoad(Board board, ArrayList<String> names) {
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        for (String name : names) {
+            Player player = new Player(board, jsonInterpreter.getSimplePlayerInfoString(name, "color"), name);
+            player.setInGame(jsonInterpreter.getSimplePlayerInfoBoolean(name, "inGame"));
+            player.setReady(jsonInterpreter.getSimplePlayerInfoBoolean(name, "readystate"));
+            player.setMasterStatus(jsonInterpreter.getSimplePlayerInfoBoolean(name, "isMaster"));
+            player.setMaster(jsonInterpreter.getSimplePlayerInfoString(name, "master"));
+            player.setEnergyCubes(jsonInterpreter.getSimplePlayerInfoInt(name, "energyCubes"));
+            player.setHeading(jsonInterpreter.getSimplePlayerInfoString(name, "heading"));
+            player.setCheckpointsCollected(jsonInterpreter.getSimplePlayerInfoInt(name, "checkpointsCollected"));
+
+            //player.getTemporaryUpgradeCards().addAll()
+
+            board.addPlayer(player);
+            player.setSpace(board.getSpace(
+                    jsonInterpreter.getSimplePlayerInfoInt(name, "posx"),
+                    jsonInterpreter.getSimplePlayerInfoInt(name, "posy")
+            ));
+
+            ArrayList<Card> handPileCards = jsonInterpreter.getAllCardsFromPlayer(name, "handPile");
+            int iterator = 0;
+            if (!handPileCards.isEmpty()) {
+                for (CommandCardField commandCardField : player.getHandPile()) {
+                    if (handPileCards.get(iterator) != null) {
+                        commandCardField.setCard(handPileCards.get(iterator));
+                    }
+                    iterator += 1;
+                }
+            }
+
+            ArrayList<Card> programCards = jsonInterpreter.getAllCardsFromPlayer(name, "program");
+            iterator = 0;
+            if (!programCards.isEmpty()) {
+                for (CommandCardField commandCardField : player.getProgram()) {
+                    if (programCards.get(iterator) != null) {
+                        commandCardField.setCard(programCards.get(iterator));
+                        iterator += 1;
+                    }
+                }
+            }
+
+            player.getDrawPile().addAll(jsonInterpreter.getAllCardsFromPlayer(name, "drawPile"));
+
+            player.getDrawPile().addAll(jsonInterpreter.getAllCardsFromPlayer(name, "discardPile"));
+
+        }
     }
 
     // TODO: Cards that players have will be removed from the upgradeshop
