@@ -2,6 +2,8 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 
 class ClientControllerTest {
@@ -54,6 +56,11 @@ class ClientControllerTest {
         for (String game : games) {
             System.out.println(game);
         }
+    }
+
+    @Test
+    void startLocalRestfulServer() {
+        assertTrue(ClientController.startRestful());
     }
 
     @Test

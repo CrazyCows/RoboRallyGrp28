@@ -384,7 +384,7 @@ public class GameController {
     void setPhase(Phase phase){
         if (phase == PROGRAMMING){
             for (Player player : board.getAllPlayers()){
-                cardController.drawCards(player); //I dont think this breaks MVC?
+                cardController.drawCards(player);
             }
         }
         board.setPhase(phase);

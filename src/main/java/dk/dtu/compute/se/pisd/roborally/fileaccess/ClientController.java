@@ -3,16 +3,19 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
+import java.io.*;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class ClientController {
@@ -234,6 +237,27 @@ public class ClientController {
         }
 
 
+    }
+
+    public static boolean startRestful () {
+
+        // Run the JAR file
+        ProcessBuilder processBuilder = new ProcessBuilder("java", "-jar", "RoboRallyRESTful.jar");
+
+        try {
+            Process process = processBuilder.start();
+
+            //int exitCode = process.waitFor();
+
+            //System.out.println("Exited with code: " + exitCode);
+
+            //return exitCode == 0;
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
