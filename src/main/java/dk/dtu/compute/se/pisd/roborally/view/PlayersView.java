@@ -71,10 +71,16 @@ public class PlayersView extends TabPane implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
+            if (board.getPhase() == Phase.PROGRAMMING && board.getOnline()) {
+                chat.setDisable(true);
+            }
             if (board.getPhase() == Phase.ACTIVATION) {
                 if (!board.getOnline()) {
                     Player current = board.getCurrentPlayer();
                     this.getSelectionModel().select(board.getPlayerNumber(current));
+                }
+                else {
+                    chat.setDisable(false);
                 }
             }
         }
