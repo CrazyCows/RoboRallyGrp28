@@ -52,7 +52,7 @@ public class ClientController {
     }
 
 
-    public String jsonType(String jsonName){
+    public synchronized String jsonType(String jsonName){
         if (jsonName.equals("playerData.json")){
             return "/jsonPlayer?ID=";
         } else if (jsonName.equals("cardSequenceRequest.json")){
@@ -66,7 +66,7 @@ public class ClientController {
         }
     }
 
-    public void getJSON(String jsonName) {
+    public synchronized void getJSON(String jsonName) {
         String jsonTypeToURL = jsonType(jsonName);
         String childName = "";
 
@@ -104,7 +104,7 @@ public class ClientController {
     }
 
 
-    public void createJSON(String jsonName) {
+    public synchronized void createJSON(String jsonName) {
         System.out.println("Loading. Please wait.");
         String jsonTypeToURL = jsonType(jsonName);
         try {
@@ -166,7 +166,7 @@ public class ClientController {
         }
     }
 
-    public void updateJSON(String jsonName) {
+    public synchronized void updateJSON(String jsonName) {
         String jsonTypeToURL = jsonType(jsonName);
         try {
             WebClient webClient = WebClient.create();
@@ -197,7 +197,7 @@ public class ClientController {
 
 
     // Deletes the whole game folder. Individual files should not be deleted.
-    public void deleteJSON() {
+    public synchronized void deleteJSON() {
         // Create the DELETE request
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/jsonHandler?ID=" + this.ID))
@@ -218,7 +218,7 @@ public class ClientController {
         }
     }
 
-    public void availableGamesJSON() {;
+    public synchronized void availableGamesJSON() {;
         String jsonTypeToURL = "/jsonGames";
 
         try {
@@ -263,5 +263,6 @@ public class ClientController {
             return false;
         }
     }
+
 
 }
