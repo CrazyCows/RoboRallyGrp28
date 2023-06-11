@@ -87,6 +87,9 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-color: black; -fx-border-color: black; -fx-border-width: 4px;");
         }
 
+
+        /*
+        // old way of displaying walls. Can be used for debugging purposes
         if (!this.space.getWalls().isEmpty()) {
             for (Heading heading : this.space.getWalls()) {
                 if (heading == NORTH) {
@@ -107,6 +110,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                 }
             }
         }
+        */
 
         this.overlayImageViews = new ArrayList<>();
 
