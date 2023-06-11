@@ -224,6 +224,16 @@ public class GameController {
         assert board.getNeighbour(originalPlayer.getSpace(), heading,true) == originalTarget; // make sure the move to here is possible in principle
         Player other = originalTarget.getPlayer();
         if (other != null){ //If a player needs to be pushed
+            if (originalPlayer.hasCard("Virus Module")){
+                cardController.drawVirusCardToDiscardPile(other);
+            }
+            if (originalPlayer.hasCard("Trojan Needler")){
+                cardController.drawTrojanCardToDiscardPile(other);
+            }
+            if (originalPlayer.hasCard("Blue Screen of Death")){
+                cardController.drawWormCardToDiscardPile(other);
+            }
+
             Space newTarget = board.getNeighbour(originalTarget, heading,true);
             otherPlayerMoved = (moveToSpace(other,newTarget,heading));
         }

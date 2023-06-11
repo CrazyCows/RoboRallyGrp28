@@ -174,19 +174,19 @@ public class CardController {
         }
         try{
             player.discardPile.add(virusPile.pop());
-            System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
+            System.out.println(player.getName() + " draws a VIRUS card and adds it to their discard pile");
         } catch (EmptyStackException a){
             try{
                 player.discardPile.add(spamPile.pop());
-                System.out.println(player.getName() + " draws a virus card and adds it to their discard pile");
+                System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
             } catch (EmptyStackException b){
                 try{
                     player.discardPile.add(wormPile.pop());
-                    System.out.println(player.getName() + " draws a worm card and adds it to their discard pile");
+                    System.out.println(player.getName() + " draws a WORM card and adds it to their discard pile");
                 } catch (EmptyStackException c){
                     try{
                         player.discardPile.add(trojanPile.pop());
-                        System.out.println(player.getName() + " draws a trojan card and adds it to their discard pile");
+                        System.out.println(player.getName() + " draws a TROJAN card and adds it to their discard pile");
                     } catch (EmptyStackException d){
                         System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
                     }
@@ -209,15 +209,15 @@ public class CardController {
         } catch (EmptyStackException a){
             try{
                 player.discardPile.add(virusPile.pop());
-                System.out.println(player.getName() + " draws a virus card and adds it to their discard pile");
+                System.out.println(player.getName() + " draws a VIRUS card and adds it to their discard pile");
             } catch (EmptyStackException b){
                 try{
                     player.discardPile.add(wormPile.pop());
-                    System.out.println(player.getName() + " draws a worm card and adds it to their discard pile");
+                    System.out.println(player.getName() + " draws a WORM card and adds it to their discard pile");
                 } catch (EmptyStackException c){
                     try{
                         player.discardPile.add(trojanPile.pop());
-                        System.out.println(player.getName() + " draws a trojan card and adds it to their discard pile");
+                        System.out.println(player.getName() + " draws a TROJAN card and adds it to their discard pile");
                     } catch (EmptyStackException d){
                         System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
                     }
@@ -225,6 +225,63 @@ public class CardController {
             }
         }
     }
+
+    public void drawTrojanCardToDiscardPile(Player player){ //Could be put into a single method which would be cleaner but not help anyone
+        if (player == null){
+            System.out.println("Null player cannot draw cards");
+            return;
+        }
+        try{
+            player.discardPile.add(trojanPile.pop());
+            System.out.println(player.getName() + " draws a TROJAN card and adds it to their discard pile");
+        } catch (EmptyStackException a){
+            try{
+                player.discardPile.add(spamPile.pop());
+                System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
+            } catch (EmptyStackException b){
+                try{
+                    player.discardPile.add(wormPile.pop());
+                    System.out.println(player.getName() + " draws a WORM card and adds it to their discard pile");
+                } catch (EmptyStackException c){
+                    try{
+                        player.discardPile.add(virusPile.pop());
+                        System.out.println(player.getName() + " draws a VIRUS card and adds it to their discard pile");
+                    } catch (EmptyStackException d){
+                        System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
+                    }
+                }
+            }
+        }
+    }
+
+    public void drawWormCardToDiscardPile(Player player){ //Could be put into a single method which would be cleaner but not help anyone
+        if (player == null){
+            System.out.println("Null player cannot draw cards");
+            return;
+        }
+        try{
+            player.discardPile.add(wormPile.pop());
+            System.out.println(player.getName() + " draws a WORM card and adds it to their discard pile");
+        } catch (EmptyStackException a){
+            try{
+                player.discardPile.add(spamPile.pop());
+                System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
+            } catch (EmptyStackException b){
+                try{
+                    player.discardPile.add(trojanPile.pop());
+                    System.out.println(player.getName() + " draws a TROJAN card and adds it to their discard pile");
+                } catch (EmptyStackException c){
+                    try{
+                        player.discardPile.add(virusPile.pop());
+                        System.out.println(player.getName() + " draws a VIRUS card and adds it to their discard pile");
+                    } catch (EmptyStackException d){
+                        System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * COPIES all cards from the universal deck to the player drawPile. Only time that universalDeck should be used afaik
