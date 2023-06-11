@@ -59,20 +59,18 @@ public class Board extends Subject {
     private int step = 0;
 
     private boolean stepMode;
-
-    CardController cardController = CardController.getInstance();
     private int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
     private UpgradeShop upgradeShop;
 
     private int numberOfCheckpoints = 0;
+    private boolean online;
 
     private ArrayList<Space> laserSpaces = new ArrayList<>();
 
     public Board(int width, int height) {
         this.upgradeShop = new UpgradeShop();
-
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
@@ -345,5 +343,13 @@ public class Board extends Subject {
             }
         }
         return laserSpaces;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public boolean getOnline() {
+        return online;
     }
 }

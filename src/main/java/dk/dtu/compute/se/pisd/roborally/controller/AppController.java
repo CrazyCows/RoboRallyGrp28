@@ -208,6 +208,7 @@ public class AppController implements Observer {
 
         roboRally.removeStartImage();
         Board board = LoadBoard.loadBoard(chosenBoard, true);
+        board.setOnline(false);
         roboRally.pauseMusic();
 
 
@@ -445,6 +446,7 @@ public class AppController implements Observer {
             }
 
             Board board = LoadBoard.loadBoard("sharedBoard.json", false);
+            board.setOnline(false);
             roboRally.pauseMusic();
 
             JsonPlayerBuilder.createPlayersFromLoad(board, jsonInterpreter.getPlayerNames());
@@ -534,6 +536,7 @@ public class AppController implements Observer {
             Board board = null;
             if (isMaster) {
                 board = LoadBoard.loadBoard(this.chosenBoard, true);
+                board.setOnline(true);
                 assert board != null;
                 LoadBoard.saveBoard(board);
                 clientController.createJSON("sharedBoard.json");
@@ -546,6 +549,7 @@ public class AppController implements Observer {
                     ex.printStackTrace();
                 }
                 board = LoadBoard.loadBoard(null, false);
+                board.setOnline(true);
 
             }
             roboRally.pauseMusic();

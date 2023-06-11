@@ -72,11 +72,13 @@ public class PlayersView extends TabPane implements ViewObserver {
     public void updateView(Subject subject) {
         if (subject == board) {
             if (board.getPhase() == Phase.ACTIVATION) {
-                Player current = board.getCurrentPlayer();
-                this.getSelectionModel().select(board.getPlayerNumber(current));
+                if (!board.getOnline()) {
+                    Player current = board.getCurrentPlayer();
+                    this.getSelectionModel().select(board.getPlayerNumber(current));
+                }
             }
-
         }
     }
+
 
 }
