@@ -531,7 +531,19 @@ public class AppController implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(this.chosenBoard, true);
+            if (isMaster) {
+                Board board = LoadBoard.loadBoard(this.chosenBoard, true);
+            }
+            else {
+                clientController.getJSON("sharedBoard.json");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                Board board = LoadBoard.loadBoard(null, false);
+
+            }
             roboRally.pauseMusic();
 
             assert board != null;
@@ -745,12 +757,12 @@ public class AppController implements Observer {
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
         jsonInterpreter = new JsonInterpreter();
         System.out.println(localPlayer.getName());
-        this.clientController.createJSON("sharedBoard.json");
         this.clientController.createJSON("playerData.json");
 
         this.clientController.getJSON("playerData.json");
         if (!isMaster) {
             localPlayer.setMaster(jsonInterpreter.getMaster());
+            this.clientController.createJSON("sharedBoard.json");
         }
 
         Thread countThread = new Thread(() -> {
