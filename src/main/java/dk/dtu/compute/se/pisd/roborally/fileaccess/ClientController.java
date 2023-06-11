@@ -30,10 +30,14 @@ public class ClientController {
     // TODO: All exceptions is handled rather lazily here. Should be tightened up such errors give useful information..
     // TODO: Throwing stuff is more fun tho..
 
-    public ClientController(String ID) {
+    public ClientController(boolean online, String ID) {
         this.client = HttpClient.newHttpClient();
-        //this.baseUrl = "http://20.86.101.206:80";
-        this.baseUrl = "http://localhost:8080";
+        if (online) {
+            this.baseUrl = "http://20.86.101.206:80";
+        }
+        else {
+            this.baseUrl = "http://localhost:8080";
+        }
         this.objectMapper = new ObjectMapper();
         this.path = "data";
         this.ID = ID;

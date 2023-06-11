@@ -153,7 +153,7 @@ public class AppController implements Observer {
             this.amountOfPlayers = amountOfPlayersField.getSelectionModel().getSelectedItem();
             this.autoSave = autoSaveCheckBox.isSelected();
             this.chosenBoard = boards.getSelectionModel().getSelectedItem();
-            this.clientController = new ClientController(this.gameID);
+            this.clientController = new ClientController(false, this.gameID);
 
             System.out.println("gameName: " + gameID);
             System.out.println("amountOfPlayers: " + amountOfPlayers);
@@ -221,7 +221,7 @@ public class AppController implements Observer {
         board.setCurrentPlayer(board.getPlayer(0));
         roboRally.createBoardView(gameController);
 
-        clientController = new ClientController(gameID);
+        clientController = new ClientController(false, gameID);
         clientController.createJSON("sharedBoard.json");
         for (Player player : gameController.board.getAllPlayers()) {
             JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
@@ -426,7 +426,7 @@ public class AppController implements Observer {
 
             roboRally.removeStartImage();
 
-            clientController = new ClientController(gameID);
+            clientController = new ClientController(false, gameID);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -636,7 +636,7 @@ public class AppController implements Observer {
             this.gameID = lobbyName;
             this.isPrivate = privateGame;
             this.gamePassword = password;
-            this.clientController = new ClientController(this.gameID);
+            this.clientController = new ClientController(true, this.gameID);
 
             jsonInterpreter = new JsonInterpreter();
             try {
