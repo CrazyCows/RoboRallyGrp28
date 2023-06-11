@@ -72,6 +72,7 @@ public class PlayersView extends TabPane implements ViewObserver {
     public void updateView(Subject subject) {
         if (subject == board) {
             if (board.getPhase() == Phase.PROGRAMMING && board.getOnline()) {
+                this.getSelectionModel().selectFirst();
                 chat.setDisable(true);
             }
             if (board.getPhase() == Phase.ACTIVATION) {
