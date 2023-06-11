@@ -903,6 +903,24 @@
       ],
       "x": 9,
       "y": 7
+    },
+    {
+      "walls": [],
+      "background": [
+        "EAST",
+        "frontpage.jpg"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.RebootToken",
+          "INSTANCE": {
+            "heading": "EAST",
+            "name": "Reboot token"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 7
     }
   ]
 }
