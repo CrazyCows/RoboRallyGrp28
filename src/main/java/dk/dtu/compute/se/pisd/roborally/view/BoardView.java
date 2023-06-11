@@ -22,8 +22,10 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
+import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -153,6 +155,20 @@ public class BoardView extends VBox implements ViewObserver {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
                 spaceView.setBackround(space.getBackground());
+
+                for (Heading heading : space.getWalls()) {
+                    boolean laserGun = false;
+                    for (FieldAction fieldAction : space.getActions()) {
+                        if (fieldAction instanceof LaserGun) {
+                            laserGun = true;
+                            break;
+                        }
+                    }
+                    if (!laserGun) {
+                        spaceView.updateOverlay("wall.png", heading.toString());
+                    }
+                }
+
                 for (Item item : space.getItems()) {
                     spaceView.updateOverlay(item.getImage(), item.getHeading().toString());
                 }
