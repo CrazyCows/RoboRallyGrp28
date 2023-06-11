@@ -154,7 +154,7 @@ public class PlayerView extends Tab implements ViewObserver {
                                     new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
                             cardFieldView.setBackground(new Background(backgroundImage));
                     }
-
+                    //TODO: Delete the below code
                     if (player.board.getPhase() == Phase.PROGRAMMING) {
                         //cardFieldView.setBackground(CardFieldView.BG_TEST);
                     } else {
