@@ -534,6 +534,8 @@ public class AppController implements Observer {
             Board board = null;
             if (isMaster) {
                 board = LoadBoard.loadBoard(this.chosenBoard, true);
+                assert board != null;
+                LoadBoard.saveBoard(board);
                 clientController.createJSON("sharedBoard.json");
             }
             else {
