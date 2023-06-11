@@ -38,6 +38,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * ...
@@ -89,6 +90,8 @@ public class LoadBoard {
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
 
+            ArrayList<Space> laserGuns = new ArrayList<>();
+
             result = new Board(template.width, template.height);
             for (SpaceTemplate spaceTemplate : template.spaces) {
                 Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -96,7 +99,7 @@ public class LoadBoard {
                     space.getActions().addAll(spaceTemplate.actions);
                     for (FieldAction fieldAction : space.getActions()) {
                         if (fieldAction instanceof LaserGun) {
-                            ((LaserGun) fieldAction).setup(space);
+                            laserGuns.add(space);
                         }
                     }
                     space.getWalls().addAll(spaceTemplate.walls);
@@ -111,6 +114,15 @@ public class LoadBoard {
 
                 }
             }
+
+            for (Space space : laserGuns) {
+                for (FieldAction fieldAction : space.getActions()) {
+                    if (fieldAction instanceof LaserGun) {
+                        ((LaserGun) fieldAction).setup(space);
+                    }
+                }
+            }
+
             // TODO: EXPERIMENTAL - uses new PlayerTemplate - see players.txt
             if (!newGame) {
                 int it = 0;

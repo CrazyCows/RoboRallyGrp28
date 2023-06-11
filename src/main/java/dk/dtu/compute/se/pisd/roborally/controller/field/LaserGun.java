@@ -29,16 +29,18 @@ public class LaserGun extends FieldAction {
 
     public void setup(Space space) {
         space.getWalls().add(heading.prev().prev());
-        Space nextSpace = space.board.getNeighbour(space, heading,true);
+        Space nextSpace = space.board.getNeighbour(space, heading, true);
         if (nextSpace != null) {
             if (!nextSpace.hasItemName("Laser Beam")) {
                 while (nextSpace.getActions().stream().noneMatch(action -> action.getClass().equals(LaserGun.class))) {
                     nextSpace.addItem(new Item("Laser Beam", "laserBeam.png", heading, new Laserbeam()));
-                    nextSpace = nextSpace.board.getNeighbour(nextSpace, heading,true);
-                    if (nextSpace == null) {
+                    if (nextSpace.getWalls().contains(heading)) {
                         break;
                     }
-                    else if (!nextSpace.hasItemName("Laser Beam")) {
+                    nextSpace = nextSpace.board.getNeighbour(nextSpace, heading, true);
+                    if (nextSpace == null || nextSpace.getWalls().contains(heading.prev().prev())) {
+                        break;
+                    } else if (nextSpace.hasItemName("Laser Beam")) {
                         break;
                     }
                 }
