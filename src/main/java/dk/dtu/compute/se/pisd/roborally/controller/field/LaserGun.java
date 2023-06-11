@@ -41,7 +41,13 @@ public class LaserGun extends FieldAction {
                     if (nextSpace == null || nextSpace.getWalls().contains(heading.prev().prev())) {
                         break;
                     } else if (nextSpace.hasItemName("Laser Beam")) {
-                        break;
+                        for (Item item : nextSpace.getItems()) {
+                            if (item.getName().equals("Laser Beam")) {
+                                if (item.getHeading() == heading || item.getHeading() == heading.prev().prev()) {
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
