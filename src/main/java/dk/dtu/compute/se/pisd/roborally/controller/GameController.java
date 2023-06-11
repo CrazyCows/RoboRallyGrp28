@@ -416,6 +416,7 @@ public class GameController {
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
+                        countDownLatch.countDown();
                         return;
                     }
                 } catch (NullPointerException e){
