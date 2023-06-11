@@ -21,7 +21,7 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
 
     public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
         CardController cardController = CardController.getInstance();
-        if (!currentPlayer.hasFirewall()){
+        if (!currentPlayer.hasCard("Firewall")){
             cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
             cardController.drawSpamCardToDiscardPile(currentPlayer);
         } else {
@@ -41,7 +41,7 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         CardController cardController = CardController.getInstance();
         Player currentPlayer = space.getPlayer();
-        if (!currentPlayer.hasFirewall()){
+        if (!currentPlayer.hasCard("Firewall")){
             cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
             cardController.drawSpamCardToDiscardPile(currentPlayer);
         } else {
