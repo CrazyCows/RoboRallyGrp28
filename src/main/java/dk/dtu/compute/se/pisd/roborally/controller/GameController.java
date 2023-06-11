@@ -431,7 +431,6 @@ public class GameController {
                     board.setTimerSecondsCount(0);
                     System.out.println("Time to fire event!");
                     countDownLatch.countDown();
-                    return;
                 }
             }
         }, 0, 1000);
@@ -455,10 +454,14 @@ public class GameController {
             }
         });
         threadA.setDaemon(false);
-        threadA.start();
+        try {
+            threadA.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void synchronize() {
+    public synchronized void synchronize() {
 
 
         System.out.println("______________SYNC_______________");
@@ -540,6 +543,7 @@ public class GameController {
         //TODO: Very much WIP
 
         if (online) {
+            startTimer();
             synchronize();
         }
 
