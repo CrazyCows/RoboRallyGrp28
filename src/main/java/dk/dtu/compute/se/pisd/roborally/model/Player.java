@@ -438,15 +438,6 @@ public class Player extends Subject {
         return -1;
     }
 
-    public boolean hasFirewall() { //TODO: Remove this and replace with hasCard
-        for (Card card : permUpgradeCards){
-            if (Objects.equals(card.getName(), "Firewall")){
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean hasCard(String cardName) {
         for (Card card : permUpgradeCards){
             if (Objects.equals(card.getName(), cardName)){
