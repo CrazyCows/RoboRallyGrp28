@@ -544,7 +544,7 @@ public class GameController {
         //TODO: Very much WIP
 
         if (online) {
-            if (localPlayer.isReady()) {
+            if (!localPlayer.isReady()) {
                 startTimer();
             }
             synchronize();
