@@ -531,8 +531,9 @@ public class AppController implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             roboRally.removeStartImage();
+            Board board = null;
             if (isMaster) {
-                Board board = LoadBoard.loadBoard(this.chosenBoard, true);
+                board = LoadBoard.loadBoard(this.chosenBoard, true);
             }
             else {
                 clientController.getJSON("sharedBoard.json");
@@ -541,7 +542,7 @@ public class AppController implements Observer {
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
-                Board board = LoadBoard.loadBoard(null, false);
+                board = LoadBoard.loadBoard(null, false);
 
             }
             roboRally.pauseMusic();
