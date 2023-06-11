@@ -28,8 +28,6 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
-import javafx.scene.image.WritableImage;
-import org.apache.tomcat.util.http.parser.Upgrade;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -409,12 +407,17 @@ public class GameController {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (localPlayer.isReady()) {
-                    board.setTimerSecondsCount(0);
-                    timer.cancel();
-                    timer.purge();
-                    return;
+                try {
+                    if (localPlayer.isReady()) {
+                        board.setTimerSecondsCount(0);
+                        timer.cancel();
+                        timer.purge();
+                        return;
+                    }
+                } catch (NullPointerException e){
+                    //We ignore this. Just happens if the localplayer is null, meaning its offline. TODO: Use boolean online instead
                 }
+
                 board.setTimerSecondsCount(board.getTimerSecondsCount() + 1);
                 System.out.println("timer: " + board.getTimerSecondsCount());
                 if (board.getTimerSecondsCount() >= 30) {
@@ -434,8 +437,13 @@ public class GameController {
             try{
                 countDownLatch.await();
                 setPhase(ACTIVATION);
-                cardController.fillAllPlayersProgramFromHandOnline(localPlayer);
-                Thread.sleep(300);
+                if (online){
+                    cardController.fillPlayersProgramFromHandOnline(localPlayer);
+                }else{
+                    cardController.fillAllPlayersProgramFromHand(board);
+                }
+
+                Thread.sleep(500);
                 finishProgrammingPhase();
             } catch (InterruptedException e) {
                 System.out.println("Something very bad with the timer implementation happened");
