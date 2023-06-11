@@ -455,11 +455,7 @@ public class GameController {
             }
         });
         threadA.setDaemon(false);
-        try {
-            threadA.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        threadA.start();
     }
 
     public synchronized void synchronize() {
