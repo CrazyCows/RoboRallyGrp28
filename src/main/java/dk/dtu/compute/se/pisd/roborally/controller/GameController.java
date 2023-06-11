@@ -447,6 +447,7 @@ public class GameController {
                 }
 
                 Thread.sleep(500);
+                this.localPlayer.setReady(true);
                 finishProgrammingPhase();
             } catch (InterruptedException e) {
                 System.out.println("Something very bad with the timer implementation happened");
@@ -543,7 +544,9 @@ public class GameController {
         //TODO: Very much WIP
 
         if (online) {
-            startTimer();
+            if (localPlayer.isReady()) {
+                startTimer();
+            }
             synchronize();
         }
 
