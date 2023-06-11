@@ -154,7 +154,7 @@ public class BoardView extends VBox implements ViewObserver {
                 SpaceView spaceView = new SpaceView(space);
                 spaceView.setBackround(space.getBackground());
                 for (Item item : space.getItems()) {
-                    spaceView.updateOverlay(item.getImage());
+                    spaceView.updateOverlay(item.getImage(), item.getHeading().toString());
                 }
                 spaces[x][y] = spaceView;
 

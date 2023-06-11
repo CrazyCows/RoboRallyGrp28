@@ -25,10 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -167,7 +164,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().add(this.overlayImageView);
     }
 
-    public void updateOverlay(String overlayImagePath) {
+    public void updateOverlay(String overlayImagePath, String itemHeading) {
         // Remove the existing overlay ImageView, if it exists
         this.getChildren().remove(overlayImageView);
 
@@ -175,6 +172,20 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.overlayImageView = imageLoader.getImageView(overlayImagePath);
         overlayImageView.setFitHeight(SPACE_HEIGHT - 4);
         overlayImageView.setFitWidth(SPACE_WIDTH - 4);
+        switch (itemHeading) {
+            case "NORTH":
+                this.overlayImageView.setRotate(0);
+                break;
+            case "EAST":
+                this.overlayImageView.setRotate(90);
+                break;
+            case "SOUTH":
+                this.overlayImageView.setRotate(180);
+                break;
+            case "WEST":
+                this.overlayImageView.setRotate(270);
+                break;
+        }
 
         // Add the overlay ImageView to the SpaceView
         this.getChildren().add(overlayImageView);
@@ -243,7 +254,9 @@ public class SpaceView extends StackPane implements ViewObserver {
 
             setBackround(space.getBackground());
             if (!space.getItems().isEmpty()) {
-                updateOverlay(space.getItems().get(space.getItems().size() - 1).getImage());
+                Item item = space.getItems().get(space.getItems().size() - 1);
+
+                updateOverlay(item.getImage(), item.getHeading().toString());
             }
             else {
                 if (overlayImageView != null) {
