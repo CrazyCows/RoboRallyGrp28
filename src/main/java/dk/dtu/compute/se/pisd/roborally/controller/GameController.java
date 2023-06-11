@@ -214,7 +214,7 @@ public class GameController {
             pit.doAction(this,originalPlayer);
             Player nextPlayer = getNextPlayer();
             board.setCurrentPlayer(nextPlayer);//TODO: This really shouldnt be done here. But falling into a pit breaks if it isnt, for some reason
-            return true;
+            return false;
         }
         boolean otherPlayerMoved = true;
         //jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
@@ -236,7 +236,7 @@ public class GameController {
         }
 
         for (FieldAction fieldAction : originalTarget.getActions()){
-            if (fieldAction instanceof Pit){
+            if (fieldAction instanceof Pit){ //It seems that we do indeed check for pits twice
                 ((Pit)fieldAction).doAction(this,originalPlayer);
                 break;
             }
@@ -286,7 +286,7 @@ public class GameController {
                 if (moveToSpace(player, nextSpace, heading)){ //Moves the player and basically checks if they fell in a pit
                     for (FieldAction fieldAction : nextSpace.getActions()){
                         if (fieldAction instanceof Pit){
-                            ((Pit)fieldAction).doAction(this,player);
+                            ((Pit)fieldAction).doAction(this,player); //I believe we check for pits twice?
                             break;
                         }
                     }

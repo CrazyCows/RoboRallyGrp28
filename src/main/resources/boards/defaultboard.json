@@ -296,7 +296,7 @@
       "items": [
         {
           "name": "checkpoint",
-          "image" : "checkpointhansi0.png",
+          "image" : "checkpoint0.png",
           "heading" : "NORTH",
           "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.Checkpoint"
         }
@@ -341,6 +341,24 @@
       ],
       "x": 4,
       "y": 1
+    },
+    {
+      "walls": [],
+      "background": [
+        "WEST",
+        "frontpage.jpg"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.RebootToken",
+          "INSTANCE": {
+            "heading": "WEST",
+            "name": "Reboot token"
+          }
+        }
+      ],
+      "x": 7,
+      "y": 4
     }
   ]
 }
