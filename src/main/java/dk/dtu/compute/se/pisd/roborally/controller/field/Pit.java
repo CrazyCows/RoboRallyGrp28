@@ -28,6 +28,9 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
             System.out.println("Player has a firewall installed and draws no spam cards.");
         }
         System.out.println(currentPlayer.getName() + " is now being rebooted");
+        if (currentPlayer.startSpace.getPlayer() != null){
+            System.out.println("Bug 118");
+        }
         currentPlayer.setSpace(currentPlayer.startSpace);
         cardController.emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
@@ -44,6 +47,9 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
             System.out.println("Player has a firewall installed and draws no spam cards.");
         }
         System.out.println(currentPlayer.getName() + " is now being rebooted");
+        if (currentPlayer.startSpace.getPlayer() != null){
+            System.out.println("Bug 118");
+        }
         currentPlayer.setSpace(currentPlayer.startSpace);
         cardController.emptyProgram(currentPlayer);
         currentPlayer.setHeading(Heading.NORTH);
