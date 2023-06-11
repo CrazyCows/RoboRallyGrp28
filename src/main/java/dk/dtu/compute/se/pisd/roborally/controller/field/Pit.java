@@ -21,8 +21,12 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
 
     public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
         CardController cardController = CardController.getInstance();
-        cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
-        cardController.drawSpamCardToDiscardPile(currentPlayer);
+        if (!currentPlayer.hasFirewall()){
+            cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
+            cardController.drawSpamCardToDiscardPile(currentPlayer);
+        } else {
+            System.out.println("Player has a firewall installed and draws no spam cards.");
+        }
         System.out.println(currentPlayer.getName() + " is now being rebooted");
         currentPlayer.setSpace(currentPlayer.startSpace);
         cardController.emptyProgram(currentPlayer);
@@ -33,8 +37,12 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         CardController cardController = CardController.getInstance();
         Player currentPlayer = space.getPlayer();
-        cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
-        cardController.drawSpamCardToDiscardPile(currentPlayer);
+        if (!currentPlayer.hasFirewall()){
+            cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
+            cardController.drawSpamCardToDiscardPile(currentPlayer);
+        } else {
+            System.out.println("Player has a firewall installed and draws no spam cards.");
+        }
         System.out.println(currentPlayer.getName() + " is now being rebooted");
         currentPlayer.setSpace(currentPlayer.startSpace);
         cardController.emptyProgram(currentPlayer);

@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.model.card.UpgradeCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
@@ -435,5 +436,16 @@ public class Player extends Subject {
             }
         }
         return -1;
+    }
+
+    public boolean hasFirewall() {
+        boolean hasfirewall = false;
+
+        for (Card card : permUpgradeCards){
+            if (Objects.equals(card.getName(), "Firewall")){
+                return true;
+            }
+        }
+        return false;
     }
 }
