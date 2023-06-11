@@ -235,7 +235,7 @@ public class Board extends Subject {
         }
     }
 
-    public List<Player> getAllPlayers() {
+    synchronized public List<Player> getAllPlayers() {
         return players;
     }
     public void removePlayer(Player player) {

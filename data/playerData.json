@@ -1,11 +1,14 @@
 {
   "posx" : 1,
-  "posy" : 1,
-  "energycubes" : 100,
-  "color" : "green",
-  "readystate" : false,
-  "playerisLead" : false,
-  "name" : "Player 2",
-  "inGame" : false,
-  "master" : false
+  "posy" : 6,
+  "color" : "red",
+  "readystate" : true,
+  "heading" : "SOUTH",
+  "isMaster" : false,
+  "energyCubes" : 5,
+  "name" : "123",
+  "checkpointsCollected" : 0,
+  "inGame" : true,
+  "message" : "Hej",
+  "master" : "KittyFan69"
 }
