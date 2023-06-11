@@ -711,7 +711,7 @@ public class GameController {
 
     public void purchasePermanentUpgradeCard(Player player) {
         UpgradeCard card = board.getUpgradeShop().getSelectedPermanentCard();
-        if (player.getEnergyCubes() >= card.getCost() && player.getAmountAllUpgradeCards() >= 3) {
+        if (player.getEnergyCubes() >= card.getCost() && player.getAmountAllUpgradeCards() <= 3) {
             board.getUpgradeShop().removePermanentUpgradeCard(card);
             player.addPermanentUpgradeCard(card);
             player.addEnergyCubes(-card.getCost());
