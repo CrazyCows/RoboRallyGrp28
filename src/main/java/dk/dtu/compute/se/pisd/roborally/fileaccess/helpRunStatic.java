@@ -6,7 +6,7 @@ public class helpRunStatic {
         JsonInterpreter jsonInterpreter = new JsonInterpreter();
         jsonConnect.createJSON("sharedBoard.json");
         jsonConnect.createJSON("playerData.json");
-        jsonConnect.getJSON("playerData.json");
+        jsonConnect.getJSON("sharedBoard.json");
 
 
     }
