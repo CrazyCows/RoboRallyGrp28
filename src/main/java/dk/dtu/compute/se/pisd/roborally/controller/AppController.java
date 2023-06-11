@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.*;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
@@ -217,6 +218,7 @@ public class AppController implements Observer {
         }
         assert board != null;
         gameController = new GameController(roboRally, clientController, board, this.online, null);
+        gameController.setPhase(Phase.INITIALISATION);
 
         board.setCurrentPlayer(board.getPlayer(0));
         roboRally.createBoardView(gameController);
@@ -233,6 +235,7 @@ public class AppController implements Observer {
             }
         }
 
+        gameController.setPhase(Phase.PROGRAMMING);
 
     }
 
@@ -448,6 +451,7 @@ public class AppController implements Observer {
 
             assert board != null;
             gameController = new GameController(roboRally, clientController, board, this.online, null);
+            gameController.setPhase(Phase.INITIALISATION);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
         }
@@ -546,6 +550,7 @@ public class AppController implements Observer {
 
 
             gameController = new GameController(roboRally, clientController, board, this.online, localPlayer);
+            gameController.setPhase(Phase.INITIALISATION);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
@@ -796,6 +801,8 @@ public class AppController implements Observer {
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
 
+                    gameController.setPhase(Phase.PROGRAMMING);
+
                     Platform.runLater(dialogStage::close);
                 }
                 else if (!isMaster && jsonInterpreter.isAllReady()) {
@@ -805,6 +812,8 @@ public class AppController implements Observer {
 
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
+
+                    gameController.setPhase(Phase.PROGRAMMING);
 
                     Platform.runLater(dialogStage::close);
                 }

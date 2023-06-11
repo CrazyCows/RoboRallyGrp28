@@ -91,7 +91,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
         this.setMinHeight(CARDFIELD_HEIGHT);
         this.setMaxHeight(CARDFIELD_HEIGHT);
 
-        label = new Label("This is a slightly longer text");
+        label = new Label("");
         label.setWrapText(true);
         label.setMouseTransparent(true);
         this.add(label, 0, 0);
@@ -164,7 +164,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                     } catch (Exception e) {
                         this.setBackground(BG_ACTIVE);
                     }
-                    label.setText(card.getName());
+                    // for debugging
+                    //label.setText(card.getName());
                 } else {
                     this.setBackground(BG_DONE); // set background color to green
                     label.setText("");
