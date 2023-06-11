@@ -93,7 +93,6 @@ public class GameController {
             }
         }
         this.online = online;
-        setPhase(Phase.PROGRAMMING);
         jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
         if (online) {
@@ -390,9 +389,14 @@ public class GameController {
      * @param phase
      */
     void setPhase(Phase phase){
-        if (phase == PROGRAMMING){
-            for (Player player : board.getAllPlayers()){
-                cardController.drawCards(player);
+        if (phase == PROGRAMMING) {
+            if (online) {
+                cardController.drawCards(this.localPlayer);
+            }
+            else {
+                for (Player player : board.getAllPlayers()) {
+                    cardController.drawCards(player);
+                }
             }
         }
         board.setPhase(phase);
