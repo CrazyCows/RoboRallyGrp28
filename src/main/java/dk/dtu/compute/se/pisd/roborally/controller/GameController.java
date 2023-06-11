@@ -785,13 +785,15 @@ public class GameController {
         }
     }
 
-
-
     public Player getLocalPlayer() {
         if (this.localPlayer != null) {
             return this.localPlayer;
         }
         else return null;
+    }
+
+    public boolean getOnline() {
+        return online;
     }
 
 }
