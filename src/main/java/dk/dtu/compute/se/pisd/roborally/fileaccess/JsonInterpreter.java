@@ -270,7 +270,7 @@ public class JsonInterpreter {
             return JsonPath.read(json, "$.[*].color");
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -281,7 +281,7 @@ public class JsonInterpreter {
             return info.get(0);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return "";
         }
     }
 
@@ -387,7 +387,7 @@ public class JsonInterpreter {
             return JsonPath.read(json, "$.[*]");
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
