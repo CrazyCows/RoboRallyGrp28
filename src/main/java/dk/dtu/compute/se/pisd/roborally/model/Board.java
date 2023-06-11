@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
+import dk.dtu.compute.se.pisd.roborally.controller.field.RebootToken;
 import javafx.application.Platform;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
@@ -62,6 +63,7 @@ public class Board extends Subject {
     private int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
+    private Space RebootTokenSpace;
     private UpgradeShop upgradeShop;
 
     private int numberOfCheckpoints = 0;
@@ -102,6 +104,21 @@ public class Board extends Subject {
             }
         }
         return priorityAntennaSpace;
+    }
+
+    public Space getRebootTokenSpace() {
+        if (RebootTokenSpace == null) {
+            for (Space[] spaceRow : spaces) {
+                for (Space space : spaceRow) {
+                    if (!space.getActions().isEmpty()) {
+                        if (space.getActions().get(0).getClass() == RebootToken.class) {
+                            RebootTokenSpace = space;
+                        }
+                    }
+                }
+            }
+        }
+        return RebootTokenSpace;
     }
 
     public Integer getGameId() {

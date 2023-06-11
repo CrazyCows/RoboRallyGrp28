@@ -27,13 +27,14 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
         } else {
             System.out.println("Player has a firewall installed and draws no spam cards.");
         }
-        System.out.println(currentPlayer.getName() + " is now being rebooted");
-        if (currentPlayer.startSpace.getPlayer() != null){
-            System.out.println("Bug 118");
+
+        Space target = gameController.board.getRebootTokenSpace();
+        if (target.getPlayer() != null){
+            gameController.moveInDirection(target.getPlayer(),1,((RebootToken)target.getActions().get(0)).getHeading());
         }
-        currentPlayer.setSpace(currentPlayer.startSpace);
+        currentPlayer.setSpace(target);
+        target.getActions().get(0).doAction(gameController,target);
         cardController.emptyProgram(currentPlayer);
-        currentPlayer.setHeading(Heading.NORTH);
         return false;
     }
     @Override
@@ -46,16 +47,18 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
         } else {
             System.out.println("Player has a firewall installed and draws no spam cards.");
         }
-        System.out.println(currentPlayer.getName() + " is now being rebooted");
-        if (currentPlayer.startSpace.getPlayer() != null){
-            System.out.println("Bug 118");
+
+        Space target = gameController.board.getRebootTokenSpace();
+        if (target.getPlayer() != null){
+            gameController.moveInDirection(target.getPlayer(),1,((RebootToken)target.getActions()).getHeading());
         }
-        currentPlayer.setSpace(currentPlayer.startSpace);
+        currentPlayer.setSpace(target);
+        target.getActions().get(0).doAction(gameController,target);
         cardController.emptyProgram(currentPlayer);
-        currentPlayer.setHeading(Heading.NORTH);
+        return false;
 
 
-        // TODO: Below is basically pseudocode for one way to handle how we could manage selecting direction
+        //Below is basically pseudocode for one way to handle how we could manage selecting direction
         /*
         //Alternative to this is to let the choosing currentPlayer/client finish the entire game, and then push the new
         //game state to the server, which everyone would then receive. This would be easier but would mess up the
@@ -70,7 +73,5 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
             //Repeatedly poll until direction has been pushed
             //currentPlayer.setHeading(newHeading); //newHeading from server
         }*/
-
-        return false;
     }
 }
