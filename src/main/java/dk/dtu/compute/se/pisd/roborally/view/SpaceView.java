@@ -57,7 +57,7 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_HEIGHT = 75;
     final public static int SPACE_WIDTH = 75;
 
-    final private static String emptyEnergySpace = "navn.png";
+    final private static String emptyEnergySpace = "energyEmpty.png";
 
     public final Space space;
     private ImageView backgroundImageView;
