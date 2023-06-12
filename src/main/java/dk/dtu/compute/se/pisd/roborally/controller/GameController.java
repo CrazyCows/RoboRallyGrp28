@@ -604,9 +604,6 @@ public class GameController {
         stopTimerBeforeTime = true;
         if (online){
             System.out.println("Im online");
-            localPlayer.setReady(true);
-            jsonPlayerBuilder.updateDynamicPlayerData();
-            clientController.updateJSON("playerData.json");
             if (!board.getTimerIsRunning()){
                 startTimer();
             } else {
