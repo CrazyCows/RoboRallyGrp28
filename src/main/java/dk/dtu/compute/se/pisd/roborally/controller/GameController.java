@@ -168,7 +168,7 @@ public class GameController {
         }
     }
 
-    private synchronized void innerUpdater(ArrayList<String> playerNames){
+    private void innerUpdater(ArrayList<String> playerNames){
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -191,7 +191,7 @@ public class GameController {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if (!localPlayer.isReady()) {
+        if (!getLocalPlayer().isReady()) {
             startTimer();
         }
     }
@@ -609,7 +609,7 @@ public class GameController {
     public synchronized void intermediateFunction(){
         stopTimerBeforeTime = true;
         if (online){
-            localPlayer.setReady(true);
+            getLocalPlayer().setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
             if (!board.getTimerIsRunning()){
