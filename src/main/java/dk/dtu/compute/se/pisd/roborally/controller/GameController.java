@@ -413,7 +413,8 @@ public class GameController {
             @Override
             public void run() {
                 try {
-                    if (localPlayer.isReady()) {
+                    clientController.getJSON("playerData.json");
+                    if (jsonInterpreter.isAllReady()) {
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
@@ -549,17 +550,15 @@ public class GameController {
                 localPlayer.setReady(true);
                 jsonPlayerBuilder.updateDynamicPlayerData();
                 clientController.updateJSON("playerData.json");
-                clientController.getJSON("playerData.json");
-                localPlayer.setReady(false);
                 startTimer();
                 try {
                     countDownLatchfinishProgrammingPhase.await();
-                    synchronize();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
+        synchronize();
 
         System.out.println("______________FINISH PROGRAMMING___________________");
 
