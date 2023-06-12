@@ -553,12 +553,11 @@ public class GameController {
                 startTimer();
                 try {
                     countDownLatchfinishProgrammingPhase.await();
+                    synchronize();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
-            synchronize();
         }
 
         System.out.println("______________FINISH PROGRAMMING___________________");
