@@ -418,7 +418,7 @@ public class GameController {
      * Sets the phase. If the phase is programming, cards are automatically drawn from drawpile to hand
      * @param phase
      */
-    void setPhase(Phase phase){
+    synchronized void setPhase(Phase phase){
         if (phase == PROGRAMMING) {
             if (online) {
                 cardController.drawCards(this.localPlayer);
