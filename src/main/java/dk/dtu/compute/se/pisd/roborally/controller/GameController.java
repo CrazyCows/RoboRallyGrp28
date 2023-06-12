@@ -152,38 +152,29 @@ public class GameController {
             }
         getUpdates(playerNames);
         });
-        countThread.setDaemon(true);
+        countThread.setDaemon(false);
         countThread.start();
     }
 
     public synchronized void getUpdates(ArrayList<String> playerNames){
-        while (true){
-            CDL = new CountDownLatch(1);
-            clientController.getJSON("playerData.json");
-            System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
-            while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
-                try {
-                    System.out.println("Updating");
-                    clientController.getJSON("playerData.json");
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+        clientController.getJSON("playerData.json");
+        System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
+        while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
             try {
-                Thread.sleep(200); //Just trying to avoid the data race
+                System.out.println("Updating");
+                clientController.getJSON("playerData.json");
+                Thread.sleep(100);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
-            if (!localPlayer.isReady()) {
-                startTimer();
-            }
-            try {
-                CDL.await();
-                System.out.println("Restarting synchronization");
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        }
+        try {
+            Thread.sleep(200); //Just trying to avoid the data race
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        if (!localPlayer.isReady()) {
+            startTimer();
         }
     }
 
@@ -476,7 +467,7 @@ public class GameController {
         Thread threadTimerDone = new Thread(() -> { //TODO: IS THIS DIRTY?
             try{
                 countDownLatch.await();
-                //setPhase(ACTIVATION);
+                setPhase(ACTIVATION);
                 if (online){
                     cardController.fillPlayersProgramFromHandOnline(localPlayer);
                 }else{ //THESE FUNCTIONS ARE NAMED IFFILY
@@ -498,10 +489,12 @@ public class GameController {
 
         });
         threadTimerDone.setDaemon(false);
+        threadTimerDone.setPriority(10);
         threadTimerDone.start();
+        System.out.println("threadtimerDone started");
     }
 
-    public synchronized void synchronizeb() {
+    public synchronized void synchronize() {
 
 
         System.out.println("______________SYNC_______________");
@@ -611,7 +604,9 @@ public class GameController {
 
         }
     }
-
+    public synchronized void banana(){
+        System.out.println("banana");
+    }
 
     public void finishProgrammingPhase() {
         //TODO: Check for spam and trojan cards,and replaces the card somehow?
@@ -622,7 +617,8 @@ public class GameController {
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            synchronizeb();
+            banana();
+            synchronize();
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
