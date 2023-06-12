@@ -242,6 +242,7 @@ public class JsonInterpreter {
 
     public boolean isAllReady () {
         try {
+            //TODO: Get from server. otherwise it just loops over the same data
             String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
             List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
 

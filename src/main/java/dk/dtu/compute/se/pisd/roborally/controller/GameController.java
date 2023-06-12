@@ -490,7 +490,7 @@ public class GameController {
             finishProgrammingPhase();
 
         });
-        threadTimerDone.setDaemon(true);
+        threadTimerDone.setDaemon(false);
         threadTimerDone.start();
     }
 
@@ -611,7 +611,7 @@ public class GameController {
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-
+            CDL.countDown();
         }
 
 
@@ -695,7 +695,6 @@ public class GameController {
                     }
                 }
 
-                CDL.countDown();
                 setPhase(Phase.PROGRAMMING);
             }
         });
