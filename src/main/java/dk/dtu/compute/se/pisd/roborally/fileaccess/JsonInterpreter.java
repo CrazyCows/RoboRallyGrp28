@@ -221,6 +221,16 @@ public class JsonInterpreter {
         return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].readystate")).get(0);
     }
 
+    public boolean playerBeenCreated(String playerName) {
+        String json = getFileAsString("collectivePlayerData.json");
+        if (new ArrayList<>(JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].readystate")).get(0) == null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     public boolean isAllReady () {
         //TODO: Get from server. otherwise it just loops over the same data
         String json = getFileAsString("collectivePlayerData.json");

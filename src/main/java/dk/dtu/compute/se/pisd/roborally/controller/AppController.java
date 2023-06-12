@@ -773,9 +773,9 @@ public class AppController implements Observer {
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
         jsonInterpreter = new JsonInterpreter();
         System.out.println(localPlayer.getName());
-        this.clientController.createJSON("playerData.json");
+        //this.clientController.createJSON("playerData.json");
 
-        this.clientController.getJSON("playerData.json");
+        //this.clientController.getJSON("playerData.json");
         if (!isMaster) {
             localPlayer.setMaster(jsonInterpreter.getMaster());
             this.clientController.createJSON("sharedBoard.json");
@@ -784,8 +784,10 @@ public class AppController implements Observer {
         Thread countThread = new Thread(() -> {
             while (true) {
 
-                this.clientController.getJSON("playerData.json");
                 ArrayList<String> names = jsonInterpreter.getPlayerNames();
+                if (names.size() > 1) {
+                    System.out.println("WOW");
+                }
                 names.removeIf(s -> s.equals(username));
 
                 System.out.println("All ready: " + jsonInterpreter.isAllReady());
@@ -807,8 +809,6 @@ public class AppController implements Observer {
                 }
 
                 this.localPlayer.setReady(checkBoxes.get(0).isSelected());
-                jsonPlayerBuilder.updateDynamicPlayerData();
-                clientController.updateJSON("playerData.json");
 
 
                 try {
@@ -821,10 +821,9 @@ public class AppController implements Observer {
                 if (!dialogStage.isShowing()) {
                     break;
                 }
-                else if (isMaster && checkBoxes.get(0).isSelected() && jsonInterpreter.getPlayerNames().size() > 1) {
-                    jsonPlayerBuilder.updateDynamicPlayerData();
-                    clientController.updateJSON("playerData.json");
-                    clientController.getJSON("playerData.json");
+                else if (isMaster && checkBoxes.get(0).isSelected()) {
+
+                    gameController.sync();
 
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
@@ -834,9 +833,8 @@ public class AppController implements Observer {
                     Platform.runLater(dialogStage::close);
                 }
                 else if (!isMaster && jsonInterpreter.isAllReady()) {
-                    jsonPlayerBuilder.updateDynamicPlayerData();
-                    clientController.updateJSON("playerData.json");
-                    clientController.getJSON("playerData.json");
+
+                    gameController.sync();
 
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
@@ -847,7 +845,6 @@ public class AppController implements Observer {
                 }
             }
 
-            gameController.setupOnline();
             System.out.println("Game lobby thread has ended");
         });
         countThread.start();
