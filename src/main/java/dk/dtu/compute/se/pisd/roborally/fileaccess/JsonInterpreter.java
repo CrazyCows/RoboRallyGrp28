@@ -360,7 +360,7 @@ public class JsonInterpreter {
 
     public boolean checkReceivedCardSequence(String playerName) {
         String json = getFileAsString("cardSequenceRequests.json");
-        ArrayList<String> result = new ArrayList<>(JsonPath.read(json, "$.['" + playerName + "']"));
+        ArrayList<String> result = new ArrayList<>(JsonPath.read(json, "$.['" + playerName + "']")); //TODO: This method returns a linkedHashMap and not a Collection
         if (result.isEmpty()) {
             return false;
         }
