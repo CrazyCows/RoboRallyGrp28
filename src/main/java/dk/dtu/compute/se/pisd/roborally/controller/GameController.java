@@ -604,6 +604,7 @@ public class GameController {
         stopTimerBeforeTime = true;
         if (online){
             System.out.println("Im online");
+            localPlayer.setReady(true);
             if (!board.getTimerIsRunning()){
                 startTimer();
             } else {
