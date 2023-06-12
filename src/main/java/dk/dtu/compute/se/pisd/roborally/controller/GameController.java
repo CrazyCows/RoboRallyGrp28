@@ -606,7 +606,7 @@ public class GameController {
 
     }
 
-    public void intermediateFunction(){
+    public synchronized void intermediateFunction(){
         stopTimerBeforeTime = true;
         if (online){
             localPlayer.setReady(true);
