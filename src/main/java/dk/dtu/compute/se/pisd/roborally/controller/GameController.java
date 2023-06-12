@@ -144,24 +144,27 @@ public class GameController {
         }
 
         Thread countThread = new Thread(() -> {
-            ArrayList<String> playerNames = new ArrayList<>();
-            for (Player player: board.getAllPlayers()) {
-                if (player != localPlayer) {
-                    playerNames.add(player.getName());
+            while (true){
+                ArrayList<String> playerNames = new ArrayList<>();
+                for (Player player: board.getAllPlayers()) {
+                    if (player != localPlayer) {
+                        playerNames.add(player.getName());
+                    }
+                }
+                while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
+                    try {
+                        System.out.println("Updating");
+                        clientController.getJSON("playerData.json");
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (!localPlayer.isReady()) {
+                    startTimer();
                 }
             }
-            while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
-                try {
-                    System.out.println("Updating");
-                    clientController.getJSON("playerData.json");
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (!localPlayer.isReady()) {
-                startTimer();
-            }
+
         });
         countThread.setDaemon(true);
         countThread.start();
@@ -502,7 +505,7 @@ public class GameController {
         clientController.getJSON("cardSequenceRequest.json");
 
         int getReadyTries = 0;
-        System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady());
+        System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady()); //Why is this inverted?
         while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
             try {
                 clientController.getJSON("playerData.json");
@@ -572,6 +575,7 @@ public class GameController {
     public void intermediateFunction(){
         stopTimerBeforeTime = true;
         if (online){
+            System.out.println("Im online");
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
