@@ -67,6 +67,7 @@ public class GameController {
     boolean firstRound;
 
     private Timer timer;
+    CountDownLatch countDownLatchfinishProgrammingPhase = new CountDownLatch(2);
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -417,6 +418,7 @@ public class GameController {
                         timer.cancel();
                         timer.purge();
                         countDownLatch.countDown();
+                        countDownLatchfinishProgrammingPhase.countDown();
                         return;
                     }
                 } catch (NullPointerException e){
@@ -432,12 +434,13 @@ public class GameController {
                     board.setTimerSecondsCount(0);
                     System.out.println("Time to fire event!");
                     countDownLatch.countDown();
+                    countDownLatchfinishProgrammingPhase.countDown();
                 }
             }
         }, 0, 1000);
         board.setTimerSecondsCount(0);
 
-        Thread threadA = new Thread(() -> { //TODO: IS THIS DIRTY?
+        Thread threadTimerDone = new Thread(() -> { //TODO: IS THIS DIRTY?
             try{
                 countDownLatch.await();
                 setPhase(ACTIVATION);
@@ -454,9 +457,10 @@ public class GameController {
                 System.out.println("Something very bad with the timer implementation happened");
                 e.printStackTrace();
             }
+            countDownLatchfinishProgrammingPhase.countDown();
         });
-        threadA.setDaemon(false);
-        threadA.start();
+        threadTimerDone.setDaemon(false);
+        threadTimerDone.start();
     }
 
     public synchronized void synchronize() {
@@ -543,7 +547,13 @@ public class GameController {
         if (online) {
             if (!localPlayer.isReady()) {
                 startTimer();
+                try {
+                    countDownLatchfinishProgrammingPhase.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+
             synchronize();
         }
 
