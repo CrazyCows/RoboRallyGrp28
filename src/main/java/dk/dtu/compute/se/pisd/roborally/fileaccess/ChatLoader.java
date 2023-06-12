@@ -11,6 +11,7 @@ import java.util.Map;
 public class ChatLoader {
 
     private ObjectMapper objectMapper = new ObjectMapper();
+    // The object is just a string????
     private final Map<String, Object> mappedMessage = new HashMap<>();
     File file;
 

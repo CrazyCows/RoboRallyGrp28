@@ -2,18 +2,23 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ThreadPoolManager;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Future;
+
 
 public class ChatController {
 
     ArrayList<String> names;
     JsonInterpreter jsonInterpreter;
     HashMap<String, String> newestReceivedMessages;
+    ThreadPoolManager threadPoolManager;
 
-    public ChatController(GameController gameController) {
+    public ChatController(GameController gameController, ThreadPoolManager threadPoolManager) {
         this.jsonInterpreter = new JsonInterpreter();
         this.names = jsonInterpreter.getPlayerNames();
         this.newestReceivedMessages = new HashMap<>();
@@ -21,7 +26,9 @@ public class ChatController {
             this.newestReceivedMessages.put(name, "");
         }
 
-        Thread chatThread = new Thread(() -> {
+        this.threadPoolManager = threadPoolManager;
+
+        Future<?> chatFuture = threadPoolManager.submitTask(() -> {
             String message;
             while (true) {
                 gameController.getClientController().getJSON("playerData.json");
@@ -41,7 +48,13 @@ public class ChatController {
                 }
             }
         });
-        chatThread.start();
+
+        // Optional: Keep a reference to the Future in case you need to cancel the task or check its status
+        // Not shown: Code to handle cancellation and exceptions
     }
 
+    // Don't forget to shut down the thread pool when done
+    public void shutdown() {
+        threadPoolManager.shutdown();
+    }
 }

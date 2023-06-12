@@ -49,6 +49,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.Future;
 
 /**
  * ...
@@ -89,6 +90,8 @@ public class AppController implements Observer {
     private int amountOfPlayers;
     private boolean online;
     private boolean windowSuccess = true;
+    private ThreadPoolManager threadPoolManager;
+    private Future<?> animationFuture;
 
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -482,8 +485,10 @@ public class AppController implements Observer {
         Button continueButton = new Button("Continue");
 
         String[] directions = {"north", "east", "south", "west"};
-        String direction = "";
-        Thread countThread = new Thread(() -> {
+
+        this.threadPoolManager = new ThreadPoolManager(1); // Creating ThreadPoolManager with one thread
+        // Using ThreadPoolManager to manage the animation thread
+        threadPoolManager.submitTask(() -> {
             int counter = 0;
             while (!continueButton.isPressed() || dialogStage.isShowing()) {
                 this.animationRobotDirection = directions[counter];
@@ -504,7 +509,9 @@ public class AppController implements Observer {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    // The task was cancelled or the thread was interrupted.
+                    // Terminate the task gracefully.
+                    return;
                 }
 
                 // Check if the stage is closed
@@ -514,7 +521,6 @@ public class AppController implements Observer {
             }
             System.out.println("Animation thread has ended");
         });
-        countThread.start();
 
         continueButton.setOnAction(e -> {
             String selectedRobot = robotComboBox.getValue();
@@ -773,7 +779,10 @@ public class AppController implements Observer {
             this.clientController.createJSON("sharedBoard.json");
         }
 
-        Thread countThread = new Thread(() -> {
+        this.threadPoolManager = new ThreadPoolManager(1); // Creating ThreadPoolManager with one thread
+
+        // Using ThreadPoolManager to manage the thread
+        threadPoolManager.submitTask(() -> {
             while (true) {
 
                 this.clientController.getJSON("playerData.json");
@@ -806,7 +815,9 @@ public class AppController implements Observer {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    // The task was cancelled or the thread was interrupted.
+                    // Terminate the task gracefully.
+                    return;
                 }
 
                 // Check if the stage is closed
@@ -842,7 +853,6 @@ public class AppController implements Observer {
             gameController.setupOnline();
             System.out.println("Game lobby thread has ended");
         });
-        countThread.start();
 
         Button continueButton = new Button("Continue");
         continueButton.setOnAction(e -> {

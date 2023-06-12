@@ -20,10 +20,12 @@
  *
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ThreadPoolManager;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * ...
@@ -33,21 +35,38 @@ import java.util.List;
  */
 public abstract class FieldAction {
 
-    public void backgroundAnimationThread(Space space, List<String> background) {
+    ThreadPoolManager threadPoolManager;
+    Future<?> backgroundAnimationFuture;
 
-        Thread thread = new Thread(() -> {
+    public FieldAction(ThreadPoolManager threadPoolManager) {
+        this.threadPoolManager = threadPoolManager;
+    }
+
+    public void backgroundAnimationThread(Space space, List<String> background) {
+        threadPoolManager.submitTask(() -> {
             for (int i = 1; i < background.size(); i++) {
                 System.out.println(background.get(i));
                 try {
                     space.animate(new ArrayList<>(Arrays.asList(background.get(0), background.get(i))));
-                    Thread.sleep(1000); // Delay for half a second. 'This is not half a second' -Anton
+                    Thread.sleep(1000); // Delay for one second.
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    return;
                 }
             }
             space.animate(background);
         });
-        thread.start();
+    }
+
+    public void stopBackgroundAnimation() {
+        if (backgroundAnimationFuture != null) {
+            backgroundAnimationFuture.cancel(true);
+        }
+    }
+
+    // This could be called when you no longer need this FieldAction object.
+    public void shutdown() {
+        threadPoolManager.shutdown();
     }
 
 

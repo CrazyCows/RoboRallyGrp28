@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ThreadPoolManager;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.card.*;
 import org.jetbrains.annotations.NotNull;
@@ -118,7 +119,7 @@ public class GameController {
             e.printStackTrace();
         }
 
-        chatController = new ChatController(this);
+        chatController = new ChatController(this, new ThreadPoolManager(1));
 
         localPlayer.setReady(false);
         jsonPlayerBuilder.updateDynamicPlayerData();

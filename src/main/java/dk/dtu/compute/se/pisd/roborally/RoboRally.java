@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally;
 
 import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ThreadPoolManager;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.RoboRallyMenuBar;
@@ -46,6 +47,7 @@ import javafx.stage.Stage;
 import javafx.scene.media.Media;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 
 /**
@@ -64,6 +66,8 @@ public class RoboRally extends Application {
     private AppController appController;
     @FXML
     private Text winnerPlayer;
+    private ThreadPoolManager threadPoolManager;
+    private Future<?> musicTask;
 
     @Override
     public void init() throws Exception {
@@ -74,40 +78,56 @@ public class RoboRally extends Application {
     public void start(Stage primaryStage) {
         stage = primaryStage;
 
-
         Image icon = new Image("robotIcon.png");
         stage.getIcons().add(icon);
 
         this.appController = new AppController(this);
+        this.threadPoolManager = new ThreadPoolManager(1); // Creating ThreadPoolManager with one thread
 
-        // create the primary scene with the a menu bar and a pane for
-        // the board view (which initially is empty); it will be filled
-        // when the user creates a new game or loads a game
         RoboRallyMenuBar menuBar = new RoboRallyMenuBar(appController);
         boardRoot = new BorderPane();
         VBox vbox = new VBox(menuBar, boardRoot);
 
         addImageToWindow();
         this.mediaPlayer = play8BitMusic();
-        new Thread(() -> {
-            // Play the music at half volume
-            mediaPlayer.setVolume(0.00);
+
+        // Using ThreadPoolManager to manage the music thread
+        threadPoolManager.submitTask(() -> {
+            mediaPlayer.setVolume(0.00); // Play the music at zero volume
             mediaPlayer.play();
-        }).start();
+        });
 
         vbox.setMinWidth(MIN_APP_WIDTH);
         Scene primaryScene = new Scene(vbox);
         stage.setScene(primaryScene);
         stage.setTitle("RoboRally");
-        stage.setOnCloseRequest(
-                e -> {
-                    e.consume();
-                    appController.exit();} );
+        stage.setOnCloseRequest(e -> {
+            e.consume();
+            appController.exit();
+            stopMusic();
+            shutdown(); // don't forget to shutdown the ThreadPoolManager when it's no longer needed
+        });
         stage.setResizable(false);
         stage.sizeToScene();
 
         stage.show();
     }
+
+    public void stopMusic() {
+        if (musicTask != null) {
+            musicTask.cancel(true);
+        }
+    }
+
+    // Don't forget to shut down the thread pool when done
+    public void shutdown() {
+        if (threadPoolManager != null) {
+            threadPoolManager.shutdown();
+        }
+    }
+
+
+
 
     public void createBoardView(GameController gameController) {
         // if present, remove old BoardView
