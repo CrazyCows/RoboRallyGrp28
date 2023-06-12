@@ -68,6 +68,8 @@ public class GameController {
 
     private Timer timer;
     private boolean localStartedTimer;
+
+    volatile boolean stopTimerBeforeTime = false;
     CountDownLatch countDownLatchfinishProgrammingPhase = new CountDownLatch(2);
 
 
@@ -416,7 +418,7 @@ public class GameController {
             public void run() {
                 try {
                     clientController.getJSON("playerData.json");
-                    if (jsonInterpreter.isAllReady()) {
+                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime)) {
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
@@ -449,7 +451,7 @@ public class GameController {
                 setPhase(ACTIVATION);
                 if (online){
                     cardController.fillPlayersProgramFromHandOnline(localPlayer);
-                }else{
+                }else{ //THESE FUNCTIONS ARE NAMED IFFILY
                     cardController.fillAllPlayersProgramFromHand(board);
                 }
                 Thread.sleep(500);
@@ -457,18 +459,17 @@ public class GameController {
                 System.out.println("Something very bad with the timer implementation happened");
                 e.printStackTrace();
             }
+            for (Player player : board.getAllPlayers()){
+                player.setReady(true);
+            }
+            finishProgrammingPhase();
             countDownLatchfinishProgrammingPhase.countDown();
+            stopTimerBeforeTime = true;
+            System.out.println("threadTimerDone and timer are done");
 
         });
-        threadTimerDone.setDaemon(false);
-        try {
-            threadTimerDone.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (!localStartedTimer) {
-            finishProgrammingPhase();
-        }
+        threadTimerDone.setDaemon(true);
+        threadTimerDone.start();
     }
 
     public synchronized void synchronize() {
@@ -476,6 +477,7 @@ public class GameController {
 
         System.out.println("______________SYNC_______________");
         setPhase(SYNCHRONIZATION);
+
 
         localPlayer.setReady(true);
         jsonPlayerBuilder.updateDynamicPlayerData();
@@ -547,26 +549,35 @@ public class GameController {
         }
     }
 
+    /**
+     * Only to be used for testing, not final release
+     */
+    public void timerButtonPressed(){
+        startTimer();
+
+    }
+
+    public void intermediateFunction(){
+        stopTimerBeforeTime = true;
+        if (online){
+            localPlayer.setReady(true);
+            jsonPlayerBuilder.updateDynamicPlayerData();
+            clientController.updateJSON("playerData.json");
+            startTimer();
+        }
+    }
+
 
     public void finishProgrammingPhase() {
         //TODO: Check for spam and trojan cards,and replaces the card somehow?
         //TODO: Very much WIP
 
         if (online) {
-            if (!localPlayer.isReady()) {
-                localStartedTimer = true;
-                localPlayer.setReady(true);
-                jsonPlayerBuilder.updateDynamicPlayerData();
-                clientController.updateJSON("playerData.json");
-                startTimer();
-                try {
-                    countDownLatchfinishProgrammingPhase.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("We are online, lads");
+            synchronize();
         }
-        synchronize();
+
+
 
         System.out.println("______________FINISH PROGRAMMING___________________");
 

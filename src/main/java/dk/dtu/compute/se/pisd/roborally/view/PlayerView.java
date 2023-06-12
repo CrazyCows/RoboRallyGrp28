@@ -96,7 +96,7 @@ public class PlayerView extends Tab implements ViewObserver {
         //      refactored.
 
         finishButton = new Button("Finish Programming (run all cards)");
-        finishButton.setOnAction( e -> gameController.finishProgrammingPhase());
+        finishButton.setOnAction( e -> gameController.intermediateFunction());
 
         executeButton = new Button("Execute Program");
         executeButton.setOnAction( e-> gameController.executeProgram(player.currentProgram()));
