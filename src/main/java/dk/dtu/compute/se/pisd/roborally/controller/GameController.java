@@ -171,7 +171,7 @@ public class GameController {
     private synchronized void innerUpdater(ArrayList<String> playerNames){
         clientController.getJSON("playerData.json");
         System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
-        while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
+        while (!jsonInterpreter.isAnyReady(playerNames) && (!getLocalPlayer().isReady() || jsonInterpreter.isReady(localPlayer.getName()))) {
             try {
                 System.out.println("Updating");
                 clientController.getJSON("playerData.json");
