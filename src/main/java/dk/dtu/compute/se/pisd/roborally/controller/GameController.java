@@ -411,7 +411,6 @@ public class GameController {
     void setPhase(Phase phase){
         if (phase == PROGRAMMING) {
             if (online) {
-                CDL.countDown();
                 cardController.drawCards(this.localPlayer);
             }
             else {
@@ -694,6 +693,7 @@ public class GameController {
                     }
                 }
 
+                CDL.countDown();
                 setPhase(Phase.PROGRAMMING);
             }
         });
