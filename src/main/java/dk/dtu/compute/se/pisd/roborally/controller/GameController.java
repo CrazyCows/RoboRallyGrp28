@@ -158,7 +158,7 @@ public class GameController {
         countThread.start();
     }
 
-    public synchronized void getUpdates(ArrayList<String> playerNames){
+    public void getUpdates(ArrayList<String> playerNames){
         CountDownLatch CDL = new CountDownLatch(0);
         innerUpdater(playerNames);
         try {
