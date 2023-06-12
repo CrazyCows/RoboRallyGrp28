@@ -614,6 +614,9 @@ public class GameController {
 
         if (online) {
             System.out.println("We are online, lads");
+            localPlayer.setReady(true);
+            jsonPlayerBuilder.updateDynamicPlayerData();
+            clientController.updateJSON("playerData.json");
             synchronize();
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
