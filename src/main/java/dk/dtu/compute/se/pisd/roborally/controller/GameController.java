@@ -108,6 +108,7 @@ public class GameController {
     }
 
     public void setupOnline() {
+
         localPlayer.setReady(true);
         jsonPlayerBuilder.updateDynamicPlayerData();
         clientController.updateJSON("playerData.json");
@@ -140,8 +141,7 @@ public class GameController {
             }
         }
 
-        ThreadPoolManager threadPoolManager = new ThreadPoolManager(1);
-        threadPoolManager.submitTask(() -> {
+        Runnable countThreadRunnable = () -> {
             ArrayList<String> playerNames = new ArrayList<>();
             for (Player player: board.getAllPlayers()) {
                 if (player != localPlayer) {
@@ -160,7 +160,10 @@ public class GameController {
             if (!localPlayer.isReady()) {
                 startTimer();
             }
-        });
+        };
+
+        ThreadPoolManager threadPoolManager = new ThreadPoolManager(1);
+        threadPoolManager.executeTask(countThreadRunnable);
     }
     //TODO: En metode der tager et commandCardField og læser commands,
     // og kalder de metoder med den korrekte spiller (f.eks. moveForward).

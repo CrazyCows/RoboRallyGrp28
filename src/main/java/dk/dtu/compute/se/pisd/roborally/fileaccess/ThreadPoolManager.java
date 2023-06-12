@@ -23,6 +23,11 @@ public class ThreadPoolManager {
         return null;
     }
 
+    // Execute a task
+    public void executeTask(Runnable task) {
+        executorService.execute(task);
+    }
+
     // Gracefully shutdown the thread pool
     public void shutdown() {
         executorService.shutdown();
