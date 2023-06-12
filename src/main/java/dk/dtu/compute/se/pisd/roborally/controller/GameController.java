@@ -484,8 +484,10 @@ public class GameController {
                 player.setReady(true);
             }
             stopTimerBeforeTime = true;
+            localPlayer.setReady(true);
+            jsonPlayerBuilder.updateDynamicPlayerData();
+            clientController.updateJSON("playerData.json");
             finishProgrammingPhase();
-            System.out.println("threadTimerDone and timer are done");
 
         });
         threadTimerDone.setDaemon(true);
