@@ -525,7 +525,7 @@ public class GameController {
 
         int getReadyTries = 0;
         clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
-        while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
+        while (!jsonInterpreter.isAllReady() || localPlayer.isReady()) {
             try {
                 System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady());
                 clientController.updateJSON("playerData.json");
