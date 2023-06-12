@@ -159,7 +159,7 @@ public class GameController {
     public synchronized void getUpdates(ArrayList<String> playerNames){
         while (true){
             CDL = new CountDownLatch(1);
-            while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
+            while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
                 try {
                     System.out.println("Updating");
                     clientController.getJSON("playerData.json");
@@ -520,6 +520,7 @@ public class GameController {
         System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady()); //Why is this inverted?
         while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
             try {
+
                 clientController.getJSON("playerData.json");
                 System.out.println("Info: All local timers should have ended. ");
                 Thread.sleep(1000);
@@ -538,6 +539,12 @@ public class GameController {
                 System.out.println("Error: Unexpected synchronization behavior. ");
                 e.printStackTrace();
                 break;
+            }
+            clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
+            try { //probably not nessecary
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -859,7 +866,7 @@ public class GameController {
         }
     }
 
-    public Player getLocalPlayer() {
+    public synchronized Player getLocalPlayer() {
         if (this.localPlayer != null) {
             return this.localPlayer;
         }
