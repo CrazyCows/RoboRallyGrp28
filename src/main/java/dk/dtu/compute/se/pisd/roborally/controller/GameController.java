@@ -433,7 +433,7 @@ public class GameController {
     }
 
 
-    public void startTimer() {
+    public synchronized void startTimer() {
         timer = new Timer();
         board.setTimerIsRunning(true);
         CountDownLatch countDownLatch = new CountDownLatch(1);
