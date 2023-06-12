@@ -429,8 +429,9 @@ public class GameController {
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
+                        board.setTimerIsRunning(false);
+                        System.out.println("Timer stopped prematurely");
                         countDownLatch.countDown();
-                        countDownLatchfinishProgrammingPhase.countDown();
                         return;
                     }
                 } catch (NullPointerException e){

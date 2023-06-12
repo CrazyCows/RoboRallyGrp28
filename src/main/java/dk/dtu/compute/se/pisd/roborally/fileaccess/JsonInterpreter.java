@@ -203,7 +203,7 @@ public class JsonInterpreter {
             List<String> playerNames = JsonPath.read(json, "$.[*].name");
 
             return new ArrayList<>(playerNames);
-        } catch (IOException e) {
+        } catch (IOException e) { //TODO: ADD MORE EXCEPTIONS
             e.printStackTrace();
             return null;
         }
