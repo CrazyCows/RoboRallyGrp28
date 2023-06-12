@@ -73,7 +73,6 @@ public class GameController {
 
     volatile boolean stopTimerBeforeTime = false;
     CountDownLatch countDownLatchfinishProgrammingPhase = new CountDownLatch(2);
-    Object threadController = new Object();
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -151,29 +150,32 @@ public class GameController {
                     playerNames.add(player.getName());
                 }
             }
-            while (true){
-                while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
-                    try {
-                        System.out.println("Updating");
-                        clientController.getJSON("playerData.json");
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (!localPlayer.isReady()) {
-                    startTimer();
-                }
-                try {
-                    threadController.wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
+        getUpdates(playerNames);
         });
         countThread.setDaemon(true);
         countThread.start();
+    }
+
+    public synchronized void getUpdates(ArrayList<String> playerNames){
+        while (true){
+            while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
+                try {
+                    System.out.println("Updating");
+                    clientController.getJSON("playerData.json");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!localPlayer.isReady()) {
+                startTimer();
+            }
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 
@@ -603,9 +605,9 @@ public class GameController {
             System.out.println("We are online, lads");
             synchronize();
             localPlayer.setReady(false);
-            threadController.notify();
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
+            notifyAll();
         }
 
 
@@ -694,6 +696,7 @@ public class GameController {
         });
         commandThread.setDaemon(true);
         commandThread.start();
+
 
     }
 
