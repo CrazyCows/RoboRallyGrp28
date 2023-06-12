@@ -418,10 +418,11 @@ public class GameController {
             public void run() {
                 try {
                     clientController.getJSON("playerData.json");
-                    if (board.getPhase() == ACTIVATION){ //Ghetto
+                    if (board.getPhase() == ACTIVATION && false){ //Ghetto
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
+                        //countDownLatch.countDown();
                     }
                     if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime)) {
                         board.setTimerSecondsCount(0);
@@ -580,6 +581,9 @@ public class GameController {
         if (online) {
             System.out.println("We are online, lads");
             synchronize();
+            localPlayer.setReady(false);
+            jsonPlayerBuilder.updateDynamicPlayerData();
+            clientController.updateJSON("playerData.json");
         }
 
 

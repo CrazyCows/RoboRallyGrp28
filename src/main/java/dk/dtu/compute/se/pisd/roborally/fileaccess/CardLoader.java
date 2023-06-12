@@ -230,7 +230,7 @@ public class CardLoader {
             JsonObject player = jsonData.getAsJsonObject(name);
 
             // Get the "programmingCards" array from the player object
-            JsonArray programmingCards = player.getAsJsonArray("programmingCards"); //timer is null
+            JsonArray programmingCards = player.getAsJsonArray("programmingCards"); //player is null
 
             // Create a new JSON object to store the extracted "programmingCards" array
             JsonObject extractedData = new JsonObject();
