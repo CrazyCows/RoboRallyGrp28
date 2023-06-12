@@ -159,6 +159,7 @@ public class GameController {
     public synchronized void getUpdates(ArrayList<String> playerNames){
         while (true){
             CDL = new CountDownLatch(1);
+            clientController.getJSON("playerData.json");
             while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
                 try {
                     System.out.println("Updating");
