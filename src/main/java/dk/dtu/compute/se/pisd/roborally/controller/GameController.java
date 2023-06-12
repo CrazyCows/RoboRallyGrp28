@@ -70,6 +70,7 @@ public class GameController {
     private Timer timer;
     private boolean localStartedTimer;
     CountDownLatch countDownLatchfinishProgrammingPhase = new CountDownLatch(2);
+    ThreadPoolManager threadPoolManager = new ThreadPoolManager(2);
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -107,7 +108,6 @@ public class GameController {
     }
 
     public void setupOnline() {
-
         localPlayer.setReady(true);
         jsonPlayerBuilder.updateDynamicPlayerData();
         clientController.updateJSON("playerData.json");
@@ -140,7 +140,8 @@ public class GameController {
             }
         }
 
-        Thread countThread = new Thread(() -> {
+        ThreadPoolManager threadPoolManager = new ThreadPoolManager(1);
+        threadPoolManager.submitTask(() -> {
             ArrayList<String> playerNames = new ArrayList<>();
             for (Player player: board.getAllPlayers()) {
                 if (player != localPlayer) {
@@ -160,11 +161,7 @@ public class GameController {
                 startTimer();
             }
         });
-        countThread.setDaemon(true);
-        countThread.start();
     }
-
-
     //TODO: En metode der tager et commandCardField og læser commands,
     // og kalder de metoder med den korrekte spiller (f.eks. moveForward).
 
@@ -549,10 +546,10 @@ public class GameController {
     }
 
 
-    public void finishProgrammingPhase() {
-        //TODO: Check for spam and trojan cards,and replaces the card somehow?
-        //TODO: Very much WIP
+    //TODO: Check for spam and trojan cards,and replaces the card somehow?
+    //TODO: Very much WIP
 
+    public void finishProgrammingPhase() {
         if (online) {
             if (!localPlayer.isReady()) {
                 localStartedTimer = true;
@@ -573,13 +570,13 @@ public class GameController {
 
         setPhase(Phase.ACTIVATION);
 
-        Thread commandThread = new Thread(new Runnable() {
+        ThreadPoolManager threadPoolManager = new ThreadPoolManager(1);
+        threadPoolManager.submitTask(new Runnable() {
             @Override
             public void run() {
-                Player currentPlayer = null;
-                currentPlayer = getNextPlayer();
+                Player currentPlayer = getNextPlayer();
                 board.setCurrentPlayer(currentPlayer);
-                int sleep = 200; //Id like to make this dynamically decrease, so that plays accelerate. Not done for now though
+                int sleep = 200;
                 while (true){
                     try {
                         Thread.sleep(sleep);
@@ -588,10 +585,10 @@ public class GameController {
                         System.out.println(card.getName());
 
                         System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
-                        card.getAction().doAction(GameController.this, currentPlayer, card); //I hate this implementation
+                        card.getAction().doAction(GameController.this, currentPlayer, card);
                         List<FieldAction> fieldActions = currentPlayer.getSpace().getActions();
                         for (FieldAction fieldAction : fieldActions) {
-                            Thread.sleep(500); //Generify?
+                            Thread.sleep(500);
                             fieldAction.doAction(GameController.this, currentPlayer.getSpace());
                         }
                         List<Item> items = currentPlayer.getSpace().getItems();
@@ -601,15 +598,8 @@ public class GameController {
                         }
                         Thread.sleep(500);
 
-                    }
-                    catch (NullPointerException e) {
-                        System.out.println("Error: No more commandCards");
-                    }
-                    catch (InterruptedException e) {
-                        //This is just here for the sleep. Shouldn't really happen
-                    }
-                    catch (IndexOutOfBoundsException e){
-                        System.out.println("Trying to get a card that was removed from the hand");
+                    } catch (NullPointerException | InterruptedException | IndexOutOfBoundsException e) {
+                        e.printStackTrace();
                     }
                     currentPlayer.incrementUsedCards();
                     currentPlayer = getNextPlayer();
@@ -651,9 +641,6 @@ public class GameController {
                 setPhase(Phase.PROGRAMMING);
             }
         });
-        commandThread.setDaemon(true);
-        commandThread.start();
-
     }
 
     // Executes the commandCards
@@ -675,7 +662,8 @@ public class GameController {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
         }
 
-        Thread commandThread = new Thread(new Runnable() {
+        // Create a new task
+        Runnable commandTask = new Runnable() {
             @Override
             public void run() {
                 for (Card card : cards) {
@@ -691,14 +679,15 @@ public class GameController {
                         catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    }else {
+                    } else {
                         System.out.println("Something needs to be done about this card");
                     }
                 }
             }
-        });
+        };
 
-        commandThread.start(); // start the thread
+        // Submit the task to the thread pool
+        threadPoolManager.submitTask(commandTask);
     }
 
     // executes a single step

@@ -18,8 +18,9 @@ public class ThreadPoolManager {
     }
 
     // Submit a task for execution
-    public void submitTask(Runnable task) {
+    public Future<?> submitTask(Runnable task) {
         executorService.submit(task);
+        return null;
     }
 
     // Gracefully shutdown the thread pool

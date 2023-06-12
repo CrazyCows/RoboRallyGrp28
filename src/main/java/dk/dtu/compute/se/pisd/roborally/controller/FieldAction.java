@@ -35,12 +35,10 @@ import java.util.concurrent.Future;
  */
 public abstract class FieldAction {
 
-    ThreadPoolManager threadPoolManager;
+    ThreadPoolManager threadPoolManager = new ThreadPoolManager(2);
     Future<?> backgroundAnimationFuture;
 
-    public FieldAction(ThreadPoolManager threadPoolManager) {
-        this.threadPoolManager = threadPoolManager;
-    }
+
 
     public void backgroundAnimationThread(Space space, List<String> background) {
         threadPoolManager.submitTask(() -> {

@@ -782,7 +782,7 @@ public class AppController implements Observer {
         this.threadPoolManager = new ThreadPoolManager(1); // Creating ThreadPoolManager with one thread
 
         // Using ThreadPoolManager to manage the thread
-        threadPoolManager.submitTask(() -> {
+        Future<?> gameLobbyFuture = threadPoolManager.submitTask(() -> {
             while (true) {
 
                 this.clientController.getJSON("playerData.json");
@@ -873,7 +873,10 @@ public class AppController implements Observer {
 
         dialogStage.setScene(dialogScene);
         dialogStage.showAndWait();
+
     }
+
+
 
 
     /**
@@ -927,4 +930,6 @@ public class AppController implements Observer {
         // XXX do nothing for now
     }
 
+
 }
+
