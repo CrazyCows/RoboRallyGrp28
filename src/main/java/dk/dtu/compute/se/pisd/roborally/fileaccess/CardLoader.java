@@ -277,6 +277,10 @@ public class CardLoader {
             // Access the player based on playerName
             JsonObject player = jsonData.getAsJsonObject(name);
 
+            if (player == null) {
+                System.out.println("BAD STUFF");
+            }
+
             // Get the "programmingCards" array from the player object
             JsonArray programmingCards = player.getAsJsonArray("programmingCards"); //player is null
 

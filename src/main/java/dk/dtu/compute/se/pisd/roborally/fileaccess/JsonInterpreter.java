@@ -358,6 +358,17 @@ public class JsonInterpreter {
         return json;
     }
 
+    public boolean checkReceivedCardSequence(String playerName) {
+        String json = getFileAsString("cardSequenceRequests.json");
+        ArrayList<String> result = new ArrayList<>(JsonPath.read(json, "$.['" + playerName + "']"));
+        if (result.isEmpty()) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
 /*
     public List<String> getValuesFromBoard(String jsonFileName, @Nullable Integer x,@Nullable Integer y, String... keys){
         try {

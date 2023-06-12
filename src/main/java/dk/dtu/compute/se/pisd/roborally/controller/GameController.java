@@ -568,10 +568,21 @@ public class GameController {
             if (player != localPlayer) {
                 cardController.emptyProgram(player);
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(800);
                 } catch (InterruptedException e) {
                     //
                 }
+
+                while (!jsonInterpreter.checkReceivedCardSequence(player.getName())) {
+                    clientController.updateJSON("cardSequenceRequest.json");
+                    clientController.getJSON("cardSequenceRequest.json");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
                 int counter = 0;
                 for (CommandCardField field : player.getProgram()) {
