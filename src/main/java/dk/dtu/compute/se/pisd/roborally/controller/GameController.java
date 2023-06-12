@@ -187,7 +187,7 @@ public class GameController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (getLocalPlayer().isReady()){
+            if (localPlayer.isReady()){ //less synchronized
                 break;
             }
         }
