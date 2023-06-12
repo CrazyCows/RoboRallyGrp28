@@ -1,14 +1,1 @@
-[ {
-  "posx" : 2,
-  "posy" : 2,
-  "color" : "red",
-  "readystate" : false,
-  "heading" : "SOUTH",
-  "isMaster" : true,
-  "energyCubes" : 5,
-  "name" : "543fge",
-  "checkpointsCollected" : 0,
-  "inGame" : false,
-  "message" : "",
-  "master" : "543fge"
-} ]
+[ ]
