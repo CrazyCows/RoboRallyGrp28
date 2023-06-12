@@ -187,6 +187,9 @@ public class GameController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            if (getLocalPlayer().isReady()){
+                break;
+            }
         }
         try {
             Thread.sleep(200); //Just trying to avoid the data race
