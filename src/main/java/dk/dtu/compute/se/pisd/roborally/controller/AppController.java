@@ -311,6 +311,14 @@ public class AppController implements Observer {
             alert.setContentText(message);
             alert.showAndWait();
         }
+        else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Save Game");
+            String message = "You can't save online games. ";
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
 
     }
 
