@@ -74,6 +74,7 @@ public class GameController {
     volatile boolean stopTimerBeforeTime = false;
 
     ArrayList<String> playerNames;
+    CountDownLatch CDL;
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -158,6 +159,16 @@ public class GameController {
     }
 
     public synchronized void getUpdates(ArrayList<String> playerNames){
+        CountDownLatch CDL = new CountDownLatch(0);
+        innerUpdater(playerNames);
+        try {
+            CDL.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private synchronized void innerUpdater(ArrayList<String> playerNames){
         clientController.getJSON("playerData.json");
         System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
         while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
@@ -712,6 +723,7 @@ public class GameController {
                 }
                 getUpdates(playerNames);
                 setPhase(Phase.PROGRAMMING);
+                CDL.countDown();
             }
 
         });
