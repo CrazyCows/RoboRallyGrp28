@@ -12,10 +12,8 @@ public class ChatController {
     ArrayList<String> names;
     JsonInterpreter jsonInterpreter;
     HashMap<String, String> newestReceivedMessages;
-    ClientController clientController;
 
-    public ChatController(GameController gameController, ClientController clientController) {
-        this.clientController = clientController;
+    public ChatController(GameController gameController) {
         this.jsonInterpreter = new JsonInterpreter();
         this.names = jsonInterpreter.getPlayerNames();
         this.newestReceivedMessages = new HashMap<>();
@@ -26,7 +24,7 @@ public class ChatController {
         Thread chatThread = new Thread(() -> {
             String message;
             while (true) {
-                clientController.getJSON("playerData.json");
+                gameController.getClientController().getJSON("playerData.json");
                 for (String name : names) {
                     message = jsonInterpreter.getMessage(name);
                     if (!message.equals(this.newestReceivedMessages.get(name))) {

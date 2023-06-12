@@ -118,7 +118,7 @@ public class GameController {
             e.printStackTrace();
         }
 
-        chatController = new ChatController(this, clientController);
+        chatController = new ChatController(this);
 
         localPlayer.setReady(false);
         jsonPlayerBuilder.updateDynamicPlayerData();
@@ -819,6 +819,10 @@ public class GameController {
 
     public boolean getOnline() {
         return online;
+    }
+
+    public ClientController getClientController() {
+        return this.clientController;
     }
 
 }
