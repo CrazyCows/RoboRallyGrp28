@@ -546,11 +546,6 @@ public class GameController {
                 break;
             }
             clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
-            try { //probably not nessecary
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         for (Player player : board.getAllPlayers()) {
