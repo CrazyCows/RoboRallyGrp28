@@ -546,6 +546,10 @@ public class GameController {
 
         if (online) {
             if (!localPlayer.isReady()) {
+                localPlayer.setReady(true);
+                jsonPlayerBuilder.updateDynamicPlayerData();
+                clientController.updateJSON("playerData.json");
+                clientController.getJSON("playerData.json");
                 startTimer();
                 try {
                     countDownLatchfinishProgrammingPhase.await();
