@@ -188,12 +188,14 @@ public class GameController {
                 e.printStackTrace();
             }
             if (localPlayer.isReady()){ //less synchronized
+                System.out.println("breaking balls");
                 break;
             }
         }
         try {
             Thread.sleep(200); //Just trying to avoid the data race
         } catch (InterruptedException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         if (!getLocalPlayer().isReady()) {
