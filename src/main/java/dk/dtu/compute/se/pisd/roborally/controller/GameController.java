@@ -25,6 +25,7 @@ import com.sun.jdi.ThreadGroupReference;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.JSONUpdater;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonInterpreter;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.JsonPlayerBuilder;
 import dk.dtu.compute.se.pisd.roborally.model.*;
@@ -114,8 +115,6 @@ public class GameController {
 
         localPlayer.setReady(true);
         jsonPlayerBuilder.updateDynamicPlayerData();
-        clientController.updateJSON("playerData.json");
-        clientController.getJSON("playerData.json");
 
         try {
             Thread.sleep(5000);
@@ -127,8 +126,6 @@ public class GameController {
 
         localPlayer.setReady(false);
         jsonPlayerBuilder.updateDynamicPlayerData();
-        clientController.updateJSON("playerData.json");
-        clientController.getJSON("playerData.json");
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -137,7 +134,6 @@ public class GameController {
 
         while (jsonInterpreter.isAnyReady(jsonInterpreter.getPlayerNames())) {
             try {
-                clientController.getJSON("playerData.json");
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -158,12 +154,10 @@ public class GameController {
     }
 
     public synchronized void getUpdates(ArrayList<String> playerNames){
-        clientController.getJSON("playerData.json");
         System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
         while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
             try {
                 System.out.println("Updating");
-                clientController.getJSON("playerData.json");
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -177,6 +171,9 @@ public class GameController {
         if (!localPlayer.isReady()) {
             startTimer();
         }
+
+        JSONUpdater updater = new JSONUpdater(clientController);
+        updater.start();
     }
 
 
@@ -431,7 +428,6 @@ public class GameController {
             @Override
             public void run() {
                 try {
-                    clientController.getJSON("playerData.json");
                     if (board.getPhase() == ACTIVATION && false){ //Ghetto
                         board.setTimerSecondsCount(0);
                         timer.cancel();
@@ -485,7 +481,6 @@ public class GameController {
             stopTimerBeforeTime = true;
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
-            clientController.updateJSON("playerData.json");
             finishProgrammingPhase();
 
         });
@@ -504,8 +499,6 @@ public class GameController {
 
         localPlayer.setReady(true);
         jsonPlayerBuilder.updateDynamicPlayerData();
-        clientController.updateJSON("playerData.json");
-        clientController.getJSON("playerData.json");
 
         if (firstRound) {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
@@ -520,12 +513,9 @@ public class GameController {
 
 
         int getReadyTries = 0;
-        clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
         while (!jsonInterpreter.isAllReady()) {
             try {
                 System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  localPlayer.isReady());
-                clientController.updateJSON("playerData.json");
-                clientController.getJSON("playerData.json");
                 System.out.println("Info: All local timers should have ended. ");
                 Thread.sleep(1000);
                 getReadyTries += 1;
@@ -607,7 +597,6 @@ public class GameController {
             System.out.println("Im online");
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
-            clientController.updateJSON("playerData.json");
             if (!board.getTimerIsRunning()){
                 startTimer();
             } else {
@@ -628,12 +617,10 @@ public class GameController {
             System.out.println("We are online, lads");
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
-            clientController.updateJSON("playerData.json");
             banana();
             synchronize();
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
-            clientController.updateJSON("playerData.json");
         }
 
 
@@ -707,8 +694,6 @@ public class GameController {
                 if (online) {
                     localPlayer.setReady(false);
                     jsonPlayerBuilder.updateDynamicPlayerData();
-                    clientController.updateJSON("playerData.json");
-                    clientController.getJSON("playerData.json");
 
                     try {
                         Thread.sleep(2000);
@@ -870,7 +855,6 @@ public class GameController {
     public void sendMessage(String message) {
         localPlayer.setMessage(message);
         jsonPlayerBuilder.updateDynamicPlayerData();
-        clientController.updateJSON("playerData.json");
     }
 
     // Makes cards movable from one slot to another.
