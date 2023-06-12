@@ -148,7 +148,7 @@ public class GameController {
         Thread countThread = new Thread(() -> {
             playerNames = new ArrayList<>();
             for (Player player: board.getAllPlayers()) {
-                if (player != localPlayer) {
+                if (player != localPlayer ||true) { //TODO: I added everyone to the list and made the player not start their own timer
                     playerNames.add(player.getName());
                 }
             }
@@ -605,8 +605,10 @@ public class GameController {
         if (online){
             System.out.println("Im online");
             localPlayer.setReady(true);
+            jsonPlayerBuilder.updateDynamicPlayerData();
+            clientController.updateJSON("playerData.json");
             if (!board.getTimerIsRunning()){
-                startTimer();
+                //startTimer();
             } else {
                 stopForReal = true;
             }
