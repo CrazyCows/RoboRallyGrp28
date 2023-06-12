@@ -522,6 +522,7 @@ public class GameController {
         clientController.getJSON("cardSequenceRequest.json");
 
         int getReadyTries = 0;
+        clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
         System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady()); //Why is this inverted?
         while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
             try {
@@ -545,7 +546,7 @@ public class GameController {
                 e.printStackTrace();
                 break;
             }
-            clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
+
         }
 
         for (Player player : board.getAllPlayers()) {
