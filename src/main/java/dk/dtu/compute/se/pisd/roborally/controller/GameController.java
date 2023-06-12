@@ -148,7 +148,7 @@ public class GameController {
         Thread countThread = new Thread(() -> {
             playerNames = new ArrayList<>();
             for (Player player: board.getAllPlayers()) {
-                if (player != localPlayer) { //TODO: I added everyone to the list and made the player not start their own timer
+                if (player != localPlayer) {
                     playerNames.add(player.getName());
                 }
             }
