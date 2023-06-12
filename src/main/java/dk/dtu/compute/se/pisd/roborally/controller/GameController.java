@@ -511,7 +511,7 @@ public class GameController {
                 if (getReadyTries > 30) {
                     for (Player player : board.getAllPlayers()) {
                         if (!jsonInterpreter.isReady(player.getName())) {
-                            board.removePlayer(player);
+                            //board.removePlayer(player); TODO: Readd?
                             System.out.println(player.getName() + " has been removed from game due to unavailability");
                             System.out.println("Warning: May cause unexpected behavior. ");
                         }
