@@ -198,62 +198,37 @@ public class JsonInterpreter {
     }
 
     public ArrayList<String> getPlayerNames () {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<String> playerNames = JsonPath.read(json, "$.[*].name");
+        String json = getFileAsString("collectivePlayerData.json");
+        List<String> playerNames = JsonPath.read(json, "$.[*].name");
 
-            return new ArrayList<>(playerNames);
-        } catch (IOException e) { //TODO: ADD MORE EXCEPTIONS
-            e.printStackTrace();
-            return null;
-        }
+        return new ArrayList<>(playerNames);
     }
 
     public String getMaster() {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<String> master = JsonPath.read(json, "$.[?(@.isMaster == true)].name");
-            return master.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        String json = getFileAsString("collectivePlayerData.json");
+        List<String> master = JsonPath.read(json, "$.[?(@.isMaster == true)].name");
+        return master.get(0);
     }
 
     public boolean gameStarted() {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.isMaster == true)].inGame")).get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return true;
-        }
+        String json = getFileAsString("collectivePlayerData.json");
+        return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.isMaster == true)].inGame")).get(0);
     }
 
     public Boolean isReady (String playerName) {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].readystate")).get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        String json = getFileAsString("collectivePlayerData.json");
+        return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].readystate")).get(0);
     }
 
     public boolean isAllReady () {
-        try {
-            //TODO: Get from server. otherwise it just loops over the same data
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
+        //TODO: Get from server. otherwise it just loops over the same data
+        String json = getFileAsString("collectivePlayerData.json");
+        List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
 
-            if (playerReadyStates.contains(false)) {
-                return false;
-            }
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (playerReadyStates.contains(false)) {
             return false;
         }
+        return true;
     }
 
     public Boolean isAnyReady (ArrayList<String> playerNames) {
@@ -266,73 +241,70 @@ public class JsonInterpreter {
     }
 
     public ArrayList<String> getColorsInUse() {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            return JsonPath.read(json, "$.[*].color");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+        String json = getFileAsString("collectivePlayerData.json");
+        return JsonPath.read(json, "$.[*].color");
     }
 
     public String getSimplePlayerInfoString(String playerName, String key) {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<String> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
-            return info.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
+        String json = getFileAsString("collectivePlayerData.json");
+        List<String> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
+        return info.get(0);
     }
 
     public boolean getSimplePlayerInfoBoolean(String playerName, String key) {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<Boolean> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
-            return info.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        String json = getFileAsString("collectivePlayerData.json");
+        List<Boolean> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
+        return info.get(0);
     }
     public int getSimplePlayerInfoInt(String playerName, String key) {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<Integer> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
-            return info.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 0;
-        }
+        String json = getFileAsString("collectivePlayerData.json");
+        List<Integer> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
+        return info.get(0);
     }
 
     public String getMessage(String playerName) {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            List<String> message = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].message");
-            return message.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
+        String json = getFileAsString("collectivePlayerData.json");
+        List<String> message = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].message");
+        return message.get(0);
     }
 
     public ArrayList<Card> getAllCardsFromPlayer(String playerName, String cardsToGet) {
         ArrayList<Card> cards = new ArrayList<>();
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/collectivePlayerData.json")));
-            int cardsAmount = 0;
-            ArrayList<String> placeHolder = new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + cardsAmount + "'].name"));
-            while (!placeHolder.isEmpty()) {
-                cardsAmount += 1;
-                placeHolder = new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + cardsAmount + "'].name"));
+        String json = getFileAsString("collectivePlayerData.json");
+        int cardsAmount = 0;
+        ArrayList<String> placeHolder = new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + cardsAmount + "'].name"));
+        while (!placeHolder.isEmpty()) {
+            cardsAmount += 1;
+            placeHolder = new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + cardsAmount + "'].name"));
+        }
+
+        int current = 0;
+
+        for (int i = 0; i < cardsAmount; i++) {
+            if (cardsToGet.equals("permanentUpgradeCards")) {
+                DamageCard damageCard = new DamageCard(
+                        (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "name")).get(0),
+                        (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "effect")).get(0),
+                        (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "imagePath")).get(0),
+                        (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "actionClassName")).get(0)
+                );
+                cards.add(damageCard);
+                }
+            else if (cardsToGet.equals("permanentCards")) {
+
+                ProgrammingCard programmingCard = new ProgrammingCard(
+                        (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "name")).get(0),
+                        (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "imagePath")).get(0),
+                        (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "actionClassName")).get(0),
+                        (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "commandName")).get(0)
+                );
+                cards.add(programmingCard);
+
             }
-
-            int current = 0;
-
-            for (int i = 0; i < cardsAmount; i++) {
-                if (cardsToGet.equals("permanentUpgradeCards")) {
+            else {
+                // if cardTypeDeterminer.size() == 0, card is a damageCard (doesn't have commandName)
+                ArrayList<String> cardTypeDeterminer = JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "commandName");
+                if (cardTypeDeterminer.size() == 0) {
                     DamageCard damageCard = new DamageCard(
                             (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "name")).get(0),
                             (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "effect")).get(0),
@@ -340,9 +312,7 @@ public class JsonInterpreter {
                             (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "actionClassName")).get(0)
                     );
                     cards.add(damageCard);
-                    }
-                else if (cardsToGet.equals("permanentCards")) {
-
+                } else {
                     ProgrammingCard programmingCard = new ProgrammingCard(
                             (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "name")).get(0),
                             (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "imagePath")).get(0),
@@ -350,46 +320,42 @@ public class JsonInterpreter {
                             (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "commandName")).get(0)
                     );
                     cards.add(programmingCard);
-
                 }
-                else {
-                    // if cardTypeDeterminer.size() == 0, card is a damageCard (doesn't have commandName)
-                    ArrayList<String> cardTypeDeterminer = JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "commandName");
-                    if (cardTypeDeterminer.size() == 0) {
-                        DamageCard damageCard = new DamageCard(
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "name")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "effect")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "imagePath")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "actionClassName")).get(0)
-                        );
-                        cards.add(damageCard);
-                    } else {
-                        ProgrammingCard programmingCard = new ProgrammingCard(
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "name")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "imagePath")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "actionClassName")).get(0),
-                                (String) new ArrayList<>(JsonPath.read(json, "$[?(@.name == '" + playerName + "')]." + cardsToGet + ".['" + current + "']." + "commandName")).get(0)
-                        );
-                        cards.add(programmingCard);
-                    }
-                }
-                current += 1;
             }
-            return cards;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            current += 1;
         }
+        return cards;
     }
 
     public ArrayList<String> getAllGames() {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("data/retrievedGames.json")));
-            return JsonPath.read(json, "$.[*]");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+        String json = getFileAsString("retrievedGames.json");
+        return JsonPath.read(json, "$.[*]");
+    }
+
+
+    private String getFileAsString(String fileName) {
+        String json = null;
+        boolean access;
+        do {
+            access = AccessDataFile.requestFileAccess(fileName);
+            if (access) {
+                try {
+                    json = new String(Files.readAllBytes(Paths.get("data/" + fileName)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    AccessDataFile.releaseFileAccess(fileName);
+                }
+            } else {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    AccessDataFile.releaseFileAccess(fileName);
+                    e.printStackTrace();
+                }
+            }
+        } while(json == null);
+        return json;
     }
 
 /*

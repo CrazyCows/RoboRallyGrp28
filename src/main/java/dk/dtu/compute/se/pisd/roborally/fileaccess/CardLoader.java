@@ -37,6 +37,7 @@ public class CardLoader {
     }
 
     private CardLoader() {
+
         System.out.println("Created singleton class");
 
         ClassLoader classLoader;
@@ -114,6 +115,20 @@ public class CardLoader {
     }
 
     public void sendCardSequenceRequest(List<ProgrammingCard> programmingCardsInput, String name) {
+
+        boolean access;
+        do {
+            access = AccessDataFile.requestFileAccess(CARDSEQUENCE + "." + JSON_EXT);
+            if (!access) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } while(!access);
+
         // Create a new list to hold the modified programming cards
         List<ProgrammingCard> modifiedProgrammingCards = new ArrayList<>();
 
@@ -155,6 +170,7 @@ public class CardLoader {
             e1.printStackTrace();
         } finally {
             try {
+                AccessDataFile.releaseFileAccess(CARDSEQUENCE + "." + JSON_EXT);
                 if (writer != null) {
                     writer.close();
                 }
@@ -162,6 +178,7 @@ public class CardLoader {
                     fileWriter.close();
                 }
             } catch (IOException e2) {
+                AccessDataFile.releaseFileAccess(CARDSEQUENCE + "." + JSON_EXT);
                 System.out.println("An exception occurred while closing the writers:");
                 e2.printStackTrace();
             }
@@ -170,6 +187,20 @@ public class CardLoader {
     }
 
     public ArrayList<ProgrammingCard> loadCardSequence(String name) {
+
+        boolean access;
+        do {
+            access = AccessDataFile.requestFileAccess("cardSequenceRequestsHelper.json");
+            if (!access) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } while(!access);
+
 
         Adapter<CardAction> adapter = new Adapter<>();
 
@@ -199,9 +230,12 @@ public class CardLoader {
             }
 
             reader.close();
+
+            AccessDataFile.releaseFileAccess("cardSequenceRequestsHelper.json");
             return result;
 
         } catch (IOException e1) {
+            AccessDataFile.releaseFileAccess("cardSequenceRequestsHelper.json");
             if (reader != null) {
                 try {
                     reader.close();
@@ -220,6 +254,20 @@ public class CardLoader {
     }
 
     private void extractPlayerAndSaveToJson(String name) {
+
+        boolean access;
+        do {
+            access = AccessDataFile.requestFileAccess("cardSequenceRequests.json");
+            if (!access) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } while(!access);
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonParser parser = new JsonParser();
 
@@ -241,8 +289,11 @@ public class CardLoader {
                 gson.toJson(extractedData, writer);
             }
 
+            AccessDataFile.releaseFileAccess("cardSequenceRequests.json");
+
             System.out.println("Extraction completed successfully.");
         } catch (IOException e) {
+            AccessDataFile.releaseFileAccess("cardSequenceRequests.json");
             e.printStackTrace();
         }
     }

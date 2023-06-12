@@ -162,7 +162,6 @@ public class AppController implements Observer {
 
             jsonInterpreter = new JsonInterpreter();
             try {
-                clientController.getJSON("playerData.json");
                 if (jsonInterpreter.gameStarted()) {
                     infoLabel.setText("Error: " + gameID + " already exists. ");
                 }
@@ -228,6 +227,7 @@ public class AppController implements Observer {
         clientController.createJSON("sharedBoard.json");
         for (Player player : gameController.board.getAllPlayers()) {
             JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+            jsonPlayerBuilder.createPlayerJSON(this.gameController);
             clientController.createJSON("playerData.json");
             try {
                 Thread.sleep(500);
