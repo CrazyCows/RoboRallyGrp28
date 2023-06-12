@@ -168,6 +168,11 @@ public class GameController {
                     e.printStackTrace();
                 }
             }
+            try {
+                Thread.sleep(200); //Just trying to avoid the data race
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             if (!localPlayer.isReady()) {
                 startTimer();
             }
@@ -587,7 +592,7 @@ public class GameController {
      * Only to be used for testing, not final release
      */
     public void timerButtonPressed(){
-        startTimer();
+        //startTimer();
 
     }
 
@@ -618,7 +623,6 @@ public class GameController {
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            CDL.countDown();
         }
 
 
@@ -701,9 +705,15 @@ public class GameController {
                         e.printStackTrace();
                     }
                 }
-
+                CDL.countDown();
+                try {
+                    Thread.sleep(1500); //Stopping the data race wherever I go
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 setPhase(Phase.PROGRAMMING);
             }
+
         });
         commandThread.setDaemon(true);
         commandThread.start();
