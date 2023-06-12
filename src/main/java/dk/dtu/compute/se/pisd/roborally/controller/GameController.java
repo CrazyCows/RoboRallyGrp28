@@ -68,6 +68,7 @@ public class GameController {
 
     private Timer timer;
     private boolean localStartedTimer;
+    private boolean stopForReal = false;
 
     volatile boolean stopTimerBeforeTime = false;
     CountDownLatch countDownLatchfinishProgrammingPhase = new CountDownLatch(2);
@@ -424,7 +425,7 @@ public class GameController {
                         timer.purge();
                         //countDownLatch.countDown();
                     }
-                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime)) {
+                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime) || stopForReal) {
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
@@ -445,7 +446,6 @@ public class GameController {
                     board.setTimerSecondsCount(0);
                     System.out.println("Time to fire event!");
                     countDownLatch.countDown();
-                    countDownLatchfinishProgrammingPhase.countDown();
                 }
             }
         }, 0, 1000);
@@ -468,9 +468,8 @@ public class GameController {
             for (Player player : board.getAllPlayers()){
                 player.setReady(true);
             }
-            finishProgrammingPhase();
-            countDownLatchfinishProgrammingPhase.countDown();
             stopTimerBeforeTime = true;
+            finishProgrammingPhase();
             System.out.println("threadTimerDone and timer are done");
 
         });
@@ -569,7 +568,12 @@ public class GameController {
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            startTimer();
+            if (!board.getTimerIsRunning()){
+                startTimer();
+            } else {
+                stopForReal = true;
+            }
+
         }
     }
 
