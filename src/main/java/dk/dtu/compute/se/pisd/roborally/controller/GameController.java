@@ -553,6 +553,7 @@ public class GameController {
                 startTimer();
                 try {
                     countDownLatchfinishProgrammingPhase.await();
+                    return;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
