@@ -438,7 +438,8 @@ public class GameController {
     synchronized void setPhase(Phase phase){
         if (phase == PROGRAMMING) {
             if (online) {
-                cardController.drawCards(this.localPlayer);
+                System.out.println("attempting to fill up hand of local player");
+                cardController.drawCards(getLocalPlayer());
             }
             else {
                 for (Player player : board.getAllPlayers()) {
