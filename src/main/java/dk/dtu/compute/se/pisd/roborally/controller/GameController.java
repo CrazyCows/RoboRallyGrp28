@@ -170,6 +170,7 @@ public class GameController {
 
     private synchronized void innerUpdater(ArrayList<String> playerNames){
         clientController.getJSON("playerData.json");
+        System.out.println("Personally from the server I am " + getLocalPlayer().isReady());
         System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
         while (!jsonInterpreter.isAnyReady(playerNames) && (!getLocalPlayer().isReady() || jsonInterpreter.isReady(localPlayer.getName()))) {
             try {
@@ -603,7 +604,6 @@ public class GameController {
     public void intermediateFunction(){
         stopTimerBeforeTime = true;
         if (online){
-            System.out.println("Im online");
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
