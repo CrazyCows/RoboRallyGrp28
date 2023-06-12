@@ -253,7 +253,7 @@ public class CardLoader {
         return null;
     }
 
-    private void extractPlayerAndSaveToJson(String name) {
+    private synchronized void extractPlayerAndSaveToJson(String name) {
 
         boolean access;
         do {

@@ -476,7 +476,7 @@ public class GameController {
         Thread threadTimerDone = new Thread(() -> { //TODO: IS THIS DIRTY?
             try{
                 countDownLatch.await();
-                setPhase(ACTIVATION);
+                //setPhase(ACTIVATION);
                 if (online){
                     cardController.fillPlayersProgramFromHandOnline(localPlayer);
                 }else{ //THESE FUNCTIONS ARE NAMED IFFILY
@@ -501,7 +501,7 @@ public class GameController {
         threadTimerDone.start();
     }
 
-    public void synchronize() {
+    public synchronized void synchronizeb() {
 
 
         System.out.println("______________SYNC_______________");
@@ -517,11 +517,13 @@ public class GameController {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
             clientController.createJSON("cardSequenceRequest.json");
             clientController.getJSON("cardSequenceRequest.json");
+        } else {
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+            clientController.updateJSON("cardSequenceRequest.json");
+            clientController.getJSON("cardSequenceRequest.json");
         }
 
-        cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
-        clientController.updateJSON("cardSequenceRequest.json");
-        clientController.getJSON("cardSequenceRequest.json");
+
 
         int getReadyTries = 0;
         clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
@@ -620,7 +622,7 @@ public class GameController {
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            synchronize();
+            synchronizeb();
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
