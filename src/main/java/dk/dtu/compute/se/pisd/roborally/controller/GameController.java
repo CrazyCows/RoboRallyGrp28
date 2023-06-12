@@ -72,7 +72,7 @@ public class GameController {
     private boolean stopForReal = false;
 
     volatile boolean stopTimerBeforeTime = false;
-    CountDownLatch countDownLatchfinishProgrammingPhase = new CountDownLatch(2);
+    CountDownLatch CDL;
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -158,6 +158,7 @@ public class GameController {
 
     public synchronized void getUpdates(ArrayList<String> playerNames){
         while (true){
+            CDL = new CountDownLatch(1);
             while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
                 try {
                     System.out.println("Updating");
@@ -171,7 +172,7 @@ public class GameController {
                 startTimer();
             }
             try {
-                wait();
+                CDL.await();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -607,7 +608,7 @@ public class GameController {
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            notifyAll();
+            CDL.countDown();
         }
 
 
