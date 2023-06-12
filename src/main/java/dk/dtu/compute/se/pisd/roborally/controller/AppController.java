@@ -781,6 +781,8 @@ public class AppController implements Observer {
             this.clientController.createJSON("sharedBoard.json");
         }
 
+        gameController.sync();
+
         Thread countThread = new Thread(() -> {
             while (true) {
 
@@ -823,8 +825,6 @@ public class AppController implements Observer {
                 }
                 else if (isMaster && checkBoxes.get(0).isSelected()) {
 
-                    gameController.sync();
-
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
 
@@ -833,8 +833,6 @@ public class AppController implements Observer {
                     Platform.runLater(dialogStage::close);
                 }
                 else if (!isMaster && jsonInterpreter.isAllReady()) {
-
-                    gameController.sync();
 
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
