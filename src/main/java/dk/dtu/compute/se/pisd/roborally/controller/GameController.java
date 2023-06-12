@@ -550,6 +550,7 @@ public class GameController {
                 jsonPlayerBuilder.updateDynamicPlayerData();
                 clientController.updateJSON("playerData.json");
                 clientController.getJSON("playerData.json");
+                localPlayer.setReady(false);
                 startTimer();
                 try {
                     countDownLatchfinishProgrammingPhase.await();
