@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
 import dk.dtu.compute.se.pisd.roborally.model.card.DamageCard;
 import dk.dtu.compute.se.pisd.roborally.model.card.ProgrammingCard;
@@ -360,12 +361,16 @@ public class JsonInterpreter {
 
     public boolean checkReceivedCardSequence(String playerName) {
         String json = getFileAsString("cardSequenceRequests.json");
-        ArrayList<String> result = new ArrayList<>(JsonPath.read(json, "$.['" + playerName + "']"));
-        if (result.isEmpty()) {
+
+        try {
+            Map<String, Object> playerData = JsonPath.read(json, "$.['" + playerName + "']");
+            if (playerData == null || playerData.isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (PathNotFoundException e) {
             return false;
-        }
-        else {
-            return true;
         }
     }
 
