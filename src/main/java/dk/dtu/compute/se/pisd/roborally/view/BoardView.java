@@ -403,7 +403,7 @@ public class BoardView extends VBox implements ViewObserver {
     private void nextTimer() {
         int k = (int) Math.floor(((float)board.getTimerSecondsCount())/5) + 1; //I hope this maths the math
         this.timerView.setImage(timers[k]);
-        if (board.getTimerSecondsCount() >= 29){
+        if (board.getTimerSecondsCount() >= 29 || board.getTimerSecondsCount() == 0){
             this.timerView.setImage(timers[0]);
         }
     }
