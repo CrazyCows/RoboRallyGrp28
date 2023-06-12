@@ -72,7 +72,8 @@ public class GameController {
     private boolean stopForReal = false;
 
     volatile boolean stopTimerBeforeTime = false;
-    CountDownLatch CDL;
+
+    ArrayList<String> playerNames;
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -144,7 +145,7 @@ public class GameController {
         }
 
         Thread countThread = new Thread(() -> {
-            ArrayList<String> playerNames = new ArrayList<>();
+            playerNames = new ArrayList<>();
             for (Player player: board.getAllPlayers()) {
                 if (player != localPlayer) {
                     playerNames.add(player.getName());
@@ -704,12 +705,12 @@ public class GameController {
                         e.printStackTrace();
                     }
                 }
-                CDL.countDown();
                 try {
                     Thread.sleep(1500); //Stopping the data race wherever I go
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                getUpdates(playerNames);
                 setPhase(Phase.PROGRAMMING);
             }
 
