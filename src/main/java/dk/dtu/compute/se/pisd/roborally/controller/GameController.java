@@ -175,9 +175,9 @@ public class GameController {
             e.printStackTrace();
         }
         clientController.getJSON("playerData.json");
-        System.out.println("Personally I am " + getLocalPlayer().isReady());
         System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
-        while (!jsonInterpreter.isAnyReady(playerNames) && (!getLocalPlayer().isReady() || jsonInterpreter.isReady(localPlayer.getName()))) {
+        while (!jsonInterpreter.isAnyReady(playerNames) && (!getLocalPlayer().isReady() || !jsonInterpreter.isReady(localPlayer.getName()))) {
+            System.out.println("Personally I am " + getLocalPlayer().isReady());
             try {
                 System.out.println("Updating");
                 clientController.getJSON("playerData.json");
@@ -192,6 +192,7 @@ public class GameController {
             throw new RuntimeException(e);
         }
         if (!getLocalPlayer().isReady()) {
+            System.out.println("Attempting to start timer");
             startTimer();
         }
     }
