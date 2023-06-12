@@ -67,6 +67,7 @@ public class GameController {
     boolean firstRound;
 
     private Timer timer;
+    private boolean localStartedTimer;
     CountDownLatch countDownLatchfinishProgrammingPhase = new CountDownLatch(2);
 
 
@@ -93,6 +94,7 @@ public class GameController {
                 board.getUpgradeShop().removeTemporaryUpgradeCardByName(card.getName());
             }
         }
+        this.localStartedTimer = false;
         this.online = online;
         jsonPlayerBuilder = new JsonPlayerBuilder(board.getPlayer(0));
         //this.eventController = new CommandCardController(this); //TODO: Should these two be removed?
@@ -450,18 +452,23 @@ public class GameController {
                 }else{
                     cardController.fillAllPlayersProgramFromHand(board);
                 }
-
                 Thread.sleep(500);
-                this.localPlayer.setReady(true);
-                finishProgrammingPhase();
             } catch (InterruptedException e) {
                 System.out.println("Something very bad with the timer implementation happened");
                 e.printStackTrace();
             }
             countDownLatchfinishProgrammingPhase.countDown();
+
         });
         threadTimerDone.setDaemon(false);
-        threadTimerDone.start();
+        try {
+            threadTimerDone.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (!localStartedTimer) {
+            finishProgrammingPhase();
+        }
     }
 
     public synchronized void synchronize() {
@@ -547,13 +554,13 @@ public class GameController {
 
         if (online) {
             if (!localPlayer.isReady()) {
+                localStartedTimer = true;
                 localPlayer.setReady(true);
                 jsonPlayerBuilder.updateDynamicPlayerData();
                 clientController.updateJSON("playerData.json");
                 startTimer();
                 try {
                     countDownLatchfinishProgrammingPhase.await();
-                    return;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
