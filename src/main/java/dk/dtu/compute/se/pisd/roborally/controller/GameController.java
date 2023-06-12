@@ -525,9 +525,10 @@ public class GameController {
 
         int getReadyTries = 0;
         clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
-        while (!jsonInterpreter.isAllReady() || localPlayer.isReady()) {
+        while (!jsonInterpreter.isAllReady()) {
             try {
                 System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  localPlayer.isReady());
+                clientController.updateJSON("playerData");
                 clientController.getJSON("playerData.json");
                 System.out.println("Info: All local timers should have ended. ");
                 Thread.sleep(1000);
