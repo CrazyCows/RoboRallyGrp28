@@ -74,7 +74,6 @@ public class GameController {
     volatile boolean stopTimerBeforeTime = false;
 
     ArrayList<String> playerNames;
-    CountDownLatch CDL;
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -158,51 +157,24 @@ public class GameController {
         countThread.start();
     }
 
-    public void getUpdates(ArrayList<String> playerNames){
-        CountDownLatch CDL = new CountDownLatch(0);
-        innerUpdater(playerNames);
-        try {
-            CDL.await();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void innerUpdater(ArrayList<String> playerNames){
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public synchronized void getUpdates(ArrayList<String> playerNames){
         clientController.getJSON("playerData.json");
         System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
-        while (!jsonInterpreter.isAnyReady(playerNames) && (!getLocalPlayer().isReady() || !jsonInterpreter.isReady(localPlayer.getName()))) {
-            System.out.println("Personally I am " + getLocalPlayer().isReady());
-            System.out.println("According to the server I am " + jsonInterpreter.isReady(localPlayer.getName()));
+        while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
             try {
                 System.out.println("Updating");
                 clientController.getJSON("playerData.json");
-                System.out.println("json has been gotten");
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (localPlayer.isReady()){ //less synchronized
-                System.out.println("breaking balls");
-                break;
-            }
         }
-        /*
         try {
             Thread.sleep(200); //Just trying to avoid the data race
         } catch (InterruptedException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-         */
-        if (!getLocalPlayer().isReady() || true) {
-            System.out.println("Attempting to start timer");
+        if (!localPlayer.isReady()) {
             startTimer();
         }
     }
@@ -435,11 +407,10 @@ public class GameController {
      * Sets the phase. If the phase is programming, cards are automatically drawn from drawpile to hand
      * @param phase
      */
-    synchronized void setPhase(Phase phase){
+    void setPhase(Phase phase){
         if (phase == PROGRAMMING) {
             if (online) {
-                System.out.println("attempting to fill up hand of local player");
-                cardController.drawCards(getLocalPlayer());
+                cardController.drawCards(this.localPlayer);
             }
             else {
                 for (Player player : board.getAllPlayers()) {
@@ -451,7 +422,7 @@ public class GameController {
     }
 
 
-    public synchronized void startTimer() {
+    public void startTimer() {
         timer = new Timer();
         board.setTimerIsRunning(true);
         CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -540,10 +511,11 @@ public class GameController {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
             clientController.createJSON("cardSequenceRequest.json");
             clientController.getJSON("cardSequenceRequest.json");
+        } else {
+            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+            clientController.updateJSON("cardSequenceRequest.json");
+            clientController.getJSON("cardSequenceRequest.json");
         }
-        cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
-        clientController.updateJSON("cardSequenceRequest.json");
-        clientController.getJSON("cardSequenceRequest.json");
 
 
 
@@ -596,10 +568,21 @@ public class GameController {
             if (player != localPlayer) {
                 cardController.emptyProgram(player);
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(800);
                 } catch (InterruptedException e) {
                     //
                 }
+
+                while (!jsonInterpreter.checkReceivedCardSequence(player.getName())) {
+                    clientController.updateJSON("cardSequenceRequest.json");
+                    clientController.getJSON("cardSequenceRequest.json");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
                 int counter = 0;
                 for (CommandCardField field : player.getProgram()) {
@@ -618,14 +601,15 @@ public class GameController {
 
     }
 
-    public synchronized void intermediateFunction(){
+    public void intermediateFunction(){
         stopTimerBeforeTime = true;
         if (online){
-            getLocalPlayer().setReady(true);
+            System.out.println("Im online");
+            localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
             if (!board.getTimerIsRunning()){
-                //startTimer();
+                startTimer();
             } else {
                 stopForReal = true;
             }
@@ -736,9 +720,8 @@ public class GameController {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                getUpdates(playerNames);
                 setPhase(Phase.PROGRAMMING);
-                CDL.countDown();
+                getUpdates(playerNames);
             }
 
         });

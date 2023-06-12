@@ -53,4 +53,10 @@ class JsonInterpreterTest {
         jsonInterpreter.getAllCardsFromPlayer("Player 1", "handPile");
     }
 
+    @Test
+    void TestCheckReceivedCardSequence() {
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        System.out.println(jsonInterpreter.checkReceivedCardSequence("kitty"));
+    }
+
 }
