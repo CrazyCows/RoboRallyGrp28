@@ -192,13 +192,16 @@ public class GameController {
                 break;
             }
         }
+        /*
         try {
             Thread.sleep(200); //Just trying to avoid the data race
         } catch (InterruptedException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        if (!getLocalPlayer().isReady()) {
+
+         */
+        if (!getLocalPlayer().isReady() || true) {
             System.out.println("Attempting to start timer");
             startTimer();
         }
