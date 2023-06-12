@@ -119,7 +119,7 @@ public class GameController {
         clientController.getJSON("playerData.json");
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -610,11 +610,6 @@ public class GameController {
         stopTimerBeforeTime = true;
         if (online){
             localPlayer.setReady(true);
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
             if (!board.getTimerIsRunning()){
