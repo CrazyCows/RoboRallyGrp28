@@ -418,7 +418,7 @@ public class GameController {
             public void run() {
                 try {
                     clientController.getJSON("playerData.json");
-                    if (jsonInterpreter.isAllReady() || stopTimerBeforeTime) {
+                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime)) {
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
