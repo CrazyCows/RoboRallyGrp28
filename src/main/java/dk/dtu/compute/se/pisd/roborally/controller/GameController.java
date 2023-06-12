@@ -525,10 +525,9 @@ public class GameController {
 
         int getReadyTries = 0;
         clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
-        System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady()); //Why is this inverted?
         while (!jsonInterpreter.isAllReady() || !localPlayer.isReady()) {
             try {
-
+                System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  !localPlayer.isReady());
                 clientController.updateJSON("playerData.json");
                 System.out.println("Info: All local timers should have ended. ");
                 Thread.sleep(1000);
@@ -536,7 +535,7 @@ public class GameController {
                 if (getReadyTries > 30) {
                     for (Player player : board.getAllPlayers()) {
                         if (!jsonInterpreter.isReady(player.getName())) {
-                            //board.removePlayer(player); TODO: Readd?
+                            board.removePlayer(player);
                             System.out.println(player.getName() + " has been removed from game due to unavailability");
                             System.out.println("Warning: May cause unexpected behavior. ");
                         }
