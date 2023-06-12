@@ -21,6 +21,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.sun.jdi.ThreadGroupReference;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.controller.field.Pit;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ClientController;
@@ -545,6 +546,11 @@ public class GameController {
             System.out.println(player.getName());
             if (player != localPlayer) {
                 cardController.emptyProgram(player);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    //
+                }
                 ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
                 int counter = 0;
                 for (CommandCardField field : player.getProgram()) {
