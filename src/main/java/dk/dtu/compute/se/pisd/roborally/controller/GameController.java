@@ -721,8 +721,8 @@ public class GameController {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                getUpdates(playerNames);
                 setPhase(Phase.PROGRAMMING);
+                getUpdates(playerNames);
             }
 
         });
