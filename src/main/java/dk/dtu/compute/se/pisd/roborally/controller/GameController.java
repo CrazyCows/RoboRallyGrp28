@@ -62,7 +62,7 @@ public class GameController {
     private JsonInterpreter jsonInterpreter;
     private String gamePath;
 
-    private Player localPlayer;
+    private static Player localPlayer;
     JsonPlayerBuilder jsonPlayerBuilder;
     boolean MoreAdvancedGame = true;
     boolean firstRound;
@@ -119,7 +119,7 @@ public class GameController {
         clientController.getJSON("playerData.json");
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -169,8 +169,13 @@ public class GameController {
     }
 
     private synchronized void innerUpdater(ArrayList<String> playerNames){
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         clientController.getJSON("playerData.json");
-        System.out.println("Personally from the server I am " + getLocalPlayer().isReady());
+        System.out.println("Personally I am " + getLocalPlayer().isReady());
         System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
         while (!jsonInterpreter.isAnyReady(playerNames) && (!getLocalPlayer().isReady() || jsonInterpreter.isReady(localPlayer.getName()))) {
             try {
@@ -605,6 +610,11 @@ public class GameController {
         stopTimerBeforeTime = true;
         if (online){
             localPlayer.setReady(true);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
             if (!board.getTimerIsRunning()){
@@ -612,7 +622,6 @@ public class GameController {
             } else {
                 stopForReal = true;
             }
-
         }
     }
     public synchronized void banana(){

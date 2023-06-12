@@ -149,7 +149,7 @@ public class Player extends Subject {
     public boolean isReady() {
         return ready;
     }
-    public void setReady(boolean state) {
+    public synchronized void setReady(boolean state) {
         this.ready = state;
     }
     public boolean isInGame() {
