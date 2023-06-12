@@ -178,9 +178,11 @@ public class GameController {
         System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
         while (!jsonInterpreter.isAnyReady(playerNames) && (!getLocalPlayer().isReady() || !jsonInterpreter.isReady(localPlayer.getName()))) {
             System.out.println("Personally I am " + getLocalPlayer().isReady());
+            System.out.println("According to the server I am " + jsonInterpreter.isReady(localPlayer.getName()));
             try {
                 System.out.println("Updating");
                 clientController.getJSON("playerData.json");
+                System.out.println("json has been gotten");
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
