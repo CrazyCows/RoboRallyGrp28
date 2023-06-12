@@ -37,7 +37,7 @@ public class JsonInterpreter {
      * @return String value
      * @throws Exception Laziness
      */
-    public String getBoardData(String jsonFileName, String key, int x, int y) throws Exception {
+    public synchronized String getBoardData(String jsonFileName, String key, int x, int y) throws Exception {
         JsonNode rootNode = objectMapper.readTree(new File("data", jsonFileName));
         JsonNode spacesNode = rootNode.get("spaces");
 
@@ -88,7 +88,7 @@ public class JsonInterpreter {
      * @return String value of key
      * @throws IOException Im lazy :(
      */
-    public String getPlayerData(String jsonFileName, String key, String playerName) throws IOException{
+    public synchronized String getPlayerData(String jsonFileName, String key, String playerName) throws IOException{
         // Read JSON file and convert to list of Person
         JsonNode node = objectMapper.readTree(new File("data", jsonFileName));
 
@@ -109,7 +109,7 @@ public class JsonInterpreter {
         return "No data";
     }
 
-    public String getCardData(String jsonFileName, String playerName, String key) throws Exception {
+    public synchronized String getCardData(String jsonFileName, String playerName, String key) throws Exception {
         // Read JSON file and convert to list of Person
         JsonNode node = objectMapper.readTree(new File("data", jsonFileName));
 
@@ -139,7 +139,7 @@ public class JsonInterpreter {
      * @return
      */
 
-    public static JsonElement search(String fileName, String key) {
+    public synchronized static JsonElement search(String fileName, String key) {
         try {
             String json = new String(Files.readAllBytes(Paths.get(fileName)));
             JsonElement jsonElement = new Gson().fromJson(json, JsonElement.class);
@@ -150,7 +150,7 @@ public class JsonInterpreter {
         }
     }
 
-    private static JsonElement searchInJson(JsonElement element, String key) {
+    private synchronized static JsonElement searchInJson(JsonElement element, String key) {
         if (element.isJsonObject()) {
             JsonObject object = element.getAsJsonObject();
             if (object.has(key)) {
@@ -180,7 +180,7 @@ public class JsonInterpreter {
 
 
 
-    public ArrayList<String> getInfoFromAllPlayers(String jsonFileName, String key) {
+    public synchronized ArrayList<String> getInfoFromAllPlayers(String jsonFileName, String key) {
         try {
             JsonNode node = objectMapper.readTree(new File("data", jsonFileName));
             List<JsonNode> nodes = node.findValues(key);
@@ -197,30 +197,30 @@ public class JsonInterpreter {
         }
     }
 
-    public ArrayList<String> getPlayerNames () {
+    public synchronized ArrayList<String> getPlayerNames () {
         String json = getFileAsString("collectivePlayerData.json");
         List<String> playerNames = JsonPath.read(json, "$.[*].name");
 
         return new ArrayList<>(playerNames);
     }
 
-    public String getMaster() {
+    public synchronized String getMaster() {
         String json = getFileAsString("collectivePlayerData.json");
         List<String> master = JsonPath.read(json, "$.[?(@.isMaster == true)].name");
         return master.get(0);
     }
 
-    public boolean gameStarted() {
+    public synchronized boolean gameStarted() {
         String json = getFileAsString("collectivePlayerData.json");
         return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.isMaster == true)].inGame")).get(0);
     }
 
-    public Boolean isReady (String playerName) {
+    public synchronized Boolean isReady (String playerName) {
         String json = getFileAsString("collectivePlayerData.json");
         return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].readystate")).get(0);
     }
 
-    public boolean isAllReady () {
+    public synchronized boolean isAllReady () {
         //TODO: Get from server. otherwise it just loops over the same data
         String json = getFileAsString("collectivePlayerData.json");
         List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
@@ -231,7 +231,7 @@ public class JsonInterpreter {
         return true;
     }
 
-    public Boolean isAnyReady (ArrayList<String> playerNames) {
+    public synchronized Boolean isAnyReady (ArrayList<String> playerNames) {
         for (String name : playerNames) {
             if (isReady(name)) {
                 return true;
@@ -240,35 +240,35 @@ public class JsonInterpreter {
         return false;
     }
 
-    public ArrayList<String> getColorsInUse() {
+    public synchronized ArrayList<String> getColorsInUse() {
         String json = getFileAsString("collectivePlayerData.json");
         return JsonPath.read(json, "$.[*].color");
     }
 
-    public String getSimplePlayerInfoString(String playerName, String key) {
+    public synchronized String getSimplePlayerInfoString(String playerName, String key) {
         String json = getFileAsString("collectivePlayerData.json");
         List<String> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
         return info.get(0);
     }
 
-    public boolean getSimplePlayerInfoBoolean(String playerName, String key) {
+    public synchronized  boolean getSimplePlayerInfoBoolean(String playerName, String key) {
         String json = getFileAsString("collectivePlayerData.json");
         List<Boolean> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
         return info.get(0);
     }
-    public int getSimplePlayerInfoInt(String playerName, String key) {
+    public synchronized int getSimplePlayerInfoInt(String playerName, String key) {
         String json = getFileAsString("collectivePlayerData.json");
         List<Integer> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
         return info.get(0);
     }
 
-    public String getMessage(String playerName) {
+    public synchronized String getMessage(String playerName) {
         String json = getFileAsString("collectivePlayerData.json");
         List<String> message = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].message");
         return message.get(0);
     }
 
-    public ArrayList<Card> getAllCardsFromPlayer(String playerName, String cardsToGet) {
+    public synchronized ArrayList<Card> getAllCardsFromPlayer(String playerName, String cardsToGet) {
         ArrayList<Card> cards = new ArrayList<>();
         String json = getFileAsString("collectivePlayerData.json");
         int cardsAmount = 0;
@@ -327,13 +327,13 @@ public class JsonInterpreter {
         return cards;
     }
 
-    public ArrayList<String> getAllGames() {
+    public synchronized ArrayList<String> getAllGames() {
         String json = getFileAsString("retrievedGames.json");
         return JsonPath.read(json, "$.[*]");
     }
 
 
-    private String getFileAsString(String fileName) {
+    private synchronized String getFileAsString(String fileName) {
         String json = null;
         boolean access;
         do {

@@ -522,11 +522,10 @@ public class GameController {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
             clientController.createJSON("cardSequenceRequest.json");
             clientController.getJSON("cardSequenceRequest.json");
-        } else {
-            cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
-            clientController.updateJSON("cardSequenceRequest.json");
-            clientController.getJSON("cardSequenceRequest.json");
         }
+        cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
+        clientController.updateJSON("cardSequenceRequest.json");
+        clientController.getJSON("cardSequenceRequest.json");
 
 
 
