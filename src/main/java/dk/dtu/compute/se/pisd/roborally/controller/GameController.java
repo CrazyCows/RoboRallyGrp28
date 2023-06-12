@@ -73,6 +73,7 @@ public class GameController {
 
     volatile boolean stopTimerBeforeTime = false;
     CountDownLatch countDownLatchfinishProgrammingPhase = new CountDownLatch(2);
+    Object threadController = new Object();
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -144,13 +145,13 @@ public class GameController {
         }
 
         Thread countThread = new Thread(() -> {
-            while (true){
-                ArrayList<String> playerNames = new ArrayList<>();
-                for (Player player: board.getAllPlayers()) {
-                    if (player != localPlayer) {
-                        playerNames.add(player.getName());
-                    }
+            ArrayList<String> playerNames = new ArrayList<>();
+            for (Player player: board.getAllPlayers()) {
+                if (player != localPlayer) {
+                    playerNames.add(player.getName());
                 }
+            }
+            while (true){
                 while (!jsonInterpreter.isAnyReady(playerNames) && !localPlayer.isReady()) {
                     try {
                         System.out.println("Updating");
@@ -162,6 +163,11 @@ public class GameController {
                 }
                 if (!localPlayer.isReady()) {
                     startTimer();
+                }
+                try {
+                    threadController.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
 
@@ -597,6 +603,7 @@ public class GameController {
             System.out.println("We are online, lads");
             synchronize();
             localPlayer.setReady(false);
+            threadController.notify();
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
         }
