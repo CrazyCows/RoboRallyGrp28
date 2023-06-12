@@ -173,6 +173,7 @@ public class GameController {
             }
             try {
                 CDL.await();
+                System.out.println("Restarting synchronization");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -410,6 +411,7 @@ public class GameController {
     void setPhase(Phase phase){
         if (phase == PROGRAMMING) {
             if (online) {
+                CDL.countDown();
                 cardController.drawCards(this.localPlayer);
             }
             else {
@@ -491,7 +493,7 @@ public class GameController {
         threadTimerDone.start();
     }
 
-    public synchronized void synchronize() {
+    public void synchronize() {
 
 
         System.out.println("______________SYNC_______________");
@@ -608,7 +610,7 @@ public class GameController {
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            CDL.countDown();
+
         }
 
 
