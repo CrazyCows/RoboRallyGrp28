@@ -116,29 +116,12 @@ public class GameController {
         localPlayer.setReady(true);
         jsonPlayerBuilder.updateDynamicPlayerData();
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         chatController = new ChatController(this, clientController);
 
         localPlayer.setReady(false);
         jsonPlayerBuilder.updateDynamicPlayerData();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        while (jsonInterpreter.isAnyReady(jsonInterpreter.getPlayerNames())) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+
 
         Thread countThread = new Thread(() -> {
             playerNames = new ArrayList<>();
@@ -162,11 +145,6 @@ public class GameController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-        try {
-            Thread.sleep(200); //Just trying to avoid the data race
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
         if (!localPlayer.isReady()) {
             startTimer();
