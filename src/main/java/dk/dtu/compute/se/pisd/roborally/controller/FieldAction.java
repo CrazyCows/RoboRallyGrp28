@@ -47,6 +47,7 @@ public abstract class FieldAction {
             }
             space.animate(background);
         });
+        thread.setDaemon(true);
         thread.start();
     }
 

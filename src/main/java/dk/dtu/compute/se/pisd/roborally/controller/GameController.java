@@ -154,7 +154,7 @@ public class GameController {
             }
         getUpdates(playerNames);
         });
-        countThread.setDaemon(false);
+        countThread.setDaemon(true);
         countThread.start();
     }
 
@@ -489,7 +489,7 @@ public class GameController {
             finishProgrammingPhase();
 
         });
-        threadTimerDone.setDaemon(false);
+        threadTimerDone.setDaemon(true);
         threadTimerDone.setPriority(10);
         threadTimerDone.start();
         System.out.println("threadtimerDone started");
@@ -545,7 +545,6 @@ public class GameController {
         clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
         while (!jsonInterpreter.isAllReady()) {
             try {
-                System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  localPlayer.isReady());
                 clientController.updateJSON("playerData.json");
                 clientController.getJSON("playerData.json");
                 System.out.println("Info: All local timers should have ended. ");
@@ -621,11 +620,10 @@ public class GameController {
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
             stopForReal.set(true);
+        }else {
+            finishProgrammingPhase();
         }
-        finishProgrammingPhase();
-    }
-    public synchronized void banana(){
-        System.out.println("banana");
+
     }
 
     public void finishProgrammingPhase() {
@@ -637,7 +635,6 @@ public class GameController {
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            banana();
             synchronize();
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
@@ -783,7 +780,7 @@ public class GameController {
                 }
             }
         });
-
+        commandThread.setDaemon(true);
         commandThread.start(); // start the thread
     }
 

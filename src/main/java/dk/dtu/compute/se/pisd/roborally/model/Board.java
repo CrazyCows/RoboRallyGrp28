@@ -60,7 +60,7 @@ public class Board extends Subject {
     private int step = 0;
 
     private boolean stepMode;
-    private int timerSecondsCount;
+    private volatile int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
     private Space RebootTokenSpace;
@@ -306,9 +306,8 @@ public class Board extends Subject {
     }
 
     public void setTimerSecondsCount(int seconds) {
-        Platform.runLater(this::notifyChange);
-
         this.timerSecondsCount = seconds;
+        Platform.runLater(this::notifyChange);
     }
 
     public void setTimerIsRunning(boolean status) {
