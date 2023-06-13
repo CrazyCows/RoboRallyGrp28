@@ -144,6 +144,7 @@ public class CardLoader {
 
             // Add the modified card to the new list
             modifiedProgrammingCards.add(modifiedCard);
+            System.out.println("in modifiedProgrammingCards, adding " + card.getName()); //DONT REMOVE ATM
         }
 
         // Create the JSON structure with the modified programming cards
