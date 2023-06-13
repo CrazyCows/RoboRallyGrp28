@@ -422,6 +422,15 @@ public class GameController {
 
 
     public void startTimer() {
+        localPlayer.setReady(true);
+        jsonPlayerBuilder.updateDynamicPlayerData();
+        clientController.updateJSON("playerData.json");
+        try {
+            Thread.sleep(1500); //We need to wait long enough for the data to reach the server and get back
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         timer = new Timer();
         board.setTimerIsRunning(true);
         CountDownLatch countDownLatch = new CountDownLatch(1);
