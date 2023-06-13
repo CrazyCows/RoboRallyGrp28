@@ -217,7 +217,7 @@ public class CardLoader {
         InputStream inputStream = null;
         JsonReader reader = null;
         try {
-            inputStream = new FileInputStream("data/cardSequenceRequestsHelper.json");
+            inputStream = new FileInputStream("data/cardSequenceRequest.json"); //Changed here, probably broken
 
             // In simple cases, we can create a Gson object with new Gson():
             GsonBuilder simpleBuilder = new GsonBuilder()
@@ -229,7 +229,6 @@ public class CardLoader {
             reader = gson.newJsonReader(new InputStreamReader(inputStream)); //CardsequenceRequestHelper has the old cards sometimes instead of getting updated
             CardSequenceTemplate template = gson.fromJson(reader, CardSequenceTemplate.class); //This template is wrong
 
-            System.out.println("template.programmingCards has size " + template.programmingCards.size());
 
             result = new ArrayList<>(template.programmingCards);
             for (ProgrammingCard card : result){
