@@ -17,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ClientController {
     private HttpClient client;
@@ -26,6 +27,7 @@ public class ClientController {
 
     HashMap<String, String> jsonID = new HashMap<>();
     String ID;
+    volatile boolean firstTimeGetJSON = false;
 
     // TODO: All exceptions is handled rather lazily here. Should be tightened up such errors give useful information..
     // TODO: Throwing stuff is more fun tho..
@@ -178,7 +180,10 @@ public class ClientController {
     }
 
     public synchronized void updateJSON(String jsonName) {
-        getJSON("cardSequenceRequest.json");
+        if (jsonName.equals("cardSequenceRequest.json")){
+            getJSON("cardSequenceRequest.json");
+        }
+
         String jsonTypeToURL = jsonType(jsonName);
         try {
             WebClient webClient = WebClient.create();
