@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
 import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -86,6 +87,7 @@ public class BoardView extends VBox implements ViewObserver {
     private ArrowKeyEventHandler arrowKeyEventHandler;
     private GameController gameController;
     int timerSecondsCount;
+    Player localPlayer;
 
     public SpaceView[][] getSpaces(){
         return this.spaces;
@@ -116,16 +118,19 @@ public class BoardView extends VBox implements ViewObserver {
 
         timerButton = new Button("Start timer [testing only]");
         timerButton.setOnAction( e -> gameController.timerButtonPressed());
+        localPlayer = board.getPlayer(0);
 
         upgradeShopButton = new Button("Upgrade Shop");
         upgradeShopButton.setOnAction( e -> {
-            if (gameController.getLocalPlayer() != null) {
-                setEnergyLabel(gameController.getLocalPlayer().getEnergyCubes());
-            }
-            else {
-                setEnergyLabel(board.getCurrentPlayer().getEnergyCubes());
-            }
-            displayUpgradeShop();
+            Platform.runLater(() -> {
+                if (board.getOnline()) {
+                    setEnergyLabel(localPlayer.getEnergyCubes());
+                }
+                else {
+                    setEnergyLabel(localPlayer.getEnergyCubes());
+                }
+                displayUpgradeShop();
+            });
         });
 
         GridPane timerGridPane = new GridPane();
