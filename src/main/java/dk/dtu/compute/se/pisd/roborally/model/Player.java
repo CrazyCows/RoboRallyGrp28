@@ -324,6 +324,11 @@ public class Player extends Subject {
         }
     }
 
+
+    /**
+     * THIS FUNCTION IS WRONG
+     * @return
+     */
     public Card drawCardFromPile() {
         Card card = drawPile.get(0);
         drawPile.remove(card);

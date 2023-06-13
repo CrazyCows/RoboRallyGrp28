@@ -556,7 +556,7 @@ public class GameController {
             }
 
         }
-
+        /*
         for (Player player : board.getAllPlayers()) {
             int count = 0;
             for (Card card : player.currentProgram()) {
@@ -569,6 +569,8 @@ public class GameController {
                 count += 1;
             }
         }
+         */
+        localPlayer.drawCardFromPile();
 
         cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
         clientController.updateJSON("cardSequenceRequest.json");
