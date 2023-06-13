@@ -217,7 +217,7 @@ public class CardLoader {
         InputStream inputStream = null;
         JsonReader reader = null;
         try {
-            inputStream = new FileInputStream("data/cardSequenceRequestsHelper.json");
+            inputStream = new FileInputStream("data/cardSequenceRequestsHelper.json"); //I think we need to clear this badboy helper thing
 
             // In simple cases, we can create a Gson object with new Gson():
             GsonBuilder simpleBuilder = new GsonBuilder()
@@ -285,6 +285,7 @@ public class CardLoader {
 
         try (FileReader reader = new FileReader("data/cardSequenceRequests.json")) {
             JsonObject jsonData = parser.parse(reader).getAsJsonObject();
+            System.out.println(jsonData.toString()); //IS IT WRONG HERE?
 
             // Access the player based on playerName
             JsonObject player = jsonData.getAsJsonObject(name);
@@ -294,7 +295,7 @@ public class CardLoader {
             }
 
             // Get the "programmingCards" array from the player object
-            JsonArray programmingCards = player.getAsJsonArray("programmingCards");
+            JsonArray programmingCards = player.getAsJsonArray("programmingCards"); //Already wrong here
             for (JsonElement j : programmingCards){
                 System.out.println("Hirle natten saksespark" + j.toString());
             }
