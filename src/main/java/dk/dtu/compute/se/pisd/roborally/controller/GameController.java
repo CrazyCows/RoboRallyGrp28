@@ -175,7 +175,7 @@ public class GameController {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if (!localPlayer.isReady()) {
+        if (!localPlayer.isReady() || true) {
             startTimer();
         }
     }
