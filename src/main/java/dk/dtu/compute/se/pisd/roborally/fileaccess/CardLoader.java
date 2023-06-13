@@ -223,7 +223,10 @@ public class CardLoader {
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
             CardSequenceTemplate template = gson.fromJson(reader, CardSequenceTemplate.class);
 
+            System.out.println("template.programmingCards has size " + template.programmingCards.size());
+
             result = new ArrayList<>(template.programmingCards);
+            System.out.println("result has size " + result.size());
 
             for (ProgrammingCard card : result) {
                 card.createAction();
