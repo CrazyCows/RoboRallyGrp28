@@ -596,6 +596,9 @@ public class GameController {
                 }
 
                 ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
+                for (ProgrammingCard card : cards){
+                    System.out.println("Player has the card " + card.getName());
+                }
                 int counter = 0;
                 for (CommandCardField field : player.getProgram()) {
                     field.setCard(cards.get(counter));
