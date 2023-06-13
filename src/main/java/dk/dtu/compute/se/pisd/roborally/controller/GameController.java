@@ -611,7 +611,6 @@ public class GameController {
      */
     public void timerButtonPressed(){
         startTimer();
-
     }
 
     public void intermediateFunction(){
