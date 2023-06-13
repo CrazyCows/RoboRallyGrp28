@@ -1,8 +1,8 @@
 {
   "posx" : 2,
-  "posy" : 2,
+  "posy" : 1,
   "color" : "red",
-  "readystate" : true,
+  "readystate" : false,
   "heading" : "SOUTH",
   "isMaster" : true,
   "energyCubes" : 5,

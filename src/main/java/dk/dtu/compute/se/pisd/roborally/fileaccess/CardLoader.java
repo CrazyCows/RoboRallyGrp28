@@ -144,7 +144,6 @@ public class CardLoader {
 
             // Add the modified card to the new list
             modifiedProgrammingCards.add(modifiedCard);
-            System.out.println("in modifiedProgrammingCards, adding " + card.getName());
         }
 
         // Create the JSON structure with the modified programming cards
@@ -297,7 +296,6 @@ public class CardLoader {
         try (FileReader reader = new FileReader("data/cardSequenceRequests.json")) {
             //System.out.println("The reader is: " + reader);
             JsonObject jsonData = parser.parse(reader).getAsJsonObject();
-            System.out.println("This is the JsonObject: " + jsonData.toString()); //IS IT WRONG HERE?
 
             // Access the player based on playerName
             JsonObject player = jsonData.getAsJsonObject(name);
@@ -308,9 +306,6 @@ public class CardLoader {
 
             // Get the "programmingCards" array from the player object
             JsonArray programmingCards = player.getAsJsonArray("programmingCards"); //Already wrong here
-            for (JsonElement j : programmingCards){
-                System.out.println("Hirle natten saksespark" + j.toString());
-            }
 
             // Create a new JSON object to store the extracted "programmingCards" array
             JsonObject extractedData = new JsonObject();

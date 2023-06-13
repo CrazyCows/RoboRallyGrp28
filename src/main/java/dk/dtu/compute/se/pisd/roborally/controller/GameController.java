@@ -668,7 +668,6 @@ public class GameController {
                         Thread.sleep(sleep);
 
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
-                        System.out.println(card.getName());
 
                         System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
                         card.getAction().doAction(GameController.this, currentPlayer, card); //I hate this implementation
