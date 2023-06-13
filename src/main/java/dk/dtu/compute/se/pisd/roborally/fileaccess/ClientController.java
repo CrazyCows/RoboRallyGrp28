@@ -178,6 +178,7 @@ public class ClientController {
     }
 
     public synchronized void updateJSON(String jsonName) {
+        getJSON("cardSequenceRequest.json");
         String jsonTypeToURL = jsonType(jsonName);
         try {
             WebClient webClient = WebClient.create();

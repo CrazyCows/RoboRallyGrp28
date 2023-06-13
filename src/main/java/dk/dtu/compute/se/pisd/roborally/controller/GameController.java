@@ -578,7 +578,7 @@ public class GameController {
         for (Player player : board.getAllPlayers()) {
             System.out.println(player.getName());
             if (player != localPlayer) {
-                cardController.emptyProgram(player);
+                //cardController.emptyProgram(player); this shouldnt fuck anything up but I dont like it either way
                 try {
                     Thread.sleep(800);
                 } catch (InterruptedException e) {
@@ -586,7 +586,7 @@ public class GameController {
                 }
 
                 while (!jsonInterpreter.checkReceivedCardSequence(player.getName())) {
-                    clientController.updateJSON("cardSequenceRequest.json");
+                    //clientController.updateJSON("cardSequenceRequest.json"); Json has already been updated by the player further up in this function
                     clientController.getJSON("cardSequenceRequest.json");
                     try {
                         Thread.sleep(100);
