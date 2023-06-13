@@ -99,7 +99,7 @@ public class Player extends Subject {
     public void incrementUsedCards(){
         usedCards++;
     }
-    public int getEnergyCubes() {
+    public int getEnergyCubes() { //Maybe make this concurrent?
         return energyCubes;
     }
     public ArrayList<Card> getDrawPile() {

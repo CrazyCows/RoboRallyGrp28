@@ -162,7 +162,7 @@ public class AppController implements Observer {
 
             jsonInterpreter = new JsonInterpreter();
             try {
-                if (jsonInterpreter.gameStarted()) {
+                if (jsonInterpreter.gameStarted() && online) {
                     infoLabel.setText("Error: " + gameID + " already exists. ");
                 }
                 else {
