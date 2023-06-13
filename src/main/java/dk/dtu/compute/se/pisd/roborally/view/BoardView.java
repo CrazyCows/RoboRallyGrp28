@@ -114,7 +114,7 @@ public class BoardView extends VBox implements ViewObserver {
         timers[6] = new Image("hourglass6.png");
         timerView = new ImageView(timers[0]);
 
-        timerButton = new Button("Start timer");
+        timerButton = new Button("Start timer [testing only]");
         timerButton.setOnAction( e -> gameController.timerButtonPressed());
 
         upgradeShopButton = new Button("Upgrade Shop");

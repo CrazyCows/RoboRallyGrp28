@@ -610,7 +610,7 @@ public class GameController {
      * Only to be used for testing, not final release
      */
     public void timerButtonPressed(){
-        //startTimer();
+        startTimer();
 
     }
 
