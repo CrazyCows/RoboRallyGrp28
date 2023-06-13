@@ -49,8 +49,8 @@ public class CardLoader {
             inputStream = classLoader.getResourceAsStream(CARDSFOLDER + "/" + DEFAULTCARDS + "." + JSON_EXT);
 
             if (inputStream == null) {
-                // TODO: Handle error
-                System.out.println("ERROR");
+                ///TODO: Handle this error, and possibly tell the user about it
+                System.out.println("ERROR detected in getting file");
             }
 
             // WE BUILT THIS CITY.

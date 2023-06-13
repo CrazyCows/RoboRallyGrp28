@@ -27,8 +27,8 @@ import java.util.List;
 
 /**
  * ...
- *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * Ekkart Kindler has not written most of this document, but it is bad karma to remove the author tag
  *
  */
 public abstract class FieldAction {
@@ -53,14 +53,10 @@ public abstract class FieldAction {
 
 
     /**
-     *
      * This is the holy grail of methods.
      * 'doAction' makes it possible for an item, space or card to perform an action.
      * By using this implementation, any 'doAction' will be run, when a given object
      * uses its doAction - and it will find out by itself, which doAction to use (simplified)
-     *
-     * Please note, that command cards that determines movement uses the CommandCardController.
-     *
      *
      * @param gameController the gameController of the respective game
      * @param space the space this action should be executed for

@@ -27,7 +27,7 @@ public abstract class Card extends Subject {
         this.name = name;
     }
 
-    /**IntelliJ complains, I dont. TODO: Make intelliJ not angry
+    /**IntelliJ complains, I don't. Should never be called directly as it is an abstract class
      * @return returns null. This is an abstract class
      */
     public CardAction getAction() {

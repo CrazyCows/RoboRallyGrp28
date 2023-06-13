@@ -18,12 +18,14 @@ public class CardController {
     private CardLoader cardLoader;
     private ArrayList<Card> universalDeck = new ArrayList<>();
 
-    //Since these cards are simpler, we can just use a stack. Makes operations slightly simpler
-
     /**
-     * ONLY TO BE USED DURING INITIAL LOADING. We should probably move it to the model
+     * ONLY TO BE USED DURING INITIAL LOADING
      */
     ArrayList<DamageCard> allDamageCards = new ArrayList<>();
+
+
+    //Since these cards are simpler, we can just use a stack. Makes operations slightly simpler.
+    //TODO: They should definitely be moved to the model when time constrains are lesser
     public Stack<DamageCard> virusPile = new Stack<>(); //Pile of cards to draw from
     public Stack<DamageCard> trojanPile = new Stack<>(); //Cards that have been run
     public Stack<DamageCard> wormPile = new Stack<>(); //Pile of cards to draw from
@@ -41,7 +43,8 @@ public class CardController {
 
     /**
      * Singleton constuctor.
-     * Creates a card pile, and shuffles them
+     * Creates a card pile, from json.
+     * Also fills up the piles of damage cards. (Which shouldn't be in the controller)
      */
     private CardController() {
         this.cardLoader = CardLoader.getInstance();

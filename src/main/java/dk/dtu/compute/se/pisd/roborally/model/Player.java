@@ -45,7 +45,7 @@ public class Player extends Subject {
     //VARIABLES
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 9;
+    public static int NO_CARDS = 9; //Not final because a permanent upgrade card can increase this. Merge with other values
 
     final public Board board;
 
@@ -71,9 +71,9 @@ public class Player extends Subject {
     private Card lastCard = null;
     private int checkpointsCollected = 0;
 
-    //TODO: These are already defined, duplicates are stoopid
-    private static int handSize = 9;
-    private static int programSize = 5;
+    //TODO: These are already defined, duplicates are unnecessary
+    private static int handSize = 9;  //Not final because a permanent upgrade card can increase this
+    private static final int programSize = 5;
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
@@ -291,7 +291,8 @@ public class Player extends Subject {
     }
 
     public void setHeading(@NotNull String heading) {
-        Heading head = Heading.valueOf(heading);//TODO: Can't we just do this?
+        //Heading head = Heading.valueOf(heading); This should be a simplification but due to time constraints and lack
+        //of unit tests, we are keeping the old method (it just works)
         switch (heading) {
             case "NORTH" -> this.heading = Heading.NORTH;
             case "EAST" -> this.heading = Heading.EAST;

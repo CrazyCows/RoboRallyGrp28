@@ -29,8 +29,7 @@ public class ClientController {
     String ID;
     volatile boolean firstTimeGetJSON = false;
 
-    // TODO: All exceptions is handled rather lazily here. Should be tightened up such errors give useful information..
-    // TODO: Throwing stuff is more fun tho..
+    // TODO: All exceptions are handled rather lazily here. Should be tightened up such errors give useful information..
 
     public ClientController(boolean online, String ID) {
         this.client = HttpClient.newHttpClient();
@@ -58,7 +57,7 @@ public class ClientController {
         if (jsonName.equals("playerData.json")){
             return "/jsonPlayer?ID=";
         } else if (jsonName.equals("cardSequenceRequest.json")){
-            return "/jsonCardSequence?ID=";  // TODO: JEG HAR LAVET NOGET OM HER
+            return "/jsonCardSequence?ID=";  // TODO: Changes have been made here. If issues arise, look at this file path
         }
         else if (jsonName.equals("playerMessage.json")) {
             return "/jsonChat?ID=";
@@ -90,7 +89,7 @@ public class ClientController {
                     .GET()
                     .build();
 
-            //TODO: Catch ConnectException and stuff
+            //TODO: Catch ConnectException thrown here
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {

@@ -125,8 +125,9 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     public void setBackround(List<String> background) {
-        // TODO: background is a list of ressource image strings
-        // TODO: cycle through them for animations.
+        //The following comments are probably deprecated
+        //background is a list of ressource image strings
+        //cycle through them for animations.
         String imagePath;
         if (background.size() != 0) {
             this.heading = background.get(0);

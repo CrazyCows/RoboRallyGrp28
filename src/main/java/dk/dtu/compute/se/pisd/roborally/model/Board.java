@@ -125,6 +125,9 @@ public class Board extends Subject {
         return gameId;
     }
 
+    /**
+     * Deprecated function.
+     */
     public void setGameId(int gameId) {
         if (this.gameId == null) {
             this.gameId = gameId;
@@ -143,17 +146,7 @@ public class Board extends Subject {
             return null;
         }
     }
-/*
-    public void loadBoard(int boardNumber) {
-        if (boardNumber == 1) {
-            for (int i = 0; i < this.width; i++) {
-                for (int j = 0; j < this.height; j++) {
-                    spaces[i][j].setImage("test_field2.jpg");
-                }
-            }
-        }
-    }
- */
+
     public int getPlayersNumber() {
         return players.size();
     }
@@ -249,20 +242,9 @@ public class Board extends Subject {
      * @param space the space for which the neighbour should be computed
      * @param heading the heading of the neighbour comapred to the original field
      * @param checkForWalls should there be checked for walls?
-     * @return the space in the given direction; null if there is no (reachable) neighbour
+     * @return the space in the given direction
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading, boolean checkForWalls) {
-        /*if (space.getWalls().contains(heading)) {
-            return null;
-        }*/
-        // TODO needs to be implemented based on the actual spaces
-        //      and obstacles and walls placed there. For now it,
-        //      just calculates the next space in the respective
-        //      direction in a cyclic way.
-        //      "It might not need that at all" -Tsun Tsu, the art of war (Anton)
-
-        // XXX an other option (not for now) would be that null represents a hole
-        //     or the edge of the board in which the players can fall
 
         int x = space.x;
         int y = space.y;

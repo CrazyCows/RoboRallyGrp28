@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class JsonInterpreter {
 
-    // TODO: Remove jsonFileName from arguments adn make it a static variable in each method
+    // TODO: Remove jsonFileName from arguments and make it a static variable in each method
 
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -222,7 +222,6 @@ public class JsonInterpreter {
     }
 
     public synchronized boolean isAllReady () {
-        //TODO: Get from server. otherwise it just loops over the same data
         String json = getFileAsString("collectivePlayerData.json");
         List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
 

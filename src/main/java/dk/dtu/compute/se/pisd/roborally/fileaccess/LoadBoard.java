@@ -52,12 +52,14 @@ public class LoadBoard {
     private static final String BOARDSFOLDER = "boards";
     private static final String DEFAULTBOARD = "dizzyHighway";
     private static final String JSON_EXT = "json";
+    private static final int STANDARD_BOARD_HEIGHT = 8;
+    private static final int STANDARD_BOARD_WIDTH = 8;
 
     public static Board loadBoard(String name, boolean newGame) {
         if (name == null) {
             name = DEFAULTBOARD;
         } else if (name.equals("empty")) {
-            return new Board(8, 8);
+            return new Board(STANDARD_BOARD_WIDTH, STANDARD_BOARD_HEIGHT);
         }
 
         ClassLoader classLoader;
@@ -73,8 +75,7 @@ public class LoadBoard {
             }
 
             if (inputStream == null) {
-                // TODO these constants should be defined somewhere
-                return new Board(8, 8);
+                return new Board(STANDARD_BOARD_WIDTH, STANDARD_BOARD_HEIGHT);
             }
 
 

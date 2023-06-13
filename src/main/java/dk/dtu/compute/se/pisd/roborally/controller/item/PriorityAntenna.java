@@ -11,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
  * that decides who gets to make the first move for each turn.
  */
 
-// TODO: The Priority Antenna should probably be a Space and not an item.
-
 public class PriorityAntenna extends FieldAction {
 
     private Heading heading;
@@ -28,8 +26,8 @@ public class PriorityAntenna extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        System.out.println("THE PRIORITY ANTENNA");
-        // TODO needs to be implemented
+        System.out.println("THE PRIORITY ANTENNA"); //I don't think this needs to do anything.
+        //In theory this doesn't need to be an object or anything, but it also doesn't need to not be an object
         return false;
     }
 

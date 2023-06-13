@@ -211,7 +211,7 @@ public class AppController implements Observer {
         roboRally.pauseMusic();
 
 
-        for (int i = 0; i < this.amountOfPlayers; i++) { //TODO: Changed by Anton so players dont start on pit
+        for (int i = 0; i < this.amountOfPlayers; i++) {
             Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
             board.addPlayer(player);
             player.setSpace(board.getSpace(i % board.width, i));

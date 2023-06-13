@@ -22,7 +22,7 @@ public class Gear extends FieldAction {
 
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
-        System.out.println("GEAR");
+        System.out.println("Gear, turning " + direction);
         if (direction.equals("left")) {
             gameController.turnPlayer(space.getPlayer(), Command.LEFT);
         }
@@ -32,8 +32,6 @@ public class Gear extends FieldAction {
         else {
             throw new IllegalArgumentException();
         }
-        System.out.println(space.getPlayer().getHeading());
-        // TODO needs to be implemented
         return false;
     }
 

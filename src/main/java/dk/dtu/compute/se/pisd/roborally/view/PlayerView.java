@@ -154,25 +154,30 @@ public class PlayerView extends Tab implements ViewObserver {
                                     new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
                             cardFieldView.setBackground(new Background(backgroundImage));
                     }
-                    //TODO: Delete the below code
+                    //The below code was used for animating commandcardfields, but we don't do that.
+                    // Caused a headache as it removed the cards from the view
+                    /*
                     if (player.board.getPhase() == Phase.PROGRAMMING) {
-                        //cardFieldView.setBackground(CardFieldView.BG_TEST);
+                        cardFieldView.setBackground(CardFieldView.BG_TEST);
                     } else {
                         if (i < player.board.getStep()) {
-                            //cardFieldView.setBackground(CardFieldView.BG_DONE);
+                            cardFieldView.setBackground(CardFieldView.BG_DONE);
                         } else if (i == player.board.getStep()) {
                             if (player.board.getCurrentPlayer() == player) {
-                                //cardFieldView.setBackground(CardFieldView.BG_ACTIVE);
+                                cardFieldView.setBackground(CardFieldView.BG_ACTIVE);
                             } else if (player.board.getPlayerNumber(player.board.getCurrentPlayer()) > player.board.getPlayerNumber(player)) {
-                                //cardFieldView.setBackground(CardFieldView.BG_DONE);
+                                cardFieldView.setBackground(CardFieldView.BG_DONE);
                             } else {
-                                //cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
+                                cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                             }
                         } else {
-                            //cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
+                            cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                         }
                     }
+                     */
                 }
+
+
             }
 
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) { // We never use PLAYER_INTERACTION (always true)
@@ -180,7 +185,7 @@ public class PlayerView extends Tab implements ViewObserver {
                     programPane.getChildren().remove(playerInteractionPanel);
                     programPane.add(buttonPanel, Player.NO_REGISTERS, 0);
                 }
-                switch (player.board.getPhase()) {
+                switch (player.board.getPhase()) { //TODO: Fill out the rest of the buttons
                     case INITIALISATION:
                         finishButton.setDisable(true);
                         executeButton.setDisable(true);

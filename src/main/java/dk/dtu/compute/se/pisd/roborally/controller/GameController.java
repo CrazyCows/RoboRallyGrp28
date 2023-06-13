@@ -42,7 +42,6 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.*;
 /**
  * ...
  * Controls the main flow of the game.
- * The GameController is mainly used to control player movement.
  *
  */
 public class GameController {
@@ -222,7 +221,7 @@ public class GameController {
         if (OGTargetIsNull) {
             pit.doAction(this, originalPlayer);
             Player nextPlayer = getNextPlayer();
-            board.setCurrentPlayer(nextPlayer);//TODO: This really shouldnt be done here. But falling into a pit breaks if it isnt, for some reason
+            board.setCurrentPlayer(nextPlayer);//TODO: This shouldn't be done here. But falling into a pit breaks if it isnt, for some reason
             return false;
         }
         boolean otherPlayerMoved = true;
@@ -257,13 +256,6 @@ public class GameController {
 
     public void moveCurrentPlayerToSpace(Space space) {
 
-        // TODO Assignment V1: method should be implemented by the students:
-        //   - the current player should be moved to the given space
-        //     (if it is free()
-        //   - and the current player should be set to the player
-        //     following the current player
-        //   - the counter of moves in the game should be increased by one
-        //     if the player is moved
         if (space.getPlayer() != null) return;
 
         Player currentPlayer = board.getCurrentPlayer();
