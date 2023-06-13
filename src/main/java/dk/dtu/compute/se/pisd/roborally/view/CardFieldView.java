@@ -322,7 +322,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
                 } catch (Exception e) {
                     target.setBackground(BG_DEFAULT);
                 }
-                label.setText(field.getCard().getName());
+                label.setText(""); // Used for bug fixing
             }
             event.consume();
         }
