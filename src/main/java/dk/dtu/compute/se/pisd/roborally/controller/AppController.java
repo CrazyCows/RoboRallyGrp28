@@ -426,7 +426,7 @@ public class AppController implements Observer {
                 // give the user the option to save the game or abort this operation!
 
                 if (!stopGame()) {
-                    String message = "Are you retarded? ";  // we should probably remove this.
+                    String message = "Error string ";  // we should probably remove this.
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setTitle("No saved games");
                     alert.setHeaderText(null);
@@ -461,7 +461,7 @@ public class AppController implements Observer {
 
             assert board != null;
             gameController = new GameController(roboRally, clientController, board, this.online, null);
-            gameController.setPhase(Phase.INITIALISATION);
+            gameController.setPhase(Phase.PROGRAMMING);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
         }
