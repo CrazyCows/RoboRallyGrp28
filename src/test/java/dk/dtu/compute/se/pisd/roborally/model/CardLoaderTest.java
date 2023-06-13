@@ -12,7 +12,7 @@ class CardLoaderTest {
     void cardLoader() {
         CardLoader cardLoader = CardLoader.getInstance();
 
-        cardLoader.loadCardSequence("b");
+        cardLoader.loadCardSequence("leader");
 
     }
 

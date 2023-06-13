@@ -238,7 +238,7 @@ public class CardLoader {
 
             ArrayList<ProgrammingCard> temp = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
-                temp.add(result.get(result.size() - 1 - i ));
+                temp.add(result.get(result.size() - 5 + i ));
             }
             result = temp;
 
