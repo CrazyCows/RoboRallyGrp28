@@ -629,6 +629,7 @@ public class GameController {
             clientController.updateJSON("playerData.json");
             stopForReal.set(true);
         }
+        finishProgrammingPhase();
     }
     public synchronized void banana(){
         System.out.println("banana");
@@ -735,7 +736,10 @@ public class GameController {
                     throw new RuntimeException(e);
                 }
                 setPhase(Phase.PROGRAMMING);
-                getUpdates(playerNames);
+                if (online){
+                    getUpdates(playerNames);
+                }
+
             }
 
         });
