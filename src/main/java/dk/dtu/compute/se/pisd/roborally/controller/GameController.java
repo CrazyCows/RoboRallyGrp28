@@ -492,10 +492,6 @@ public class GameController {
             for (Player player : board.getAllPlayers()){
                 player.setReady(true);
             }
-            stopTimerBeforeTime.set(true);
-            localPlayer.setReady(true);
-            jsonPlayerBuilder.updateDynamicPlayerData();
-            clientController.updateJSON("playerData.json");
             finishProgrammingPhase();
 
         });
