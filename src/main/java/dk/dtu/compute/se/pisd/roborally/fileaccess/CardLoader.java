@@ -146,6 +146,9 @@ public class CardLoader {
             modifiedProgrammingCards.add(modifiedCard);
             System.out.println("in modifiedProgrammingCards, adding " + card.getName());
         }
+        for (ProgrammingCard card : modifiedProgrammingCards){
+            System.out.println("Player has card " + card.getName());
+        }
 
         // Create the JSON structure with the modified programming cards
         Map<String, List<ProgrammingCard>> playerCardsMap = new HashMap<>();
