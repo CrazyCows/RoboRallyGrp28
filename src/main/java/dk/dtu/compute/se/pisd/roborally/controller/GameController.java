@@ -439,7 +439,7 @@ public class GameController {
                         timer.purge();
                         //countDownLatch.countDown();
                     }
-                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime.get()) || jsonInterpreter.isAllReady()) {
+                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime.get())) {
                         stopForReal.set(false);
                         board.setTimerSecondsCount(0);
                         timer.cancel();
