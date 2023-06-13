@@ -773,23 +773,19 @@ public class AppController implements Observer {
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
         jsonInterpreter = new JsonInterpreter();
         System.out.println(localPlayer.getName());
-        //this.clientController.createJSON("playerData.json");
+        this.clientController.createJSON("playerData.json");
 
-        //this.clientController.getJSON("playerData.json");
+        this.clientController.getJSON("playerData.json");
         if (!isMaster) {
             localPlayer.setMaster(jsonInterpreter.getMaster());
             this.clientController.createJSON("sharedBoard.json");
         }
 
-        gameController.sync();
-
         Thread countThread = new Thread(() -> {
             while (true) {
 
+                this.clientController.getJSON("playerData.json");
                 ArrayList<String> names = jsonInterpreter.getPlayerNames();
-                if (names.size() > 1) {
-                    System.out.println("WOW");
-                }
                 names.removeIf(s -> s.equals(username));
 
                 System.out.println("All ready: " + jsonInterpreter.isAllReady());
@@ -811,7 +807,8 @@ public class AppController implements Observer {
                 }
 
                 this.localPlayer.setReady(checkBoxes.get(0).isSelected());
-
+                jsonPlayerBuilder.updateDynamicPlayerData();
+                clientController.updateJSON("playerData.json");
 
                 try {
                     Thread.sleep(200);
@@ -825,18 +822,24 @@ public class AppController implements Observer {
                 }
                 else if (isMaster && checkBoxes.get(0).isSelected()) {
 
+                    gameController.sync();
+
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
 
+                    localPlayer.setReady(false);
                     gameController.setPhase(Phase.PROGRAMMING);
 
                     Platform.runLater(dialogStage::close);
                 }
                 else if (!isMaster && jsonInterpreter.isAllReady()) {
 
+                    gameController.sync();
+
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
 
+                    localPlayer.setReady(false);
                     gameController.setPhase(Phase.PROGRAMMING);
 
                     Platform.runLater(dialogStage::close);

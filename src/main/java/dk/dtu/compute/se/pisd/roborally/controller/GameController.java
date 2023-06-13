@@ -69,9 +69,8 @@ public class GameController {
     private boolean localStartedTimer;
     private boolean stopForReal = false;
 
-    volatile boolean stopTimerBeforeTime = false;
-
-    ArrayList<String> playerNames;
+    private boolean isGameThreadStarted;
+    Thread gameThread;
 
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
@@ -101,7 +100,6 @@ public class GameController {
         this.online = online;
         this.jsonPlayerBuilders = new ArrayList<>();
         if (online) {
-            chatController = new ChatController(this, clientController);
             this.localPlayer = localPlayer;
             jsonPlayerBuilders.add(new JsonPlayerBuilder(localPlayer));
             firstRound = true;
@@ -113,37 +111,72 @@ public class GameController {
             sync();
         }
 
+        this.isGameThreadStarted = false;
+
     }
 
     public void sync() {
+
+        if (online) {
+            clientController.createJSON("cardSequenceRequest.json");
+            for (int i = 0; i < 3; i++) {
+                chatController = new ChatController(this, clientController);
+                localPlayer.setReady(false);
+                jsonPlayerBuilders.get(0).updateDynamicPlayerData();
+                clientController.updateJSON("playerData.json");
+                clientController.getJSON("playerData.json");
+                try {
+                    Thread.sleep(400);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         Thread updateAndPullRESTful = new Thread(() -> {
-            if (online) {
-                if (!jsonInterpreter.playerBeenCreated(localPlayer.getName())) {
-                    clientController.createJSON("playerData.json");
-                    clientController.createJSON("cardSequenceRequest.json");
+            while (true) {
+                if (online) {
+                    System.out.println("RUNNING");
+                    if (!jsonInterpreter.playerBeenCreated(localPlayer.getName())) {
+                        clientController.createJSON("playerData.json");
+                        clientController.createJSON("cardSequenceRequest.json");
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    jsonPlayerBuilders.get(0).updateDynamicPlayerData();
+                    clientController.updateJSON("playerData.json");
+
+                    clientController.updateJSON("cardSequenceRequest.json");
+                    clientController.getJSON("cardSequenceRequest.json");
+
+                } else {
+                    for (JsonPlayerBuilder jsonPlayerBuilder : jsonPlayerBuilders) {
+                        jsonPlayerBuilder.updateDynamicPlayerData();
+                        clientController.updateJSON("playerData.json");
+                    }
+                }
+                clientController.getJSON("playerData.json");
+                if (jsonInterpreter.isAnyReady() && !isGameThreadStarted && !localPlayer.isReady()) {
                     try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
+                        gameThread = new Thread(() -> {
+                            System.out.println("Game thread is running...");
+                            startTimer();
+                        });
+                        gameThread.start();
+                        isGameThreadStarted = true;
+                    } catch (IllegalThreadStateException e) {
                         e.printStackTrace();
                     }
                 }
-                jsonPlayerBuilders.get(0).updateDynamicPlayerData();
-                clientController.updateJSON("playerData.json");
 
-                clientController.updateJSON("cardSequenceRequest.json");
-                clientController.getJSON("cardSequenceRequest.json");
-            }
-            else {
-                for (JsonPlayerBuilder jsonPlayerBuilder : jsonPlayerBuilders) {
-                    jsonPlayerBuilder.updateDynamicPlayerData();
-                    clientController.updateJSON("playerData.json");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            }
-            clientController.getJSON("playerData.json");
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         });
         updateAndPullRESTful.start();
@@ -391,6 +424,10 @@ public class GameController {
         board.setPhase(phase);
     }
 
+    public void playerStartedTimer() {
+        localPlayer.setReady(true);
+        startTimer();
+    }
 
     public void startTimer() {
 
@@ -439,8 +476,8 @@ public class GameController {
 
     public void finishProgrammingPhase() {
 
-
         if (online) {
+            localPlayer.setReady(true);
             int readyTries = 0;
             while (!jsonInterpreter.isAllReady()) {
                 System.out.println("All ready: " + jsonInterpreter.isAllReady());
@@ -568,6 +605,10 @@ public class GameController {
                     }
                 }
 
+                for (Player player : board.getAllPlayers()) {
+                    player.setReady(false);
+                }
+                isGameThreadStarted = false;
                 setPhase(Phase.PROGRAMMING);
             }
 
@@ -687,7 +728,6 @@ public class GameController {
             player.addEnergyCubes(-card.getCost());
         }
     }
-
 
     class ImpossibleMoveException extends Exception {
 

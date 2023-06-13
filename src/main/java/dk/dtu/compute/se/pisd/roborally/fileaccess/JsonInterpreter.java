@@ -216,7 +216,7 @@ public class JsonInterpreter {
         return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.isMaster == true)].inGame")).get(0);
     }
 
-    public Boolean isReady (String playerName) {
+    public boolean isReady (String playerName) {
         String json = getFileAsString("collectivePlayerData.json");
         return (Boolean) new ArrayList<>(JsonPath.read(json, "$.[?(@.name == '" + playerName + "')].readystate")).get(0);
     }
@@ -232,7 +232,6 @@ public class JsonInterpreter {
     }
 
     public boolean isAllReady () {
-        //TODO: Get from server. otherwise it just loops over the same data
         String json = getFileAsString("collectivePlayerData.json");
         List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
 
@@ -242,11 +241,12 @@ public class JsonInterpreter {
         return true;
     }
 
-    public Boolean isAnyReady (ArrayList<String> playerNames) {
-        for (String name : playerNames) {
-            if (isReady(name)) {
-                return true;
-            }
+    public boolean isAnyReady() {
+        String json = getFileAsString("collectivePlayerData.json");
+        List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
+
+        if (playerReadyStates.contains(true)) {
+            return true;
         }
         return false;
     }

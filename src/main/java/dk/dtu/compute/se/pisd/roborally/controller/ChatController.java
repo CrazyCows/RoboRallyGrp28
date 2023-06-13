@@ -26,7 +26,6 @@ public class ChatController {
         Thread chatThread = new Thread(() -> {
             String message;
             while (true) {
-                clientController.getJSON("playerData.json");
                 for (String name : names) {
                     message = jsonInterpreter.getMessage(name);
                     if (!message.equals(this.newestReceivedMessages.get(name))) {

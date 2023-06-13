@@ -92,7 +92,7 @@ public class ClientController {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
+                System.out.println("Failed : HTTP error code : " + response.statusCode());
             }
 
             String responseJson = response.body();
@@ -108,7 +108,7 @@ public class ClientController {
                     Thread.sleep(50);
                 }
             } while(!access);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | RuntimeException e) {
             e.printStackTrace();
         }
     }
@@ -260,7 +260,7 @@ public class ClientController {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.statusCode());
+                System.out.println("Failed : HTTP error code : " + response.statusCode());
             }
 
             String responseJson = response.body();
@@ -280,7 +280,7 @@ public class ClientController {
                 }
             } while(!access);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | RuntimeException e) {
             e.printStackTrace();
         }
 
