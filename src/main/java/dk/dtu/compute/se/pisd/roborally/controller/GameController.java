@@ -521,7 +521,15 @@ public class GameController {
         } else {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
             clientController.updateJSON("cardSequenceRequest.json");
-            clientController.getJSON("cardSequenceRequest.json");
+
+            for (int i = 0; i < 3; i++) {
+                clientController.getJSON("cardSequenceRequest.json");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
 
