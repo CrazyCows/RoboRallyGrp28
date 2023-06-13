@@ -248,7 +248,15 @@ public class JsonInterpreter {
 
     public synchronized String getSimplePlayerInfoString(String playerName, String key) {
         String json = getFileAsString("collectivePlayerData.json");
-        List<String> info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
+        List<String> info = null;
+        while (info == null || info.size() == 0){
+            info = JsonPath.read(json, "$.[?(@.name == '" + playerName + "')]." + key);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return info.get(0);
     }
 

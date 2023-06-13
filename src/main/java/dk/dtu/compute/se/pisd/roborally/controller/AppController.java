@@ -826,6 +826,7 @@ public class AppController implements Observer {
                     jsonPlayerBuilder.updateDynamicPlayerData();
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
+                    clientController.getJSON("collectivePlayerData.json");
 
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);

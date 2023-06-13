@@ -306,9 +306,8 @@ public class Board extends Subject {
     }
 
     public void setTimerSecondsCount(int seconds) {
-        Platform.runLater(this::notifyChange);
-
         this.timerSecondsCount = seconds;
+        Platform.runLater(this::notifyChange);
     }
 
     public void setTimerIsRunning(boolean status) {
