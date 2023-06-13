@@ -221,11 +221,14 @@ public class CardLoader {
             ArrayList<ProgrammingCard> result;
 
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
-            CardSequenceTemplate template = gson.fromJson(reader, CardSequenceTemplate.class);
+            CardSequenceTemplate template = gson.fromJson(reader, CardSequenceTemplate.class); //This template is wrong
 
             System.out.println("template.programmingCards has size " + template.programmingCards.size());
 
             result = new ArrayList<>(template.programmingCards);
+            for (ProgrammingCard card : result){
+                System.out.println("Player has card " + card.getName());
+            }
             System.out.println("result has size " + result.size());
 
             for (ProgrammingCard card : result) {
