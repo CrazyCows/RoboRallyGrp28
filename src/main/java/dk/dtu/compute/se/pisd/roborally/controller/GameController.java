@@ -433,12 +433,6 @@ public class GameController {
             public void run() {
                 try {
                     clientController.getJSON("playerData.json");
-                    if (board.getPhase() == ACTIVATION && false){ //Ghetto
-                        board.setTimerSecondsCount(0);
-                        timer.cancel();
-                        timer.purge();
-                        //countDownLatch.countDown();
-                    }
                     if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime.get())) {
                         stopForReal.set(false);
                         board.setTimerSecondsCount(0);
