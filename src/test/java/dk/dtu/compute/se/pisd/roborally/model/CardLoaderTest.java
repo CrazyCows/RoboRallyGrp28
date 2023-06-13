@@ -7,10 +7,14 @@ import org.junit.jupiter.api.Test;
 @Disabled
 class CardLoaderTest {
 
-    /*@Test
+
+    @Test
     void cardLoader() {
         CardLoader cardLoader = CardLoader.getInstance();
-    }*/
+
+        cardLoader.loadCardSequence("b");
+
+    }
 
 
 }

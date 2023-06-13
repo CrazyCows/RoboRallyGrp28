@@ -236,6 +236,17 @@ public class CardLoader {
             }
             System.out.println("result has size " + result.size());
 
+            ArrayList<ProgrammingCard> temp = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                temp.add(result.get(result.size() - 1 - i ));
+            }
+            result = temp;
+
+            for (ProgrammingCard card : result){
+                System.out.println("Player has card " + card.getName());
+            }
+            System.out.println("result has size " + result.size());
+
             for (ProgrammingCard card : result) {
                 card.createAction();
                 card.createCommand();

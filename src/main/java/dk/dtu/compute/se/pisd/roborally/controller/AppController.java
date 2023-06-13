@@ -774,6 +774,7 @@ public class AppController implements Observer {
         jsonInterpreter = new JsonInterpreter();
         System.out.println(localPlayer.getName());
         this.clientController.createJSON("playerData.json");
+        this.clientController.createJSON("cardSequenceRequest.json");
 
         this.clientController.getJSON("playerData.json");
         if (!isMaster) {
