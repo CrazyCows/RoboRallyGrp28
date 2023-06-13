@@ -595,7 +595,7 @@ public class GameController {
                     }
                 }
 
-                ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName());
+                ArrayList<ProgrammingCard> cards = cardController.getCardLoader().loadCardSequence(player.getName()); //This one returns a list that is too long
                 for (ProgrammingCard card : cards){
                     System.out.println("Player " + player.getName() + " has the card " + card.getName());
                 }
