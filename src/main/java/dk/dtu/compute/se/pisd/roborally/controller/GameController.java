@@ -620,8 +620,10 @@ public class GameController {
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
             stopForReal.set(true);
+        }else {
+            finishProgrammingPhase();
         }
-        finishProgrammingPhase();
+
     }
 
     public void finishProgrammingPhase() {
