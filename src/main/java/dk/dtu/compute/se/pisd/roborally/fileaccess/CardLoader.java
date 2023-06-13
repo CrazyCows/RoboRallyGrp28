@@ -284,6 +284,7 @@ public class CardLoader {
         JsonParser parser = new JsonParser();
 
         try (FileReader reader = new FileReader("data/cardSequenceRequests.json")) {
+            System.out.println("The reader is: " + reader);
             JsonObject jsonData = parser.parse(reader).getAsJsonObject();
             System.out.println("This is the JsonObject: " + jsonData.toString()); //IS IT WRONG HERE?
 
