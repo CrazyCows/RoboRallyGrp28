@@ -513,6 +513,19 @@ public class GameController {
         clientController.updateJSON("playerData.json");
         clientController.getJSON("playerData.json");
 
+
+        int count = 0;
+        for (Card card : localPlayer.currentProgram()) {
+            if (card instanceof DamageCard) {
+                while (card instanceof DamageCard) {
+                    card = localPlayer.drawCardFromPile();
+                }
+                localPlayer.getProgram().get(count).setCard(card);
+            }
+            count += 1;
+        }
+
+
         if (firstRound) {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
             clientController.createJSON("cardSequenceRequest.json");
@@ -562,18 +575,6 @@ public class GameController {
 
         }
 
-        for (Player player : board.getAllPlayers()) {
-            int count = 0;
-            for (Card card : player.currentProgram()) {
-                if (card instanceof DamageCard) {
-                    while (card instanceof DamageCard) {
-                        card = player.drawCardFromPile();
-                    }
-                    player.getProgram().get(count).setCard(card);
-                }
-                count += 1;
-            }
-        }
 
         //cardController.fillProgramFromHand(localPlayer);
 
