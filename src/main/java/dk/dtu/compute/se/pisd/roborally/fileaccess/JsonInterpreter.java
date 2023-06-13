@@ -198,7 +198,7 @@ public class JsonInterpreter {
         }
     }
 
-    public synchronized ArrayList<String> getPlayerNames () {
+    public synchronized ArrayList<String> getPlayerNames () {  //TDOO: ADD catch
         String json = getFileAsString("collectivePlayerData.json");
         List<String> playerNames = JsonPath.read(json, "$.[*].name");
 
