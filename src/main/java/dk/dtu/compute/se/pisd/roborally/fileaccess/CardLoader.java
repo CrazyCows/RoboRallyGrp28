@@ -285,7 +285,7 @@ public class CardLoader {
 
         try (FileReader reader = new FileReader("data/cardSequenceRequests.json")) {
             JsonObject jsonData = parser.parse(reader).getAsJsonObject();
-            System.out.println(jsonData.toString()); //IS IT WRONG HERE?
+            System.out.println("This is the JsonObject: " + jsonData.toString()); //IS IT WRONG HERE?
 
             // Access the player based on playerName
             JsonObject player = jsonData.getAsJsonObject(name);
