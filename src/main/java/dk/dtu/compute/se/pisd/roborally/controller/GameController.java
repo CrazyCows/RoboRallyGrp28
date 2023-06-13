@@ -570,7 +570,7 @@ public class GameController {
             }
         }
          */
-        localPlayer.drawCardFromPile();
+        //cardController.fillProgramFromHand(localPlayer);
 
         cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
         clientController.updateJSON("cardSequenceRequest.json");
