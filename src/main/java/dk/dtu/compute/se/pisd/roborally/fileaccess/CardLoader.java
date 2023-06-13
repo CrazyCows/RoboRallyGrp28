@@ -144,6 +144,7 @@ public class CardLoader {
 
             // Add the modified card to the new list
             modifiedProgrammingCards.add(modifiedCard);
+            System.out.println("in modifiedProgrammingCards, adding " + card.getName());
         }
 
         // Create the JSON structure with the modified programming cards
@@ -165,6 +166,7 @@ public class CardLoader {
             fileWriter = new FileWriter(filename, false);
             writer = gson.newJsonWriter(fileWriter);
             gson.toJson(wrapperMap, new TypeToken<Map<String, Map<String, List<ProgrammingCard>>>>() {}.getType(), writer);
+            System.out.println("sendCardSequenceRequest finished writing json");
         } catch (IOException e1) {
             System.out.println("An exception occurred while creating the FileWriter:");
             e1.printStackTrace();
@@ -183,7 +185,6 @@ public class CardLoader {
                 e2.printStackTrace();
             }
         }
-
     }
 
     public ArrayList<ProgrammingCard> loadCardSequence(String name) {
