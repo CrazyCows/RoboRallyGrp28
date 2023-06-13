@@ -66,7 +66,7 @@ public class GameController {
     private static Player localPlayer;
     JsonPlayerBuilder jsonPlayerBuilder;
     boolean MoreAdvancedGame = true;
-    boolean firstRound;
+    volatile boolean firstRound;
 
     private Timer timer;
     private boolean localStartedTimer;
@@ -517,6 +517,7 @@ public class GameController {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
             clientController.createJSON("cardSequenceRequest.json");
             clientController.getJSON("cardSequenceRequest.json");
+            firstRound = false;
         } else {
             cardController.getCardLoader().sendCardSequenceRequest(localPlayer.currentProgramProgrammingCards(), localPlayer.getName());
             clientController.updateJSON("cardSequenceRequest.json");
