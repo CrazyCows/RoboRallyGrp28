@@ -144,7 +144,7 @@ public class CardLoader {
 
             // Add the modified card to the new list
             modifiedProgrammingCards.add(modifiedCard);
-            System.out.println("in modifiedProgrammingCards, adding " + card.getName()); //DONT REMOVE ATM
+            //System.out.println("in modifiedProgrammingCards, adding " + card.getName()); //DONT REMOVE ATM
         }
 
         // Create the JSON structure with the modified programming cards
@@ -231,21 +231,12 @@ public class CardLoader {
 
 
             result = new ArrayList<>(template.programmingCards);
-            for (ProgrammingCard card : result){
-                System.out.println("Player has card " + card.getName());
-            }
-            System.out.println("result has size " + result.size());
 
             ArrayList<ProgrammingCard> temp = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 temp.add(result.get(result.size() - 5 + i ));
             }
             result = temp;
-
-            for (ProgrammingCard card : result){
-                System.out.println("Player has card " + card.getName());
-            }
-            System.out.println("result has size " + result.size());
 
             for (ProgrammingCard card : result) {
                 card.createAction();

@@ -373,22 +373,17 @@ public class GameController {
             }
         }
         assert closestPlayerToAntenna != null;
-        System.out.println("closest player to antenna: " + closestPlayerToAntenna.getName());
+        //System.out.println("closest player to antenna: " + closestPlayerToAntenna.getName());
         //return board.getPlayer(board.getPlayerNumber(closestPlayerToAntenna));
         return closestPlayerToAntenna;
 
-
-        /*int amountOfPlayers = board.getPlayersNumber()-1;
-        int playerNumber = board.getPlayerNumber(currentPlayer);
-
-        if (playerNumber >= amountOfPlayers){
-            return board.getPlayer(0);
-        }
-        return board.getPlayer(playerNumber+1);*/
     }
 
-    // Calculates the distance between the priority antenna and a given player
 
+    /**
+     * Calculates the distance between two spaces
+     * @return distance, as a double, calculated with the pythagorean theorem
+     */
     public double distanceToSpace(Space space, Space space2) {
         int x = space.getPosition()[0];
         int y = space.getPosition()[1];
