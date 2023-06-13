@@ -10,20 +10,14 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AccessDataFile {
-    private static Set<String> locks = ConcurrentHashMap.newKeySet();
+    private static final ConcurrentHashMap<String, Boolean> locks = new ConcurrentHashMap<>();
 
     public static boolean requestFileAccess(String fileName) {
         // Check if the file is already being accessed
-        if (locks.contains(fileName)) {
-            return false;
-        } else {
-            // Add the file to the set of currently accessed files
-            locks.add(fileName);
-            return true;
-        }
+        return locks.putIfAbsent(fileName, true) == null;
     }
 
-    public static boolean releaseFileAccess(String fileName) {
-        return locks.remove(fileName);
+    public static void releaseFileAccess(String fileName) {
+        locks.remove(fileName);
     }
 }
