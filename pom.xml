@@ -169,7 +169,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>dk.dtu.compute.se.pisd.roborally.StartRoboRally</mainClass> <!-- Replace with your main class -->
+                    <mainClass>dk.dtu.compute.se.pisd.roborally.StartRoboRally</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -180,17 +180,15 @@
                 </executions>
             </plugin>
 
-            <!-- JavaFX Maven plugin -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>dk.dtu.compute.se.pisd.roborally.StartRoboRally</mainClass> <!-- Replace with your main class -->
+                            <mainClass>dk.dtu.compute.se.pisd.roborally.StartRoboRally</mainClass>
                         </configuration>
                     </execution>
                 </executions>
