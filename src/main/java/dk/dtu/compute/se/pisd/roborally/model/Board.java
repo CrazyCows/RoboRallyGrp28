@@ -60,7 +60,7 @@ public class Board extends Subject {
     private int step = 0;
 
     private boolean stepMode;
-    private int timerSecondsCount;
+    private volatile int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
     private Space RebootTokenSpace;
