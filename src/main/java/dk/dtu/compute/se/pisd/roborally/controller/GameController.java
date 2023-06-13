@@ -175,9 +175,7 @@ public class GameController {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if (!localPlayer.isReady() || true) {
-            startTimer();
-        }
+        startTimer();
     }
 
 
@@ -439,7 +437,7 @@ public class GameController {
                         timer.purge();
                         //countDownLatch.countDown();
                     }
-                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime.get()) || stopForReal.get()) {
+                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime.get()) || jsonInterpreter.isAllReady()) {
                         stopForReal.set(false);
                         board.setTimerSecondsCount(0);
                         timer.cancel();
