@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.*;
 
@@ -69,9 +70,9 @@ public class GameController {
 
     private Timer timer;
     private boolean localStartedTimer;
-    private boolean stopForReal = false;
+    AtomicBoolean stopForReal = new AtomicBoolean(false);
 
-    volatile boolean stopTimerBeforeTime = false;
+    AtomicBoolean stopTimerBeforeTime = new AtomicBoolean(false);
 
     ArrayList<String> playerNames;
 
@@ -438,8 +439,8 @@ public class GameController {
                         timer.purge();
                         //countDownLatch.countDown();
                     }
-                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime) || stopForReal) {
-                        stopForReal = false;
+                    if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime.get()) || stopForReal.get()) {
+                        stopForReal.set(false);
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
@@ -483,7 +484,7 @@ public class GameController {
             for (Player player : board.getAllPlayers()){
                 player.setReady(true);
             }
-            stopTimerBeforeTime = true;
+            stopTimerBeforeTime.set(true);
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
@@ -603,17 +604,13 @@ public class GameController {
     }
 
     public void intermediateFunction(){
-        stopTimerBeforeTime = true;
+        stopTimerBeforeTime.set(true);
         if (online){
             System.out.println("Im online");
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            if (!board.getTimerIsRunning()){
-                startTimer();
-            } else {
-                stopForReal = true;
-            }
+            stopForReal.set(true);
         }
     }
     public synchronized void banana(){
