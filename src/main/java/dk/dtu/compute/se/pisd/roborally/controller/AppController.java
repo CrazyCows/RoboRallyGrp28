@@ -851,6 +851,7 @@ public class AppController implements Observer {
             gameController.setupOnline();
             System.out.println("Game lobby thread has ended");
         });
+        countThread.setDaemon(true);
         countThread.start();
 
         Button continueButton = new Button("Continue");

@@ -489,7 +489,7 @@ public class GameController {
             finishProgrammingPhase();
 
         });
-        threadTimerDone.setDaemon(false);
+        threadTimerDone.setDaemon(true);
         threadTimerDone.setPriority(10);
         threadTimerDone.start();
         System.out.println("threadtimerDone started");
@@ -780,7 +780,7 @@ public class GameController {
                 }
             }
         });
-
+        commandThread.setDaemon(true);
         commandThread.start(); // start the thread
     }
 
