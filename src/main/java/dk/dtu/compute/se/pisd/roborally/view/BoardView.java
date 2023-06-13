@@ -423,6 +423,8 @@ public class BoardView extends VBox implements ViewObserver {
             statusLabel.setText(board.getStatusMessage());
             if (board.getTimerIsRunning()){
                 nextTimer();
+            }else {
+                this.timerView.setImage(timers[0]);
             }
         }
         if (subject == upgradeShop) {
