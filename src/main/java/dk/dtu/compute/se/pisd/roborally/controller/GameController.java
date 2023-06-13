@@ -48,7 +48,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.*;
 public class GameController {
 
     final public Board board;
-    private boolean online;
+    private volatile boolean online;
 
     private Pit pit = new Pit();
     private RoboRally roboRally;
