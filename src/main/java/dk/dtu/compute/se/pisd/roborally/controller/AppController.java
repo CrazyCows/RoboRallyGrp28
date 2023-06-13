@@ -847,6 +847,9 @@ public class AppController implements Observer {
 
                     Platform.runLater(dialogStage::close);
                 }
+                else if (jsonInterpreter.isAllReady()){
+                    Platform.runLater(dialogStage::close);
+                }
             }
 
             gameController.setupOnline();
