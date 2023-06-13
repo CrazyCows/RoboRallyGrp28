@@ -217,7 +217,7 @@ public class CardLoader {
         InputStream inputStream = null;
         JsonReader reader = null;
         try {
-            inputStream = new FileInputStream("data/cardSequenceRequest.json"); //Changed here, probably broken
+            inputStream = new FileInputStream("data/cardSequenceRequestsHelper.json");
 
             // In simple cases, we can create a Gson object with new Gson():
             GsonBuilder simpleBuilder = new GsonBuilder()
@@ -294,7 +294,10 @@ public class CardLoader {
             }
 
             // Get the "programmingCards" array from the player object
-            JsonArray programmingCards = player.getAsJsonArray("programmingCards"); //player is null
+            JsonArray programmingCards = player.getAsJsonArray("programmingCards");
+            for (JsonElement j : programmingCards){
+                System.out.println("Hirle natten saksespark" + j.toString());
+            }
 
             // Create a new JSON object to store the extracted "programmingCards" array
             JsonObject extractedData = new JsonObject();
