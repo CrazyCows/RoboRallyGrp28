@@ -154,7 +154,7 @@ public class GameController {
             }
         getUpdates(playerNames);
         });
-        countThread.setDaemon(false);
+        countThread.setDaemon(true);
         countThread.start();
     }
 
