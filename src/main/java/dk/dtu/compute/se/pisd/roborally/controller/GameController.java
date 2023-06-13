@@ -177,13 +177,6 @@ public class GameController {
         startTimer();
     }
 
-
-    //TODO: En metode der tager et commandCardField og læser commands,
-    // og kalder de metoder med den korrekte spiller (f.eks. moveForward).
-
-    // TODO lot of stuff missing here
-
-
     /**
      * Returns true if all goes as planned. If all future calls of the function needs to be cancelled, as in the case
      * of falling into a pit or off the map, the function returns false.
@@ -193,18 +186,15 @@ public class GameController {
             Space space = player.getSpace();
             if (space == null) {
                 System.out.println("Bug #115");
-                ; //TODO: Fix this. Bug #115
+                ; //TODO: Fix this. Bug #115. //UPDATE: Doesn't seem to occur anymore, but im not sure why
             }
             Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading, false); //TODO: Bug occurs here, when space is null
+            Space target = board.getNeighbour(space, heading, false);
             try {
                 return (moveToSpace(player, target, heading));
             } catch (ImpossibleMoveException e) {
-                // we don't do anything here  for now; we just catch the
-                // exception so that we do not pass it on to the caller
-                // (which would be very bad style).
                 System.out.println("Impossible move caught");
-                return true; //TODO: Not sure if this should return true or false
+                return false;
             }
         }
         return true;
@@ -226,8 +216,6 @@ public class GameController {
 
         if (isWall1 || isWall2) {
             System.out.println(originalPlayer.getName() + " hit a wall");
-            //Player nextPlayer = getNextPlayer(); //TODO: This really shouldnt be done here. It can *probably* just be removed, but test it first
-            //board.setCurrentPlayer(nextPlayer);
             return false;
         }
 
@@ -238,8 +226,7 @@ public class GameController {
             return false;
         }
         boolean otherPlayerMoved = true;
-        //jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
-        assert board.getNeighbour(originalPlayer.getSpace(), heading, true) == originalTarget; // make sure the move to here is possible in principle
+        assert board.getNeighbour(originalPlayer.getSpace(), heading, true) == originalTarget; // make sure the move to here is possible in principle. This just throws an assertionException if exceptions are enabled, which isn't super useful
         Player other = originalTarget.getPlayer();
         if (other != null) { //If a player needs to be pushed
             if (originalPlayer.hasCard("Virus Module")) {
@@ -304,13 +291,8 @@ public class GameController {
             }
             try {
                 Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
-                if (moveToSpace(player, nextSpace, heading)) { //Moves the player and basically checks if they fell in a pit
-                    for (FieldAction fieldAction : nextSpace.getActions()) {
-                        if (fieldAction instanceof Pit) {
-                            ((Pit) fieldAction).doAction(this, player); //I believe we check for pits twice?
-                            break;
-                        }
-                    }
+                if (moveToSpace(player, nextSpace, heading)) {
+                    System.out.println("Player moved one space");
                 }
             } catch (ImpossibleMoveException e) {
                 System.out.println("Impossible move caught");
@@ -405,13 +387,12 @@ public class GameController {
 
     /**
      * Sets the phase. If the phase is programming, cards are automatically drawn from drawpile to hand
-     *
      * @param phase
      */
     void setPhase(Phase phase) {
         if (phase == PROGRAMMING) {
             if (online) {
-                cardController.drawCards(this.localPlayer);
+                cardController.drawCards(localPlayer);
             } else {
                 for (Player player : board.getAllPlayers()) {
                     cardController.drawCards(player);
@@ -424,11 +405,9 @@ public class GameController {
 
     public void startTimer() {
 
-
         timer = new Timer(true);
         board.setTimerIsRunning(true);
         CountDownLatch countDownLatch = new CountDownLatch(1);
-
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -446,7 +425,8 @@ public class GameController {
                         return;
                     }
                 } catch (NullPointerException e) {
-                    //We ignore this. Just happens if the localplayer is null, meaning its offline. TODO: Use boolean online instead
+                    //We ignore this. Just happens if the localplayer is null,
+                    // meaning its offline.
                 }
 
                 board.setTimerSecondsCount(board.getTimerSecondsCount() + 1);
@@ -463,7 +443,7 @@ public class GameController {
         }, 0, 1000);
         board.setTimerSecondsCount(0);
 
-        Thread threadTimerDone = new Thread(() -> { //TODO: IS THIS DIRTY?
+        Thread threadTimerDone = new Thread(() -> {
             try {
                 countDownLatch.await();
                 if (online) localPlayer.setReady(true);
@@ -477,7 +457,7 @@ public class GameController {
                 setPhase(ACTIVATION);
                 if (online) {
                     cardController.fillPlayersProgramFromHandOnline(localPlayer);
-                } else { //THESE FUNCTIONS ARE NAMED IFFILY
+                } else {
                     cardController.fillAllPlayersProgramFromHand(board);
                 }
                 Thread.sleep(500);
@@ -625,11 +605,9 @@ public class GameController {
     }
 
     public void finishProgrammingPhase() {
-        //TODO: Check for spam and trojan cards,and replaces the card somehow?
-        //TODO: Very much WIP
 
         if (online) {
-            localPlayer.setReady(true); //These shouldnt be nessecary at all
+            localPlayer.setReady(true); //These shouldn't be necessary at all, but better to do one too many than one too few
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
             synchronize();
@@ -649,7 +627,7 @@ public class GameController {
                 Player currentPlayer = null;
                 currentPlayer = getNextPlayer();
                 board.setCurrentPlayer(currentPlayer);
-                int sleep = 200; //Id like to make this dynamically decrease, so that plays accelerate. Not done for now though
+                int sleep = 200; //I'd like to make this dynamically decrease, so that plays accelerate. Not done for now though TODO: This should probably be upped in final release, but is kept low for testing
                 while (true) {
                     try {
                         Thread.sleep(sleep);
@@ -803,23 +781,31 @@ public class GameController {
 
 
     /**
-     * //TODO: Det her skal fjernes
-     * A method called when no corresponding controller operation is implemented yet.
-     * This method should eventually be removed.
+     * A method for future use with some buttons. Does nothing in current verison of RoboRally
      */
     public void notImplemented() {
         // XXX just for now to indicate that the actual method to be used by a handler
         //     is not yet implemented
     }
 
+    /**
+     * Run when the player wins
+     * @param currentPlayer winner
+     */
     public void win(Player currentPlayer) {
         roboRally.winScreen(currentPlayer);
     }
 
+    /**
+     * Retrieves the next permanent upgrade card from the upgrade shop
+     */
     public void nextPermanentUpgradeCard() {
         board.getUpgradeShop().nextPermanentCard();
     }
 
+    /**
+     * Retrieves the next permanent upgrade card from the upgrade shop
+     */
     public void nextTemporaryUpgradeCard() {
         board.getUpgradeShop().nextTemporaryCard();
     }
@@ -857,14 +843,6 @@ public class GameController {
         }
     }
 
-    /**
-     * TODO: This function should probably be deleted, as this is in the domain of the cardController
-     */
-    public boolean clearField(@NotNull CommandCardField source) {
-        source.setCard(null);
-        return true;
-    }
-
 
     // Note: Anti-spam - You can't send the same message twice in a row!
     public void sendMessage(String message) {
@@ -893,7 +871,7 @@ public class GameController {
     }
 
     public synchronized Player getLocalPlayer() {
-        if (this.localPlayer != null) {
+        if (this.localPlayer != null) {  //This should be simplified, but its hilarious
             return this.localPlayer;
         } else return null;
     }
@@ -905,5 +883,4 @@ public class GameController {
     public ClientController getClientController() {
         return this.clientController;
     }
-
 }
