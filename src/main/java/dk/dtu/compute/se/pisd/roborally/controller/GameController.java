@@ -48,7 +48,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.*;
 public class GameController {
 
     final public Board board;
-    private volatile boolean online;
+    private final boolean online;
 
     private Pit pit = new Pit();
     private RoboRally roboRally;
@@ -70,8 +70,6 @@ public class GameController {
 
     private Timer timer;
     private boolean localStartedTimer;
-    AtomicBoolean stopForReal = new AtomicBoolean(false);
-
     AtomicBoolean stopTimerBeforeTime = new AtomicBoolean(false);
 
     ArrayList<String> playerNames;
@@ -147,20 +145,20 @@ public class GameController {
 
         Thread countThread = new Thread(() -> {
             playerNames = new ArrayList<>();
-            for (Player player: board.getAllPlayers()) {
+            for (Player player : board.getAllPlayers()) {
                 if (player != localPlayer) {
                     playerNames.add(player.getName());
                 }
             }
-        getUpdates(playerNames);
+            getUpdates(playerNames);
         });
         countThread.setDaemon(true);
         countThread.start();
     }
 
-    public synchronized void getUpdates(ArrayList<String> playerNames){
+    public synchronized void getUpdates(ArrayList<String> playerNames) {
         clientController.getJSON("playerData.json");
-        System.out.println(jsonInterpreter.isAnyReady(playerNames) +" and " + getLocalPlayer().isReady());
+        System.out.println(jsonInterpreter.isAnyReady(playerNames) + " and " + getLocalPlayer().isReady());
         while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
             try {
                 System.out.println("Updating");
@@ -192,11 +190,12 @@ public class GameController {
     public boolean moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
-            if (space == null){
-                System.out.println("Bug #115");; //TODO: Fix this. Bug #115
+            if (space == null) {
+                System.out.println("Bug #115");
+                ; //TODO: Fix this. Bug #115
             }
             Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading,false); //TODO: Bug occurs here, when space is null
+            Space target = board.getNeighbour(space, heading, false); //TODO: Bug occurs here, when space is null
             try {
                 return (moveToSpace(player, target, heading));
             } catch (ImpossibleMoveException e) {
@@ -209,57 +208,60 @@ public class GameController {
         }
         return true;
     }
+
     /**
-    * Returns true if all goes as planned. If all future calls of the function needs to be cancelled, as in the case
-    * of falling into a pit or off the map, the function returns false.
-    **/
+     * Returns true if all goes as planned. If all future calls of the function needs to be cancelled, as in the case
+     * of falling into a pit or off the map, the function returns false.
+     **/
     boolean moveToSpace(@NotNull Player originalPlayer, Space originalTarget, @NotNull Heading heading) throws ImpossibleMoveException {
         //There is already checks for walls somewhere else, but because this is called recursively I cant use that
 
         boolean OGTargetIsNull = (originalTarget == null);
         boolean isWall1 = originalPlayer.getSpace().getWalls().contains(heading);//Checks whether theres a wall in the way on the start field
         boolean isWall2 = false;
-        if (!OGTargetIsNull) {isWall2 = originalTarget.getWalls().contains(heading.next().next());} //Checks whether theres a wall on the destination field, facing the start field
+        if (!OGTargetIsNull) {
+            isWall2 = originalTarget.getWalls().contains(heading.next().next());
+        } //Checks whether theres a wall on the destination field, facing the start field
 
-        if (isWall1 || isWall2){
+        if (isWall1 || isWall2) {
             System.out.println(originalPlayer.getName() + " hit a wall");
             //Player nextPlayer = getNextPlayer(); //TODO: This really shouldnt be done here. It can *probably* just be removed, but test it first
             //board.setCurrentPlayer(nextPlayer);
             return false;
         }
 
-        if (OGTargetIsNull){
-            pit.doAction(this,originalPlayer);
+        if (OGTargetIsNull) {
+            pit.doAction(this, originalPlayer);
             Player nextPlayer = getNextPlayer();
             board.setCurrentPlayer(nextPlayer);//TODO: This really shouldnt be done here. But falling into a pit breaks if it isnt, for some reason
             return false;
         }
         boolean otherPlayerMoved = true;
         //jsonPlayerBuilder.updateDynamicPlayerData(board.getPlayer(0));
-        assert board.getNeighbour(originalPlayer.getSpace(), heading,true) == originalTarget; // make sure the move to here is possible in principle
+        assert board.getNeighbour(originalPlayer.getSpace(), heading, true) == originalTarget; // make sure the move to here is possible in principle
         Player other = originalTarget.getPlayer();
-        if (other != null){ //If a player needs to be pushed
-            if (originalPlayer.hasCard("Virus Module")){
+        if (other != null) { //If a player needs to be pushed
+            if (originalPlayer.hasCard("Virus Module")) {
                 cardController.drawVirusCardToDiscardPile(other);
             }
-            if (originalPlayer.hasCard("Trojan Needler")){
+            if (originalPlayer.hasCard("Trojan Needler")) {
                 cardController.drawTrojanCardToDiscardPile(other);
             }
-            if (originalPlayer.hasCard("Blue Screen of Death")){
+            if (originalPlayer.hasCard("Blue Screen of Death")) {
                 cardController.drawWormCardToDiscardPile(other);
             }
 
-            Space newTarget = board.getNeighbour(originalTarget, heading,true);
-            otherPlayerMoved = (moveToSpace(other,newTarget,heading));
+            Space newTarget = board.getNeighbour(originalTarget, heading, true);
+            otherPlayerMoved = (moveToSpace(other, newTarget, heading));
         }
 
-        for (FieldAction fieldAction : originalTarget.getActions()){
-            if (fieldAction instanceof Pit){ //It seems that we do indeed check for pits twice
-                ((Pit)fieldAction).doAction(this,originalPlayer);
+        for (FieldAction fieldAction : originalTarget.getActions()) {
+            if (fieldAction instanceof Pit) { //It seems that we do indeed check for pits twice
+                ((Pit) fieldAction).doAction(this, originalPlayer);
                 break;
             }
         }
-        if (otherPlayerMoved){
+        if (otherPlayerMoved) {
             originalPlayer.setSpace(originalTarget);// I don't understand this.... Lucas? - Crazy
         }
         return true;
@@ -301,10 +303,10 @@ public class GameController {
             }
             try {
                 Space nextSpace = board.getSpace(spacePosition[0], spacePosition[1]);
-                if (moveToSpace(player, nextSpace, heading)){ //Moves the player and basically checks if they fell in a pit
-                    for (FieldAction fieldAction : nextSpace.getActions()){
-                        if (fieldAction instanceof Pit){
-                            ((Pit)fieldAction).doAction(this,player); //I believe we check for pits twice?
+                if (moveToSpace(player, nextSpace, heading)) { //Moves the player and basically checks if they fell in a pit
+                    for (FieldAction fieldAction : nextSpace.getActions()) {
+                        if (fieldAction instanceof Pit) {
+                            ((Pit) fieldAction).doAction(this, player); //I believe we check for pits twice?
                             break;
                         }
                     }
@@ -324,27 +326,28 @@ public class GameController {
         }
 
     }
+
     /*
-    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
-    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
-    * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
-    *
+     * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+     * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+     * !!!!!!!!!DISABLED FOR TESTING; REMEMBER TO REACTIVATE!!!!!!
+     *
      */
     // returns the player who is closest to the Priority antenna
-    public Player getNextPlayer(){
+    public Player getNextPlayer() {
 
         Space priorityAntenna = board.getPriorityAntennaSpace();
         Player closestPlayerToAntenna = null;
 
         int usedCards = Integer.MAX_VALUE;
-        for (Player player : board.getAllPlayers()){
-            if (player.getUsedCards() < usedCards){ //Finds minimum value
+        for (Player player : board.getAllPlayers()) {
+            if (player.getUsedCards() < usedCards) { //Finds minimum value
                 usedCards = player.getUsedCards();
             }
         }
         ArrayList<Player> possiblePlayers = new ArrayList<>();
-        for (Player player : board.getAllPlayers()){
-            if (player.getUsedCards() == usedCards){
+        for (Player player : board.getAllPlayers()) {
+            if (player.getUsedCards() == usedCards) {
                 possiblePlayers.add(player);
             }
         }
@@ -355,10 +358,10 @@ public class GameController {
         for (Player player : possiblePlayers) {//Determines the closest of the eligible players
             int playerX;
             int playerY;
-            if (player.getSpace() == null){
+            if (player.getSpace() == null) {
                 playerX = Integer.MAX_VALUE; //TODO: This is not a very pretty solution, but it somewhat fixes the issue by simply not all
                 playerY = Integer.MAX_VALUE;
-            }else {
+            } else {
                 playerX = player.getSpace().getPosition()[0];
                 playerY = player.getSpace().getPosition()[1];
             }
@@ -393,25 +396,27 @@ public class GameController {
         int otherY = space2.getPosition()[1];
         int dx = x - otherX;
         int dy = y - otherY;
-        return Math.sqrt(dx*dx + dy*dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
+
     private double distanceToSpace(Space space, int otherX, int otherY) {
         int x = space.getPosition()[0];
         int y = space.getPosition()[1];
         int dx = x - otherX;
         int dy = y - otherY;
-        return Math.sqrt(dx*dx + dy*dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
+
     /**
      * Sets the phase. If the phase is programming, cards are automatically drawn from drawpile to hand
+     *
      * @param phase
      */
-    void setPhase(Phase phase){
+    void setPhase(Phase phase) {
         if (phase == PROGRAMMING) {
             if (online) {
                 cardController.drawCards(this.localPlayer);
-            }
-            else {
+            } else {
                 for (Player player : board.getAllPlayers()) {
                     cardController.drawCards(player);
                 }
@@ -424,7 +429,7 @@ public class GameController {
     public void startTimer() {
 
 
-        timer = new Timer();
+        timer = new Timer(true);
         board.setTimerIsRunning(true);
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -432,9 +437,10 @@ public class GameController {
             @Override
             public void run() {
                 try {
-                    clientController.getJSON("playerData.json");
+                    if (online) {
+                        clientController.getJSON("playerData.json");
+                    }
                     if (jsonInterpreter.isAllReady() || (!online && stopTimerBeforeTime.get())) {
-                        stopForReal.set(false);
                         board.setTimerSecondsCount(0);
                         timer.cancel();
                         timer.purge();
@@ -443,7 +449,7 @@ public class GameController {
                         countDownLatch.countDown();
                         return;
                     }
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     //We ignore this. Just happens if the localplayer is null, meaning its offline. TODO: Use boolean online instead
                 }
 
@@ -462,9 +468,9 @@ public class GameController {
         board.setTimerSecondsCount(0);
 
         Thread threadTimerDone = new Thread(() -> { //TODO: IS THIS DIRTY?
-            try{
+            try {
                 countDownLatch.await();
-                localPlayer.setReady(true);
+                if (online) localPlayer.setReady(true);
                 jsonPlayerBuilder.updateDynamicPlayerData();
                 clientController.updateJSON("playerData.json");
                 try {
@@ -473,9 +479,9 @@ public class GameController {
                     throw new RuntimeException(e);
                 }
                 setPhase(ACTIVATION);
-                if (online){
+                if (online) {
                     cardController.fillPlayersProgramFromHandOnline(localPlayer);
-                }else{ //THESE FUNCTIONS ARE NAMED IFFILY
+                } else { //THESE FUNCTIONS ARE NAMED IFFILY
                     cardController.fillAllPlayersProgramFromHand(board);
                 }
                 Thread.sleep(500);
@@ -483,7 +489,7 @@ public class GameController {
                 System.out.println("Something very bad with the timer implementation happened");
                 e.printStackTrace();
             }
-            for (Player player : board.getAllPlayers()){
+            for (Player player : board.getAllPlayers()) {
                 player.setReady(true);
             }
             finishProgrammingPhase();
@@ -538,7 +544,6 @@ public class GameController {
                 }
             }
         }
-
 
 
         int getReadyTries = 0;
@@ -608,22 +613,19 @@ public class GameController {
     /**
      * Only to be used for testing, not final release
      */
-    public void timerButtonPressed(){
+    public void timerButtonPressed() {
         startTimer();
     }
 
-    public void intermediateFunction(){
-        stopTimerBeforeTime.set(true);
-        if (online){
-            System.out.println("Im online");
+    public void intermediateFunction() {
+        stopTimerBeforeTime.set(true); //Used for offline gameplay
+        if (online) {
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            stopForReal.set(true);
-        }else {
+        } else {
             finishProgrammingPhase();
         }
-
     }
 
     public void finishProgrammingPhase() {
@@ -642,7 +644,6 @@ public class GameController {
         }
 
 
-
         System.out.println("______________FINISH PROGRAMMING___________________");
 
         setPhase(Phase.ACTIVATION);
@@ -654,7 +655,7 @@ public class GameController {
                 currentPlayer = getNextPlayer();
                 board.setCurrentPlayer(currentPlayer);
                 int sleep = 200; //Id like to make this dynamically decrease, so that plays accelerate. Not done for now though
-                while (true){
+                while (true) {
                     try {
                         Thread.sleep(sleep);
 
@@ -674,14 +675,11 @@ public class GameController {
                         }
                         Thread.sleep(500);
 
-                    }
-                    catch (NullPointerException e) {
+                    } catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");
-                    }
-                    catch (InterruptedException e) {
+                    } catch (InterruptedException e) {
                         //This is just here for the sleep. Shouldn't really happen
-                    }
-                    catch (IndexOutOfBoundsException e){
+                    } catch (IndexOutOfBoundsException e) {
                         System.out.println("Trying to get a card that was removed from the hand");
                     }
                     currentPlayer.incrementUsedCards();
@@ -689,21 +687,21 @@ public class GameController {
                     board.setCurrentPlayer(currentPlayer);
 
                     boolean toBreak = true;
-                    for (Player player : board.getAllPlayers()){
-                        if (player.getUsedCards() < Player.NO_REGISTERS && !(player.currentProgram().size() == 0)){
+                    for (Player player : board.getAllPlayers()) {
+                        if (player.getUsedCards() < Player.NO_REGISTERS && !(player.currentProgram().size() == 0)) {
                             toBreak = false;
                         }
                     }
-                    if (toBreak){
+                    if (toBreak) {
                         break;
                     }
                 }
 
-                for (Player player : board.getAllPlayers()){
+                for (Player player : board.getAllPlayers()) {
                     player.resetUsedCards();
                     cardController.emptyProgram(player);
 
-                    if (!MoreAdvancedGame){
+                    if (!MoreAdvancedGame) {
                         cardController.clearhand(player);
                     }
                 }
@@ -726,7 +724,7 @@ public class GameController {
                     throw new RuntimeException(e);
                 }
                 setPhase(Phase.PROGRAMMING);
-                if (online){
+                if (online) {
                     getUpdates(playerNames);
                 }
 
@@ -763,18 +761,17 @@ public class GameController {
             public void run() {
                 for (Card card : cards) {
 
-                    if (card instanceof ProgrammingCard){
+                    if (card instanceof ProgrammingCard) {
                         ProgrammingCard commandCard = (ProgrammingCard) card;
                         try {
                             commandCard.getAction().doAction(GameController.this, board.getCurrentPlayer(), commandCard); //I hate this implementation
                             Thread.sleep(420);
                         } catch (NullPointerException e) {
                             System.out.println("Error: No more commandCards");
-                        }
-                        catch (InterruptedException e) {
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    }else {
+                    } else {
                         System.out.println("Something needs to be done about this card");
                     }
                 }
@@ -810,7 +807,8 @@ public class GameController {
     }
 
 
-    /** //TODO: Det her skal fjernes
+    /**
+     * //TODO: Det her skal fjernes
      * A method called when no corresponding controller operation is implemented yet.
      * This method should eventually be removed.
      */
@@ -867,7 +865,7 @@ public class GameController {
     /**
      * TODO: This function should probably be deleted, as this is in the domain of the cardController
      */
-    public boolean clearField(@NotNull CommandCardField source){
+    public boolean clearField(@NotNull CommandCardField source) {
         source.setCard(null);
         return true;
     }
@@ -882,7 +880,7 @@ public class GameController {
 
     // Makes cards movable from one slot to another.
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        Card sourceCard =  source.getCard();
+        Card sourceCard = source.getCard();
         Card targetCard = target.getCard();
         if (sourceCard != null & targetCard == null) {
             target.setCard(sourceCard);
@@ -897,8 +895,7 @@ public class GameController {
     public synchronized Player getLocalPlayer() {
         if (this.localPlayer != null) {
             return this.localPlayer;
-        }
-        else return null;
+        } else return null;
     }
 
     public boolean getOnline() {
