@@ -79,7 +79,7 @@ public class AppController implements Observer {
     private Player localPlayer;
     private String username;
     private String gameID;
-    private boolean isMaster;
+    private volatile boolean isMaster;
     private boolean isPrivate;
     private String gamePassword;
     private String userColor;
@@ -845,9 +845,6 @@ public class AppController implements Observer {
                     gameController.setPhase(Phase.PROGRAMMING);
 
                     Platform.runLater(dialogStage::close);
-                }
-                else if (jsonInterpreter.isAllReady()){
-                    //Platform.runLater(dialogStage::close);
                 }
             }
 
