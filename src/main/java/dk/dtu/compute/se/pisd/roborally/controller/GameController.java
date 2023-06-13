@@ -545,7 +545,6 @@ public class GameController {
         clientController.updateJSON("playerData.json"); //Makes sure we have the newest json
         while (!jsonInterpreter.isAllReady()) {
             try {
-                System.out.println("Other Players: " + !jsonInterpreter.isAllReady() + ", local: " +  localPlayer.isReady());
                 clientController.updateJSON("playerData.json");
                 clientController.getJSON("playerData.json");
                 System.out.println("Info: All local timers should have ended. ");
@@ -624,9 +623,6 @@ public class GameController {
         }
         finishProgrammingPhase();
     }
-    public synchronized void banana(){
-        System.out.println("banana");
-    }
 
     public void finishProgrammingPhase() {
         //TODO: Check for spam and trojan cards,and replaces the card somehow?
@@ -637,7 +633,6 @@ public class GameController {
             localPlayer.setReady(true);
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
-            banana();
             synchronize();
             localPlayer.setReady(false);
             jsonPlayerBuilder.updateDynamicPlayerData();
