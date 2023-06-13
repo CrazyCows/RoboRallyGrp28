@@ -100,6 +100,7 @@ public class ClientController {
             boolean access;
             do {
                 access = AccessDataFile.requestFileAccess(childName);
+                System.out.println("I have access: " + access);
                 if (access) {
                     objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, childName), jsonNode);
                     AccessDataFile.releaseFileAccess(childName);
@@ -111,6 +112,7 @@ public class ClientController {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("Json has been gotten");
     }
 
 
