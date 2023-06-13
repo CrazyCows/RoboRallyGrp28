@@ -115,7 +115,7 @@ public class BoardView extends VBox implements ViewObserver {
         timerView = new ImageView(timers[0]);
 
         timerButton = new Button("Start timer");
-        timerButton.setOnAction( e -> gameController.startTimer());
+        timerButton.setOnAction( e -> gameController.timerButtonPressed());
 
         upgradeShopButton = new Button("Upgrade Shop");
         upgradeShopButton.setOnAction( e -> {
@@ -402,11 +402,16 @@ public class BoardView extends VBox implements ViewObserver {
 
     private void nextTimer() {
         int k = (int) Math.floor(((float)board.getTimerSecondsCount())/5) + 1; //I hope this maths the math
-        this.timerView.setImage(timers[k]);
-        if (board.getTimerSecondsCount() >= 29){
+        if (board.getTimerSecondsCount() >= 29 || board.getTimerSecondsCount() == 0){
             this.timerView.setImage(timers[0]);
+        } else {
+            this.timerView.setImage(timers[k]);
         }
+
+
     }
+
+
 
 
     @Override

@@ -149,7 +149,7 @@ public class Player extends Subject {
     public boolean isReady() {
         return ready;
     }
-    public void setReady(boolean state) {
+    public synchronized void setReady(boolean state) {
         this.ready = state;
     }
     public boolean isInGame() {
@@ -324,10 +324,14 @@ public class Player extends Subject {
         }
     }
 
+
+    /**
+     * THIS FUNCTION IS WRONG
+     * @return
+     */
     public Card drawCardFromPile() {
         Card card = drawPile.get(0);
         drawPile.remove(card);
-        discardPile.add(card);
         return card;
     }
 

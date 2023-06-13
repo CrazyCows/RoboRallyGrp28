@@ -68,7 +68,7 @@ public class CardController {
      * Fills player hand with cards from pile
      * @param player player who draws cards
      */
-    public void drawCards(Player player){
+    public synchronized void drawCards(Player player){
         int numberOfCards = getNumberOfCardsInHandPile(player);
         for (int i = 0; i < player.getHandSize() - numberOfCards; i++) {
             drawOneCard(player);

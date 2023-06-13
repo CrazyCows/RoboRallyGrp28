@@ -17,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ClientController {
     private HttpClient client;
@@ -26,6 +27,7 @@ public class ClientController {
 
     HashMap<String, String> jsonID = new HashMap<>();
     String ID;
+    volatile boolean firstTimeGetJSON = false;
 
     // TODO: All exceptions is handled rather lazily here. Should be tightened up such errors give useful information..
     // TODO: Throwing stuff is more fun tho..
@@ -97,10 +99,21 @@ public class ClientController {
 
             String responseJson = response.body();
             JsonNode jsonNode = objectMapper.readTree(responseJson);
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, childName), jsonNode);
+            boolean access;
+            do {
+                access = AccessDataFile.requestFileAccess(childName);
+                if (access) {
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, childName), jsonNode);
+                    AccessDataFile.releaseFileAccess(childName);
+                }
+                else {
+                    Thread.sleep(50);
+                }
+            } while(!access);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("Json has been gotten");
     }
 
 
@@ -167,29 +180,52 @@ public class ClientController {
     }
 
     public synchronized void updateJSON(String jsonName) {
+        if (jsonName.equals("cardSequenceRequest.json")){
+            getJSON("cardSequenceRequest.json");
+        }
+
         String jsonTypeToURL = jsonType(jsonName);
         try {
             WebClient webClient = WebClient.create();
-            File file = new File(path, jsonName);
-            JsonNode json = objectMapper.readTree(file);
+
+            boolean access;
+            do {
+                access = AccessDataFile.requestFileAccess(jsonName);
+                if (access) {
+
+                    File file = new File(path, jsonName);
+                    JsonNode json = objectMapper.readTree(file);
 
 
-            Mono<String> response = webClient.put()
-                    .uri(baseUrl + jsonTypeToURL + this.ID + "&jsonFileName=" + jsonName)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(json)
-                    .retrieve()
-                    .bodyToMono(String.class);
+                    Mono<String> response = webClient.put()
+                            .uri(baseUrl + jsonTypeToURL + this.ID + "&jsonFileName=" + jsonName)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .bodyValue(json)
+                            .retrieve()
+                            .bodyToMono(String.class);
 
-            String responseString;
-            try {
-                responseString = response.block();
-                System.out.println("Success");
-                System.out.println(responseString);
-            } catch (RuntimeException e) {
-                System.out.println("Failure");
-                System.out.println(e.getMessage());
-            }
+                    String responseString;
+                    try {
+                        responseString = response.block();
+                        System.out.println("Success");
+                        System.out.println(responseString);
+                    } catch (RuntimeException e) {
+                        System.out.println("Failure");
+                        System.out.println(e.getMessage());
+                    }
+
+                    AccessDataFile.releaseFileAccess(jsonName);
+                }
+                else {
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } while(!access);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -198,6 +234,7 @@ public class ClientController {
 
     // Deletes the whole game folder. Individual files should not be deleted.
     public synchronized void deleteJSON() {
+
         // Create the DELETE request
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/jsonHandler?ID=" + this.ID))
@@ -235,7 +272,21 @@ public class ClientController {
 
             String responseJson = response.body();
             JsonNode jsonNode = objectMapper.readTree(responseJson);
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "/retrievedGames.json" ), jsonNode);
+
+
+
+            boolean access;
+            do {
+                access = AccessDataFile.requestFileAccess("retrievedGames.json");
+                if (access) {
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + "/retrievedGames.json" ), jsonNode);
+                    AccessDataFile.releaseFileAccess("retrievedGames.json");
+                }
+                else {
+                    Thread.sleep(50);
+                }
+            } while(!access);
+
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

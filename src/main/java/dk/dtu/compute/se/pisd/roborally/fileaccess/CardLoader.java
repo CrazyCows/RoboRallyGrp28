@@ -37,6 +37,7 @@ public class CardLoader {
     }
 
     private CardLoader() {
+
         System.out.println("Created singleton class");
 
         ClassLoader classLoader;
@@ -114,6 +115,20 @@ public class CardLoader {
     }
 
     public void sendCardSequenceRequest(List<ProgrammingCard> programmingCardsInput, String name) {
+
+        boolean access;
+        do {
+            access = AccessDataFile.requestFileAccess(CARDSEQUENCE + "." + JSON_EXT);
+            if (!access) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } while(!access);
+
         // Create a new list to hold the modified programming cards
         List<ProgrammingCard> modifiedProgrammingCards = new ArrayList<>();
 
@@ -129,6 +144,7 @@ public class CardLoader {
 
             // Add the modified card to the new list
             modifiedProgrammingCards.add(modifiedCard);
+            System.out.println("in modifiedProgrammingCards, adding " + card.getName());
         }
 
         // Create the JSON structure with the modified programming cards
@@ -150,11 +166,13 @@ public class CardLoader {
             fileWriter = new FileWriter(filename, false);
             writer = gson.newJsonWriter(fileWriter);
             gson.toJson(wrapperMap, new TypeToken<Map<String, Map<String, List<ProgrammingCard>>>>() {}.getType(), writer);
+            System.out.println("sendCardSequenceRequest finished writing json");
         } catch (IOException e1) {
             System.out.println("An exception occurred while creating the FileWriter:");
             e1.printStackTrace();
         } finally {
             try {
+                AccessDataFile.releaseFileAccess(CARDSEQUENCE + "." + JSON_EXT);
                 if (writer != null) {
                     writer.close();
                 }
@@ -162,24 +180,44 @@ public class CardLoader {
                     fileWriter.close();
                 }
             } catch (IOException e2) {
+                AccessDataFile.releaseFileAccess(CARDSEQUENCE + "." + JSON_EXT);
                 System.out.println("An exception occurred while closing the writers:");
                 e2.printStackTrace();
             }
         }
-
     }
 
     public ArrayList<ProgrammingCard> loadCardSequence(String name) {
 
+        boolean access;
+        do {
+            access = AccessDataFile.requestFileAccess("cardSequenceRequestsHelper.json");
+            if (!access) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } while(!access);
+
+
         Adapter<CardAction> adapter = new Adapter<>();
 
         extractPlayerAndSaveToJson(name);
+        //Saves the file, the immideatly opens it
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         InputStream inputStream = null;
-
         JsonReader reader = null;
         try {
-            inputStream = new FileInputStream("data/cardSequenceRequestsHelper.json");
+            inputStream = new FileInputStream("data/cardSequenceRequestsHelper.json"); //I think we need to clear this badboy helper thing
 
             // In simple cases, we can create a Gson object with new Gson():
             GsonBuilder simpleBuilder = new GsonBuilder()
@@ -188,10 +226,26 @@ public class CardLoader {
 
             ArrayList<ProgrammingCard> result;
 
-            reader = gson.newJsonReader(new InputStreamReader(inputStream));
-            CardSequenceTemplate template = gson.fromJson(reader, CardSequenceTemplate.class);
+            reader = gson.newJsonReader(new InputStreamReader(inputStream)); //CardsequenceRequestHelper has the old cards sometimes instead of getting updated
+            CardSequenceTemplate template = gson.fromJson(reader, CardSequenceTemplate.class); //This template is wrong
+
 
             result = new ArrayList<>(template.programmingCards);
+            for (ProgrammingCard card : result){
+                System.out.println("Player has card " + card.getName());
+            }
+            System.out.println("result has size " + result.size());
+
+            ArrayList<ProgrammingCard> temp = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                temp.add(result.get(result.size() - 5 + i ));
+            }
+            result = temp;
+
+            for (ProgrammingCard card : result){
+                System.out.println("Player has card " + card.getName());
+            }
+            System.out.println("result has size " + result.size());
 
             for (ProgrammingCard card : result) {
                 card.createAction();
@@ -199,9 +253,12 @@ public class CardLoader {
             }
 
             reader.close();
+
+            AccessDataFile.releaseFileAccess("cardSequenceRequestsHelper.json");
             return result;
 
         } catch (IOException e1) {
+            AccessDataFile.releaseFileAccess("cardSequenceRequestsHelper.json");
             if (reader != null) {
                 try {
                     reader.close();
@@ -219,18 +276,41 @@ public class CardLoader {
         return null;
     }
 
-    private void extractPlayerAndSaveToJson(String name) {
+    private synchronized void extractPlayerAndSaveToJson(String name) {
+
+        boolean access;
+        do {
+            access = AccessDataFile.requestFileAccess("cardSequenceRequests.json");
+            if (!access) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } while(!access);
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonParser parser = new JsonParser();
 
         try (FileReader reader = new FileReader("data/cardSequenceRequests.json")) {
+            //System.out.println("The reader is: " + reader);
             JsonObject jsonData = parser.parse(reader).getAsJsonObject();
+            System.out.println("This is the JsonObject: " + jsonData.toString()); //IS IT WRONG HERE?
 
             // Access the player based on playerName
             JsonObject player = jsonData.getAsJsonObject(name);
 
+            if (player == null) {
+                System.out.println("BAD STUFF");
+            }
+
             // Get the "programmingCards" array from the player object
-            JsonArray programmingCards = player.getAsJsonArray("programmingCards");
+            JsonArray programmingCards = player.getAsJsonArray("programmingCards"); //Already wrong here
+            for (JsonElement j : programmingCards){
+                System.out.println("Hirle natten saksespark" + j.toString());
+            }
 
             // Create a new JSON object to store the extracted "programmingCards" array
             JsonObject extractedData = new JsonObject();
@@ -239,10 +319,14 @@ public class CardLoader {
             // Save the extracted data to a new JSON file
             try (FileWriter writer = new FileWriter("data/cardSequenceRequestsHelper.json")) {
                 gson.toJson(extractedData, writer);
+                System.out.println("Wrote to cardSequenceRequestsHelper");
             }
+
+            AccessDataFile.releaseFileAccess("cardSequenceRequests.json");
 
             System.out.println("Extraction completed successfully.");
         } catch (IOException e) {
+            AccessDataFile.releaseFileAccess("cardSequenceRequests.json");
             e.printStackTrace();
         }
     }

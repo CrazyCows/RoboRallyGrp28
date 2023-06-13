@@ -162,7 +162,6 @@ public class AppController implements Observer {
 
             jsonInterpreter = new JsonInterpreter();
             try {
-                clientController.getJSON("playerData.json");
                 if (jsonInterpreter.gameStarted()) {
                     infoLabel.setText("Error: " + gameID + " already exists. ");
                 }
@@ -228,6 +227,7 @@ public class AppController implements Observer {
         clientController.createJSON("sharedBoard.json");
         for (Player player : gameController.board.getAllPlayers()) {
             JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+            jsonPlayerBuilder.createPlayerJSON(this.gameController);
             clientController.createJSON("playerData.json");
             try {
                 Thread.sleep(500);
@@ -307,6 +307,14 @@ public class AppController implements Observer {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Save Game");
             String message = "Game has been saved. " ;
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
+        else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Save Game");
+            String message = "You can't save online games. ";
             alert.setHeaderText(null);
             alert.setContentText(message);
             alert.showAndWait();
@@ -766,6 +774,7 @@ public class AppController implements Observer {
         jsonInterpreter = new JsonInterpreter();
         System.out.println(localPlayer.getName());
         this.clientController.createJSON("playerData.json");
+        this.clientController.createJSON("cardSequenceRequest.json");
 
         this.clientController.getJSON("playerData.json");
         if (!isMaster) {
