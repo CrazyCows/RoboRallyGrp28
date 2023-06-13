@@ -60,7 +60,7 @@ public class JsonPlayerBuilder {
         } catch (JsonProcessingException e){
             e.printStackTrace();
         } catch (IOException d){
-            System.out.println(d);
+            d.printStackTrace();
         }
     }
 

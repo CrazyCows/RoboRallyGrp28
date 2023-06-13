@@ -181,7 +181,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(MouseEvent event) {
-            System.out.println("OnDragDetectedHandler detected");
+            //System.out.println("OnDragDetectedHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView source = (CardFieldView) t;
@@ -234,7 +234,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragEnteredHandler detected");
+            //System.out.println("OnDragEnteredHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView target = (CardFieldView) t;
@@ -282,7 +282,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragDroppedHandler detected");
+            //System.out.println("OnDragDroppedHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView target = (CardFieldView) t;
@@ -333,7 +333,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragDetectedHandler called.");
+            //System.out.println("OnDragDetectedHandler called.");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView source = (CardFieldView) t;

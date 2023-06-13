@@ -89,6 +89,11 @@ public class Player extends Subject {
     public Card getLastCard() {
         return lastCard;
     }
+
+    /**
+     * Should be used for respawning when not on the same board as the reboot token
+     * @return the space the player initially started on.
+     */
     public Space getStartSpace() {return startSpace;}
     public void setLastCard(Card lastCard) {
         this.lastCard = lastCard;

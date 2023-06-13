@@ -167,8 +167,8 @@ public class ClientController {
             String responseString;
             try {
                 responseString = response.block();
-                System.out.println("Success");
-                System.out.println(responseString);
+                //System.out.println("Success");
+                //System.out.println(responseString);
             } catch (RuntimeException e) {
                 System.out.println("Failure");
                 System.out.println(e.getMessage());
@@ -206,8 +206,8 @@ public class ClientController {
                     String responseString;
                     try {
                         responseString = response.block();
-                        System.out.println("Success");
-                        System.out.println(responseString);
+                        //System.out.println("Success");
+                        //System.out.println(responseString);
                     } catch (RuntimeException e) {
                         System.out.println("Failure");
                         System.out.println(e.getMessage());

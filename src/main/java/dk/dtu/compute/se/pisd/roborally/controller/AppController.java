@@ -490,7 +490,7 @@ public class AppController implements Observer {
         Button continueButton = new Button("Continue");
 
         String[] directions = {"north", "east", "south", "west"};
-        String direction = "";
+
         Thread countThread = new Thread(() -> {
             int counter = 0;
             while (!continueButton.isPressed() || dialogStage.isShowing()) {
@@ -499,18 +499,18 @@ public class AppController implements Observer {
                     ObservableList<Node> children = gridPane.getChildren();
                     children.removeIf(node -> GridPane.getColumnIndex(node) == 1 && GridPane.getRowIndex(node) == 0);
                     String selectedOption = robotComboBox.getValue();
-                    System.out.println("images/robots/" + selectedOption + "_" + this.animationRobotDirection + "_facing_robot" + ".png");
+                    //System.out.println("images/robots/" + selectedOption + "_" + this.animationRobotDirection + "_facing_robot" + ".png");
                     Image robotImage = new Image("images/robots/" + selectedOption + "_" + this.animationRobotDirection + "_facing_robot" + ".png");
                     ImageView robotImageView = new ImageView(robotImage);
                     gridPane.add(robotImageView, 1, 0);
                 });
-                System.out.println(counter);
+                //System.out.println(counter);
                 counter += 1;
                 if (counter == directions.length) {
                     counter = 0;
                 }
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(300);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -664,7 +664,9 @@ public class AppController implements Observer {
             System.out.println("Username: " + username);
             System.out.println("Lobby name: " + lobbyName);
             System.out.println("Private Game: " + privateGame);
-            System.out.println("Password: " + passwordField);
+            if (!(Objects.equals(passwordField.getText(),"") || passwordField.getText() == null)){
+                System.out.println("Password: " + passwordField.getText());
+            }
             this.username = username;
             this.gameID = lobbyName;
             this.isPrivate = privateGame;
@@ -803,9 +805,11 @@ public class AppController implements Observer {
                     }
                 });
 
+                /*
                 for (String name : names) {
                     System.out.println(name + ": " + jsonInterpreter.isReady(name));
                 }
+                */
 
                 this.localPlayer.setReady(checkBoxes.get(0).isSelected());
                 jsonPlayerBuilder.updateDynamicPlayerData();

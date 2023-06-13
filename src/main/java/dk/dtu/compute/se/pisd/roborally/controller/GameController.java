@@ -161,7 +161,7 @@ public class GameController {
         System.out.println(jsonInterpreter.isAnyReady(playerNames) + " and " + getLocalPlayer().isReady());
         while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
             try {
-                System.out.println("Updating");
+                //System.out.println("Updating");
                 clientController.getJSON("playerData.json");
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -628,8 +628,7 @@ public class GameController {
         //TODO: Very much WIP
 
         if (online) {
-            System.out.println("We are online, lads");
-            localPlayer.setReady(true);
+            localPlayer.setReady(true); //These shouldnt be nessecary at all
             jsonPlayerBuilder.updateDynamicPlayerData();
             clientController.updateJSON("playerData.json");
             synchronize();
@@ -639,7 +638,7 @@ public class GameController {
         }
 
 
-        System.out.println("______________FINISH PROGRAMMING___________________");
+        System.out.println("___________________FINISH PROGRAMMING___________________");
 
         setPhase(Phase.ACTIVATION);
 
@@ -880,7 +879,12 @@ public class GameController {
         if (sourceCard != null & targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);
-            System.out.println("Current Program status: " + Arrays.toString(board.getCurrentPlayer().currentProgram().toArray()));
+            System.out.print("Current Program status: ");
+            for (Card card : board.getCurrentPlayer().currentProgram()){
+                if (card != null) System.out.print(card.getName() + ", ");
+                else System.out.print("[empty], ");
+            }
+            System.out.println("\n");
             return true;
         } else {
             return false;
