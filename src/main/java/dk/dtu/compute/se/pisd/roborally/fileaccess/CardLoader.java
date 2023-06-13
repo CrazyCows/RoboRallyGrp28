@@ -206,9 +206,15 @@ public class CardLoader {
         Adapter<CardAction> adapter = new Adapter<>();
 
         extractPlayerAndSaveToJson(name);
+        //Saves the file, the immideatly opens it
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         InputStream inputStream = null;
-
         JsonReader reader = null;
         try {
             inputStream = new FileInputStream("data/cardSequenceRequestsHelper.json");
@@ -220,7 +226,7 @@ public class CardLoader {
 
             ArrayList<ProgrammingCard> result;
 
-            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            reader = gson.newJsonReader(new InputStreamReader(inputStream)); //CardsequenceRequestHelper has the old cards sometimes instead of getting updated
             CardSequenceTemplate template = gson.fromJson(reader, CardSequenceTemplate.class); //This template is wrong
 
             System.out.println("template.programmingCards has size " + template.programmingCards.size());
@@ -298,6 +304,7 @@ public class CardLoader {
             // Save the extracted data to a new JSON file
             try (FileWriter writer = new FileWriter("data/cardSequenceRequestsHelper.json")) {
                 gson.toJson(extractedData, writer);
+                System.out.println("Wrote to cardSequenceRequestsHelper");
             }
 
             AccessDataFile.releaseFileAccess("cardSequenceRequests.json");
