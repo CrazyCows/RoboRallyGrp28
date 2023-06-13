@@ -159,15 +159,16 @@ public class GameController {
     public synchronized void getUpdates(ArrayList<String> playerNames) {
         clientController.getJSON("playerData.json");
         System.out.println(jsonInterpreter.isAnyReady(playerNames) + " and " + getLocalPlayer().isReady());
+        System.out.println("Continually polling for updates");
         while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
             try {
-                //System.out.println("Updating");
                 clientController.getJSON("playerData.json");
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        System.out.println("Stopped polling for updates");
         try {
             Thread.sleep(200); //Just trying to avoid the data race
         } catch (InterruptedException e) {
