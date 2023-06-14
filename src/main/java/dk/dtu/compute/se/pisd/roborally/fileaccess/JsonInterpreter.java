@@ -223,6 +223,11 @@ public class JsonInterpreter {
 
     public synchronized boolean isAllReady () {
         String json = getFileAsString("collectivePlayerData.json");
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
 
         if (playerReadyStates.contains(false)) {
