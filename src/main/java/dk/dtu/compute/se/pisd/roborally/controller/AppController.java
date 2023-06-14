@@ -390,6 +390,17 @@ public class AppController implements Observer {
     }
 
     public void loadGameForm(ArrayList<String> availableGames) {
+
+        if (online) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Load Game");
+            String message = "Please close the current game before loading a saved game";
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+            return;
+        }
+
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Load Game");
 
@@ -953,6 +964,7 @@ public class AppController implements Observer {
             }
 
             gameController = null;
+            resetSetupProcess();
             roboRally.createBoardView(null);
             return true;
         }

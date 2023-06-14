@@ -123,7 +123,7 @@ public class RoboRally extends Application {
         stage.sizeToScene();
     }
 
-    private void addImageToWindow() {
+    public void addImageToWindow() {
         // create an ImageView object for the image
         ImageView imageView = new ImageView(new Image("frontpage.jpg"));
 
@@ -185,6 +185,9 @@ public class RoboRally extends Application {
         //     is delegated to the exit() method in the AppController,
         //     so that the AppController can take care of that.
     }
+
+    // Due to some problems with FXML and time constraints, this needs to be placed here
+    // although it should have been stored somewhere else.
 
     public void winScreen(Player currentPlayer) {
 
