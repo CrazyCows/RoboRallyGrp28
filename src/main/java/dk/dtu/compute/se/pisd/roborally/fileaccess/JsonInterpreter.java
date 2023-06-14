@@ -208,6 +208,9 @@ public class JsonInterpreter {
     public synchronized String getMaster() {
         String json = getFileAsString("collectivePlayerData.json");
         List<String> master = JsonPath.read(json, "$.[?(@.isMaster == true)].name");
+        if (master.isEmpty()) {
+            return null;
+        }
         return master.get(0);
     }
 
@@ -225,17 +228,18 @@ public class JsonInterpreter {
         String json = getFileAsString("collectivePlayerData.json");
         List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
 
-        if (playerReadyStates.contains(false)) {
+        if (playerReadyStates.contains(false) || playerReadyStates.isEmpty()) {
             return false;
         }
         return true;
     }
 
-    public synchronized Boolean isAnyReady (ArrayList<String> playerNames) {
-        for (String name : playerNames) {
-            if (isReady(name)) {
-                return true;
-            }
+    public synchronized Boolean isAnyReady () {
+        String json = getFileAsString("collectivePlayerData.json");
+        List<Boolean> playerReadyStates = JsonPath.read(json, "$.[*].readystate");
+
+        if (playerReadyStates.contains(true)) {
+            return true;
         }
         return false;
     }

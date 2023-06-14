@@ -133,7 +133,7 @@ public class GameController {
             e.printStackTrace();
         }
 
-        while (jsonInterpreter.isAnyReady(jsonInterpreter.getPlayerNames())) {
+        while (jsonInterpreter.isAnyReady()) {
             try {
                 clientController.getJSON("playerData.json");
                 Thread.sleep(500);
@@ -157,9 +157,9 @@ public class GameController {
 
     public synchronized void getUpdates(ArrayList<String> playerNames) {
         clientController.getJSON("playerData.json");
-        System.out.println(jsonInterpreter.isAnyReady(playerNames) + " and " + getLocalPlayer().isReady());
+        System.out.println(jsonInterpreter.isAnyReady() + " and " + getLocalPlayer().isReady());
         System.out.println("Continually polling for updates");
-        while (!jsonInterpreter.isAnyReady(playerNames) && !getLocalPlayer().isReady()) {
+        while (!jsonInterpreter.isAnyReady() && !getLocalPlayer().isReady()) {
             try {
                 clientController.getJSON("playerData.json");
                 Thread.sleep(100);
