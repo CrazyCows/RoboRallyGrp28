@@ -96,6 +96,8 @@ public class AppController implements Observer {
         this.roboRally = roboRally;
     }
 
+
+    // Used to reset all parameters
     public void resetSetupProcess() {
         gameController = null;
         clientController = null;
@@ -193,6 +195,8 @@ public class AppController implements Observer {
         dialogStage.showAndWait();
     }
 
+
+    // create new game
     public void newGame() {
         if (isGameRunning()) {
             resetSetupProcess();
