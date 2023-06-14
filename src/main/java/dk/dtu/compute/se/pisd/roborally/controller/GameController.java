@@ -213,7 +213,7 @@ public class GameController {
             Heading next = heading.next().next();
             System.out.println(next);
             isWall2 = originalTarget.getWalls().contains(heading.next().next());
-        } //Checks whether theres a wall on the destination field, facing the start field
+        } //Checks whether there's a wall on the destination field, facing the start field
 
         if (isWall1 || isWall2) {
             System.out.println(originalPlayer.getName() + " hit a wall");
