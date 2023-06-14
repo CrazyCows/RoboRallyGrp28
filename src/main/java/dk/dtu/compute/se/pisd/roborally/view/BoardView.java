@@ -83,7 +83,7 @@ public class BoardView extends VBox implements ViewObserver {
     Label priceTempLabel;
     Label pricePermLabel;
 
-    private SpaceEventHandler spaceEventHandler;
+    //private SpaceEventHandler spaceEventHandler;
     private ArrowKeyEventHandler arrowKeyEventHandler;
     private GameController gameController;
     int timerSecondsCount;
@@ -152,7 +152,7 @@ public class BoardView extends VBox implements ViewObserver {
 
         spaces = new SpaceView[board.width][board.height];
 
-        spaceEventHandler = new SpaceEventHandler(gameController);
+        //spaceEventHandler = new SpaceEventHandler(gameController);
         arrowKeyEventHandler = new ArrowKeyEventHandler(gameController);
 
         for (int x = 0; x < board.width; x++) {
@@ -182,7 +182,7 @@ public class BoardView extends VBox implements ViewObserver {
                 //spaceView.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
                 //spaceView.setPadding(new Insets(10));
                 mainBoardPane.add(spaceView, x, y);
-                spaceView.setOnMouseClicked(spaceEventHandler);
+                //spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
 
@@ -441,7 +441,8 @@ public class BoardView extends VBox implements ViewObserver {
         }
     }
 
-    // XXX this handler and its uses should eventually be deleted! This is just to help test the
+    /*
+    // XXX this handler and its uses should eventually be disabled! This is just to help test the
     //     behaviour of the game by being able to explicitly move the players on the board!
     private class SpaceEventHandler implements EventHandler<MouseEvent> {
 
@@ -466,7 +467,7 @@ public class BoardView extends VBox implements ViewObserver {
             }
         }
 
-    }
+    }*/
 
     private class ArrowKeyEventHandler implements EventHandler<KeyEvent> {
 
