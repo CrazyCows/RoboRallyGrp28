@@ -289,11 +289,14 @@ public class AppController implements Observer {
 
     public void saveGame() {
 
-        if (!online) {
+        if (!online || !gameController.board.getTimerIsRunning()) {
             for (Player player : gameController.board.getAllPlayers()) {
                 JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
                 jsonPlayerBuilder.createPlayerJSON(this.gameController);
                 clientController.updateJSON("playerData.json");
+                for (Player p : gameController.board.getAllPlayers()){
+                    p.setReady(false);
+                }
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
