@@ -42,7 +42,8 @@ class JsonInterpreterTest {
     @Test
     void isAnyReady() {
         JsonInterpreter jsonInterpreter = new JsonInterpreter();
-        System.out.println(jsonInterpreter.isAnyReady());
+        ArrayList<String> names = jsonInterpreter.getPlayerNames();
+        System.out.println(jsonInterpreter.isAnyReady(names));
     }
 
     @Test
