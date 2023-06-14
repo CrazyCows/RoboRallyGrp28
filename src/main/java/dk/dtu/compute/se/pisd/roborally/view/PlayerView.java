@@ -95,13 +95,13 @@ public class PlayerView extends Tab implements ViewObserver {
         //      players, but on the PlayersView (view for all players). This should be
         //      refactored.
 
-        finishButton = new Button("Finish Programming (run all cards)");
+        finishButton = new Button("Finish Programming");
         finishButton.setOnAction( e -> gameController.intermediateFunction());
 
-        executeButton = new Button("Execute Program");
+        executeButton = new Button("Execute Program [TESTING ONLY]");
         executeButton.setOnAction( e-> gameController.executeProgram(player.currentProgram()));
 
-        stepButton = new Button("Execute Current Register");
+        stepButton = new Button("Execute Current Register [TESTING ONLY]");
         stepButton.setOnAction( e-> gameController.executeStep(player.getSpace()));
 
         buttonPanel = new VBox(finishButton, executeButton, stepButton);

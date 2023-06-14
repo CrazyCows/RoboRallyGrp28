@@ -493,6 +493,7 @@ public class AppController implements Observer {
 
         Thread countThread = new Thread(() -> {
             int counter = 0;
+            final int sleep = 380;
             while (!continueButton.isPressed() || dialogStage.isShowing()) {
                 this.animationRobotDirection = directions[counter];
                 Platform.runLater(() -> {
@@ -510,10 +511,11 @@ public class AppController implements Observer {
                     counter = 0;
                 }
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(sleep);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+
 
                 // Check if the stage is closed
                 if (!dialogStage.isShowing()) {
@@ -826,7 +828,7 @@ public class AppController implements Observer {
                 if (!dialogStage.isShowing()) {
                     break;
                 }
-                else if (isMaster && checkBoxes.get(0).isSelected() && jsonInterpreter.getPlayerNames().size() > 1) {
+                else if (isMaster && checkBoxes.get(0).isSelected() && jsonInterpreter.getPlayerNames().size() > 1 && jsonInterpreter.isAllReady()) {
                     jsonPlayerBuilder.updateDynamicPlayerData();
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
