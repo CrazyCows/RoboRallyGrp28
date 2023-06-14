@@ -200,6 +200,11 @@ public class JsonInterpreter {
 
     public synchronized ArrayList<String> getPlayerNames () {  //TDOO: ADD catch
         String json = getFileAsString("collectivePlayerData.json");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         List<String> playerNames = JsonPath.read(json, "$.[*].name");
 
         return new ArrayList<>(playerNames);
@@ -207,6 +212,11 @@ public class JsonInterpreter {
 
     public synchronized String getMaster() {
         String json = getFileAsString("collectivePlayerData.json");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         List<String> master = JsonPath.read(json, "$.[?(@.isMaster == true)].name");
         return master.get(0);
     }
@@ -224,7 +234,7 @@ public class JsonInterpreter {
     public synchronized boolean isAllReady () {
         String json = getFileAsString("collectivePlayerData.json");
         try {
-            Thread.sleep(50);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
