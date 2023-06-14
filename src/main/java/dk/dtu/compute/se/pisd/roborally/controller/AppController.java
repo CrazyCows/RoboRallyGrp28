@@ -114,6 +114,8 @@ public class AppController implements Observer {
     }
 
     public void newGameForm() {
+        roboRally.setMusicVolume(0.2);
+
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Online game");
 
@@ -204,12 +206,9 @@ public class AppController implements Observer {
             return;
         }
 
-        roboRally.setMusicVolume(0.0);
-
         roboRally.removeStartImage();
         Board board = LoadBoard.loadBoard(chosenBoard, true);
         board.setOnline(false);
-        roboRally.pauseMusic();
 
 
         for (int i = 0; i < this.amountOfPlayers; i++) {
@@ -238,10 +237,11 @@ public class AppController implements Observer {
         }
 
         gameController.setPhase(Phase.PROGRAMMING);
-
+        roboRally.setMusicVolume(0.1);
     }
 
     public void newOnlineGame() {
+        roboRally.setMusicVolume(0.2);
         if (isGameRunning()) {
             resetSetupProcess();
         }
@@ -265,6 +265,7 @@ public class AppController implements Observer {
     }
 
     public void joinOnlineGame() {
+        roboRally.setMusicVolume(0.2);
         if (isGameRunning()) {
             resetSetupProcess();
         }
@@ -390,6 +391,7 @@ public class AppController implements Observer {
     }
 
     public void loadGameForm(ArrayList<String> availableGames) {
+        roboRally.setMusicVolume(0.2);
 
         if (online) {
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -481,6 +483,7 @@ public class AppController implements Observer {
     }
 
     public void loadGame() {
+        roboRally.setMusicVolume(0.1);
 
         clientController = new ClientController();
         clientController.availableGamesJSON();
@@ -524,7 +527,6 @@ public class AppController implements Observer {
 
             Board board = LoadBoard.loadBoard("sharedBoard.json", false);
             board.setOnline(false);
-            roboRally.pauseMusic();
 
             JsonPlayerBuilder.createPlayersFromLoad(board, jsonInterpreter.getPlayerNames());
 
@@ -631,7 +633,6 @@ public class AppController implements Observer {
                 board.setOnline(true);
 
             }
-            roboRally.pauseMusic();
 
             assert board != null;
 
@@ -925,6 +926,7 @@ public class AppController implements Observer {
 
             gameController.setupOnline();
             System.out.println("Game lobby thread has ended");
+            roboRally.setMusicVolume(0.1);
         });
         countThread.setDaemon(true);
         countThread.start();
@@ -956,8 +958,8 @@ public class AppController implements Observer {
      * @return true if the current game was stopped, false otherwise
      */
     public boolean stopGame() {
+        roboRally.setMusicVolume(0.1);
         if (gameController != null) {
-
             // here we save the game if the game is not online
             if (!online) {
                 saveGame();
