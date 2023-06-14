@@ -74,8 +74,9 @@
       "background": [
         "SOUTH",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
@@ -101,8 +102,9 @@
       "background": [
         "EAST",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
@@ -128,8 +130,9 @@
       "background": [
         "WEST",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
@@ -155,8 +158,9 @@
       "background": [
         "NORTH",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
