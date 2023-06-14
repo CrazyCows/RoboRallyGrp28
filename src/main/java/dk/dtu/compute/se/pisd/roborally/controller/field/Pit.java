@@ -21,27 +21,44 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
 
     public boolean doAction(@NotNull GameController gameController, @NotNull Player currentPlayer) {
         CardController cardController = CardController.getInstance();
-        cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
-        cardController.drawSpamCardToDiscardPile(currentPlayer);
-        System.out.println(currentPlayer.getName() + " is now being rebooted");
-        currentPlayer.setSpace(currentPlayer.startSpace);
+        if (!currentPlayer.hasCard("Firewall")){
+            cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
+            cardController.drawSpamCardToDiscardPile(currentPlayer);
+        } else {
+            System.out.println("Player has a firewall installed and draws no spam cards.");
+        }
+
+        Space target = gameController.board.getRebootTokenSpace();
+        if (target.getPlayer() != null){
+            gameController.moveInDirection(target.getPlayer(),1,((RebootToken)target.getActions().get(0)).getHeading());
+        }
+        currentPlayer.setSpace(target);
+        target.getActions().get(0).doAction(gameController,target);
         cardController.emptyProgram(currentPlayer);
-        currentPlayer.setHeading(Heading.NORTH);
         return false;
     }
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         CardController cardController = CardController.getInstance();
         Player currentPlayer = space.getPlayer();
-        cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
-        cardController.drawSpamCardToDiscardPile(currentPlayer);
-        System.out.println(currentPlayer.getName() + " is now being rebooted");
-        currentPlayer.setSpace(currentPlayer.startSpace);
+        if (!currentPlayer.hasCard("Firewall")){
+            cardController.drawSpamCardToDiscardPile(currentPlayer); //Draws two spam damage cards
+            cardController.drawSpamCardToDiscardPile(currentPlayer);
+        } else {
+            System.out.println("Player has a firewall installed and draws no spam cards.");
+        }
+
+        Space target = gameController.board.getRebootTokenSpace();
+        if (target.getPlayer() != null){
+            gameController.moveInDirection(target.getPlayer(),1,((RebootToken)target.getActions()).getHeading());
+        }
+        currentPlayer.setSpace(target);
+        target.getActions().get(0).doAction(gameController,target);
         cardController.emptyProgram(currentPlayer);
-        currentPlayer.setHeading(Heading.NORTH);
+        return false;
 
 
-        // TODO: Below is basically pseudocode for one way to handle how we could manage selecting direction
+        //Below is basically pseudocode for one way to handle how we could manage selecting direction
         /*
         //Alternative to this is to let the choosing currentPlayer/client finish the entire game, and then push the new
         //game state to the server, which everyone would then receive. This would be easier but would mess up the
@@ -56,7 +73,5 @@ public class Pit extends FieldAction { //More generally just used for rebooting 
             //Repeatedly poll until direction has been pushed
             //currentPlayer.setHeading(newHeading); //newHeading from server
         }*/
-
-        return false;
     }
 }

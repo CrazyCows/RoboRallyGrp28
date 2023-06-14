@@ -668,8 +668,9 @@
       "background": [
         "NORTH",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
@@ -695,8 +696,9 @@
       "background": [
         "WEST",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
@@ -722,8 +724,9 @@
       "background": [
         "SOUTH",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
@@ -749,8 +752,9 @@
       "background": [
         "EAST",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
@@ -768,7 +772,7 @@
       "walls": [],
       "background": [
         "NORTH",
-        "hansi.png"
+        "energyFull.png"
       ],
       "actions": [
         {
@@ -786,7 +790,7 @@
       "walls": [],
       "background": [
         "NORTH",
-        "hansi.png"
+        "energyFull.png"
       ],
       "actions": [
         {
@@ -804,7 +808,7 @@
       "walls": [],
       "background": [
         "NORTH",
-        "hansi.png"
+        "energyFull.png"
       ],
       "actions": [
         {
@@ -822,7 +826,7 @@
       "walls": [],
       "background": [
         "NORTH",
-        "hansi.png"
+        "energyFull.png"
       ],
       "actions": [
         {
@@ -840,7 +844,7 @@
       "walls": [],
       "background": [
         "NORTH",
-        "hansi.png"
+        "energyFull.png"
       ],
       "actions": [
         {
@@ -858,7 +862,7 @@
       "walls": [],
       "background": [
         "NORTH",
-        "hansi.png"
+        "energyFull.png"
       ],
       "actions": [
         {
@@ -871,6 +875,24 @@
       ],
       "x": 10,
       "y": 7
+    },
+    {
+      "walls": [],
+      "background": [
+        "SOUTH",
+        "reboottoken.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.RebootToken",
+          "INSTANCE": {
+            "heading": "SOUTH",
+            "name": "Reboot token"
+          }
+        }
+      ],
+      "x": 7,
+      "y": 3
     }
   ]
 }

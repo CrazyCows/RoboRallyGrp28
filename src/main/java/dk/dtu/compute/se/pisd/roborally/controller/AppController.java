@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.fileaccess.*;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
@@ -47,8 +48,6 @@ import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -72,7 +71,6 @@ public class AppController implements Observer {
 
     private ClientController clientController;
     private String chosenBoard;
-    private String gamePath;
     private JsonInterpreter jsonInterpreter;
 
     private String animationRobotDirection;
@@ -81,7 +79,7 @@ public class AppController implements Observer {
     private Player localPlayer;
     private String username;
     private String gameID;
-    private boolean isMaster;
+    private volatile boolean isMaster;
     private boolean isPrivate;
     private String gamePassword;
     private String userColor;
@@ -90,13 +88,36 @@ public class AppController implements Observer {
     private boolean autoSave;
     private int amountOfPlayers;
     private boolean online;
+    private boolean windowSuccess = true;
+    private boolean saveTheGame;
 
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
+
+    // Used to reset all parameters
+    public void resetSetupProcess() {
+        gameController = null;
+        clientController = null;
+        chosenBoard = null;
+        jsonInterpreter = null;
+        localPlayer = null;
+        username = null;
+        gameID = null;
+        isMaster = false;
+        isPrivate = false;
+        gamePassword = null;
+        userColor = null;
+        winnerPlayer = null;
+        autoSave = false;
+        online = false;
+    }
+
     public void newGameForm() {
+        roboRally.setMusicVolume(0.2);
+
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Online game");
 
@@ -108,6 +129,7 @@ public class AppController implements Observer {
         TextField gameNameField = new TextField();
         ComboBox<Integer> amountOfPlayersField = new ComboBox<>();
         amountOfPlayersField.getItems().addAll(PLAYER_NUMBER_OPTIONS);
+        amountOfPlayersField.getSelectionModel().selectFirst();
         CheckBox autoSaveCheckBox = new CheckBox("Auto Save");
         Label infoLabel = new Label();
 
@@ -119,19 +141,25 @@ public class AppController implements Observer {
         gridPane.add(infoLabel, 1, 3);
 
         Label boardsLabel = new Label("Boards");
-        ComboBox<String> boards = new ComboBox<String>();
+        ComboBox<String> boards = new ComboBox<>();
         boards.getItems().addAll(getBoardNames());
+        boards.getSelectionModel().selectFirst();
         gridPane.add(boardsLabel, 0, 4);
         gridPane.add(boards, 1, 4);
 
         Button continueButton = new Button("Continue");
         gridPane.add(continueButton,0, 5);
         continueButton.setOnAction(e -> {
+            jsonInterpreter = new JsonInterpreter();
+            if (gameNameField.getText().equals("") || jsonInterpreter.getAllGames().contains(gameNameField.getText())) {
+                infoLabel.setText("Invalid name or game already exists");
+                return;
+            }
+            this.gameID = gameNameField.getText();
             this.amountOfPlayers = amountOfPlayersField.getSelectionModel().getSelectedItem();
             this.autoSave = autoSaveCheckBox.isSelected();
-            this.gameID = gameNameField.getText();
             this.chosenBoard = boards.getSelectionModel().getSelectedItem();
-            this.clientController = new ClientController(this.gameID);
+            this.clientController = new ClientController(false, this.gameID);
 
             System.out.println("gameName: " + gameID);
             System.out.println("amountOfPlayers: " + amountOfPlayers);
@@ -139,8 +167,7 @@ public class AppController implements Observer {
 
             jsonInterpreter = new JsonInterpreter();
             try {
-                clientController.getJSON("playerData.json");
-                if (jsonInterpreter.gameStarted()) {
+                if (jsonInterpreter.gameStarted() && online) {
                     infoLabel.setText("Error: " + gameID + " already exists. ");
                 }
                 else {
@@ -150,6 +177,12 @@ public class AppController implements Observer {
                 System.out.println("Game does not exist");
                 dialogStage.close();
             }
+        });
+
+        dialogStage.setOnCloseRequest(ex -> {
+            resetSetupProcess();
+            this.windowSuccess = false;
+            dialogStage.close();
         });
 
         VBox vbox = new VBox(gridPane);
@@ -162,40 +195,43 @@ public class AppController implements Observer {
         dialogStage.showAndWait();
     }
 
+
+    // create new game
     public void newGame() {
+        if (isGameRunning()) {
+            resetSetupProcess();
+        }
+        resetSetupProcess();
         this.online = false;
 
         newGameForm();
-        roboRally.setMusicVolume(0.0);
-
-        if (gameController != null) {
-            // The UI should not allow this, but in case this happens anyway.
-            // give the user the option to save the game or abort this operation!
-            if (!stopGame()) {
-                return;
-            }
+        if (!windowSuccess) {
+            windowSuccess = true;
+            return;
         }
 
         roboRally.removeStartImage();
         Board board = LoadBoard.loadBoard(chosenBoard, true);
-        roboRally.pauseMusic();
+        board.setOnline(false);
 
 
-        for (int i = 0; i < this.amountOfPlayers; i++) { //TODO: Changed by Anton so players dont start on pit
+        for (int i = 0; i < this.amountOfPlayers; i++) {
             Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
             board.addPlayer(player);
             player.setSpace(board.getSpace(i % board.width, i));
         }
         assert board != null;
         gameController = new GameController(roboRally, clientController, board, this.online, null);
+        gameController.setPhase(Phase.INITIALISATION);
 
         board.setCurrentPlayer(board.getPlayer(0));
         roboRally.createBoardView(gameController);
 
-        clientController = new ClientController(gameID);
+        clientController = new ClientController(false, gameID);
         clientController.createJSON("sharedBoard.json");
         for (Player player : gameController.board.getAllPlayers()) {
             JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
+            jsonPlayerBuilder.createPlayerJSON(this.gameController);
             clientController.createJSON("playerData.json");
             try {
                 Thread.sleep(500);
@@ -204,34 +240,123 @@ public class AppController implements Observer {
             }
         }
 
-
+        gameController.setPhase(Phase.PROGRAMMING);
+        roboRally.setMusicVolume(0.1);
     }
 
     public void newOnlineGame() {
+        roboRally.setMusicVolume(0.2);
+        if (isGameRunning()) {
+            resetSetupProcess();
+        }
+        resetSetupProcess();
         this.online = true;
         this.isMaster = true;
         onlineGame();
+        if (!windowSuccess) {
+            windowSuccess = true;
+            return;
+        }
         setupRobot();
+        if (!windowSuccess) {
+            windowSuccess = true;
+            return;
+        }
         gameLobby();
+        if (!windowSuccess) {
+            windowSuccess = true;
+        }
     }
 
     public void joinOnlineGame() {
+        roboRally.setMusicVolume(0.2);
+        if (isGameRunning()) {
+            resetSetupProcess();
+        }
         this.online = true;
         this.isMaster = false;
 
         onlineGame();
+        if (!windowSuccess) {
+            windowSuccess = true;
+            return;
+        }
 
         setupRobot();
+        if (!windowSuccess) {
+            windowSuccess = true;
+            return;
+        }
         gameLobby();
+        if (!windowSuccess) {
+            windowSuccess = true;
+        }
     }
 
     public void saveGame() {
 
-        if (!online) {
+        if (online) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Save Game");
+            String message = "You can't save online games. ";
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+            return;
+        }
+
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Save Game");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        Label info = new Label("Do you want to save the game?");
+
+        Button yesButton = new Button("Yes");
+        Button noButton = new Button("No");
+
+        gridPane.add(info, 0, 0);
+        gridPane.add(yesButton,0, 1);
+        gridPane.add(noButton, 1, 1);
+        yesButton.setOnAction(e -> {
+            saveTheGame = true;
+            dialogStage.close();
+        });
+        noButton.setOnAction(e -> {
+            saveTheGame = false;
+            dialogStage.close();
+        });
+
+        dialogStage.setOnCloseRequest(ex -> {
+            saveTheGame = false;
+            dialogStage.close();
+        });
+
+        VBox vbox = new VBox(gridPane);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(10);
+
+        Scene dialogScene = new Scene(vbox, 280, 180);
+
+        dialogStage.setScene(dialogScene);
+        dialogStage.showAndWait();
+
+        if (!saveTheGame) {
+            return;
+        }
+
+        if (!online || !gameController.board.getTimerIsRunning()) {
             for (Player player : gameController.board.getAllPlayers()) {
                 JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
                 jsonPlayerBuilder.createPlayerJSON(this.gameController);
                 clientController.updateJSON("playerData.json");
+                for (Player p : gameController.board.getAllPlayers()){
+                    p.setReady(false);
+                }
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -250,6 +375,14 @@ public class AppController implements Observer {
             alert.showAndWait();
         }
 
+        else {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Save Game");
+            String message = "Can't save game while timer is running! " ;
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
     }
 
     private static String padString(String input, int length) {
@@ -262,6 +395,18 @@ public class AppController implements Observer {
     }
 
     public void loadGameForm(ArrayList<String> availableGames) {
+        roboRally.setMusicVolume(0.2);
+
+        if (online) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Load Game");
+            String message = "Please close the current game before loading a saved game";
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+            return;
+        }
+
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Load Game");
 
@@ -325,6 +470,12 @@ public class AppController implements Observer {
             dialogStage.close();
         });
 
+        dialogStage.setOnCloseRequest(ex -> {
+            resetSetupProcess();
+            this.windowSuccess = false;
+            dialogStage.close();
+        });
+
         VBox vbox = new VBox(gridPane);
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(10);
@@ -336,6 +487,7 @@ public class AppController implements Observer {
     }
 
     public void loadGame() {
+        roboRally.setMusicVolume(0.1);
 
         clientController = new ClientController();
         clientController.availableGamesJSON();
@@ -344,15 +496,13 @@ public class AppController implements Observer {
 
         loadGameForm(availableGames);
 
-
-
         if (gameID != null) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
                 // give the user the option to save the game or abort this operation!
 
                 if (!stopGame()) {
-                    String message = "Are you retarded? ";  // we should probably remove this.
+                    String message = "Error string ";  // we should probably remove this.
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setTitle("No saved games");
                     alert.setHeaderText(null);
@@ -364,7 +514,7 @@ public class AppController implements Observer {
 
             roboRally.removeStartImage();
 
-            clientController = new ClientController(gameID);
+            clientController = new ClientController(false, gameID);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -380,12 +530,13 @@ public class AppController implements Observer {
             }
 
             Board board = LoadBoard.loadBoard("sharedBoard.json", false);
-            roboRally.pauseMusic();
+            board.setOnline(false);
 
             JsonPlayerBuilder.createPlayersFromLoad(board, jsonInterpreter.getPlayerNames());
 
             assert board != null;
             gameController = new GameController(roboRally, clientController, board, this.online, null);
+            gameController.setPhase(Phase.PROGRAMMING);
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
         }
@@ -404,7 +555,9 @@ public class AppController implements Observer {
 
         ComboBox<String> robotComboBox = new ComboBox<>();
         robotComboBox.getItems().addAll(PLAYER_COLORS);
-        robotComboBox.getItems().removeAll(jsonInterpreter.getColorsInUse());
+        if (!isMaster) {
+            robotComboBox.getItems().removeAll(jsonInterpreter.getColorsInUse());
+        }
         robotComboBox.getSelectionModel().selectFirst();
 
         gridPane.add(robotComboBox, 0, 0);
@@ -412,30 +565,32 @@ public class AppController implements Observer {
         Button continueButton = new Button("Continue");
 
         String[] directions = {"north", "east", "south", "west"};
-        String direction = "";
+
         Thread countThread = new Thread(() -> {
             int counter = 0;
-            while (!continueButton.isPressed()) {
+            final int sleep = 380;
+            while (!continueButton.isPressed() || dialogStage.isShowing()) {
                 this.animationRobotDirection = directions[counter];
                 Platform.runLater(() -> {
                     ObservableList<Node> children = gridPane.getChildren();
                     children.removeIf(node -> GridPane.getColumnIndex(node) == 1 && GridPane.getRowIndex(node) == 0);
                     String selectedOption = robotComboBox.getValue();
-                    System.out.println("images/robots/" + selectedOption + "_" + this.animationRobotDirection + "_facing_robot" + ".png");
+                    //System.out.println("images/robots/" + selectedOption + "_" + this.animationRobotDirection + "_facing_robot" + ".png");
                     Image robotImage = new Image("images/robots/" + selectedOption + "_" + this.animationRobotDirection + "_facing_robot" + ".png");
                     ImageView robotImageView = new ImageView(robotImage);
                     gridPane.add(robotImageView, 1, 0);
                 });
-                System.out.println(counter);
+                //System.out.println(counter);
                 counter += 1;
                 if (counter == directions.length) {
                     counter = 0;
                 }
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(sleep);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+
 
                 // Check if the stage is closed
                 if (!dialogStage.isShowing()) {
@@ -463,14 +618,32 @@ public class AppController implements Observer {
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             roboRally.removeStartImage();
-            Board board = LoadBoard.loadBoard(this.chosenBoard, true);
-            roboRally.pauseMusic();
+            Board board = null;
+            if (isMaster) {
+                board = LoadBoard.loadBoard(this.chosenBoard, true);
+                board.setOnline(true);
+                assert board != null;
+                LoadBoard.saveBoard(board);
+                clientController.createJSON("sharedBoard.json");
+            }
+            else {
+                clientController.getJSON("sharedBoard.json");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                board = LoadBoard.loadBoard(null, false);
+                board.setOnline(true);
+
+            }
 
             assert board != null;
 
             this.localPlayer = new Player(board, userColor, username);
             if (this.isMaster) {
                 localPlayer.setMasterStatus(true);
+                localPlayer.setMaster(localPlayer.getName());
             }
 
             board.addPlayer(localPlayer);
@@ -481,11 +654,17 @@ public class AppController implements Observer {
 
 
             gameController = new GameController(roboRally, clientController, board, this.online, localPlayer);
+            gameController.setPhase(Phase.INITIALISATION);
 
             board.setCurrentPlayer(board.getPlayer(0));
             roboRally.createBoardView(gameController);
 
+            dialogStage.close();
+        });
 
+        dialogStage.setOnCloseRequest(ex -> {
+            resetSetupProcess();
+            this.windowSuccess = false;
             dialogStage.close();
         });
 
@@ -561,13 +740,14 @@ public class AppController implements Observer {
             System.out.println("Username: " + username);
             System.out.println("Lobby name: " + lobbyName);
             System.out.println("Private Game: " + privateGame);
-            System.out.println("Password: " + passwordField);
+            if (!(Objects.equals(passwordField.getText(),"") || passwordField.getText() == null)){
+                System.out.println("Password: " + passwordField.getText());
+            }
             this.username = username;
             this.gameID = lobbyName;
             this.isPrivate = privateGame;
             this.gamePassword = password;
-            this.clientController = new ClientController(this.gameID);
-            gamePath = "data/playerdata.json";
+            this.clientController = new ClientController(true, this.gameID);
 
             jsonInterpreter = new JsonInterpreter();
             try {
@@ -592,6 +772,12 @@ public class AppController implements Observer {
             }
         });
 
+        dialogStage.setOnCloseRequest(ex -> {
+            resetSetupProcess();
+            this.windowSuccess = false;
+            dialogStage.close();
+        });
+
         VBox vbox = new VBox(gridPane);
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(10);
@@ -606,28 +792,33 @@ public class AppController implements Observer {
 
         ArrayList<String> boards = new ArrayList<>();
 
-        ClassLoader classLoader = AppController.class.getClassLoader();
-        URL folderUrl = Objects.requireNonNull(classLoader.getResource("boards"));
-
+        // Attempt to retrieve board names from resources
         try {
-            File folder = new File(folderUrl.toURI());
+            ClassLoader classLoader = AppController.class.getClassLoader();
+            File resourceFolder = new File(Objects.requireNonNull(classLoader.getResource("boards")).getFile());
 
-            File[] files = folder.listFiles();
+            File[] files = resourceFolder.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    String name = file.getName();
-                    String[] substring = name.split("\\.");
-                    for (String sub : substring) {
-                        if (sub.equals("json")) {
-                            boards.add(substring[0]);
-                        }
+                    if (file.isFile() && file.getName().endsWith(".json")) {
+                        String boardName = file.getName().substring(0, file.getName().lastIndexOf('.'));
+                        boards.add(boardName);
                     }
                 }
             }
-        } catch (URISyntaxException e) {
-            System.out.println("Problem occurred when retrieving boards from ressources. ");
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println("Resource 'boards' not found in the resources folder. Attempting to read from local 'boards' folder...");
         }
+
+
+        if (boards.isEmpty()) {
+            boards.add("defaultBoard");
+            boards.add("dizzyHighway");
+            boards.add("emptyTestBoard");
+            boards.add("twister");
+
+        }
+
         return boards;
     }
 
@@ -660,11 +851,14 @@ public class AppController implements Observer {
         JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(this.localPlayer);
         jsonInterpreter = new JsonInterpreter();
         System.out.println(localPlayer.getName());
-        this.clientController.createJSON("sharedBoard.json");
         this.clientController.createJSON("playerData.json");
+        this.clientController.createJSON("cardSequenceRequest.json");
 
         this.clientController.getJSON("playerData.json");
-        localPlayer.setMaster(jsonInterpreter.getMaster());
+        if (!isMaster) {
+            localPlayer.setMaster(jsonInterpreter.getMaster());
+            this.clientController.createJSON("sharedBoard.json");
+        }
 
         Thread countThread = new Thread(() -> {
             while (true) {
@@ -687,9 +881,11 @@ public class AppController implements Observer {
                     }
                 });
 
+                /*
                 for (String name : names) {
                     System.out.println(name + ": " + jsonInterpreter.isReady(name));
                 }
+                */
 
                 this.localPlayer.setReady(checkBoxes.get(0).isSelected());
                 jsonPlayerBuilder.updateDynamicPlayerData();
@@ -706,13 +902,15 @@ public class AppController implements Observer {
                 if (!dialogStage.isShowing()) {
                     break;
                 }
-                else if (isMaster && checkBoxes.get(0).isSelected()) {
+                else if (isMaster && checkBoxes.get(0).isSelected() && jsonInterpreter.getPlayerNames().size() > 1 && jsonInterpreter.isAllReady()) {
                     jsonPlayerBuilder.updateDynamicPlayerData();
                     clientController.updateJSON("playerData.json");
                     clientController.getJSON("playerData.json");
 
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
+
+                    gameController.setPhase(Phase.PROGRAMMING);
 
                     Platform.runLater(dialogStage::close);
                 }
@@ -724,24 +922,26 @@ public class AppController implements Observer {
                     JsonPlayerBuilder.createPlayersFromLoad(gameController.board, names);
                     localPlayer.setInGame(true);
 
+                    gameController.setPhase(Phase.PROGRAMMING);
+
                     Platform.runLater(dialogStage::close);
                 }
             }
 
             gameController.setupOnline();
             System.out.println("Game lobby thread has ended");
+            roboRally.setMusicVolume(0.1);
         });
+        countThread.setDaemon(true);
         countThread.start();
 
-
-
-
-        Button continueButton = new Button("Continue");
-        continueButton.setOnAction(e -> {
+        dialogStage.setOnCloseRequest(ex -> {
+            resetSetupProcess();
+            this.windowSuccess = false;
             dialogStage.close();
         });
 
-        VBox vbox = new VBox(gridPane, continueButton);
+        VBox vbox = new VBox(gridPane);
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(10);
 
@@ -762,12 +962,15 @@ public class AppController implements Observer {
      * @return true if the current game was stopped, false otherwise
      */
     public boolean stopGame() {
+        roboRally.setMusicVolume(0.1);
         if (gameController != null) {
-
-            // here we save the game (without asking the user).
-            saveGame();
+            // here we save the game if the game is not online
+            if (!online) {
+                saveGame();
+            }
 
             gameController = null;
+            resetSetupProcess();
             roboRally.createBoardView(null);
             return true;
         }

@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -91,9 +92,11 @@ public class ChatView extends Tab implements ViewObserver {
             }
         }
         else if (otherPlayers.contains(subject)) {
-            for (Player player : otherPlayers) {
-                if (subject == player) {
-                    displayMessage(player.getName() + ": " + player.getMessage());
+            if (gameController.board.getPhase() == Phase.PROGRAMMING) {
+                for (Player player : otherPlayers) {
+                    if (subject == player) {
+                        displayMessage(player.getName() + ": " + player.getMessage());
+                    }
                 }
             }
         }

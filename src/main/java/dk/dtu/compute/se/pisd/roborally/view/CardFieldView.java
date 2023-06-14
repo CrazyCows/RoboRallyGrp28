@@ -56,11 +56,17 @@ public class CardFieldView extends GridPane implements ViewObserver {
     final public static Border BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2)));
 
     final public static Background BG_DEFAULT = new Background(new BackgroundFill(Color.WHITE, null, null));
+
+    final public static Background BG_TEST = new Background(new BackgroundFill(Color.DEEPPINK, null, null));
     final public static Background BG_DRAG = new Background(new BackgroundFill(Color.GRAY, null, null));
     final public static Background BG_DROP = new Background(new BackgroundFill(Color.LIGHTGRAY, null, null));
 
     final public static Background BG_ACTIVE = new Background(new BackgroundFill(Color.YELLOW, null, null));
     final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW, null, null));
+
+    public CommandCardField getField() {
+        return field;
+    }
 
     private CommandCardField field;
 
@@ -85,7 +91,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
         this.setMinHeight(CARDFIELD_HEIGHT);
         this.setMaxHeight(CARDFIELD_HEIGHT);
 
-        label = new Label("This is a slightly longer text");
+        label = new Label("");
         label.setWrapText(true);
         label.setMouseTransparent(true);
         this.add(label, 0, 0);
@@ -158,7 +164,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
                     } catch (Exception e) {
                         this.setBackground(BG_ACTIVE);
                     }
-                    label.setText(card.getName());
+                    // for debugging
+                    //label.setText(card.getName());
                 } else {
                     this.setBackground(BG_DONE); // set background color to green
                     label.setText("");
@@ -174,7 +181,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(MouseEvent event) {
-            System.out.println("OnDragDetectedHandler detected");
+            //System.out.println("OnDragDetectedHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView source = (CardFieldView) t;
@@ -227,7 +234,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragEnteredHandler detected");
+            //System.out.println("OnDragEnteredHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView target = (CardFieldView) t;
@@ -251,7 +258,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragExitedHandler detected");
+            //System.out.println("OnDragExitedHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView target = (CardFieldView) t;
@@ -275,7 +282,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragDroppedHandler detected");
+            //System.out.println("OnDragDroppedHandler detected");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView target = (CardFieldView) t;
@@ -315,7 +322,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
                 } catch (Exception e) {
                     target.setBackground(BG_DEFAULT);
                 }
-                label.setText(field.getCard().getName());
+                label.setText("");
             }
             event.consume();
         }
@@ -326,7 +333,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
         @Override
         public void handle(DragEvent event) {
-            System.out.println("OnDragDetectedHandler called.");
+            //System.out.println("OnDragDetectedHandler called.");
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView source = (CardFieldView) t;

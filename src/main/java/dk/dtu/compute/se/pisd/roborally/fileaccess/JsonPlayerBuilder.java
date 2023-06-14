@@ -11,6 +11,9 @@ import dk.dtu.compute.se.pisd.roborally.model.card.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,12 +60,12 @@ public class JsonPlayerBuilder {
         } catch (JsonProcessingException e){
             e.printStackTrace();
         } catch (IOException d){
-            System.out.println(d);
+            d.printStackTrace();
         }
     }
 
 
-    public void updateDynamicPlayerData(){
+    public synchronized void updateDynamicPlayerData(){
         if (this.player.getName().equals(player.getName())){
             playerData.put("posx", player.getSpace().getPosition()[0]);
             playerData.put("posy", player.getSpace().getPosition()[1]);
@@ -225,6 +228,5 @@ public class JsonPlayerBuilder {
         }
     }
 
-    // TODO: Cards that players have will be removed from the upgradeshop
 
 }

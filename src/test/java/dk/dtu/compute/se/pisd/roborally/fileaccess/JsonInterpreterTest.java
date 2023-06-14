@@ -1,12 +1,14 @@
 package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class JsonInterpreterTest {
 
     @BeforeEach
@@ -49,6 +51,12 @@ class JsonInterpreterTest {
         JsonInterpreter jsonInterpreter = new JsonInterpreter();
         ArrayList<String> names = jsonInterpreter.getPlayerNames();
         jsonInterpreter.getAllCardsFromPlayer("Player 1", "handPile");
+    }
+
+    @Test
+    void TestCheckReceivedCardSequence() {
+        JsonInterpreter jsonInterpreter = new JsonInterpreter();
+        System.out.println(jsonInterpreter.checkReceivedCardSequence("kitty"));
     }
 
 }

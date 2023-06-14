@@ -38,6 +38,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * ...
@@ -51,12 +52,14 @@ public class LoadBoard {
     private static final String BOARDSFOLDER = "boards";
     private static final String DEFAULTBOARD = "dizzyHighway";
     private static final String JSON_EXT = "json";
+    private static final int STANDARD_BOARD_HEIGHT = 8;
+    private static final int STANDARD_BOARD_WIDTH = 8;
 
     public static Board loadBoard(String name, boolean newGame) {
         if (name == null) {
             name = DEFAULTBOARD;
         } else if (name.equals("empty")) {
-            return new Board(8, 8);
+            return new Board(STANDARD_BOARD_WIDTH, STANDARD_BOARD_HEIGHT);
         }
 
         ClassLoader classLoader;
@@ -72,8 +75,7 @@ public class LoadBoard {
             }
 
             if (inputStream == null) {
-                // TODO these constants should be defined somewhere
-                return new Board(8, 8);
+                return new Board(STANDARD_BOARD_WIDTH, STANDARD_BOARD_HEIGHT);
             }
 
 
@@ -89,6 +91,8 @@ public class LoadBoard {
             reader = gson.newJsonReader(new InputStreamReader(inputStream));
             BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
 
+            ArrayList<Space> laserGuns = new ArrayList<>();
+
             result = new Board(template.width, template.height);
             for (SpaceTemplate spaceTemplate : template.spaces) {
                 Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
@@ -96,7 +100,7 @@ public class LoadBoard {
                     space.getActions().addAll(spaceTemplate.actions);
                     for (FieldAction fieldAction : space.getActions()) {
                         if (fieldAction instanceof LaserGun) {
-                            ((LaserGun) fieldAction).setup(space);
+                            laserGuns.add(space);
                         }
                     }
                     space.getWalls().addAll(spaceTemplate.walls);
@@ -111,6 +115,15 @@ public class LoadBoard {
 
                 }
             }
+
+            for (Space space : laserGuns) {
+                for (FieldAction fieldAction : space.getActions()) {
+                    if (fieldAction instanceof LaserGun) {
+                        ((LaserGun) fieldAction).setup(space);
+                    }
+                }
+            }
+
             // TODO: EXPERIMENTAL - uses new PlayerTemplate - see players.txt
             if (!newGame) {
                 int it = 0;

@@ -25,10 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.ImageLoader;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -60,11 +57,11 @@ public class SpaceView extends StackPane implements ViewObserver {
     final public static int SPACE_HEIGHT = 75;
     final public static int SPACE_WIDTH = 75;
 
-    final private static String emptyEnergySpace = "navn.png";
+    final private static String emptyEnergySpace = "energyEmpty.png";
 
     public final Space space;
     private ImageView backgroundImageView;
-    private ImageView overlayImageView;
+    private ArrayList<ImageView> overlayImageViews;
     private ImageLoader imageLoader = new ImageLoader();
     private String heading;
     private ImageView playerImageView;
@@ -90,6 +87,9 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-color: black; -fx-border-color: black; -fx-border-width: 4px;");
         }
 
+
+        /*
+        // old way of displaying walls. Can be used for debugging purposes
         if (!this.space.getWalls().isEmpty()) {
             for (Heading heading : this.space.getWalls()) {
                 if (heading == NORTH) {
@@ -110,6 +110,9 @@ public class SpaceView extends StackPane implements ViewObserver {
                 }
             }
         }
+        */
+
+        this.overlayImageViews = new ArrayList<>();
 
         //this.imageView.setPreserveRatio(true);
         //this.imageView.fitHeightProperty().bind(this.heightProperty());
@@ -122,14 +125,15 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     public void setBackround(List<String> background) {
-        // TODO: background is a list of ressource image strings
-        // TODO: cycle through them for animations.
+        //The following comments are probably deprecated
+        //background is a list of ressource image strings
+        //cycle through them for animations.
         String imagePath;
         if (background.size() != 0) {
             this.heading = background.get(0);
             imagePath = background.get(1);
 
-            System.out.println(imagePath + "<<<");
+            //System.out.println(imagePath + "<<<");
             this.backgroundImageView = imageLoader.getImageView(imagePath);
             switch (this.heading) {
                 case "NORTH":
@@ -160,21 +164,33 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
-    public void updateItem(String overlayImagePath) {
+    /*public void updateItem(String overlayImagePath) {
         this.overlayImageView = imageLoader.getImageView(overlayImagePath);
         this.overlayImageView.setFitHeight(SPACE_HEIGHT-4);
         this.overlayImageView.setFitWidth(SPACE_WIDTH-4);
         this.getChildren().add(this.overlayImageView);
-    }
+    }*/
 
-    public void updateOverlay(String overlayImagePath) {
-        // Remove the existing overlay ImageView, if it exists
-        this.getChildren().remove(overlayImageView);
+    public void updateOverlay(String overlayImagePath, String itemHeading) {
 
         // Create a new ImageView for the overlay image
-        this.overlayImageView = imageLoader.getImageView(overlayImagePath);
+        ImageView overlayImageView = imageLoader.getImageView(overlayImagePath);
         overlayImageView.setFitHeight(SPACE_HEIGHT - 4);
         overlayImageView.setFitWidth(SPACE_WIDTH - 4);
+        switch (itemHeading) {
+            case "NORTH":
+                overlayImageView.setRotate(0);
+                break;
+            case "EAST":
+                overlayImageView.setRotate(90);
+                break;
+            case "SOUTH":
+                overlayImageView.setRotate(180);
+                break;
+            case "WEST":
+                overlayImageView.setRotate(270);
+                break;
+        }
 
         // Add the overlay ImageView to the SpaceView
         this.getChildren().add(overlayImageView);
@@ -184,8 +200,13 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     public void removeOverlay() {
-        // Remove the overlay ImageView, if it exists
-        this.getChildren().remove(overlayImageView);
+        // Removes the existing overlay ImageViews, if any exists
+        for (ImageView image : this.overlayImageViews) {
+            this.getChildren().remove(image);
+        }
+        for (Heading heading : space.getWalls()) {
+            updateOverlay("wall.png", heading.toString());
+        }
 
         // Trigger a layout pass to update the view
         this.requestLayout();
@@ -242,13 +263,26 @@ public class SpaceView extends StackPane implements ViewObserver {
             }
 
             setBackround(space.getBackground());
+            for (Heading heading : space.getWalls()) {
+                boolean laserGun = false;
+                for (Item item : space.getItems()) {
+                    if (item.getName().equals("laserGun")) {
+                        laserGun = true;
+                        break;
+                    }
+                }
+                if (!laserGun) {
+                    updateOverlay("wall.png", heading.toString());
+                }
+            }
             if (!space.getItems().isEmpty()) {
-                updateOverlay(space.getItems().get(space.getItems().size() - 1).getImage());
+                removeOverlay();
+                for (Item item : space.getItems()) {
+                    updateOverlay(item.getImage(), item.getHeading().toString());
+                }
             }
             else {
-                if (overlayImageView != null) {
-                    removeOverlay();
-                }
+                removeOverlay();
             }
         }
         updatePlayer();

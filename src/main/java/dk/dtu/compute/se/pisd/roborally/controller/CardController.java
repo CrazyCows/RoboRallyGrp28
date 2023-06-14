@@ -18,12 +18,14 @@ public class CardController {
     private CardLoader cardLoader;
     private ArrayList<Card> universalDeck = new ArrayList<>();
 
-    //Since these cards are simpler, we can just use a stack. Makes operations slightly simpler
-
     /**
      * ONLY TO BE USED DURING INITIAL LOADING
      */
     ArrayList<DamageCard> allDamageCards = new ArrayList<>();
+
+
+    //Since these cards are simpler, we can just use a stack. Makes operations slightly simpler.
+    //TODO: They should definitely be moved to the model when time constrains are lesser
     public Stack<DamageCard> virusPile = new Stack<>(); //Pile of cards to draw from
     public Stack<DamageCard> trojanPile = new Stack<>(); //Cards that have been run
     public Stack<DamageCard> wormPile = new Stack<>(); //Pile of cards to draw from
@@ -41,7 +43,8 @@ public class CardController {
 
     /**
      * Singleton constuctor.
-     * Creates a card pile, and shuffles them
+     * Creates a card pile, from json.
+     * Also fills up the piles of damage cards. (Which shouldn't be in the controller)
      */
     private CardController() {
         this.cardLoader = CardLoader.getInstance();
@@ -68,7 +71,7 @@ public class CardController {
      * Fills player hand with cards from pile
      * @param player player who draws cards
      */
-    public void drawCards(Player player){
+    public synchronized void drawCards(Player player){
         int numberOfCards = getNumberOfCardsInHandPile(player);
         for (int i = 0; i < player.getHandSize() - numberOfCards; i++) {
             drawOneCard(player);
@@ -174,19 +177,19 @@ public class CardController {
         }
         try{
             player.discardPile.add(virusPile.pop());
-            System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
+            System.out.println(player.getName() + " draws a VIRUS card and adds it to their discard pile");
         } catch (EmptyStackException a){
             try{
                 player.discardPile.add(spamPile.pop());
-                System.out.println(player.getName() + " draws a virus card and adds it to their discard pile");
+                System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
             } catch (EmptyStackException b){
                 try{
                     player.discardPile.add(wormPile.pop());
-                    System.out.println(player.getName() + " draws a worm card and adds it to their discard pile");
+                    System.out.println(player.getName() + " draws a WORM card and adds it to their discard pile");
                 } catch (EmptyStackException c){
                     try{
                         player.discardPile.add(trojanPile.pop());
-                        System.out.println(player.getName() + " draws a trojan card and adds it to their discard pile");
+                        System.out.println(player.getName() + " draws a TROJAN card and adds it to their discard pile");
                     } catch (EmptyStackException d){
                         System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
                     }
@@ -209,15 +212,15 @@ public class CardController {
         } catch (EmptyStackException a){
             try{
                 player.discardPile.add(virusPile.pop());
-                System.out.println(player.getName() + " draws a virus card and adds it to their discard pile");
+                System.out.println(player.getName() + " draws a VIRUS card and adds it to their discard pile");
             } catch (EmptyStackException b){
                 try{
                     player.discardPile.add(wormPile.pop());
-                    System.out.println(player.getName() + " draws a worm card and adds it to their discard pile");
+                    System.out.println(player.getName() + " draws a WORM card and adds it to their discard pile");
                 } catch (EmptyStackException c){
                     try{
                         player.discardPile.add(trojanPile.pop());
-                        System.out.println(player.getName() + " draws a trojan card and adds it to their discard pile");
+                        System.out.println(player.getName() + " draws a TROJAN card and adds it to their discard pile");
                     } catch (EmptyStackException d){
                         System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
                     }
@@ -225,6 +228,63 @@ public class CardController {
             }
         }
     }
+
+    public void drawTrojanCardToDiscardPile(Player player){ //Could be put into a single method which would be cleaner but not help anyone
+        if (player == null){
+            System.out.println("Null player cannot draw cards");
+            return;
+        }
+        try{
+            player.discardPile.add(trojanPile.pop());
+            System.out.println(player.getName() + " draws a TROJAN card and adds it to their discard pile");
+        } catch (EmptyStackException a){
+            try{
+                player.discardPile.add(spamPile.pop());
+                System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
+            } catch (EmptyStackException b){
+                try{
+                    player.discardPile.add(wormPile.pop());
+                    System.out.println(player.getName() + " draws a WORM card and adds it to their discard pile");
+                } catch (EmptyStackException c){
+                    try{
+                        player.discardPile.add(virusPile.pop());
+                        System.out.println(player.getName() + " draws a VIRUS card and adds it to their discard pile");
+                    } catch (EmptyStackException d){
+                        System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
+                    }
+                }
+            }
+        }
+    }
+
+    public void drawWormCardToDiscardPile(Player player){ //Could be put into a single method which would be cleaner but not help anyone
+        if (player == null){
+            System.out.println("Null player cannot draw cards");
+            return;
+        }
+        try{
+            player.discardPile.add(wormPile.pop());
+            System.out.println(player.getName() + " draws a WORM card and adds it to their discard pile");
+        } catch (EmptyStackException a){
+            try{
+                player.discardPile.add(spamPile.pop());
+                System.out.println(player.getName() + " draws a SPAM card and adds it to their discard pile");
+            } catch (EmptyStackException b){
+                try{
+                    player.discardPile.add(trojanPile.pop());
+                    System.out.println(player.getName() + " draws a TROJAN card and adds it to their discard pile");
+                } catch (EmptyStackException c){
+                    try{
+                        player.discardPile.add(virusPile.pop());
+                        System.out.println(player.getName() + " draws a VIRUS card and adds it to their discard pile");
+                    } catch (EmptyStackException d){
+                        System.out.println("There are no more damage cards. Rules don't specify what happens now, but I suppose nothing");
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * COPIES all cards from the universal deck to the player drawPile. Only time that universalDeck should be used afaik
@@ -243,12 +303,12 @@ public class CardController {
     public void fillAllPlayersProgramFromHand(Board board) {
         for (Player player : board.getAllPlayers()){
             board.setCurrentPlayer(player);
-            this.fillProgramFromHand(player);
             board.notifyChange();
+            this.fillProgramFromHand(player);
         }
     }
 
-    public void fillAllPlayersProgramFromHandOnline(Player player) {
+    public void fillPlayersProgramFromHandOnline(Player player) {
         player.board.setCurrentPlayer(player);
         this.fillProgramFromHand(player);
         player.board.notifyChange();

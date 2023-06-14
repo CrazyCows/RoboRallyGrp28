@@ -69,7 +69,7 @@ public class Space extends Subject {
 
     // removes the player from its old position
     // and places the player on this new space instead
-    // TODO: THIS IS THE MODEL. SHOULD BE HANDLED BY CONTROLLER
+    //One could argue it should be handled by a controller
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&

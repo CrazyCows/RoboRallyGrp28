@@ -22,9 +22,12 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace;
+import dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -80,10 +83,11 @@ public class BoardView extends VBox implements ViewObserver {
     Label priceTempLabel;
     Label pricePermLabel;
 
-    private SpaceEventHandler spaceEventHandler;
+    //private SpaceEventHandler spaceEventHandler;
     private ArrowKeyEventHandler arrowKeyEventHandler;
     private GameController gameController;
     int timerSecondsCount;
+    Player localPlayer;
 
     public SpaceView[][] getSpaces(){
         return this.spaces;
@@ -112,18 +116,21 @@ public class BoardView extends VBox implements ViewObserver {
         timers[6] = new Image("hourglass6.png");
         timerView = new ImageView(timers[0]);
 
-        timerButton = new Button("Start timer");
-        timerButton.setOnAction( e -> gameController.startTimer());
+        timerButton = new Button("Start timer [testing only]");
+        timerButton.setOnAction( e -> gameController.timerButtonPressed());
+        localPlayer = board.getPlayer(0);
 
         upgradeShopButton = new Button("Upgrade Shop");
         upgradeShopButton.setOnAction( e -> {
-            if (gameController.getLocalPlayer() != null) {
-                setEnergyLabel(gameController.getLocalPlayer().getEnergyCubes());
-            }
-            else {
-                setEnergyLabel(board.getCurrentPlayer().getEnergyCubes());
-            }
-            displayUpgradeShop();
+            Platform.runLater(() -> {
+                if (board.getOnline()) {
+                    setEnergyLabel(localPlayer.getEnergyCubes());
+                }
+                else {
+                    setEnergyLabel(localPlayer.getEnergyCubes());
+                }
+                displayUpgradeShop();
+            });
         });
 
         GridPane timerGridPane = new GridPane();
@@ -145,7 +152,7 @@ public class BoardView extends VBox implements ViewObserver {
 
         spaces = new SpaceView[board.width][board.height];
 
-        spaceEventHandler = new SpaceEventHandler(gameController);
+        //spaceEventHandler = new SpaceEventHandler(gameController);
         arrowKeyEventHandler = new ArrowKeyEventHandler(gameController);
 
         for (int x = 0; x < board.width; x++) {
@@ -153,15 +160,29 @@ public class BoardView extends VBox implements ViewObserver {
                 Space space = board.getSpace(x, y);
                 SpaceView spaceView = new SpaceView(space);
                 spaceView.setBackround(space.getBackground());
+
+                for (Heading heading : space.getWalls()) {
+                    boolean laserGun = false;
+                    for (FieldAction fieldAction : space.getActions()) {
+                        if (fieldAction instanceof LaserGun) {
+                            laserGun = true;
+                            break;
+                        }
+                    }
+                    if (!laserGun) {
+                        spaceView.updateOverlay("wall.png", heading.toString());
+                    }
+                }
+
                 for (Item item : space.getItems()) {
-                    spaceView.updateOverlay(item.getImage());
+                    spaceView.updateOverlay(item.getImage(), item.getHeading().toString());
                 }
                 spaces[x][y] = spaceView;
 
                 //spaceView.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(5))));
                 //spaceView.setPadding(new Insets(10));
                 mainBoardPane.add(spaceView, x, y);
-                spaceView.setOnMouseClicked(spaceEventHandler);
+                //spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
 
@@ -385,33 +406,30 @@ public class BoardView extends VBox implements ViewObserver {
     }
 
     private void nextTimer() {
-
-        if (board.getTimerIsRunning()) {
-            if (board.getTimerSecondsCount() % 5 == 0) {
-                nextTimerInt += 1;
-            }
-            if (timers.length - 1 < nextTimerInt) {
-                nextTimerInt = 0;
-            }
-            this.timerView.setImage(timers[nextTimerInt]);
-        }
-        else {
-            nextTimerInt = 0;
+        int k = (int) Math.floor(((float)board.getTimerSecondsCount())/5) + 1; //I hope this maths the math
+        if (board.getTimerSecondsCount() >= 29 || board.getTimerSecondsCount() == 0){
             this.timerView.setImage(timers[0]);
+        } else {
+            this.timerView.setImage(timers[k]);
         }
+
+
     }
+
+
 
 
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
 
-
             Phase phase = board.getPhase();
             InterationRestrictor(phase);
             statusLabel.setText(board.getStatusMessage());
             if (board.getTimerIsRunning()){
                 nextTimer();
+            }else {
+                this.timerView.setImage(timers[0]);
             }
         }
         if (subject == upgradeShop) {
@@ -423,7 +441,8 @@ public class BoardView extends VBox implements ViewObserver {
         }
     }
 
-    // XXX this handler and its uses should eventually be deleted! This is just to help test the
+    /*
+    // XXX this handler and its uses should eventually be disabled! This is just to help test the
     //     behaviour of the game by being able to explicitly move the players on the board!
     private class SpaceEventHandler implements EventHandler<MouseEvent> {
 
@@ -448,7 +467,7 @@ public class BoardView extends VBox implements ViewObserver {
             }
         }
 
-    }
+    }*/
 
     private class ArrowKeyEventHandler implements EventHandler<KeyEvent> {
 

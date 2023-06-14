@@ -19,7 +19,7 @@
         }
       ],
       "x": 0,
-      "y": 0
+      "y": 1
     },
     {
       "walls": [
@@ -296,7 +296,7 @@
       "items": [
         {
           "name": "checkpoint",
-          "image" : "checkpointhansi0.png",
+          "image" : "checkpoint0.png",
           "heading" : "NORTH",
           "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.Checkpoint"
         }
@@ -308,6 +308,9 @@
       "walls": [],
       "background": [
         "NORTH",
+        "laserGun.png",
+        "laserBeam1.png",
+        "laserBeam2.png",
         "laserGun.png"
       ],
       "actions": [
@@ -327,8 +330,9 @@
       "background": [
         "SOUTH",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
       ],
       "actions": [
         {
@@ -341,6 +345,24 @@
       ],
       "x": 4,
       "y": 1
+    },
+    {
+      "walls": [],
+      "background": [
+        "WEST",
+        "reboottoken.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.RebootToken",
+          "INSTANCE": {
+            "heading": "WEST",
+            "name": "Reboot token"
+          }
+        }
+      ],
+      "x": 7,
+      "y": 4
     }
   ]
 }

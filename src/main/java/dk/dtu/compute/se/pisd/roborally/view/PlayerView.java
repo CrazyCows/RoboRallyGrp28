@@ -28,8 +28,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -95,13 +95,13 @@ public class PlayerView extends Tab implements ViewObserver {
         //      players, but on the PlayersView (view for all players). This should be
         //      refactored.
 
-        finishButton = new Button("Finish Programming (run all cards)");
-        finishButton.setOnAction( e -> gameController.finishProgrammingPhase());
+        finishButton = new Button("Finish Programming");
+        finishButton.setOnAction( e -> gameController.intermediateFunction());
 
-        executeButton = new Button("Execute Program");
+        executeButton = new Button("Execute Program [TESTING ONLY]");
         executeButton.setOnAction( e-> gameController.executeProgram(player.currentProgram()));
 
-        stepButton = new Button("Execute Current Register");
+        stepButton = new Button("Execute Current Register [TESTING ONLY]");
         stepButton.setOnAction( e-> gameController.executeStep(player.getSpace()));
 
         buttonPanel = new VBox(finishButton, executeButton, stepButton);
@@ -137,15 +137,28 @@ public class PlayerView extends Tab implements ViewObserver {
         }
     }
 
-    @Override
-    public void updateView(Subject subject) {
+    @Override                                                                               //Comments by Anton
+    public void updateView(Subject subject) {                                               //Incredibly icky if you dont understand it
         //System.out.println("PlayerView has been run");
-        if (subject == player.board) {
+        if (subject == player.board) {             //Does nothing if the board isnt the right board.
+
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
-                CardFieldView cardFieldView = programCardViews[i];
-                if (cardFieldView != null) {
-                    if (player.board.getPhase() == Phase.PROGRAMMING ) {
-                        cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
+                CardFieldView cardFieldView = programCardViews[i];//Iterates over the registers. Note: Player is NOT the current player
+                if (cardFieldView != null) {                    //Makes sure the view exists
+                    if (cardFieldView.getField().getCard() != null){
+                            Image image = new Image(cardFieldView.getField().getImageOnCard());
+                            BackgroundImage backgroundImage = new BackgroundImage(
+                                    image, BackgroundRepeat.NO_REPEAT,
+                                    BackgroundRepeat.NO_REPEAT,
+                                    BackgroundPosition.DEFAULT,
+                                    new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                            cardFieldView.setBackground(new Background(backgroundImage));
+                    }
+                    //The below code was used for animating commandcardfields, but we don't do that.
+                    // Caused a headache as it removed the cards from the view
+                    /*
+                    if (player.board.getPhase() == Phase.PROGRAMMING) {
+                        cardFieldView.setBackground(CardFieldView.BG_TEST);
                     } else {
                         if (i < player.board.getStep()) {
                             cardFieldView.setBackground(CardFieldView.BG_DONE);
@@ -161,7 +174,10 @@ public class PlayerView extends Tab implements ViewObserver {
                             cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                         }
                     }
+                     */
                 }
+
+
             }
 
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) { // We never use PLAYER_INTERACTION (always true)
@@ -169,7 +185,7 @@ public class PlayerView extends Tab implements ViewObserver {
                     programPane.getChildren().remove(playerInteractionPanel);
                     programPane.add(buttonPanel, Player.NO_REGISTERS, 0);
                 }
-                switch (player.board.getPhase()) {
+                switch (player.board.getPhase()) { //TODO: Fill out the rest of the buttons
                     case INITIALISATION:
                         finishButton.setDisable(true);
                         executeButton.setDisable(true);
@@ -214,12 +230,10 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
                 playerInteractionPanel.getChildren().clear();
 
+                //This isn't implemented
                 if (player.board.getCurrentPlayer() == player) {
-                    // TODO Assignment P3: these buttons should be shown only when there is
-                    //      an interactive command card, and the buttons should represent
-                    //      the player's choices of the interactive command card. The
-                    //      following is just a mockup showing two options
-                    Button optionButton = new Button("Option1");
+
+                    Button optionButton = new Button("Option 1");
                     optionButton.setOnAction( e -> gameController.notImplemented());
                     optionButton.setDisable(false);
                     playerInteractionPanel.getChildren().add(optionButton);

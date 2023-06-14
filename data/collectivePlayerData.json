@@ -1,12 +1,14 @@
 [ {
   "posx" : 2,
   "posy" : 2,
-  "energycubes" : 100,
   "color" : "red",
-  "readystate" : false,
-  "playerisLead" : false,
-  "name" : "fdsdsfa",
+  "readystate" : true,
+  "heading" : "SOUTH",
+  "isMaster" : true,
+  "energyCubes" : 5,
+  "name" : "ge4",
+  "checkpointsCollected" : 0,
   "inGame" : false,
   "message" : "",
-  "master" : true
+  "master" : "ge4"
 } ]

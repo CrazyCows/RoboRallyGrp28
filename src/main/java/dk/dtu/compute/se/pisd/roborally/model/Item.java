@@ -16,10 +16,6 @@ public class Item {
     String name;
     String image;
 
-    public Heading getHeading() {
-        return heading;
-    }
-
     Heading heading;
     String eventClassName;
     FieldAction event;
@@ -56,6 +52,10 @@ public class Item {
 
     public FieldAction getEvent() {
         return event;
+    }
+
+    public Heading getHeading() {
+        return heading;
     }
 
 

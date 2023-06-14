@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.model.card.UpgradeCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
@@ -44,7 +45,7 @@ public class Player extends Subject {
     //VARIABLES
 
     final public static int NO_REGISTERS = 5;
-    final public static int NO_CARDS = 9;
+    public static int NO_CARDS = 9; //Not final because a permanent upgrade card can increase this. Merge with other values
 
     final public Board board;
 
@@ -70,9 +71,9 @@ public class Player extends Subject {
     private Card lastCard = null;
     private int checkpointsCollected = 0;
 
-    //TODO: These are already defined, duplicates are stoopid
-    private static int handSize = 9;
-    private static int programSize = 5;
+    //TODO: These are already defined, duplicates are unnecessary
+    private static int handSize = 9;  //Not final because a permanent upgrade card can increase this
+    private static final int programSize = 5;
     private ArrayList<CommandCardField> program = new ArrayList<>(); //Cards selected to be the in the program
     private ArrayList<CommandCardField> handPile = new ArrayList<>(); //Drawn cards
     public ArrayList<Card> drawPile = new ArrayList<>(); //Pile of cards to draw from
@@ -88,6 +89,11 @@ public class Player extends Subject {
     public Card getLastCard() {
         return lastCard;
     }
+
+    /**
+     * Should be used for respawning when not on the same board as the reboot token
+     * @return the space the player initially started on.
+     */
     public Space getStartSpace() {return startSpace;}
     public void setLastCard(Card lastCard) {
         this.lastCard = lastCard;
@@ -98,7 +104,7 @@ public class Player extends Subject {
     public void incrementUsedCards(){
         usedCards++;
     }
-    public int getEnergyCubes() {
+    public int getEnergyCubes() { //Maybe make this concurrent?
         return energyCubes;
     }
     public ArrayList<Card> getDrawPile() {
@@ -148,7 +154,7 @@ public class Player extends Subject {
     public boolean isReady() {
         return ready;
     }
-    public void setReady(boolean state) {
+    public synchronized void setReady(boolean state) {
         this.ready = state;
     }
     public boolean isInGame() {
@@ -285,7 +291,8 @@ public class Player extends Subject {
     }
 
     public void setHeading(@NotNull String heading) {
-        Heading head = Heading.valueOf(heading);//TODO: Can't we just do this?
+        //Heading head = Heading.valueOf(heading); This should be a simplification but due to time constraints and lack
+        //of unit tests, we are keeping the old method (it just works)
         switch (heading) {
             case "NORTH" -> this.heading = Heading.NORTH;
             case "EAST" -> this.heading = Heading.EAST;
@@ -323,10 +330,14 @@ public class Player extends Subject {
         }
     }
 
+
+    /**
+     * THIS FUNCTION IS WRONG
+     * @return
+     */
     public Card drawCardFromPile() {
         Card card = drawPile.get(0);
         drawPile.remove(card);
-        discardPile.add(card);
         return card;
     }
 
@@ -435,5 +446,14 @@ public class Player extends Subject {
             }
         }
         return -1;
+    }
+
+    public boolean hasCard(String cardName) {
+        for (Card card : permUpgradeCards){
+            if (Objects.equals(card.getName(), cardName)){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -59,9 +59,11 @@ public class PlayersView extends TabPane implements ViewObserver {
         update(board);
 
         this.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            Player selectedPlayer = board.getPlayer(this.getTabs().get(newValue.intValue()).getText());
-            System.out.println("Tab selected: " + selectedPlayer.getName());
-            board.setCurrentPlayer(selectedPlayer);
+            if (!gameController.getOnline()) {
+                Player selectedPlayer = board.getPlayer(this.getTabs().get(newValue.intValue()).getText());
+                System.out.println("Tab selected: " + selectedPlayer.getName());
+                board.setCurrentPlayer(selectedPlayer);
+            }
         });
 
     }
@@ -69,12 +71,21 @@ public class PlayersView extends TabPane implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
-            if (board.getPhase() == Phase.ACTIVATION) {
-                Player current = board.getCurrentPlayer();
-                this.getSelectionModel().select(board.getPlayerNumber(current));
+            if (board.getPhase() == Phase.ACTIVATION && board.getOnline()) {
+                this.getSelectionModel().selectFirst();
+                chat.setDisable(true);
             }
-
+            if (board.getPhase() == Phase.ACTIVATION) {
+                if (!board.getOnline()) {
+                    Player current = board.getCurrentPlayer();
+                    this.getSelectionModel().select(board.getPlayerNumber(current));
+                }
+                else {
+                    chat.setDisable(false);
+                }
+            }
         }
     }
+
 
 }

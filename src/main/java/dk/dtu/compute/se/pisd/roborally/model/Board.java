@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.CardController;
+import dk.dtu.compute.se.pisd.roborally.controller.field.RebootToken;
 import javafx.application.Platform;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.card.Card;
@@ -59,20 +60,19 @@ public class Board extends Subject {
     private int step = 0;
 
     private boolean stepMode;
-
-    CardController cardController = CardController.getInstance();
-    private int timerSecondsCount;
+    private volatile int timerSecondsCount;
     private boolean timerIsRunning;
     private Space priorityAntennaSpace;
+    private Space RebootTokenSpace;
     private UpgradeShop upgradeShop;
 
     private int numberOfCheckpoints = 0;
+    private boolean online;
 
     private ArrayList<Space> laserSpaces = new ArrayList<>();
 
     public Board(int width, int height) {
         this.upgradeShop = new UpgradeShop();
-
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
@@ -82,10 +82,7 @@ public class Board extends Subject {
                 spaces[x][y] = space;
             }
         }
-        if (priorityAntennaSpace == null) {
-            System.out.println("ERROR: NO PRIORITY ANTENNA");
-            //TODO: IDK why this error is here. PriorityAntenna still works somehow
-        }
+
         this.stepMode = false;
         this.timerSecondsCount = 0;
         this.timerIsRunning = false;
@@ -103,13 +100,34 @@ public class Board extends Subject {
                 }
             }
         }
+        if (priorityAntennaSpace == null) {
+            System.out.println("ERROR: NO PRIORITY ANTENNA");
+        }
         return priorityAntennaSpace;
+    }
+
+    public Space getRebootTokenSpace() {
+        if (RebootTokenSpace == null) {
+            for (Space[] spaceRow : spaces) {
+                for (Space space : spaceRow) {
+                    if (!space.getActions().isEmpty()) {
+                        if (space.getActions().get(0).getClass() == RebootToken.class) {
+                            RebootTokenSpace = space;
+                        }
+                    }
+                }
+            }
+        }
+        return RebootTokenSpace;
     }
 
     public Integer getGameId() {
         return gameId;
     }
 
+    /**
+     * Deprecated function.
+     */
     public void setGameId(int gameId) {
         if (this.gameId == null) {
             this.gameId = gameId;
@@ -128,17 +146,7 @@ public class Board extends Subject {
             return null;
         }
     }
-/*
-    public void loadBoard(int boardNumber) {
-        if (boardNumber == 1) {
-            for (int i = 0; i < this.width; i++) {
-                for (int j = 0; j < this.height; j++) {
-                    spaces[i][j].setImage("test_field2.jpg");
-                }
-            }
-        }
-    }
- */
+
     public int getPlayersNumber() {
         return players.size();
     }
@@ -220,7 +228,7 @@ public class Board extends Subject {
         }
     }
 
-    public List<Player> getAllPlayers() {
+    public synchronized List<Player> getAllPlayers() {
         return players;
     }
     public void removePlayer(Player player) {
@@ -234,20 +242,9 @@ public class Board extends Subject {
      * @param space the space for which the neighbour should be computed
      * @param heading the heading of the neighbour comapred to the original field
      * @param checkForWalls should there be checked for walls?
-     * @return the space in the given direction; null if there is no (reachable) neighbour
+     * @return the space in the given direction
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading, boolean checkForWalls) {
-        /*if (space.getWalls().contains(heading)) {
-            return null;
-        }*/
-        // TODO needs to be implemented based on the actual spaces
-        //      and obstacles and walls placed there. For now it,
-        //      just calculates the next space in the respective
-        //      direction in a cyclic way.
-        //      "It might not need that at all" -Tsun Tsu, the art of war (Anton)
-
-        // XXX an other option (not for now) would be that null represents a hole
-        //     or the edge of the board in which the players can fall
 
         int x = space.x;
         int y = space.y;
@@ -291,9 +288,8 @@ public class Board extends Subject {
     }
 
     public void setTimerSecondsCount(int seconds) {
-        Platform.runLater(this::notifyChange);
-
         this.timerSecondsCount = seconds;
+        Platform.runLater(this::notifyChange);
     }
 
     public void setTimerIsRunning(boolean status) {
@@ -345,5 +341,13 @@ public class Board extends Subject {
             }
         }
         return laserSpaces;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public boolean getOnline() {
+        return online;
     }
 }

@@ -27,6 +27,8 @@ public class EnergySpace extends FieldAction {
             this.energyCubes--;
             player.addEnergyCubes(1);
             System.out.println(player.getName() + " draws an energy cube from the Energy Space they landed on, and now have " + player.getEnergyCubes() + " energy cubes, leaving the energy space with " + this.energyCubes + " energy cubes");
+            player.notifyChange();
+            gameController.board.notifyChange();
         }
         else{
             System.out.println(player.getName() + " landed on an energy field, but there is no more energy to collect!");
