@@ -1,24 +1,41 @@
 ROBORALLY README
 ----------------------
-**This version of RoboRally is very much still a WIP.**
-
+**RoboRally the good version**
 -----------------------------------------------------
-Because of this we recommend cloning the repo from the GitHub repo or entering the version
-uploaded in this zip and opening it using an IDE like IntelliJ, and running it from there;
-instead of building a fully fledged runnable jar and so forth.
 
-The function that needs to be run to properly run the game is:
-src/main/java/dk/dtu/compute/se/pisd/roborally/StartRoboRally.java
+Requirements:
+- Windows 10 or above
+- Java jdk 18 or above
 
-For this development JDK18 has been used, and the software
-has not been tested using any other version.
 
-This version can now save games when exiting, as well as loading previously saved boards.
+    Installing the game:
+    
+* It is possible to install the game with the included
 
-The game also includes programming, a timer, different card decks, walls, conveyor belts,
-and an upgrade shop (which so far is just an empty window).
 
-There is also an antenna thing to determine player priority as well as holes in the map and that kind of thing.
+    Launching the game:
+
+* It is HIGHLY recommended to start the game using the included .bat file from the finished RoboRally.zip file
+* To run Roborally through the .bat file it requires RoboRally.jar, RESTfulAPI.jar and start.bat to be in the same folder
+* To run the game, double-click the .bat file.
+
+* To run the game using an IDE it is required to also have an instance of RESTful API running. Refer to readme in RestFull
+* Make a configuration to run dk.dtu.compute.se.pisd.roborally.StartRoboRally
+* Run the configuration
+
+
+    About the game:
+
+* "All week long, the robots of ROBO RALLY toil over their work. There’s no escaping their factory home,
+  so these robots know only one joy: to be the victor in their weekly race of survival and sabotage.
+  Choose a robot, and program it to move, turn, pick up energy, and navigate the trials of the factory.
+  Be prepared to watch all your plans go wrong as rival robots of equal ambition push and blast their
+  way through. It’s every robot for itself in this strategic race through the factory"
+
+
+
+
+
 
  
 
