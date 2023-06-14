@@ -308,6 +308,9 @@
       "walls": [],
       "background": [
         "NORTH",
+        "laserGun.png",
+        "laserBeam1.png",
+        "laserBeam2.png",
         "laserGun.png"
       ],
       "actions": [
@@ -327,8 +330,9 @@
       "background": [
         "SOUTH",
         "laserGun.png",
-        "pit.jpg",
-        "navn.png"
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png",
       ],
       "actions": [
         {
