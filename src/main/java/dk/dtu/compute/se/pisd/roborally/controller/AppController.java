@@ -89,6 +89,7 @@ public class AppController implements Observer {
     private int amountOfPlayers;
     private boolean online;
     private boolean windowSuccess = true;
+    private boolean saveTheGame;
 
 
     public AppController(@NotNull RoboRally roboRally) {
@@ -289,6 +290,60 @@ public class AppController implements Observer {
 
     public void saveGame() {
 
+        if (online) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Save Game");
+            String message = "You can't save online games. ";
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+            return;
+        }
+
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Save Game");
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        Label info = new Label("Do you want to save the game?");
+
+        Button yesButton = new Button("Yes");
+        Button noButton = new Button("No");
+
+        gridPane.add(info, 0, 0);
+        gridPane.add(yesButton,0, 1);
+        gridPane.add(noButton, 1, 1);
+        yesButton.setOnAction(e -> {
+            saveTheGame = true;
+            dialogStage.close();
+        });
+        noButton.setOnAction(e -> {
+            saveTheGame = false;
+            dialogStage.close();
+        });
+
+        dialogStage.setOnCloseRequest(ex -> {
+            saveTheGame = false;
+            dialogStage.close();
+        });
+
+        VBox vbox = new VBox(gridPane);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(10);
+
+        Scene dialogScene = new Scene(vbox, 280, 180);
+
+        dialogStage.setScene(dialogScene);
+        dialogStage.showAndWait();
+
+        if (!saveTheGame) {
+            return;
+        }
+
         if (!online || !gameController.board.getTimerIsRunning()) {
             for (Player player : gameController.board.getAllPlayers()) {
                 JsonPlayerBuilder jsonPlayerBuilder = new JsonPlayerBuilder(player);
@@ -314,15 +369,15 @@ public class AppController implements Observer {
             alert.setContentText(message);
             alert.showAndWait();
         }
+
         else {
-            Alert alert = new Alert(AlertType.WARNING);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Save Game");
-            String message = "You can't save online games. ";
+            String message = "Can't save game while timer is running! " ;
             alert.setHeaderText(null);
             alert.setContentText(message);
             alert.showAndWait();
         }
-
     }
 
     private static String padString(String input, int length) {
@@ -863,18 +918,13 @@ public class AppController implements Observer {
         countThread.setDaemon(true);
         countThread.start();
 
-        Button continueButton = new Button("Continue");
-        continueButton.setOnAction(e -> {
-            dialogStage.close();
-        });
-
         dialogStage.setOnCloseRequest(ex -> {
             resetSetupProcess();
             this.windowSuccess = false;
             dialogStage.close();
         });
 
-        VBox vbox = new VBox(gridPane, continueButton);
+        VBox vbox = new VBox(gridPane);
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(10);
 
@@ -897,8 +947,10 @@ public class AppController implements Observer {
     public boolean stopGame() {
         if (gameController != null) {
 
-            // here we save the game (without asking the user).
-            saveGame();
+            // here we save the game if the game is not online
+            if (!online) {
+                saveGame();
+            }
 
             gameController = null;
             roboRally.createBoardView(null);
