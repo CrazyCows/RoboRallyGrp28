@@ -210,6 +210,8 @@ public class GameController {
         boolean isWall1 = originalPlayer.getSpace().getWalls().contains(heading);//Checks whether theres a wall in the way on the start field
         boolean isWall2 = false;
         if (!OGTargetIsNull) {
+            Heading next = heading.next().next();
+            System.out.println(next);
             isWall2 = originalTarget.getWalls().contains(heading.next().next());
         } //Checks whether theres a wall on the destination field, facing the start field
 
@@ -238,7 +240,7 @@ public class GameController {
                 cardController.drawWormCardToDiscardPile(other);
             }
 
-            Space newTarget = board.getNeighbour(originalTarget, heading, true);
+            Space newTarget = board.getNeighbour(originalTarget, heading, false);
             otherPlayerMoved = (moveToSpace(other, newTarget, heading));
         }
 
