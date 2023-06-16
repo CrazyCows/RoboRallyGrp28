@@ -621,7 +621,7 @@ public class GameController {
                 Player currentPlayer = null;
                 currentPlayer = getNextPlayer();
                 board.setCurrentPlayer(currentPlayer);
-                int sleep = 200; //I'd like to make this dynamically decrease, so that plays accelerate. Not done for now though TODO: This should probably be upped in final release, but is kept low for testing
+                int sleep = 1000; //I'd like to make this dynamically decrease, so that plays accelerate. Not done for now though TODO: This should probably be upped in final release, but is kept low for testing
                 while (true) {
                     try {
                         Thread.sleep(sleep);
@@ -632,15 +632,15 @@ public class GameController {
                         card.getAction().doAction(GameController.this, currentPlayer, card); //I hate this implementation
                         List<FieldAction> fieldActions = currentPlayer.getSpace().getActions();
                         for (FieldAction fieldAction : fieldActions) {
-                            Thread.sleep(500); //Generify?
+                            Thread.sleep(sleep); //Generify?
                             fieldAction.doAction(GameController.this, currentPlayer.getSpace());
                         }
                         List<Item> items = currentPlayer.getSpace().getItems();
                         for (Item item : items) {
-                            Thread.sleep(500);
+                            Thread.sleep(sleep);
                             item.getEvent().doAction(GameController.this, currentPlayer.getSpace());
                         }
-                        Thread.sleep(500);
+                        Thread.sleep(sleep);
 
                     } catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");

@@ -37,16 +37,22 @@
       "commandName": "MOVEONE"
     },
     {
-      "name": "Move 1",
-      "imagePath": "images/cards/programmingCardImages/Move1.png",
+      "name": "Turn Left",
+      "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "commandName": "MOVEONE"
+      "commandName": "LEFT"
     },
     {
-      "name": "Move 1",
-      "imagePath": "images/cards/programmingCardImages/Move1.png",
+      "name": "Turn Left",
+      "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
       "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "commandName": "MOVEONE"
+      "commandName": "LEFT"
+    },
+    {
+      "name": "Turn Left",
+      "imagePath": "images/cards/programmingCardImages/LeftTurn.png",
+      "actionClassName": "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "commandName": "LEFT"
     }
   ],
   "specialProgrammingCards": [

@@ -1,0 +1,203 @@
+{
+  "width": 8,
+  "height": 8,
+  "spaces": [
+    {
+      "items": [
+        {
+          "name": "priorityAntenna",
+          "image" : "priorityAntenna.png",
+          "heading" : "NORTH",
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.PriorityAntenna"
+        }
+      ],
+      "x": 5,
+      "y": 2
+    },
+    {
+      "walls": [
+      ],
+      "background": [
+        "SOUTH",
+        "test_field1.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt1",
+          "INSTANCE": {
+            "heading": "SOUTH"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 1
+    },
+    {
+      "background": [
+        "SOUTH",
+        "test_field2.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+          "INSTANCE": {
+            "heading": "SOUTH"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 3
+    },
+    {
+      "background": [
+        "EAST",
+        "test_field2.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+          "INSTANCE": {
+            "heading": "EAST"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 4
+    },
+    {
+      "background": [
+        "EAST",
+        "test_field2.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.ConveyorBelt2",
+          "INSTANCE": {
+            "heading": "EAST"
+          }
+        }
+      ],
+      "x": 1,
+      "y": 4
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "gear_left.jpg"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Gear",
+          "INSTANCE": {
+            "heading": "NORTH",
+            "direction": "right"
+          }
+        }
+      ],
+      "x": 2,
+      "y": 4
+    },
+    {
+      "walls": [],
+      "background": [
+        "NORTH",
+        "energyFull.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.EnergySpace",
+          "INSTANCE": {
+            "heading": "NORTH",
+            "name": "energySpace"
+          }
+        }
+      ],
+      "x": 2,
+      "y": 5
+    },
+    {
+      "walls": [],
+      "background": [
+        "WEST",
+        "laserGun.png",
+        "laserBeam1.png",
+        "laserBeam2.png",
+        "laserGun.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.LaserGun",
+          "INSTANCE": {
+            "heading": "WEST",
+            "name": "laserGun"
+          }
+        }
+      ],
+      "x": 2,
+      "y": 6
+    },
+    {
+      "walls": [
+        "WEST"
+      ],
+      "x": 1,
+      "y": 6
+    },
+    {
+      "walls": [
+        "SOUTH"
+      ],
+      "x": 2,
+      "y": 7
+    },
+    {
+      "walls": [
+      ],
+      "background": [
+        "NORTH",
+        "pit.jpg"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.Pit",
+          "INSTANCE": {
+            "heading": "NORTH"
+          }
+        }
+      ],
+      "x": 3,
+      "y": 7
+    },
+    {
+      "walls": [],
+      "background": [
+        "WEST",
+        "reboottoken.png"
+      ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.field.RebootToken",
+          "INSTANCE": {
+            "heading": "WEST",
+            "name": "Reboot token"
+          }
+        }
+      ],
+      "x": 7,
+      "y": 4
+    },
+    {
+      "items": [
+        {
+          "name": "checkpoint",
+          "image" : "checkpoint0.png",
+          "heading" : "NORTH",
+          "eventClassName": "dk.dtu.compute.se.pisd.roborally.controller.item.Checkpoint"
+        }
+      ],
+      "x": 5,
+      "y": 4
+    }
+  ]
+}
