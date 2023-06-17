@@ -289,8 +289,13 @@ public class CardLoader {
             //System.out.println("The reader is: " + reader);
             JsonObject jsonData = parser.parse(reader).getAsJsonObject();
 
+            System.out.println("jsonData is: " + jsonData);
+
             // Access the player based on playerName
-            JsonObject player = jsonData.getAsJsonObject(name);
+            JsonObject player = null;
+            player = jsonData.getAsJsonObject(name);
+
+
 
             if (player == null) {
                 System.out.println("BAD STUFF");
@@ -298,6 +303,8 @@ public class CardLoader {
 
             // Get the "programmingCards" array from the player object
             JsonArray programmingCards = player.getAsJsonArray("programmingCards"); //Already wrong here
+
+            assert programmingCards != null;
 
             // Create a new JSON object to store the extracted "programmingCards" array
             JsonObject extractedData = new JsonObject();
