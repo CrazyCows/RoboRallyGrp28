@@ -114,7 +114,7 @@ public class AppController implements Observer {
     }
 
     public void newGameForm() {
-        roboRally.setMusicVolume(0.2);
+        roboRally.setMusicVolume(0);
 
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Online game");
@@ -237,11 +237,11 @@ public class AppController implements Observer {
         }
 
         gameController.setPhase(Phase.PROGRAMMING);
-        roboRally.setMusicVolume(0.1);
+        roboRally.setMusicVolume(0);
     }
 
     public void newOnlineGame() {
-        roboRally.setMusicVolume(0.2);
+        roboRally.setMusicVolume(0);
         if (isGameRunning()) {
             resetSetupProcess();
         }
@@ -265,7 +265,7 @@ public class AppController implements Observer {
     }
 
     public void joinOnlineGame() {
-        roboRally.setMusicVolume(0.2);
+        roboRally.setMusicVolume(0);
         if (isGameRunning()) {
             resetSetupProcess();
         }
@@ -391,7 +391,7 @@ public class AppController implements Observer {
     }
 
     public void loadGameForm(ArrayList<String> availableGames) {
-        roboRally.setMusicVolume(0.2);
+        roboRally.setMusicVolume(0);
 
         if (online) {
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -483,7 +483,7 @@ public class AppController implements Observer {
     }
 
     public void loadGame() {
-        roboRally.setMusicVolume(0.1);
+        roboRally.setMusicVolume(0);
 
         clientController = new ClientController();
         clientController.availableGamesJSON();
@@ -926,7 +926,7 @@ public class AppController implements Observer {
 
             gameController.setupOnline();
             System.out.println("Game lobby thread has ended");
-            roboRally.setMusicVolume(0.1);
+            roboRally.setMusicVolume(0);
         });
         countThread.setDaemon(true);
         countThread.start();
@@ -958,7 +958,7 @@ public class AppController implements Observer {
      * @return true if the current game was stopped, false otherwise
      */
     public boolean stopGame() {
-        roboRally.setMusicVolume(0.1);
+        roboRally.setMusicVolume(0);
         if (gameController != null) {
             // here we save the game if the game is not online
             if (!online) {
