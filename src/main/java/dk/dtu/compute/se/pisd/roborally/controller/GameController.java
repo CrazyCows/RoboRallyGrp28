@@ -610,7 +610,7 @@ public class GameController {
                 Player currentPlayer = null;
                 currentPlayer = getNextPlayer();
                 board.setCurrentPlayer(currentPlayer);
-                int sleep = 1000; //I'd like to make this dynamically decrease, so that plays accelerate. Not done for now though TODO: This should probably be upped in final release, but is kept low for testing
+                int sleep = 10000; //I'd like to make this dynamically decrease, so that plays accelerate. Not done for now though TODO: This should probably be upped in final release, but is kept low for testing
                 while (true) {
                     try {
                         Thread.sleep(sleep);

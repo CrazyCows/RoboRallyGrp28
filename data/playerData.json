@@ -1,6 +1,6 @@
 {
-  "posx" : 0,
-  "posy" : 0,
+  "posx" : 2,
+  "posy" : 6,
   "color" : "red",
   "readystate" : false,
   "heading" : "SOUTH",
@@ -8,7 +8,7 @@
   "energyCubes" : 5,
   "name" : "Emil",
   "checkpointsCollected" : 0,
-  "inGame" : false,
+  "inGame" : true,
   "message" : "",
   "master" : "Emil"
 }
