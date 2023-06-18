@@ -1,13 +1,14 @@
 {
-  "posx" : 4,
-  "posy" : 4,
+  "posx" : 0,
+  "posy" : 0,
   "color" : "red",
   "readystate" : false,
-  "heading" : "EAST",
-  "isMaster" : false,
-  "energyCubes" : 10,
-  "name" : "Player 1",
+  "heading" : "SOUTH",
+  "isMaster" : true,
+  "energyCubes" : 5,
+  "name" : "Emil",
   "checkpointsCollected" : 0,
   "inGame" : false,
-  "master" : null
+  "message" : "",
+  "master" : "Emil"
 }

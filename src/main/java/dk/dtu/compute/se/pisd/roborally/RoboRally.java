@@ -88,13 +88,12 @@ public class RoboRally extends Application {
         VBox vbox = new VBox(menuBar, boardRoot);
 
         addImageToWindow();
-        /* this.mediaPlayer = play8BitMusic();
+        this.mediaPlayer = play8BitMusic();
         new Thread(() -> {
             // Play the music at half volume
-            mediaPlayer.setVolume(0.5);
+            mediaPlayer.setVolume(0);
             mediaPlayer.play();
         }).start();
-         */
 
         vbox.setMinWidth(MIN_APP_WIDTH);
         Scene primaryScene = new Scene(vbox);
@@ -162,7 +161,7 @@ public class RoboRally extends Application {
     }
 
     public void setMusicVolume(double volume) {
-        this.mediaPlayer.setVolume(volume);
+        this.mediaPlayer.setVolume(0);
     }
 
     public void playMusic() {
