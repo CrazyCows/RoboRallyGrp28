@@ -330,7 +330,6 @@ public class CardFieldView extends GridPane implements ViewObserver {
     }
 
     private class OnDragDoneHandler implements EventHandler<DragEvent> {
-
         @Override
         public void handle(DragEvent event) {
             //System.out.println("OnDragDetectedHandler called.");

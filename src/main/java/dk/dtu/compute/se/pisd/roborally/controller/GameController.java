@@ -48,31 +48,24 @@ public class GameController {
 
     final public Board board;
     private final boolean online;
-
     private Pit pit = new Pit();
     private RoboRally roboRally;
-
     public CardController getCardController() {
         return cardController;
     }
     private ClientController clientController;
     private ChatController chatController;
-
     protected CardController cardController;
     private JsonInterpreter jsonInterpreter;
     private String gamePath;
-
     private static Player localPlayer;
     JsonPlayerBuilder jsonPlayerBuilder;
     boolean MoreAdvancedGame = true;
     volatile boolean firstRound;
-
     private Timer timer;
     private boolean localStartedTimer;
     AtomicBoolean stopTimerBeforeTime = new AtomicBoolean(false);
-
     ArrayList<String> playerNames;
-
 
     public GameController(RoboRally roboRally, ClientController clientController, Board board, boolean online, Player localPlayer) {
         this.roboRally = roboRally;
@@ -105,7 +98,6 @@ public class GameController {
             this.localPlayer = localPlayer;
             firstRound = true;
         }
-
     }
 
     public void setupOnline() {
@@ -122,7 +114,6 @@ public class GameController {
         }
 
         chatController = new ChatController(this);
-
         localPlayer.setReady(false);
         jsonPlayerBuilder.updateDynamicPlayerData();
         clientController.updateJSON("playerData.json");
@@ -355,7 +346,6 @@ public class GameController {
         return closestPlayerToAntenna;
 
     }
-
 
     /**
      * Calculates the distance between two spaces
@@ -612,7 +602,6 @@ public class GameController {
 
 
         System.out.println("___________________FINISH PROGRAMMING___________________");
-
         setPhase(Phase.ACTIVATION);
 
         Thread commandThread = new Thread(new Runnable() {

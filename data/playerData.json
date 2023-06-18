@@ -1,14 +1,13 @@
 {
-  "posx" : 2,
-  "posy" : 2,
+  "posx" : 4,
+  "posy" : 4,
   "color" : "red",
-  "readystate" : true,
-  "heading" : "SOUTH",
-  "isMaster" : true,
-  "energyCubes" : 5,
-  "name" : "ge4",
+  "readystate" : false,
+  "heading" : "EAST",
+  "isMaster" : false,
+  "energyCubes" : 10,
+  "name" : "Player 1",
   "checkpointsCollected" : 0,
   "inGame" : false,
-  "message" : "",
-  "master" : "ge4"
+  "master" : null
 }
