@@ -614,22 +614,21 @@ public class GameController {
                 while (true) {
                     try {
                         Thread.sleep(sleep);
-
                         Card card = currentPlayer.currentProgram().get(currentPlayer.getUsedCards());
 
                         System.out.println("\nCurrent player is " + board.getCurrentPlayer().getName() + ", they play " + card.getName() + " which is at slot number " + (currentPlayer.getUsedCards() + 1));
                         card.getAction().doAction(GameController.this, currentPlayer, card); //I hate this implementation
                         List<FieldAction> fieldActions = currentPlayer.getSpace().getActions();
                         for (FieldAction fieldAction : fieldActions) {
-                            Thread.sleep(sleep); //Generify?
+                            Thread.sleep(500); //Generify?
                             fieldAction.doAction(GameController.this, currentPlayer.getSpace());
                         }
                         List<Item> items = currentPlayer.getSpace().getItems();
                         for (Item item : items) {
-                            Thread.sleep(sleep);
+                            Thread.sleep(500);
                             item.getEvent().doAction(GameController.this, currentPlayer.getSpace());
                         }
-                        Thread.sleep(sleep);
+                        Thread.sleep(500);
 
                     } catch (NullPointerException e) {
                         System.out.println("Error: No more commandCards");

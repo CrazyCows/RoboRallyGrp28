@@ -1,5 +1,5 @@
 {
-  "8u" : {
+  "MrHay" : {
     "programmingCards" : [ {
       "commandName" : "MOVEONE",
       "name" : "Move 1",
@@ -25,75 +25,9 @@
       "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "observers" : [ ]
     }, {
-      "commandName" : "LEFT",
-      "name" : "Turn Left",
-      "imagePath" : "images/cards/programmingCardImages/LeftTurn.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    } ]
-  },
-  "jfsdkajifaosdjaofd" : {
-    "programmingCards" : [ {
-      "commandName" : "UTURN",
-      "name" : "U-Turn",
-      "imagePath" : "images/cards/programmingCardImages/U-Turn.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "LEFT",
-      "name" : "Turn Left",
-      "imagePath" : "images/cards/programmingCardImages/LeftTurn.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
       "commandName" : "MOVEONE",
       "name" : "Move 1",
       "imagePath" : "images/cards/programmingCardImages/Move1.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "MOVETWO",
-      "name" : "Move 2",
-      "imagePath" : "images/cards/programmingCardImages/Move2.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "AGAIN",
-      "name" : "Again",
-      "imagePath" : "images/cards/programmingCardImages/Again.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    } ]
-  },
-  "bo" : {
-    "programmingCards" : [ {
-      "commandName" : "RIGHT",
-      "name" : "Turn Right",
-      "imagePath" : "images/cards/programmingCardImages/RightTurn.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "LEFT",
-      "name" : "Turn Left",
-      "imagePath" : "images/cards/programmingCardImages/LeftTurn.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "RIGHT",
-      "name" : "Turn Right",
-      "imagePath" : "images/cards/programmingCardImages/RightTurn.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "AGAIN",
-      "name" : "Again",
-      "imagePath" : "images/cards/programmingCardImages/Again.png",
-      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
-      "observers" : [ ]
-    }, {
-      "commandName" : "BACKUP",
-      "name" : "Back Up",
-      "imagePath" : "images/cards/programmingCardImages/MoveBack.png",
       "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "observers" : [ ]
     } ]
@@ -127,6 +61,39 @@
       "commandName" : "MOVEONE",
       "name" : "Move 1",
       "imagePath" : "images/cards/programmingCardImages/Move1.png",
+      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "observers" : [ ]
+    } ]
+  },
+  "diddydigbick" : {
+    "programmingCards" : [ {
+      "commandName" : "MOVEONE",
+      "name" : "Move 1",
+      "imagePath" : "images/cards/programmingCardImages/Move1.png",
+      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "observers" : [ ]
+    }, {
+      "commandName" : "MOVEONE",
+      "name" : "Move 1",
+      "imagePath" : "images/cards/programmingCardImages/Move1.png",
+      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "observers" : [ ]
+    }, {
+      "commandName" : "LEFT",
+      "name" : "Turn Left",
+      "imagePath" : "images/cards/programmingCardImages/LeftTurn.png",
+      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "observers" : [ ]
+    }, {
+      "commandName" : "MOVEONE",
+      "name" : "Move 1",
+      "imagePath" : "images/cards/programmingCardImages/Move1.png",
+      "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
+      "observers" : [ ]
+    }, {
+      "commandName" : "LEFT",
+      "name" : "Turn Left",
+      "imagePath" : "images/cards/programmingCardImages/LeftTurn.png",
       "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction",
       "observers" : [ ]
     } ]
